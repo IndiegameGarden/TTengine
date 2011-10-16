@@ -1,0 +1,33 @@
+
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C# Express 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTengineTestGame", "TTengineTestGame\TTengineTestGame\TTengineTestGame.csproj", "{529A2029-70CC-4820-8BA7-AFBE17B0CF6A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{616035D5-3927-44CD-BD41-2EEE846AC3A3} = {616035D5-3927-44CD-BD41-2EEE846AC3A3}
+	EndProjectSection
+EndProject
+Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "TTengineTestGameContent", "TTengineTestGame\TTengineTestGameContent\TTengineTestGameContent.contentproj", "{2F267F79-84E8-480E-A0A9-14CE0367A4D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTengine", "TTengine\TTengine.csproj", "{616035D5-3927-44CD-BD41-2EEE846AC3A3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{529A2029-70CC-4820-8BA7-AFBE17B0CF6A}.Debug|x86.ActiveCfg = Debug|x86
+		{529A2029-70CC-4820-8BA7-AFBE17B0CF6A}.Debug|x86.Build.0 = Debug|x86
+		{529A2029-70CC-4820-8BA7-AFBE17B0CF6A}.Release|x86.ActiveCfg = Release|x86
+		{529A2029-70CC-4820-8BA7-AFBE17B0CF6A}.Release|x86.Build.0 = Release|x86
+		{2F267F79-84E8-480E-A0A9-14CE0367A4D5}.Debug|x86.ActiveCfg = Debug|x86
+		{2F267F79-84E8-480E-A0A9-14CE0367A4D5}.Release|x86.ActiveCfg = Release|x86
+		{616035D5-3927-44CD-BD41-2EEE846AC3A3}.Debug|x86.ActiveCfg = Debug|x86
+		{616035D5-3927-44CD-BD41-2EEE846AC3A3}.Debug|x86.Build.0 = Debug|x86
+		{616035D5-3927-44CD-BD41-2EEE846AC3A3}.Release|x86.ActiveCfg = Release|x86
+		{616035D5-3927-44CD-BD41-2EEE846AC3A3}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
