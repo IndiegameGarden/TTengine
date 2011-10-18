@@ -30,9 +30,9 @@ namespace TTengineTestGame
 
         protected override void OnDraw(ref DrawParams p)
         {
-            Vector2 pos = CompoundPosition;
+            Vector2 pos = PositionAbsolute;
             Vector2 posPixels = pos * TTengineMaster.ActiveGame.GraphicsDevice.DisplayMode.Height;
-            screen.spriteBatch.DrawString(spriteFont, text, posPixels, this.drawColor);
+            Screen.spriteBatch.DrawString(spriteFont, text, posPixels, this.DrawColor);
         }
 
         

@@ -23,8 +23,8 @@ namespace TTengineTestGame
 
             // swap the velocity vecs - pseudo-phyics eff
             Vector2 v = withItem.Velocity;
-            withItem.Velocity = this.velocity;
-            this.velocity = v;
+            withItem.Velocity = this.Velocity;
+            this.Velocity = v;
 
         }
 

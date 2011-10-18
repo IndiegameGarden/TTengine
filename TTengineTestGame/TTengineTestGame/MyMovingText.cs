@@ -16,12 +16,12 @@ namespace TTengineTestGame
             //
         }
 
-        protected override void OnUpdate(ref UpdateParams myPars, ref UpdateParams parentPars)
+        protected override void OnUpdate(ref UpdateParams p)
         {
-            base.OnUpdate(ref myPars, ref parentPars);
+            base.OnUpdate(ref p);
             float spd = 0.2f;
-            Acceleration = new Vector2( spd * (float)Math.Sin(Math.PI * myPars.simTime), 
-                                        spd * (float)Math.Cos(Math.PI * myPars.simTime)
+            Acceleration = new Vector2( spd * (float)Math.Sin(Math.PI * p.simTime), 
+                                        spd * (float)Math.Cos(Math.PI * p.simTime)
                                       );
         }
     }

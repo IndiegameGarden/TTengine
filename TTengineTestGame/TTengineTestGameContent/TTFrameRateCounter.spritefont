@@ -23,6 +23,10 @@
         <End>:</End>
       </CharacterRegion>
       <CharacterRegion>
+        <Start>[</Start>
+        <End>]</End>
+      </CharacterRegion>
+      <CharacterRegion>
         <Start> </Start>
         <End> </End>
       </CharacterRegion>

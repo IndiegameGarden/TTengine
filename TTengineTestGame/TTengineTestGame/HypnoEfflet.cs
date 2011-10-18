@@ -17,13 +17,13 @@ namespace TTengineTestGame
         {
         }
 
-        protected override void OnUpdate(ref UpdateParams myPars, ref UpdateParams parentPars)
+        protected override void OnUpdate(ref UpdateParams p)
         {
-            base.OnUpdate(ref myPars, ref parentPars);
+            base.OnUpdate(ref p);
 
-            float z = 17f - 15f * (float) Math.Sin( MathHelper.TwoPi * 0.03324 * (float)myPars.simTime );
+            float z = 17f - 15f * (float) Math.Sin( MathHelper.TwoPi * 0.03324 * (float)p.simTime );
             effect.Parameters["Zoom"].SetValue(z);
-            effect.Parameters["Time"].SetValue((float) myPars.gameTime.TotalGameTime.TotalSeconds);
+            effect.Parameters["Time"].SetValue((float) p.gameTime.TotalGameTime.TotalSeconds);
         }
         
     }
