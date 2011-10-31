@@ -1,13 +1,12 @@
 // (c) 2010-2011 TranceTrance.com. Distributed under the FreeBSD license in LICENSE.txt
-﻿using System;
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace TTengine
+namespace TTengine.Core
 {
     /**
      * a Gamelet that contains a screen buffer to which child Gamelets will render graphics.
@@ -269,8 +268,6 @@ namespace TTengine
                 spriteBatch.Draw(renderTarget, ScreenRectangle, Color.White);
                 spriteBatch.End();
             }
-
         }
-       
     }
 }

@@ -1,12 +1,9 @@
 // (c) 2010-2011 TranceTrance.com. Distributed under the FreeBSD license in LICENSE.txt
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
-namespace TTengine
+namespace TTengine.Core
 {
     /**
      * base class for (shader) effects that are applied to an entire Screenlet.
@@ -24,7 +21,6 @@ namespace TTengine
         protected EffectParameter drawColorParameter=null;
 
         public Efflet(string fxFileName)
-            : base()
         {
             this.fxFileName = fxFileName;
         }

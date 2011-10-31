@@ -1,12 +1,8 @@
 // (c) 2010-2011 TranceTrance.com. Distributed under the FreeBSD license in LICENSE.txt
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Microsoft.Xna.Framework;
 
-namespace TTengine
+namespace TTengine.Core
 {
     /**
      * parameters collection used for Update() and Draw() methods of GameItems.
@@ -33,24 +29,23 @@ namespace TTengine
          */
         public UpdateParams(GameTime gameTime)
         {
-            this.CopyFrom(gameTime);
+            CopyFrom(gameTime);
         }
 
         /// Copy all fields from an 'other' params to the current one. 
         /// (Useful for re-initializing avoiding new obj creation)
         public void CopyFrom(UpdateParams other)
         {
-            this.gameTime = other.gameTime;
-            this.simTime = other.simTime;
-            this.dt = other.dt;
+            gameTime = other.gameTime;
+            simTime = other.simTime;
+            dt = other.dt;
         }
 
         public void CopyFrom(GameTime gameTime)
         {
             this.gameTime = gameTime;
-            this.simTime = (float)gameTime.TotalGameTime.TotalSeconds;
-            this.dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            simTime = (float)gameTime.TotalGameTime.TotalSeconds;
+            dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
-
     }
 }

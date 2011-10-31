@@ -92,19 +92,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="core\DrawParams.cs" />
-    <Compile Include="core\Efflet.cs" />
-    <Compile Include="core\FixedTimestepPhysics.cs" />
-    <Compile Include="core\Gamelet.cs" />
-    <Compile Include="core\IState.cs" />
-    <Compile Include="core\LODSpritelet.cs" />
-    <Compile Include="core\Screenlet.cs" />
-    <Compile Include="core\Spritelet.cs" />
-    <Compile Include="core\State.cs" />
-    <Compile Include="core\UpdateParams.cs" />
+    <Compile Include="Core\DrawParams.cs" />
+    <Compile Include="Core\Efflet.cs" />
+    <Compile Include="Core\FixedTimestepPhysics.cs" />
+    <Compile Include="Core\Gamelet.cs" />
+    <Compile Include="Core\IState.cs" />
+    <Compile Include="Core\LODSpritelet.cs" />
+    <Compile Include="Core\Screenlet.cs" />
+    <Compile Include="Core\Spritelet.cs" />
+    <Compile Include="Core\State.cs" />
+    <Compile Include="Core\UpdateParams.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TTengineMaster.cs" />
-    <Compile Include="util\FrameRateCounter.cs" />
+    <Compile Include="Util\FrameRateCounter.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

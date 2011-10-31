@@ -9,7 +9,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 using TTengine;
-using TTengine.util;
+using TTengine.Core;
+using TTengine.Util;
 
 namespace TTengineTestGame
 {

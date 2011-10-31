@@ -1,10 +1,7 @@
 // (c) 2010-2011 TranceTrance.com. Distributed under the FreeBSD license in LICENSE.txt
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using TTengine.Core;
 
 namespace TTengine
 {
@@ -18,7 +15,7 @@ namespace TTengine
 
         public static void Create(Game game)
         {
-           TTengineMaster.ActiveGame = game;           
+           ActiveGame = game;           
         }
 
         /// Initialize a root Gamelet

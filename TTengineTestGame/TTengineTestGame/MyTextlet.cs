@@ -1,13 +1,10 @@
 // (c) 2010-2011 TranceTrance.com. Distributed under the FreeBSD license in LICENSE.txt
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using TTengine;
+ using TTengine.Core;
 
 namespace TTengineTestGame
 {
@@ -17,7 +14,6 @@ namespace TTengineTestGame
         protected SpriteFont spriteFont;
 
         public MyTextlet( string text)
-            : base()
         {
             this.text = text;
             DrawColor = Color.White;
@@ -32,10 +28,7 @@ namespace TTengineTestGame
         {
             Vector2 pos = PositionAbsolute;
             Vector2 posPixels = pos * TTengineMaster.ActiveGame.GraphicsDevice.DisplayMode.Height;
-            Screen.spriteBatch.DrawString(spriteFont, text, posPixels, this.DrawColor);
+            Screen.spriteBatch.DrawString(spriteFont, text, posPixels, DrawColor);
         }
-
-        
-
     }
 }

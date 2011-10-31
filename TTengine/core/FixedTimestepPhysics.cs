@@ -1,13 +1,6 @@
 // (c) 2010-2011 TranceTrance.com. Distributed under the FreeBSD license in LICENSE.txt
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
 
-namespace TTengine
+namespace TTengine.Core
 {
     /**
      * use at or near the root of a gametree to provide fixed-timestep calls
@@ -23,7 +16,6 @@ namespace TTengine
 
         /// create a Screenlet that renders to the default
         public FixedTimestepPhysics()
-            : base()
         {            
         }
 

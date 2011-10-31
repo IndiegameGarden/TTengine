@@ -1,12 +1,10 @@
 // (c) 2010-2011 TranceTrance.com. Distributed under the FreeBSD license in LICENSE.txt
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace TTengine
+namespace TTengine.Core
 {
     /**
      * a Spritelet that supports multiple bitmap representations with different Level of Detail (LoD)
@@ -67,10 +65,7 @@ namespace TTengine
             Vector2 ctr = new Vector2(Center.X * textures[idxOfBest].Width, Center.Y * textures[idxOfBest].Height);
             
             Screen.spriteBatch.Draw(textures[idxOfBest], Screen.ToPixels(DrawPosition), null, drawColor,
-                    this.RotateAbsolute, ctr, scDraw, SpriteEffects.None, LayerDepth);
+                    RotateAbsolute, ctr, scDraw, SpriteEffects.None, LayerDepth);
         }
-
-
-
     }
 }

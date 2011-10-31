@@ -1,13 +1,10 @@
 // (c) 2010-2011 TranceTrance.com. Distributed under the FreeBSD license in LICENSE.txt
-﻿using System;
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
 
-namespace TTengine
+namespace TTengine.Core
 {
     /**
      * a Spritelet represents a sprite with a rectangle or circle physical shape. It supports collission detection,
@@ -106,8 +103,8 @@ namespace TTengine
             set
             {
                 texture = value;
-                height = Screen.ToNormalizedNS((float)texture.Height );
-                width = Screen.ToNormalizedNS((float)texture.Width);
+                height = Screen.ToNormalizedNS(texture.Height );
+                width = Screen.ToNormalizedNS(texture.Width);
                 radius = width / 2;
             }
             get
@@ -236,7 +233,7 @@ namespace TTengine
             foreach (Spritelet s in Screen.collisionObjects)
             {
                 if (s.Active  && s != this && 
-                    this.CollidesWith(s) && s.CollidesWith(this) ) // a collision is detected
+                    CollidesWith(s) && s.CollidesWith(this) ) // a collision is detected
                 {
                     collItems.Add(s);
                 }
@@ -248,14 +245,13 @@ namespace TTengine
                 if (!lastCollisionsList.Contains(s)) // if was not previously colliding, in previous round...
                 {
                     // ... notify the collision methods
-                    this.OnCollision(s);
-                    this.OnCollideEventNotification(s);
+                    OnCollision(s);
+                    OnCollideEventNotification(s);
                 }
             }
 
             // phase 3: store list of colliding items for next round
             lastCollisionsList = collItems;
-        }
-        
+        } 
     }
 }

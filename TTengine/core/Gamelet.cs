@@ -1,11 +1,11 @@
 // (c) 2010-2011 TranceTrance.com. Distributed under the FreeBSD license in LICENSE.txt
-﻿using System;
+
+using System;
 using System.Collections.Generic;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace TTengine
+namespace TTengine.Core
 {
     /// Generic event arguments class to be used for Gamelet related events
     public class GameletEventArgs : EventArgs
@@ -106,7 +106,7 @@ namespace TTengine
         /// Alpha value for the DrawColor of this Spritelet, range 0-1, replacing whatever was in DrawColor.A
         public float Alpha
         {
-            get { return ((float)drawColor.A) / 255.0f; }
+            get { return drawColor.A / 255.0f; }
             set { drawColor.A = (byte)(value * 255.0f); }
         }
 
@@ -237,7 +237,7 @@ namespace TTengine
         {
             childItem.Parent = this;
             // call the 'real' method on the List base class
-            ((List<Gamelet>)this).Insert(0,childItem);
+            Insert(0,childItem);
             childItem.Screen = childItem.FindScreen();
             childItem.OnNewParent();
         }
@@ -268,7 +268,7 @@ namespace TTengine
         internal void Initialize()
         {
             Screen = FindScreen();
-            this.OnInit();
+            OnInit();
             foreach (Gamelet c in this)
                 c.Initialize();
         }
@@ -367,8 +367,8 @@ namespace TTengine
                 this[i].DeleteItem();
                 i++;
             }
-            this.Clear();
-            this.OnDelete();
+            Clear();
+            OnDelete();
         }
 
         private void CreateID()
@@ -386,6 +386,5 @@ namespace TTengine
         }
 
         #endregion
-
     }
 }

@@ -1,14 +1,10 @@
 // (c) 2010-2011 TranceTrance.com. Distributed under the FreeBSD license in LICENSE.txt
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
-using TTengine;
+﻿using TTengine.Core;
 
-namespace TTengine.util
+namespace TTengine.Util
 {
     /**
      * shows a framerate counter on screen (FPS) calculated
@@ -23,13 +19,11 @@ namespace TTengine.util
         TimeSpan elapsedTime = TimeSpan.Zero;
 
         public FrameRateCounter()
-            : base()
         {
             Position = new Vector2(0.5f, 0.01f);
         }
 
         public FrameRateCounter(float x, float y)
-            : base()
         {
             Position = new Vector2(x, y);
         }
