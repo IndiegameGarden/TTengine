@@ -244,13 +244,13 @@ namespace TTengine.Core
 
         protected void VertexShaderInit(Effect eff)
         {
-            // vertex shader init
-            //Viewport viewport = screen.graphicsDevice.Viewport;
+            // vertex shader init            
             Matrix projection = Matrix.CreateOrthographicOffCenter(0, Screen.WidthPixels, Screen.HeightPixels, 0, 0, 1);
             Matrix halfPixelOffset = Matrix.CreateTranslation(-0.5f, -0.5f, 0);
             Matrix m = halfPixelOffset * projection;
-            eff.Parameters["MatrixTransform"].SetValue(m);
-
+            EffectParameter mtPar = eff.Parameters["MatrixTransform"];
+            if (mtPar != null)
+                mtPar.SetValue(m);
         }
 
         #endregion
