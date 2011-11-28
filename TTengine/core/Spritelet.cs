@@ -205,7 +205,7 @@ namespace TTengine.Core
             if (texture != null)
             {
                 
-                Vector2 pos = Screen.ToPixels(DrawPosition); //DrawPosition);
+                Vector2 pos = Screen.ToPixels(DrawPosition); 
                 Screen.spriteBatch.Draw(texture, pos, null, drawColor,
                        RotateAbsolute, DrawCenter, DrawScale, SpriteEffects.None, LayerDepth);
             }

@@ -6,8 +6,8 @@ using Microsoft.Xna.Framework;
 namespace TTengine.Core
 {
     /**
-     * base class for (shader) effects that are applied to an entire Screenlet.
-     * Screenlet takes care of rendering the Efflets by calling OnDrawEfflet()
+     * base class for (shader) effects that are applied to an entire screen, i.e. Screenlet.
+     * Screenlet takes care of rendering the Efflets in order by calling OnDrawEfflet()
      * at the end of a Draw() cycle.
      * 
      * Subclasses of Efflet can use inside the shader these predefined variables:
@@ -35,6 +35,7 @@ namespace TTengine.Core
                 effect = TTengineMaster.ActiveGame.Content.Load<Effect>(fxFileName);
                 drawColorParameter = effect.Parameters["DrawColor"];
             }
+            VertexShaderInit(effect);
         }
 
         protected override void OnUpdate(ref UpdateParams p)
