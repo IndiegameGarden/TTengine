@@ -103,6 +103,7 @@
     <Compile Include="Core\Spritelet.cs" />
     <Compile Include="Core\State.cs" />
     <Compile Include="Core\UpdateParams.cs" />
+    <Compile Include="Modifiers\MyFuncyModifier.cs" />
     <Compile Include="Modifiers\Modifiers.cs" />
     <Compile Include="Modifiers\SineModifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

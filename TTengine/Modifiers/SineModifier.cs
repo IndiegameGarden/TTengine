@@ -7,7 +7,7 @@ namespace TTengine.Modifiers
 {
 
     /**
-     * modifies a parameter periodically (sine-wave based)
+     * modifies a parameter according to a sine-wave function
      */
     public class SineModifier : Gamelet
     {
