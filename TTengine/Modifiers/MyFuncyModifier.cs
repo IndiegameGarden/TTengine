@@ -19,6 +19,21 @@ namespace TTengine.Modifiers
             this.action = action;
         }
 
+        public MyFuncyModifier(ModifyAction action, float startTime)
+            : base()
+        {
+            this.StartTime = startTime;
+            this.action = action;
+        }
+
+        public MyFuncyModifier(ModifyAction action, float startTime, float duration)
+            : base()
+        {
+            this.Duration = duration;
+            this.StartTime = startTime;
+            this.action = action;
+        }
+
         protected override void OnUpdate(ref UpdateParams p)
         {
             action(SimTime);

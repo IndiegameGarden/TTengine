@@ -14,6 +14,15 @@ namespace TTengine.Modifiers
         float ampl, frequency, offset;
         ModifyAction action;
 
+        public SineModifier(ModifyAction action, float ampl, float frequency)
+            : base()
+        {
+            this.ampl = ampl;
+            this.frequency = frequency;
+            this.offset = 0f;
+            this.action = action;
+        }
+        
         public SineModifier(ModifyAction action, float ampl, float frequency, float offset)
             : base()
         {
@@ -23,6 +32,17 @@ namespace TTengine.Modifiers
             this.action = action;
         }
 
+        public SineModifier(ModifyAction action, float ampl, float frequency, float offset, float startTime, float duration)
+            : base()
+        {
+            this.ampl = ampl;
+            this.frequency = frequency;
+            this.offset = offset;
+            this.action = action;
+            this.StartTime = startTime;
+            this.Duration = duration;
+        }
+        
         protected override void OnUpdate(ref UpdateParams p)
         {
             float val = offset + ampl * (float)Math.Sin(MathHelper.TwoPi * (double)frequency * SimTime);
