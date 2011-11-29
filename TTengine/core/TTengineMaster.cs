@@ -1,9 +1,8 @@
 // (c) 2010-2011 TranceTrance.com. Distributed under the FreeBSD license in LICENSE.txt
 
 using Microsoft.Xna.Framework;
-using TTengine.Core;
 
-namespace TTengine
+namespace TTengine.Core
 {
     /**
      * the Master is a top-level entry point to TTengine

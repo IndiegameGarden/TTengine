@@ -107,7 +107,7 @@
     <Compile Include="Modifiers\Modifiers.cs" />
     <Compile Include="Modifiers\SineModifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TTengineMaster.cs" />
+    <Compile Include="Core\TTengineMaster.cs" />
     <Compile Include="Util\MsgBox.cs" />
     <Compile Include="Util\FrameRateCounter.cs" />
   </ItemGroup>
