@@ -27,6 +27,16 @@ namespace TTengine.Core
         {
             this.fileName = fileName;
         }
+
+        /// <summary>
+        /// create new spritelet with given Texture2D texture
+        /// </summary>
+        public Spritelet(Texture2D texture)
+        {
+            if (texture != null)
+                this.texture = texture;
+            // note: init based on texture is postponed until OnInit()
+        }
         #endregion
 
         #region Class-internal properties
@@ -118,6 +128,12 @@ namespace TTengine.Core
 
         protected override void OnInit()
         {
+            if (texture != null)
+            {
+                height = Screen.ToNormalizedNS(texture.Height);
+                width = Screen.ToNormalizedNS(texture.Width);
+                radius = width / 2;
+            }
             if (fileName != null) LoadTexture(fileName);
         }
 
