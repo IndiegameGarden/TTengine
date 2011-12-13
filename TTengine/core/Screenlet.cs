@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Content;
 
 namespace TTengine.Core
 {
@@ -182,7 +183,14 @@ namespace TTengine.Core
         {
             base.OnInit();
 
-            DebugFont = TTengineMaster.ActiveGame.Content.Load<SpriteFont>(@"TTDebugFont");
+            try
+            {
+                DebugFont = TTengineMaster.ActiveGame.Content.Load<SpriteFont>(@"TTDebugFont");
+            }
+            catch (ContentLoadException)
+            {
+                ; // TODO maybe put a warning out here?
+            }
             effletRenderTarget = new RenderTarget2D(graphicsDevice, screenWidth, screenHeight);
             effletsList = new List<Efflet>();
             spriteBatch = new SpriteBatch(graphicsDevice);
