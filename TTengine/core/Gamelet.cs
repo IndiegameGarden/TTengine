@@ -430,7 +430,7 @@ namespace TTengine.Core
             Position += Vector2.Multiply(Velocity, p.dt);
             Velocity += Vector2.Multiply(Acceleration, p.dt);
 
-            // check if deletion is needed based on duration property of item
+            // check if deletion is needed based on duration propertyName of item
             if (duration > 0)
             {
                 if (SimTime >= duration)

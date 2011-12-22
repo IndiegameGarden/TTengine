@@ -12,7 +12,7 @@ namespace TTengine.Core
         protected String effectFile = null;
         protected SpriteBatch spriteBatch;
 
-        protected EffectParameter drawColorParam, timeParam, positionParam;
+        protected EffectParameter timeParam, positionParam;
 
         /// <summary>
         /// construct with BasicEffect and given texture loaded from content file
@@ -89,7 +89,6 @@ namespace TTengine.Core
             }
 
             // try to find common parameters in the Effect
-            drawColorParam = eff.Parameters["DrawColor"];
             timeParam = eff.Parameters["Time"];
             positionParam = eff.Parameters["Position"];
         }
@@ -99,8 +98,6 @@ namespace TTengine.Core
             if (Texture != null)
             {
                 // supply the shader parameters that may have been configured
-                if (drawColorParam != null)
-                    drawColorParam.SetValue(DrawColor.ToVector4());
                 if (timeParam != null)
                     timeParam.SetValue(SimTime);
                 if (positionParam != null)

@@ -12,9 +12,9 @@ namespace TTengine.Modifiers
     public class SineModifier : Gamelet
     {
         float ampl, frequency, offset;
-        ModifyAction action;
+        ValueModifier action;
 
-        public SineModifier(ModifyAction action, float ampl, float frequency)
+        public SineModifier(ValueModifier action, float ampl, float frequency)
             : base()
         {
             this.ampl = ampl;
@@ -23,7 +23,7 @@ namespace TTengine.Modifiers
             this.action = action;
         }
         
-        public SineModifier(ModifyAction action, float ampl, float frequency, float offset)
+        public SineModifier(ValueModifier action, float ampl, float frequency, float offset)
             : base()
         {
             this.ampl = ampl;
@@ -32,7 +32,7 @@ namespace TTengine.Modifiers
             this.action = action;
         }
 
-        public SineModifier(ModifyAction action, float ampl, float frequency, float offset, float startTime, float duration)
+        public SineModifier(ValueModifier action, float ampl, float frequency, float offset, float startTime, float duration)
             : base()
         {
             this.ampl = ampl;
