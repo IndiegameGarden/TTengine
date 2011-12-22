@@ -26,7 +26,7 @@ namespace TTengine.Core
      * Also defines some eventing.
      * See also: Spritelet
      */
-    public class Gamelet : List<Gamelet>
+    public class Gamelet
     {
 
         #region Eventing
@@ -44,44 +44,72 @@ namespace TTengine.Core
         /// If false this Gamelet will not update/draw and my children will not update/draw
         public bool Active = true;
 
-        /// Flag indicating whether visibility is enabled, which means that if true OnDraw() is called
+        /// <summary>Flag indicating whether visibility is enabled, which means that if true OnDraw() is called</summary>
         public bool Visible = true; 
 
         public Vector2 Position = Vector2.Zero;
         public Vector2 PositionModifier = Vector2.Zero;
-        public virtual Vector2 PositionAbsolute
+        public virtual Vector2 PositionAbs
         {
             get
             {
-                if(Parent==null)
-                    return Position + PositionModifier ;
+                if (Parent == null)
+                    return Position + PositionModifier;
                 else
-                    return Position + PositionModifier + (LinkedToParent ? Parent.PositionAbsolute : Parent.Parent.PositionAbsolute );
+                {
+                    Vector2 p = (LinkedToParent ? Parent.PositionAbs : Parent.Parent.PositionAbs);
+                    p += ((Position + PositionModifier) - Parent.ZoomCenter) * Parent.Zoom + Parent.ZoomCenter;
+                    //return ((Position + PositionModifier + (LinkedToParent ? Parent.PositionAbs : Parent.Parent.PositionAbs)) - Parent.ZoomCenter) * Parent.Zoom + Parent.ZoomCenter;
+                    //return Position + PositionModifier + (LinkedToParent ? Parent.PositionAbs : Parent.Parent.PositionAbs);
+                    return p;
+                }
             }
         } // FIXME do a realtime calc based on parents compound value so far.
-
+        
+        /// <summary>
+        /// absolute drawing position on screen in units of pixels for use in Draw() calls
+        /// </summary>
+        public virtual Vector2 DrawPosition
+        {
+            get
+            {
+                return ToPixels(PositionAbs);
+            }
+        }
 
         public float Rotate = 0f;
         public float RotateModifier = 0f;
-        public virtual float RotateAbsolute { 
+        public virtual float RotateAbs { 
             get {
                 if (Parent == null)
                     return Rotate + RotateModifier ; 
                 else
-                    return Rotate + RotateModifier + (LinkedToParent ? Parent.RotateAbsolute : Parent.Parent.RotateAbsolute); 
+                    return Rotate + RotateModifier + (LinkedToParent ? Parent.RotateAbs : Parent.Parent.RotateAbs); 
                 } 
         }
         
         public float Scale = 1f;
+        public float Zoom = 1f;
+        public Vector2 ZoomCenter = Vector2.Zero;
         public float ScaleModifier = 1f;
-        public virtual float ScaleAbsolute
+        public virtual float ScaleAbs
         { 
             get {
                 if(Parent == null)
                     return Scale * ScaleModifier ; 
                 else
-                    return Scale * ScaleModifier * (LinkedToParent ? Parent.ScaleAbsolute : Parent.Parent.ScaleAbsolute ); 
+                    return Scale * ScaleModifier * (LinkedToParent ? Parent.ScaleAbs : Parent.Parent.ScaleAbs ); 
             } 
+        }
+        public virtual float ZoomAbs
+        {
+            get
+            {
+                if (Parent == null)
+                    return Zoom;
+                else
+                    return Zoom * (LinkedToParent ? Parent.ZoomAbs : Parent.Parent.ZoomAbs);
+            }
         }
 
         /// 2D acceleration vector in normalized coordinates
@@ -94,7 +122,9 @@ namespace TTengine.Core
         public bool LinkedToParent = true; 
 
         /// My parent item, or null if none (in that case I am root or not attached yet)
-        public Gamelet Parent = null ; 
+        public Gamelet Parent = null ;
+
+        public List<Gamelet> Children = new List<Gamelet>();
 
         /// Color for drawing shape/sprite, setting it will replace Alpha value with DrawColor.A
         public Color DrawColor
@@ -121,30 +151,40 @@ namespace TTengine.Core
             get { return startTime; } 
             set { 
                 startTime = value;
-                Active = false; // initially paused until startTime reached.
+                if (startTime > 0f)
+                    Active = false; // initially paused until startTime reached.
             } 
         }
 
-        // to which Screenlet the item belongs (e.g. where a shape will draw itself). Also non-drawables may use this info.
+        /// <summary>
+        /// to which Screenlet the item belongs (e.g. where a shape will draw itself). Also non-drawables may use this info.
+        /// Null if not set yet or unknown.
+        /// </summary>
         public Screenlet Screen = null;
 
-        // total cumulative amount of simulation time of this specific item (i.e. time being Active)
+        /// <summary>
+        /// total cumulative amount of simulation time of this specific item (i.e. time being Active)
+        /// </summary>
         public float SimTime = 0f;
 
         #endregion
 
         #region Constructors
-        /// Default constructor creates an item without shape and position Zero. Can be used to create a root item or container item.
+        /// <summary>creates Gamelet without shape and position Zero. Can be used to create a root item or container item</summary>
         public Gamelet()
         {
             CreateID();
+            Screen = TTengineMaster.ActiveScreen;
+            OnInit();
         }
 
-        /// Create gamelet that is only active in the specified state
+        /// <summary>create gamelet that is only active in the specified state; useful for state machines</summary>
         public Gamelet(IState activeInState)
-        {
-            CreateID();
+        {            
             this.activeInState = activeInState;
+            CreateID();
+            Screen = TTengineMaster.ActiveScreen;
+            OnInit();
         }
         #endregion
 
@@ -159,31 +199,45 @@ namespace TTengine.Core
         #endregion
 
         #region Overridable Handler methods (On...() methods)
-        /// called on initialization of game tree
+
+        /// <summary>
+        /// called very first on Gamelet construction, even earlier than your custom Gamelet's constructor!
+        /// </summary>
         protected virtual void OnInit()
         {
         }
 
-        /// called when parent changes
+        /// <summary>
+        /// called when parent of this Gamelet changes, check this.Parent for new parent.
+        /// </summary>
         protected virtual void OnNewParent()
         {
         }
 
+        /// <summary>
         /// called on update, may be overridden to define custom Update behaviour
+        /// </summary>
         protected virtual void OnUpdate(ref UpdateParams p)
         {
         }
 
+        /// <summary>
         /// Called when this item is drawn (only if Item is Visible and Active)
+        /// </summary>
         protected virtual void OnDraw(ref DrawParams p)
         {
         }
 
-        /// Collision may imply that me or a parent of me collided
+        /// <summary>
+        /// Called on moment of Gamelet deletion
+        /// </summary>
         protected virtual void OnDelete()
         {
         }
 
+        /// <summary>
+        /// Collision may imply that me or a parent of me collided
+        /// </summary>
         public virtual void OnCollision(Spritelet withItem)
         {
         }
@@ -204,10 +258,11 @@ namespace TTengine.Core
             return myState;
         }
 
-        /**
-         * checks whether the Gamelet is in indicated state s. State is determined by CLASS not specific instances.
-         * If Gamelet has no state (ie state==null), then state is determined by my Parent or Parent's Parent etc., recursively up the tree.
-         */
+        /// <summary>
+        /// checks whether the Gamelet is in indicated state s. State is determined by IState s CLASS not specific instances.
+        /// If Gamelet has no state (ie state==null), then state is determined by my Parent or Parent's Parent etc., recursively up the Gamelet tree.
+        /// </summary>
+        /// <param name="s">an instance of a class with IState interface, the CLASS will be compared to this.GetState()</param>
         public bool IsInState(IState s)
         {
             if (myState == null)
@@ -222,24 +277,48 @@ namespace TTengine.Core
             return (myState == s || (sType.IsAssignableFrom(myType) && myType.IsAssignableFrom(sType)));
         }
 
-        /// Adds a Gamelet (which could be a shape or behavior, or plain Gamelet etc.) to me as child at the back of the children's list
-        public new void Add(Gamelet childItem)
+        /// <summary>
+        /// Adds a Gamelet as child at the _end_ (back) of the children's list this.Children. Does not add
+        /// if 'child' is already a child Gamelet of this one.
+        /// </summary>
+        public void Add(Gamelet child)
         {
-            childItem.Parent = this;
-            // call the 'real' add method on the List base class
-            ((List<Gamelet>)this).Add(childItem);
-            childItem.Screen = childItem.FindScreen();
-            childItem.OnNewParent();
+            if (!Children.Contains(child))
+            {
+                child.Parent = this;
+                Children.Add(child);
+                child.OnNewParent();
+            }
         }
 
-        /// Adds (inserts) a Gamelet in front of the children's list
-        public void AddFront(Gamelet childItem)
+        /// <summary>
+        /// Adds (inserts) a Gamelet as child in _begin_ i.e. front of the children's list this.Children
+        /// </summary>
+        public void AddFront(Gamelet child)
         {
-            childItem.Parent = this;
-            // call the 'real' method on the List base class
-            Insert(0,childItem);
-            childItem.Screen = childItem.FindScreen();
-            childItem.OnNewParent();
+            Children.Insert(0,child);
+            child.Parent = this;
+            child.OnNewParent();
+        }
+
+        /// <summary>
+        /// Removes first occurrence of child gamelet from the list of children. The child.OnNewParent() is
+        /// called with a null parameter as a result.
+        /// </summary>
+        /// <returns>true if item is successfully removed; otherwise, false. </returns>
+        public bool Remove(Gamelet child)
+        {
+            if (Children.Contains(child))
+            {
+                Children.Remove(child);
+                child.Parent = null;
+                child.OnNewParent();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         protected void VertexShaderInit(Effect eff)
@@ -253,10 +332,48 @@ namespace TTengine.Core
                 mtPar.SetValue(m);
         }
 
+        /// <summary>
+        /// translate a relative coordinate to pixel coordinates, in the context of this Gamelet (with possibly Zoom applied)
+        /// </summary>
+        /// <param name="pos">relative coordinate to translate</param>
+        /// <returns>translated to pixels coordinate</returns>
+        internal Vector2 ToPixels(Vector2 pos)
+        {
+            //return (pos * Screen.screenHeight - Center) * Zoom + Center;
+            return pos * Screen.screenHeight;
+        }
+
+        public Vector2 ToPixelsNS(Vector2 pos)
+        {
+            return pos * Screen.screenHeight;
+        }
+
+        // FIXME?
+        public float ToPixels(float coord)
+        {
+            return coord * Screen.screenHeight ;
+        }
+
+        internal Vector2 ToPixels(float x, float y)
+        {
+            return ToPixels(new Vector2(x, y));
+        }
+
+        internal Vector2 ToPixelsNS(float x, float y)
+        {
+            return ToPixelsNS(new Vector2(x, y));
+        }         
+
+        internal float ToNormalizedNS(float coord)
+        {
+            return coord * Screen.scalingToNormalized;
+        }
+
         #endregion
 
         #region Private (internal) methods
-        /// Find the screen that this item should render to (by recursively looking upward in tree)
+        
+        /// <summary>Find the screen that this item should render to (by recursively looking upward in tree)</summary>
         private Screenlet FindScreen()
         {
             if (this is Screenlet) return (this as Screenlet);
@@ -264,13 +381,11 @@ namespace TTengine.Core
             return Parent.FindScreen();
         }
 
-        /// Initialize this item and recursively all children underneath, using OnInit() calls
-        internal void Initialize()
+        private void CreateID()
         {
-            Screen = FindScreen();
-            OnInit();
-            foreach (Gamelet c in this)
-                c.Initialize();
+            // set my unique id
+            _ID = _IDcounter;
+            _IDcounter++;
         }
 
         internal virtual void Update(ref UpdateParams p)
@@ -290,17 +405,17 @@ namespace TTengine.Core
             // simulate object and children
             //Remove any items that need deletion etc
             int i = 0;
-            while (i < Count)
+            while (i < Children.Count)
             {
                 // deleted items
-                if (this[i].Delete)
+                if (Children[i].Delete)
                 {
-                    this[i].DeleteItem();
-                    RemoveAt(i);
+                    Children[i].DeleteItem();
+                    Children.RemoveAt(i);
                 }
                 // remove items from my tree that were transferred to another parent
-                else if (this[i].Parent != this)
-                    RemoveAt(i);
+                else if (Children[i].Parent != this)
+                    Children.RemoveAt(i);
                 else
                     i++;
             }
@@ -323,7 +438,7 @@ namespace TTengine.Core
             }
 
             //Update each child item. Note each child _may_ modify updPars.
-            foreach (Gamelet item in this)
+            foreach (Gamelet item in Children)
             {
                 item.Update(ref p);
             }
@@ -347,35 +462,29 @@ namespace TTengine.Core
                     return;
             }
 
-            //render all of the child nodes
-            foreach (Gamelet item in this)
+            // render this item
+            if (Visible)
+                OnDraw(ref p);
+            
+            // then render all of the child nodes
+            foreach (Gamelet item in Children)
             {
                 item.Draw(ref p);
             }
-
-            if (Visible) 
-                OnDraw(ref p);
         }
 
         /// Called for deletion of this item - includes deletion of all children and calling OnDeletion
         private void DeleteItem()
         {
             int i = 0;
-            while (i < Count)
+            while (i < Children.Count)
             {
-                this[i].Delete = true;
-                this[i].DeleteItem();
+                Children[i].Delete = true;
+                Children[i].DeleteItem();
                 i++;
             }
-            Clear();
+            Children.Clear();
             OnDelete();
-        }
-
-        private void CreateID()
-        {
-            // set my unique id
-            _ID = _IDcounter;
-            _IDcounter++;
         }
 
         internal void OnCollideEventNotification(Spritelet s)

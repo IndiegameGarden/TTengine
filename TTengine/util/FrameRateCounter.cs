@@ -28,13 +28,12 @@ namespace TTengine.Util
             Position = new Vector2(x, y);
         }
 
-
         protected override void OnInit()
         {
+            base.OnInit();
             LayerDepth = 0.0f;
             spriteFont = TTengineMaster.ActiveGame.Content.Load<SpriteFont>(@"TTFrameRateCounter");
         }
-
 
         protected override void OnUpdate(ref UpdateParams p)
         {
@@ -57,9 +56,10 @@ namespace TTengine.Util
             if (SimTime > 0f)
                 frameRateAvg = (int)(frameCounterTotal / SimTime);
             string fps = string.Format("{0} fps [{1}]", frameRate, frameRateAvg );
-            Screen.spriteBatch.DrawString(spriteFont, fps, Screen.ToPixels(Position), 
+            Vector2 pos = DrawPosition;
+            Screen.UseSharedSpritebatch().DrawString(spriteFont, fps, pos, 
                 Color.Black, 0f, Vector2.Zero,1f,SpriteEffects.None,LayerDepth-0.00001f);
-            Screen.spriteBatch.DrawString(spriteFont, fps, Screen.ToPixels(Position), 
+            Screen.UseSharedSpritebatch().DrawString(spriteFont, fps, pos, 
                 drawColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, LayerDepth);
         }
     }

@@ -108,8 +108,10 @@
     <Compile Include="Modifiers\SineModifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\TTengineMaster.cs" />
+    <Compile Include="Util\Launchlet.cs" />
     <Compile Include="Util\MsgBox.cs" />
     <Compile Include="Util\FrameRateCounter.cs" />
+    <Compile Include="Util\ScreenZoomer.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

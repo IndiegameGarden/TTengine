@@ -11,10 +11,19 @@ namespace TTengine.Core
      */
     public class UpdateParams
     {
-        /// GameTime as passed by the XNA Game class
+        /// <summary>
+        /// GameTime class as passed by the XNA Game class Update() method
+        /// </summary>
         public GameTime gameTime = null;
+
+        /// <summary>
+        /// A globally kept simulation time value in seconds, 0f is start of simulation
+        /// </summary>
         public float simTime = 0.0f;
-        /// delta t, time difference since last call for gamelet simtime
+        
+        /// <summary>
+        /// delta t, the simulation time passed since last Update() (i.e. Gamelet simtime) in seconds
+        /// </summary>
         public float dt = 0.0f;
 
         /**

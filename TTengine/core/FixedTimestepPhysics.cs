@@ -12,16 +12,11 @@ namespace TTengine.Core
         public float simulateAheadTime = 0.050f;
         public float fixedTimestep = 0.010f;
 
-        protected float itemsSimTime;
+        protected float itemsSimTime = 0f;
 
         /// create a Screenlet that renders to the default
-        public FixedTimestepPhysics()
+        public FixedTimestepPhysics(): base()
         {            
-        }
-
-        protected override void OnInit()
-        {
-            itemsSimTime = 0f;
         }
 
         internal override void Update(ref UpdateParams p)

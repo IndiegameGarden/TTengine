@@ -23,12 +23,11 @@ namespace TTengine.Core
         public Efflet(string fxFileName)
         {
             this.fxFileName = fxFileName;
+            LoadEffect();
         }
 
-        protected override void OnInit()
+        protected virtual void LoadEffect()
         {
-            base.OnInit();
-
             spriteBatch = new SpriteBatch(Screen.graphicsDevice);
             if (fxFileName != null)
             {

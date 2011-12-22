@@ -15,31 +15,38 @@ namespace TTengine.Core
     public class Spritelet : Gamelet
     {
         #region Constructors
-        /// create new spritelet without a Texture
+
+        /// <summary>
+        /// create new spritelet without a Texture yet
+        /// </summary>
         public Spritelet()
-            : base()
-        {
+        {            
         }
 
+        /// <summary>
         /// create new spritelet where Texture is loaded from the content with given fileName
-        public Spritelet(string fileName)
-            : base()
+        /// </summary>
+        /// <param name="fileName">name of XNA content file</param>
+        public Spritelet(string fileName): base()
         {
             this.fileName = fileName;
+            InitTextures();
         }
 
         /// <summary>
         /// create new spritelet with given Texture2D texture
         /// </summary>
-        public Spritelet(Texture2D texture)
+        public Spritelet(Texture2D texture): base()
         {
-            if (texture != null)
-                this.texture = texture;
-            // note: init based on texture is postponed until OnInit()
+            this.texture = texture;
+            InitTextures();
         }
+
         #endregion
 
         #region Class-internal properties
+        protected Vector2 drawPosition = Vector2.Zero;
+        protected bool drawPositionCalculated = false;
         protected bool checksCollisions = false;
         protected string fileName = null;
         protected float width = 0f;
@@ -59,11 +66,6 @@ namespace TTengine.Core
 
         #region Properties
         
-        /// Center position of the sprite in relative coordinates wrt sprite size ( <0,0> = top left corner, <0.5,0.5>=middle )
-        public Vector2 Center = new Vector2(0.5f,0.5f);
-        /// The last calculated absolute drawing position of this sprite (in normalized coordinates). Interpolation tricks used in calculating this value.
-        public Vector2 DrawPosition = Vector2.Zero;
-
         /// Flag indicating whether this item checks collisions with other Spritelets, by default false to save CPU
         public bool ChecksCollisions { 
             get { return checksCollisions;  } 
@@ -82,9 +84,9 @@ namespace TTengine.Core
             get
             {
                 if (!Visible) return false;
-                Vector2 p = PositionAbsolute;
-                float w = WidthAbsolute / 2;
-                float h = HeightAbsolute / 2;
+                Vector2 p = PositionAbs;
+                float w = WidthAbs / 2;
+                float h = HeightAbs / 2;
                 if (p.X < -w) return false;
                 if (p.X > (Screen.Width + w)) return false;
                 if (p.Y < -h) return false;
@@ -94,16 +96,26 @@ namespace TTengine.Core
         }
 
         /// Radius of item (if any) assuming a circular shape model
-        public virtual float RadiusAbsolute { get { return radius * ScaleAbsolute; } }
+        public virtual float RadiusAbs { get { return radius * ScaleAbs; } }
 
-        public virtual float HeightAbsolute { get { return height * ScaleAbsolute; } }
+        public virtual float HeightAbs { get { return height * ScaleAbs; } }
 
-        public virtual float WidthAbsolute { get { return width * ScaleAbsolute; } }
+        public virtual float WidthAbs { get { return width * ScaleAbs; } }
 
-        public float DrawScale { get { return ScaleAbsolute * Screen.Zoom; } }
+        public virtual float DrawScale { get { return ScaleAbs * ZoomAbs ; } }
 
-        /// tbd
-        public Vector2 DrawCenter { get { return Screen.ToPixelsNS(Center.X * width, Center.Y * height); } }
+        public Vector2 Center = new Vector2(0.5f,0.5f); 
+        public virtual Vector2 DrawCenter { get { return ToPixels(Center.X * width, Center.Y * height); } }
+
+        public override Vector2 DrawPosition
+        {
+            get
+            {
+                if (!drawPositionCalculated)
+                    return base.DrawPosition;
+                return drawPosition;
+            }
+        }
 
         /**
          * get/set the Texture of this shape
@@ -113,8 +125,8 @@ namespace TTengine.Core
             set
             {
                 texture = value;
-                height = Screen.ToNormalizedNS(texture.Height );
-                width = Screen.ToNormalizedNS(texture.Width);
+                height = ToNormalizedNS(texture.Height );
+                width = ToNormalizedNS(texture.Width);
                 radius = width / 2;
             }
             get
@@ -126,15 +138,16 @@ namespace TTengine.Core
 
         #endregion
 
-        protected override void OnInit()
+        protected virtual void InitTextures()
         {
             if (texture != null)
             {
-                height = Screen.ToNormalizedNS(texture.Height);
-                width = Screen.ToNormalizedNS(texture.Width);
+                height = ToNormalizedNS(texture.Height);
+                width = ToNormalizedNS(texture.Width);
                 radius = width / 2;
             }
-            if (fileName != null) LoadTexture(fileName);
+            if (fileName != null) 
+                LoadTexture(fileName);
         }
 
         protected override void OnDelete()
@@ -157,7 +170,7 @@ namespace TTengine.Core
             if (Active)
             {
                 // store current position in a cache to use in trajectory smoothing
-                UpdatePositionCache(PositionAbsolute, p.simTime);
+                UpdatePositionCache(PositionAbs, p.simTime);
                 // handle collisions
                 if (checksCollisions) 
                     HandleCollisions(p);
@@ -194,7 +207,7 @@ namespace TTengine.Core
 
             float t = (float)p.gameTime.TotalGameTime.TotalSeconds;
             // default - take latest position in cache
-            DrawPosition = PositionAbsolute; 
+            drawPosition = DrawPosition;
 
             // then check if an interpolated, better value can be found.
             for (int i = 0; i < NBUF; i++)
@@ -204,11 +217,12 @@ namespace TTengine.Core
                 {
                     float a = (t - posHistoryTime[i]) / (posHistoryTime[iNext] - posHistoryTime[i]);
                     // perform linear interpolation
-                    DrawPosition = (1 - a) * posHistory[i] + a * posHistory[iNext];
+                    drawPosition = ToPixels((1 - a) * posHistory[i] + a * posHistory[iNext]);
                     break;
                 }
             }
-             
+            drawPositionCalculated = true;
+
             // do actual drawing of my children and then OnDraw()
             base.Draw(ref p);
 
@@ -219,11 +233,9 @@ namespace TTengine.Core
             base.OnDraw(ref p);
 
             if (texture != null)
-            {
-                
-                Vector2 pos = Screen.ToPixels(DrawPosition); 
-                Screen.spriteBatch.Draw(texture, pos, null, drawColor,
-                       RotateAbsolute, DrawCenter, DrawScale, SpriteEffects.None, LayerDepth);
+            {                
+                Screen.UseSharedSpritebatch().Draw(texture, DrawPosition, null, drawColor,
+                       RotateAbs, DrawCenter, DrawScale, SpriteEffects.None, LayerDepth);
             }
         }
 
@@ -233,7 +245,7 @@ namespace TTengine.Core
         public virtual bool CollidesWith(Spritelet item)
         {
             // simple sphere (well circle!) check
-            if ((PositionAbsolute - item.PositionAbsolute).Length() < (RadiusAbsolute + item.RadiusAbsolute))
+            if ((PositionAbs - item.PositionAbs).Length() < (RadiusAbs + item.RadiusAbs))
                 return true;
             else
                 return false;
