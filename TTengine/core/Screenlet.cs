@@ -1,4 +1,4 @@
-// (c) 2010-2011 TranceTrance.com. Distributed under the FreeBSD license in LICENSE.txt
+// (c) 2010-2012 TranceTrance.com. Distributed under the FreeBSD license in LICENSE.txt
 
 using System;
 using System.Collections.Generic;
@@ -20,6 +20,11 @@ namespace TTengine.Core
 
         /// list of all Spritelets for which mutual collision detection is done
         public List<Spritelet> collisionObjects;
+
+        /// <summary>
+        /// The center coordinate of the screen
+        /// </summary>
+        public Vector2 Center = Vector2.Zero;
 
         public override Vector2 PositionAbs
         {
@@ -170,6 +175,7 @@ namespace TTengine.Core
             scalingToNormalized = 1.0f / (float)screenHeight;
             screenRect = new Rectangle(0, 0, screenWidth, screenHeight);
             aspectRatio = (float)screenWidth / (float)screenHeight;
+            Center = new Vector2(aspectRatio / 2.0f, 0.5f);
         }
 
         protected override void OnUpdate(ref UpdateParams p)
