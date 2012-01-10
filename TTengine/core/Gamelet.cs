@@ -26,7 +26,7 @@ namespace TTengine.Core
      * Also defines some eventing.
      * See also: Spritelet
      */
-    public class Gamelet
+    public class Gamelet: IDisposable
     {
 
         #region Eventing
@@ -321,6 +321,19 @@ namespace TTengine.Core
             }
         }
 
+        /// <summary>
+        /// Implements IDisposable, to instantly stop this Gamelet and its children and free up all unmanaged resources
+        /// </summary>
+        public virtual void Dispose()
+        {
+            for (int i = 0; i < Children.Count; i++ )
+            {
+                Children[i].Dispose();
+            }
+            Active = false;
+            Visible = false;            
+        }
+
         protected void VertexShaderInit(Effect eff)
         {
             // vertex shader init            
@@ -354,6 +367,10 @@ namespace TTengine.Core
             return coord * Screen.screenHeight ;
         }
 
+        #endregion
+
+        #region Private (internal) methods
+
         internal Vector2 ToPixels(float x, float y)
         {
             return ToPixels(new Vector2(x, y));
@@ -362,17 +379,13 @@ namespace TTengine.Core
         internal Vector2 ToPixelsNS(float x, float y)
         {
             return ToPixelsNS(new Vector2(x, y));
-        }         
+        }
 
         internal float ToNormalizedNS(float coord)
         {
             return coord * Screen.scalingToNormalized;
         }
 
-        #endregion
-
-        #region Private (internal) methods
-        
         /// <summary>Find the screen that this item should render to (by recursively looking upward in tree)</summary>
         private Screenlet FindScreen()
         {
