@@ -178,14 +178,6 @@ namespace TTengine.Core
             Center = new Vector2(aspectRatio / 2.0f, 0.5f);
         }
 
-        protected override void OnUpdate(ref UpdateParams p)
-        {
-            base.OnUpdate(ref p);
-            //Scale = 1.2f;
-            //Scale = (0.2f + 1f * (1f + (float)Math.Sin(MathHelper.TwoPi * 0.05f * SimTime)));
-            // DEBUG
-        }
-
         /// <summary>
         /// let the caller indicate that it wants to draw using the default shared SpriteBatch, which
         /// is not linked to any shader Effect. The SpriteBatch.Begin() method will already have
@@ -234,7 +226,8 @@ namespace TTengine.Core
                 rts = graphicsDevice.GetRenderTargets();
                 graphicsDevice.SetRenderTarget(renderTarget);
             }
-            graphicsDevice.Clear(this.drawColor);
+            if (Alpha > 0)   // only clear if background is not fully transparent
+                graphicsDevice.Clear(this.drawColor);
 
             // Draw() all children items:
             base.Draw(ref p);            
@@ -273,7 +266,7 @@ namespace TTengine.Core
             if (Visible && renderTarget != null)
             {
                 defaultSpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
-                defaultSpriteBatch.Draw(renderTarget, ScreenRectangle, Color.White);
+                defaultSpriteBatch.Draw(renderTarget, ScreenRectangle, Color.White); // TODO may apply a selectable drawing color here?
                 defaultSpriteBatch.End();
             }
         }

@@ -23,11 +23,12 @@ namespace TTengine.Core
         }
         
         /// <summary>
-        /// the Screenlet that is active, by default the last-created one. Sprites will attach/draw to here by default.
+        /// the Screenlet that is active, by default the last-created one. Gamelets newly created will attach/draw to here by default.
         /// </summary>
         public static Screenlet ActiveScreen
         {
             get { return activeScreen; }
+            set { activeScreen = value; }
         }
 
         internal static void AddScreenlet(Screenlet s)

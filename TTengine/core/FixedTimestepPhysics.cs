@@ -9,15 +9,10 @@ namespace TTengine.Core
      */
     public class FixedTimestepPhysics: Gamelet
     {        
-        public float simulateAheadTime = 0.050f;
-        public float fixedTimestep = 0.010f;
+        public float simulateAheadTime = 0.050f; // TODO adjustable?
+        public float fixedTimestep = 0.010f; // TODO adjustable?
 
         protected float itemsSimTime = 0f;
-
-        /// create a Screenlet that renders to the default
-        public FixedTimestepPhysics(): base()
-        {            
-        }
 
         internal override void Update(ref UpdateParams p)
         {
