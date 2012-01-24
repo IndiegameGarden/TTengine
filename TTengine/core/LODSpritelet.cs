@@ -36,7 +36,7 @@ namespace TTengine.Core
         protected override void OnDraw(ref DrawParams p)
         {
             // calculate my scale
-            float sc = ScaleAbs;
+            float sc = Motion.ScaleAbs;
 
             // index of best LOD sprite identified to match current scale
             int idxOfBest = 0;
@@ -46,7 +46,7 @@ namespace TTengine.Core
             if (sc != 1.0f)
             {
                 // calculate desired pixel width of LODsprite
-                float pixelsWidth = ToPixels(sc * width);
+                float pixelsWidth = ToPixels(sc * DrawInfo.Width);
 
                 // find nearest texture with width pixelsWidth
                 float lowestErr = float.PositiveInfinity;
@@ -62,10 +62,10 @@ namespace TTengine.Core
                 scDraw = pixelsWidth / textures[idxOfBest].Width;
             }
             // calculate center of current sprite in pixels
-            Vector2 ctr = new Vector2(Center.X * textures[idxOfBest].Width, Center.Y * textures[idxOfBest].Height);
+            Vector2 ctr = new Vector2(DrawInfo.Center.X * textures[idxOfBest].Width, DrawInfo.Center.Y * textures[idxOfBest].Height);
 
-            Screen.UseSharedSpritebatch().Draw(textures[idxOfBest], DrawPosition, null, drawColor,
-                    RotateAbs, ctr, scDraw, SpriteEffects.None, LayerDepth);
+            MySpriteBatch.Draw(textures[idxOfBest], DrawInfo.DrawPosition, null, DrawInfo.DrawColor,
+                    Motion.RotateAbs, ctr, scDraw, SpriteEffects.None, DrawInfo.LayerDepth);
         }
     }
 }

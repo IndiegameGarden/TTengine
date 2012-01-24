@@ -92,6 +92,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\DrawInfo.cs" />
+    <Compile Include="Core\Drawlet.cs" />
     <Compile Include="Core\DrawParams.cs" />
     <Compile Include="Core\EffectSpritelet.cs" />
     <Compile Include="Core\Efflet.cs" />
@@ -99,6 +101,7 @@
     <Compile Include="Core\Gamelet.cs" />
     <Compile Include="Core\IState.cs" />
     <Compile Include="Core\LODSpritelet.cs" />
+    <Compile Include="Core\Motion.cs" />
     <Compile Include="Core\Screenlet.cs" />
     <Compile Include="Core\Spritelet.cs" />
     <Compile Include="Core\State.cs" />

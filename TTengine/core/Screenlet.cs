@@ -26,19 +26,30 @@ namespace TTengine.Core
         /// </summary>
         public Vector2 Center = Vector2.Zero;
 
-        public override Vector2 PositionAbs
+        class ScreenletMotion : Motion
         {
-            get{ return Position + PositionModifier; }
-        }
+            public override Vector2 PositionAbs
+            {
+                get { return Position + PositionModifier; }
+            }
 
-        public override float ScaleAbs
-        {
-            get{ return Scale * ScaleModifier; }
-        }
+            public override float ScaleAbs
+            {
+                get { return Scale * ScaleModifier; }
+            }
 
-        public override float RotateAbs
-        {
-            get{ return Rotate + RotateModifier; }
+            public override float RotateAbs
+            {
+                get { return Rotate + RotateModifier; }
+            }
+
+            public override float ZoomAbs
+            {
+                get
+                {
+                    return Zoom /* + ZoomModifier */ ;
+                }
+            }
         }
 
         public RenderTarget2D RenderTarget
@@ -55,10 +66,10 @@ namespace TTengine.Core
         }
 
         /// Width of visible screen in relative coordinates
-        public float Width { get { return aspectRatio / ScaleAbs; } }
+        public float Width { get { return aspectRatio / Motion.ScaleAbs; } }
 
         /// Height of visible screen in relative coordinates
-        public float Height { get { return 1.0f / ScaleAbs; } }
+        public float Height { get { return 1.0f / Motion.ScaleAbs; } }
 
         /// Width of visible screen in pixels
         public int WidthPixels { get { return screenWidth; } }
@@ -78,8 +89,6 @@ namespace TTengine.Core
             }
         }
 
-        /// my spritebatch for drawing on this screen
-        protected SpriteBatch defaultSpriteBatch = null;
 
         #region Private and internal variables
 
@@ -102,8 +111,8 @@ namespace TTengine.Core
         /// create a Screenlet with no RenderTarget set (yet)
         /// </summary>
         public Screenlet()
-            : base()
         {
+            Init();
             InitRenderTarget();
         }
 
@@ -111,10 +120,10 @@ namespace TTengine.Core
         /// create a Screenlet with a RenderTarget buffer of given dimensions
         /// </summary>
         public Screenlet(int x, int y)
-            : base()
         {
             screenWidth = x;
             screenHeight = y;
+            Init();
             InitRenderTarget();
         }
 
@@ -122,8 +131,7 @@ namespace TTengine.Core
 
         public void DebugText(float x, float y, string text)
         {
-            SpriteBatch sb = UseSharedSpritebatch();
-            sb.DrawString(DebugFont, text, ToPixels(x, y), Color.White, 0f, Vector2.Zero, Zoom, SpriteEffects.None, 0f);
+            MySpriteBatch.DrawString(DebugFont, text, ToPixels(x, y), Color.White, 0f, Vector2.Zero, Motion.Zoom, SpriteEffects.None, 0f);
         }
 
         public void DebugText(Vector2 pos, string text)
@@ -131,12 +139,15 @@ namespace TTengine.Core
             DebugText(pos.X, pos.Y, text);
         }
 
-        protected override void OnInit()
+        protected void Init()
         {
-            base.OnInit();
+            Motion = new ScreenletMotion();
+            Add(Motion);
+            DrawInfo = new DrawInfo();
+            Add(DrawInfo);
             Screen = this;
             TTengineMaster.AddScreenlet(this);
-            DrawColor = Color.Black; // for screen - default black background.
+            DrawInfo.DrawColor = Color.Black; // for screen - default black background.
             graphicsDevice = TTengineMaster.ActiveGame.GraphicsDevice;
             try
             {
@@ -148,7 +159,7 @@ namespace TTengine.Core
                 ; // TODO maybe put a warning out here?
             }
             effletsList = new List<Efflet>();
-            defaultSpriteBatch = new SpriteBatch(graphicsDevice);
+            mySpriteBatch = new SpriteBatch(graphicsDevice);
             collisionObjects = new List<Spritelet>();
         }
 
@@ -183,17 +194,37 @@ namespace TTengine.Core
         /// is not linked to any shader Effect. The SpriteBatch.Begin() method will already have
         /// been called and also SpriteBatch.End() will be called by TTengine.
         /// </summary>
-        /// <returns>the default SpriteBatch to use for drawing</returns>
-        public SpriteBatch UseSharedSpritebatch()
+        /// <param name="spb">spritebatch to request use of</param>
+        internal void UseSharedSpriteBatch(SpriteBatch spb)
         {
-            if (!spriteBatchesActive.Contains(defaultSpriteBatch))
+            if (!spriteBatchesActive.Contains(spb))
             {
-                defaultSpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
-                spriteBatchesActive.Add(defaultSpriteBatch);
-            }
-            return defaultSpriteBatch;
+                spb.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+                spriteBatchesActive.Add(spb);
+            }            
         }
 
+        /// <summary>
+        /// Create (if needed) a shared spritebatch that uses shader Effect eff
+        /// </summary>
+        /// <param name="eff">shader Effect to create a shared SpriteBatch for</param>
+        /// <returns>The created or fetched-from-cache (if already there) SpriteBatch</returns>
+        internal SpriteBatch CreateSharedSpriteBatch(Effect eff)
+        {
+            SpriteBatch sb = null;
+            try
+            {
+                sb = effect2spritebatchTable[eff];
+            }
+            catch (KeyNotFoundException)
+            {
+                // create it on 1st time
+                sb = new SpriteBatch(graphicsDevice);
+                effect2spritebatchTable[eff] = sb;
+            }
+            return sb;
+        }
+        
         /// <summary>
         /// let the caller indicate that it wants to draw using a shared SpriteBatch, where the
         /// SpriteBatch is associated to a shader Effect to be used while drawing. The SpriteBatch.Begin() method will already have
@@ -201,9 +232,9 @@ namespace TTengine.Core
         /// </summary>
         /// <param name="eff">the Effect linked to the shared SpriteBatch that the caller wishes to use</param>
         /// <returns>the shared SpriteBatch to be used for drawing</returns>
-        public SpriteBatch UseSharedSpritebatch(Effect eff)
+        internal SpriteBatch UseSharedSpriteBatch(Effect eff)
         {
-            SpriteBatch sb = effect2spritebatchTable[eff];
+            SpriteBatch sb = CreateSharedSpriteBatch(eff);
             if (!spriteBatchesActive.Contains(sb))
             {
                 sb.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, eff);
@@ -226,8 +257,8 @@ namespace TTengine.Core
                 rts = graphicsDevice.GetRenderTargets();
                 graphicsDevice.SetRenderTarget(renderTarget);
             }
-            if (Alpha > 0)   // only clear if background is not fully transparent
-                graphicsDevice.Clear(this.drawColor);
+            if (DrawInfo.Alpha > 0)   // only clear if background is not fully transparent
+                graphicsDevice.Clear(DrawInfo.DrawColor);
 
             // Draw() all children items:
             base.Draw(ref p);            
@@ -265,9 +296,9 @@ namespace TTengine.Core
             // render the renderTarget buffer, to screen if Visible
             if (Visible && renderTarget != null)
             {
-                defaultSpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
-                defaultSpriteBatch.Draw(renderTarget, ScreenRectangle, Color.White); // TODO may apply a selectable drawing color here?
-                defaultSpriteBatch.End();
+                mySpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
+                mySpriteBatch.Draw(renderTarget, ScreenRectangle, Color.White); // TODO may apply a selectable drawing color here?
+                mySpriteBatch.End();
             }
         }
     }

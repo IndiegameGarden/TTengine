@@ -2,18 +2,21 @@
 
 namespace TTengine.Core
 {
+    /**
+     * a base class for an IState implementation
+     */
     public class State: IState
     {
-        public void OnEntry(Gamelet g)
+        public virtual void OnEntry(Gamelet g)
         {
         }
 
-        public void OnExit(Gamelet g)
+        public virtual void OnExit(Gamelet g)
         {
             
         }
 
-        public void OnUpdate(Gamelet g)
+        public virtual void OnUpdate(Gamelet g)
         {
         }
 

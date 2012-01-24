@@ -27,13 +27,13 @@ namespace TTengine.Util
             {
                 if (Keyboard.GetState().IsKeyDown(Keys.PageUp))
                 {
-                    screen.Zoom += 0.003f;
-                    Screen.DebugText(0.1f, 0.3f, "Zoom=" + screen.Zoom);
+                    screen.Motion.Zoom += 0.003f;
+                    Screen.DebugText(0.1f, 0.3f, "Zoom=" + screen.Motion.Zoom);
                 }
                 if (Keyboard.GetState().IsKeyDown(Keys.PageDown))
                 {
-                    screen.Zoom -= 0.003f;
-                    Screen.DebugText(0.1f, 0.3f, "Zoom=" + screen.Zoom);
+                    screen.Motion.Zoom -= 0.003f;
+                    Screen.DebugText(0.1f, 0.3f, "Zoom=" + screen.Motion.Zoom);
                 }
             }
 

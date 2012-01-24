@@ -35,6 +35,10 @@ namespace TTengine.Core
         
         #region Properties
 
+        public Motion Motion;
+
+        public DrawInfo DrawInfo;
+
         // get the unique ID of this Gamelet
         public int ID     { get { return _ID; } }
         
@@ -44,80 +48,50 @@ namespace TTengine.Core
         /// If false this Gamelet will not update/draw and my children will not update/draw
         public bool Active = true;
 
-        /// <summary>Flag indicating whether visibility is enabled, which means that if true OnDraw() is called</summary>
+        /// <summary>
+        /// Set the State in which this Gamelet is Active only. If null (default), it means active in any state.
+        /// </summary>
+        public IState ActiveInState
+        {
+            get { return activeInState; }
+            set { activeInState = value; }
+        }
+
+        /// <summary>
+        /// Flag indicating whether visibility is enabled, which means that if true OnDraw() is called
+        /// </summary>
         public bool Visible = true; 
 
-        public Vector2 Position = Vector2.Zero;
-        public Vector2 PositionModifier = Vector2.Zero;
-        public virtual Vector2 PositionAbs
-        {
-            get
-            {
-                if (Parent == null)
-                    return Position + PositionModifier;
-                else
-                {
-                    Vector2 p = (LinkedToParent ? Parent.PositionAbs : Parent.Parent.PositionAbs);
-                    p += ((Position + PositionModifier) - Parent.ZoomCenter) * Parent.Zoom + Parent.ZoomCenter;
-                    //return ((Position + PositionModifier + (LinkedToParent ? Parent.PositionAbs : Parent.Parent.PositionAbs)) - Parent.ZoomCenter) * Parent.Zoom + Parent.ZoomCenter;
-                    //return Position + PositionModifier + (LinkedToParent ? Parent.PositionAbs : Parent.Parent.PositionAbs);
-                    return p;
-                }
-            }
-        } // FIXME do a realtime calc based on parents compound value so far.
-        
         /// <summary>
-        /// absolute drawing position on screen in units of pixels for use in Draw() calls
+        /// get the default SpriteBatch to use for drawing for this Gamelet. If a Gamelet is not configured
+        /// with this, it will first try to use a Parent's (or Parent's Parent etc.) value. If not configured
+        /// either, it will use the default SpriteBatch of the Screenlet it renders to.
         /// </summary>
-        public virtual Vector2 DrawPosition
+        public virtual SpriteBatch MySpriteBatch
         {
             get
             {
-                return ToPixels(PositionAbs);
+                if (mySpriteBatch == null)
+                {
+                    if (Parent == null)
+                    {
+                        SpriteBatch spb = Screen.MySpriteBatch;
+                        Screen.UseSharedSpriteBatch(spb);
+                        return spb;
+                    }
+                    else
+                        return Parent.MySpriteBatch;                    
+                }
+                Screen.UseSharedSpriteBatch(mySpriteBatch);
+                return mySpriteBatch;
             }
-        }
 
-        public float Rotate = 0f;
-        public float RotateModifier = 0f;
-        public virtual float RotateAbs { 
-            get {
-                if (Parent == null)
-                    return Rotate + RotateModifier ; 
-                else
-                    return Rotate + RotateModifier + (LinkedToParent ? Parent.RotateAbs : Parent.Parent.RotateAbs); 
-                } 
-        }
-        
-        public float Scale = 1f;
-        public float Zoom = 1f;
-        public Vector2 ZoomCenter = Vector2.Zero;
-        public float ScaleModifier = 1f;
-        public virtual float ScaleAbs
-        { 
-            get {
-                if(Parent == null)
-                    return Scale * ScaleModifier ; 
-                else
-                    return Scale * ScaleModifier * (LinkedToParent ? Parent.ScaleAbs : Parent.Parent.ScaleAbs ); 
-            } 
-        }
-        public virtual float ZoomAbs
-        {
-            get
+            set
             {
-                if (Parent == null)
-                    return Zoom;
-                else
-                    return Zoom * (LinkedToParent ? Parent.ZoomAbs : Parent.Parent.ZoomAbs);
+                mySpriteBatch = value;
             }
         }
 
-        /// 2D acceleration vector in normalized coordinates
-        public Vector2 Acceleration = Vector2.Zero;
-
-        /// 2D velocity vector in normalized coordinates
-        public Vector2 Velocity = Vector2.Zero;
-        
         /// If true, my position/rotation/scale will be relative to the parent's pos/rot/scale. If false, not. True by default.
         public bool LinkedToParent = true; 
 
@@ -125,23 +99,6 @@ namespace TTengine.Core
         public Gamelet Parent = null ;
 
         public List<Gamelet> Children = new List<Gamelet>();
-
-        /// Color for drawing shape/sprite, setting it will replace Alpha value with DrawColor.A
-        public Color DrawColor
-        {
-            get { return drawColor; }
-            set { drawColor = value; }
-        }
-
-        /// Alpha value for the DrawColor of this Spritelet, range 0-1, replacing whatever was in DrawColor.A
-        public float Alpha
-        {
-            get { return drawColor.A / 255.0f; }
-            set { drawColor.A = (byte)(value * 255.0f); }
-        }
-
-        /// a value indicating drawing depth of sprite 0f (front)....1f (back)
-        public float LayerDepth = 0.5f;
 
         /// If set to non-zero, item will auto-delete after simulating for specified duration time
         public float Duration { get { return duration; } set { duration = value; } }
@@ -177,19 +134,10 @@ namespace TTengine.Core
             Screen = TTengineMaster.ActiveScreen;
             OnInit();
         }
-
-        /// <summary>create gamelet that is only active in the specified state; useful for state machines</summary>
-        public Gamelet(IState activeInState)
-        {            
-            this.activeInState = activeInState;
-            CreateID();
-            Screen = TTengineMaster.ActiveScreen;
-            OnInit();
-        }
         #endregion
 
         #region Internal Vars
-        internal Color drawColor = Color.White;
+        internal SpriteBatch mySpriteBatch = null;
         internal float duration = -1f;
         internal float startTime = 0f;
         private int _ID = -1;
@@ -367,24 +315,15 @@ namespace TTengine.Core
             return coord * Screen.screenHeight ;
         }
 
-        #endregion
-
-        #region Private (internal) methods
-
         internal Vector2 ToPixels(float x, float y)
         {
             return ToPixels(new Vector2(x, y));
         }
 
-        internal Vector2 ToPixelsNS(float x, float y)
-        {
-            return ToPixelsNS(new Vector2(x, y));
-        }
 
-        internal float ToNormalizedNS(float coord)
-        {
-            return coord * Screen.scalingToNormalized;
-        }
+        #endregion
+
+        #region Private (internal) methods
 
         /// <summary>Find the screen that this item should render to (by recursively looking upward in tree)</summary>
         private Screenlet FindScreen()
@@ -432,16 +371,6 @@ namespace TTengine.Core
                 else
                     i++;
             }
-
-            // reset back the Modifiers, each Update round
-            PositionModifier = Vector2.Zero;
-            ScaleModifier = 1.0f;
-            RotateModifier = 0.0f;
-
-            // simple physics simulation (fixed timestep assumption)
-            SimTime += p.dt;
-            Position += Vector2.Multiply(Velocity, p.dt);
-            Velocity += Vector2.Multiply(Acceleration, p.dt);
 
             // check if deletion is needed based on duration propertyName of item
             if (duration > 0)

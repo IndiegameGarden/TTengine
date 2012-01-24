@@ -12,7 +12,7 @@ namespace TTengine.Core
      * Also it supports on-screen visibility detection. Shape dimension is supported by Width/Height/Radius
      * properties. 
      */
-    public class Spritelet : Gamelet
+    public class Spritelet : Drawlet
     {
         #region Constructors
 
@@ -20,7 +20,7 @@ namespace TTengine.Core
         /// create new spritelet without a Texture yet
         /// </summary>
         public Spritelet()
-        {            
+        {
         }
 
         /// <summary>
@@ -45,22 +45,13 @@ namespace TTengine.Core
         #endregion
 
         #region Class-internal properties
-        protected Vector2 drawPosition = Vector2.Zero;
-        protected bool drawPositionCalculated = false;
         protected bool checksCollisions = false;
         protected string fileName = null;
-        protected float width = 0f;
-        protected float height = 0f;
         protected float radius = 0f;        
         #endregion
 
         #region Internal Vars (private)
         private Texture2D texture = null;
-        private const int NBUF = 10; // TODO tune?
-        private Vector2[] posHistory = new Vector2[NBUF];
-        private float[] posHistoryTime = new float[NBUF];
-        private bool isFirstUpdatePosition = true;
-        private int phIndex = 0;
         private List<Spritelet> lastCollisionsList = new List<Spritelet>();
         #endregion
 
@@ -84,9 +75,9 @@ namespace TTengine.Core
             get
             {
                 if (!Visible) return false;
-                Vector2 p = PositionAbs;
-                float w = WidthAbs / 2;
-                float h = HeightAbs / 2;
+                Vector2 p = Motion.PositionAbs;
+                float w = DrawInfo.WidthAbs / 2;
+                float h = DrawInfo.HeightAbs / 2;
                 if (p.X < -w) return false;
                 if (p.X > (Screen.Width + w)) return false;
                 if (p.Y < -h) return false;
@@ -96,26 +87,7 @@ namespace TTengine.Core
         }
 
         /// Radius of item (if any) assuming a circular shape model
-        public virtual float RadiusAbs { get { return radius * ScaleAbs; } }
-
-        public virtual float HeightAbs { get { return height * ScaleAbs; } }
-
-        public virtual float WidthAbs { get { return width * ScaleAbs; } }
-
-        public virtual float DrawScale { get { return ScaleAbs * ZoomAbs ; } }
-
-        public Vector2 Center = new Vector2(0.5f,0.5f); 
-        public virtual Vector2 DrawCenter { get { return ToPixels(Center.X * width, Center.Y * height); } }
-
-        public override Vector2 DrawPosition
-        {
-            get
-            {
-                if (!drawPositionCalculated)
-                    return base.DrawPosition;
-                return drawPosition;
-            }
-        }
+        public virtual float RadiusAbs { get { return radius * Motion.ScaleAbs; } }
 
         /**
          * get/set the Texture of this shape
@@ -125,9 +97,9 @@ namespace TTengine.Core
             set
             {
                 texture = value;
-                height = ToNormalizedNS(texture.Height );
-                width = ToNormalizedNS(texture.Width);
-                radius = width / 2;
+                DrawInfo.Height = ToNormalizedNS(texture.Height );
+                DrawInfo.Width = ToNormalizedNS(texture.Width);
+                radius = DrawInfo.Width / 2;
             }
             get
             {
@@ -142,9 +114,9 @@ namespace TTengine.Core
         {
             if (texture != null)
             {
-                height = ToNormalizedNS(texture.Height);
-                width = ToNormalizedNS(texture.Width);
-                radius = width / 2;
+                DrawInfo.Height = ToNormalizedNS(texture.Height);
+                DrawInfo.Width = ToNormalizedNS(texture.Width);
+                radius = DrawInfo.Width / 2;
             }
             if (fileName != null) 
                 LoadTexture(fileName);
@@ -163,79 +135,14 @@ namespace TTengine.Core
             Texture = TTengineMaster.ActiveGame.Content.Load<Texture2D>(textureFilename);
         }
 
-        internal override void Update(ref UpdateParams p)
-        {
-            base.Update(ref p);
-
-            if (Active)
-            {
-                // store current position in a cache to use in trajectory smoothing
-                UpdatePositionCache(PositionAbs, p.simTime);
-                // handle collisions
-                if (checksCollisions) 
-                    HandleCollisions(p);
-            }
-        }
-
-        private void UpdatePositionCache(Vector2 updPos, float updTime)
-        {
-            if (isFirstUpdatePosition)
-            {
-                for (int i = 0; i < NBUF; i++)
-                {
-                    posHistory[i] = updPos;
-                    posHistoryTime[i] = updTime;
-                }
-                isFirstUpdatePosition = false;
-                phIndex = 0;
-            }
-            else
-            {
-                posHistory[phIndex] = updPos;
-                posHistoryTime[phIndex] = updTime;
-            }
-
-            phIndex++;
-            if (phIndex >= NBUF)
-                phIndex = 0;
-        }
-
-        // draw to this.screen at drawing pos
-        internal override void Draw(ref DrawParams p)
-        {
-            if (!Active) return;
-
-            float t = (float)p.gameTime.TotalGameTime.TotalSeconds;
-            // default - take latest position in cache
-            drawPosition = DrawPosition;
-
-            // then check if an interpolated, better value can be found.
-            for (int i = 0; i < NBUF; i++)
-            {
-                int iNext = (i + 1) % NBUF;
-                if (posHistoryTime[i] <= t && posHistoryTime[iNext] >= t)
-                {
-                    float a = (t - posHistoryTime[i]) / (posHistoryTime[iNext] - posHistoryTime[i]);
-                    // perform linear interpolation
-                    drawPosition = ToPixels((1 - a) * posHistory[i] + a * posHistory[iNext]);
-                    break;
-                }
-            }
-            drawPositionCalculated = true;
-
-            // do actual drawing of my children and then OnDraw()
-            base.Draw(ref p);
-
-        }
-
         protected override void OnDraw(ref DrawParams p)
         {
             base.OnDraw(ref p);
 
             if (texture != null)
             {                
-                Screen.UseSharedSpritebatch().Draw(texture, DrawPosition, null, drawColor,
-                       RotateAbs, DrawCenter, DrawScale, SpriteEffects.None, LayerDepth);
+                MySpriteBatch.Draw(texture, DrawInfo.DrawPosition, null, DrawInfo.DrawColor,
+                       Motion.RotateAbs, DrawInfo.DrawCenter, DrawInfo.DrawScale, SpriteEffects.None, DrawInfo.LayerDepth);
             }
         }
 
@@ -245,7 +152,7 @@ namespace TTengine.Core
         public virtual bool CollidesWith(Spritelet item)
         {
             // simple sphere (well circle!) check
-            if ((PositionAbs - item.PositionAbs).Length() < (RadiusAbs + item.RadiusAbs))
+            if ((Motion.PositionAbs - item.Motion.PositionAbs).Length() < (RadiusAbs + item.RadiusAbs))
                 return true;
             else
                 return false;
@@ -280,6 +187,12 @@ namespace TTengine.Core
 
             // phase 3: store list of colliding items for next round
             lastCollisionsList = collItems;
-        } 
+        }
+
+        internal float ToNormalizedNS(float coord)
+        {
+            return coord * Screen.scalingToNormalized;
+        }
+
     }
 }

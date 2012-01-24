@@ -11,7 +11,7 @@ namespace TTengine.Util
      * shows a framerate counter on screen (FPS) calculated
      * from timing of draw/upd calls.
      */
-    public class FrameRateCounter : Gamelet
+    public class FrameRateCounter : Drawlet
     {
         SpriteFont spriteFont;
         int frameRate = 0;
@@ -21,18 +21,15 @@ namespace TTengine.Util
 
         public FrameRateCounter()
         {
-            Position = new Vector2(0.5f, 0.01f);
+            DrawInfo.LayerDepth = 0.0f;
+            Motion.Position = new Vector2(0.5f, 0.01f);
+            spriteFont = TTengineMaster.ActiveGame.Content.Load<SpriteFont>(@"TTFrameRateCounter");
         }
 
         public FrameRateCounter(float x, float y)
-        {
-            Position = new Vector2(x, y);
-        }
-
-        protected override void OnInit()
-        {
-            base.OnInit();
-            LayerDepth = 0.0f;
+        {         
+            DrawInfo.LayerDepth = 0.0f;
+            Motion.Position = new Vector2(x, y);
             spriteFont = TTengineMaster.ActiveGame.Content.Load<SpriteFont>(@"TTFrameRateCounter");
         }
 
@@ -48,7 +45,6 @@ namespace TTengine.Util
             }
         }
 
-
         protected override void OnDraw(ref DrawParams p)
         {
             frameCounter++;
@@ -57,11 +53,11 @@ namespace TTengine.Util
             if (SimTime > 0f)
                 frameRateAvg = (int)(frameCounterTotal / SimTime);
             string fps = string.Format("{0} fps [{1}]", frameRate, frameRateAvg );
-            Vector2 pos = DrawPosition;
-            Screen.UseSharedSpritebatch().DrawString(spriteFont, fps, pos, 
-                Color.Black, 0f, Vector2.Zero,1f,SpriteEffects.None,LayerDepth-0.00001f);
-            Screen.UseSharedSpritebatch().DrawString(spriteFont, fps, pos, 
-                drawColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, LayerDepth);
+            Vector2 pos = Motion.DrawPosition;
+            MySpriteBatch.DrawString(spriteFont, fps, pos,
+                        Color.Black, 0f, Vector2.Zero, 1f, SpriteEffects.None, DrawInfo.LayerDepth - 0.00001f);
+            MySpriteBatch.DrawString(spriteFont, fps, pos,
+                        DrawInfo.DrawColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, DrawInfo.LayerDepth);
         }
     }
 }

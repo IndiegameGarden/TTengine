@@ -10,8 +10,6 @@ namespace TTengine.Core
     {
         protected Effect eff;
         protected String effectFile = null;
-        protected SpriteBatch spriteBatch;
-
         protected EffectParameter timeParam, positionParam;
 
         /// <summary>
@@ -76,19 +74,10 @@ namespace TTengine.Core
                 eff = new BasicEffect(Screen.graphicsDevice);
             VertexShaderInit(eff);
 
-            // try to find my effect-related spritebatch
-            if (Screen.effect2spritebatchTable.ContainsKey(eff))
-            {
-                spriteBatch = Screen.effect2spritebatchTable[eff];
-            }
-            else
-            {
-                // create sb and put it in for future use
-                spriteBatch = new SpriteBatch(Screen.graphicsDevice);
-                Screen.effect2spritebatchTable.Add(eff, spriteBatch);
-            }
+            // find or create my effect-related spritebatch
+            MySpriteBatch = Screen.CreateSharedSpriteBatch(eff);
 
-            // try to find common parameters in the Effect
+            // try to find common parameters in the Effect (gets null if not found)
             timeParam = eff.Parameters["Time"];
             positionParam = eff.Parameters["Position"];
         }
@@ -101,10 +90,10 @@ namespace TTengine.Core
                 if (timeParam != null)
                     timeParam.SetValue(SimTime);
                 if (positionParam != null)
-                    positionParam.SetValue(Position);
+                    positionParam.SetValue(Motion.Position);
                 // retrieve my shared spritebatch for this effect, and draw
-                Screen.UseSharedSpritebatch(eff).Draw(Texture, DrawPosition, null, DrawColor,
-                       RotateAbs, DrawCenter, DrawScale, SpriteEffects.None, LayerDepth);
+                MySpriteBatch.Draw(Texture, DrawInfo.DrawPosition, null, DrawInfo.DrawColor,
+                       Motion.RotateAbs, DrawInfo.DrawCenter, DrawInfo.DrawScale, SpriteEffects.None, DrawInfo.LayerDepth);
             }
         }        
 

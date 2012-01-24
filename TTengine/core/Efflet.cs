@@ -39,7 +39,7 @@ namespace TTengine.Core
 
         protected override void OnUpdate(ref UpdateParams p)
         {
-            if (drawColorParameter != null) drawColorParameter.SetValue(drawColor.ToVector4() );
+            if (drawColorParameter != null) drawColorParameter.SetValue(DrawInfo.DrawColor.ToVector4() );
         }
 
         internal override void Draw(ref DrawParams p)
