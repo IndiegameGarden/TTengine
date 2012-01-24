@@ -89,10 +89,6 @@ namespace TTengineTestGame
             eff.Alpha = 0.2f;
             screenlet.Add(eff);
 
-
-            // finally initialize our top-level (root) Gamelet using the engine
-            TTengineMaster.Initialize(rootlet);
-
             // plus call base to enumnerate all XNA (gfx) Game components to init
             base.Initialize();
         }
