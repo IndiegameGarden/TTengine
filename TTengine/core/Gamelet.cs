@@ -354,6 +354,9 @@ namespace TTengine.Core
                     return;
             }
 
+            // advance sim time
+            SimTime += p.dt;
+
             // simulate object and children
             //Remove any items that need deletion etc
             int i = 0;

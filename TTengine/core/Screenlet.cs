@@ -26,6 +26,9 @@ namespace TTengine.Core
         /// </summary>
         public Vector2 Center = Vector2.Zero;
 
+        /**
+         * The Motion class specifically adapted for use by Screenlet
+         */
         class ScreenletMotion : Motion
         {
             public override Vector2 PositionAbs
@@ -247,6 +250,14 @@ namespace TTengine.Core
         internal override void Draw(ref DrawParams p)
         {
             if (!Active) return;
+
+            // check active in state
+            if (ActiveInState != null)
+            {
+                if (!IsInState(ActiveInState))
+                    return;
+            }
+
             // start draw cycle by clearing efflets. Draw() call may spawn new efflets later.
             effletsList.Clear();
             spriteBatchesActive.Clear();

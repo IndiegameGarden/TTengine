@@ -10,6 +10,7 @@ namespace TTengine.Modifiers
 
     /**
      * attach to a Gamelet to modify a selected arbitrary parameter based on an arbitrary function of time
+     * specified using a delegate.
      */
     public class MyFuncyModifier : Gamelet
     {
@@ -63,10 +64,13 @@ namespace TTengine.Modifiers
         protected override void OnNewParent()
         {
             base.OnNewParent();
-            property = Parent.GetType().GetProperty(propertyName);
-            if (property == null)
+            if (propertyName != null)
             {
-                field = Parent.GetType().GetField(propertyName);
+                property = Parent.GetType().GetProperty(propertyName);
+                if (property == null)
+                {
+                    field = Parent.GetType().GetField(propertyName);
+                }
             }
         }
 

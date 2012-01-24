@@ -24,8 +24,8 @@ namespace TTengine.Core
                     return Position + PositionModifier;
                 else
                 {
-                    Vector2 p = (LinkedToParent ? Parent.Parent.Motion.PositionAbs : Parent.Parent.Parent.Motion.PositionAbs);
-                    p += ((Position + PositionModifier) - Parent.Motion.ZoomCenter) * Parent.Motion.Zoom + Parent.Motion.ZoomCenter;
+                    Vector2 p = (Parent.LinkedToParent ? Parent.Parent.Motion.PositionAbs : Parent.Parent.Parent.Motion.PositionAbs);
+                    p += ((Position + PositionModifier) - Parent.Parent.Motion.ZoomCenter) * Parent.Parent.Motion.Zoom + Parent.Parent.Motion.ZoomCenter;
                     //return ((Position + PositionModifier + (LinkedToParent ? Parent.PositionAbs : Parent.Parent.PositionAbs)) - Parent.ZoomCenter) * Parent.Zoom + Parent.ZoomCenter;
                     //return Position + PositionModifier + (LinkedToParent ? Parent.PositionAbs : Parent.Parent.PositionAbs);
                     return p;
@@ -54,7 +54,7 @@ namespace TTengine.Core
                 if (Parent.Parent == null)
                     return Rotate + RotateModifier;
                 else
-                    return Rotate + RotateModifier + (LinkedToParent ? Parent.Parent.Motion.RotateAbs : Parent.Parent.Parent.Motion.RotateAbs);
+                    return Rotate + RotateModifier + (Parent.LinkedToParent ? Parent.Parent.Motion.RotateAbs : Parent.Parent.Parent.Motion.RotateAbs);
             }
         }
 
@@ -69,7 +69,7 @@ namespace TTengine.Core
                 if (Parent.Parent == null)
                     return Scale * ScaleModifier;
                 else
-                    return Scale * ScaleModifier * (LinkedToParent ? Parent.Parent.Motion.ScaleAbs : Parent.Parent.Parent.Motion.ScaleAbs);
+                    return Scale * ScaleModifier * (Parent.LinkedToParent ? Parent.Parent.Motion.ScaleAbs : Parent.Parent.Parent.Motion.ScaleAbs);
             }
         }
         public virtual float ZoomAbs
@@ -79,7 +79,7 @@ namespace TTengine.Core
                 if (Parent.Parent == null)
                     return Zoom;
                 else
-                    return Zoom * (LinkedToParent ? Parent.Parent.Motion.ZoomAbs : Parent.Parent.Parent.Motion.ZoomAbs);
+                    return Zoom * (Parent.LinkedToParent ? Parent.Parent.Motion.ZoomAbs : Parent.Parent.Parent.Motion.ZoomAbs);
             }
         }
 
@@ -92,7 +92,6 @@ namespace TTengine.Core
             RotateModifier = 0.0f;
 
             // simple physics simulation (fixed timestep assumption)
-            SimTime += p.dt;
             Position += Vector2.Multiply(Velocity, p.dt);
             Velocity += Vector2.Multiply(Acceleration, p.dt);
 

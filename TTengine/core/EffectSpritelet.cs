@@ -92,10 +92,27 @@ namespace TTengine.Core
                 if (positionParam != null)
                     positionParam.SetValue(Motion.Position);
                 // retrieve my shared spritebatch for this effect, and draw
+                
                 MySpriteBatch.Draw(Texture, DrawInfo.DrawPosition, null, DrawInfo.DrawColor,
                        Motion.RotateAbs, DrawInfo.DrawCenter, DrawInfo.DrawScale, SpriteEffects.None, DrawInfo.LayerDepth);
             }
-        }        
+        }
+
+        public override SpriteBatch MySpriteBatch
+        {
+            get
+            {
+                Screen.UseSharedSpriteBatch(eff);
+                return mySpriteBatch;
+            }
+
+            set
+            {
+                Screen.CreateSharedSpriteBatch(eff);
+                mySpriteBatch = value;
+            }
+        }
+
 
     }
 }
