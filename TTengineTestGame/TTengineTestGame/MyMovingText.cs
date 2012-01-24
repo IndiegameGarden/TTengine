@@ -17,7 +17,7 @@ namespace TTengineTestGame
         {
             base.OnUpdate(ref p);
             float spd = 0.2f;
-            Acceleration = new Vector2( spd * (float)Math.Sin(Math.PI * p.simTime), 
+            Motion.Acceleration = new Vector2( spd * (float)Math.Sin(Math.PI * p.simTime), 
                                         spd * (float)Math.Cos(Math.PI * p.simTime)
                                       );
         }

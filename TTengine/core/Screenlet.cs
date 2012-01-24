@@ -141,6 +141,7 @@ namespace TTengine.Core
 
         protected void Init()
         {
+            TTengineMaster.ActiveScreen = this;
             Motion = new ScreenletMotion();
             Add(Motion);
             DrawInfo = new DrawInfo();

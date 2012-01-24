@@ -50,18 +50,18 @@ namespace TTengineTestGame
 
             // init one Screenlet
             screenlet = new Screenlet(640, 480);
-            screenlet.DrawColor = Color.White;
+            screenlet.DrawInfo.DrawColor = Color.White;
             rootlet.Add(screenlet);
 
             // add a FrameRateCounter utility Gamelet
-            Gamelet fps = new FrameRateCounter();
-            fps.DrawColor = Color.Black;
+            Drawlet fps = new FrameRateCounter();
+            fps.DrawInfo.DrawColor = Color.Black;
             screenlet.Add(fps);
 
             // add a static text 'MyTextlet'
             MyTextlet txt = new MyTextlet("TTengine shader test using Efflet");
-            txt.Position = new Vector2(0.01f, 0.4f);
-            txt.DrawColor = Color.Black;
+            txt.Motion.Position = new Vector2(0.01f, 0.4f);
+            txt.DrawInfo.DrawColor = Color.Black;
             screenlet.Add(txt);
 
             // add several Spritelets and set some specific velocity per item
@@ -73,10 +73,10 @@ namespace TTengineTestGame
                 {
                     //Spritelet ball = new Spritelet("ball");
                     ball = new Ball();
-                    ball.Position = new Vector2(j, i); //(float) rnd.NextDouble() , (float) rnd.NextDouble() );
-                    ball.Velocity = 0.1f * new Vector2((float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f);
-                    ball.Rotate = (float)(Math.PI * 2 * rnd.NextDouble());
-                    ball.Scale = 0.4f + 0.6f * (float)rnd.NextDouble();
+                    ball.Motion.Position = new Vector2(j, i); //(float) rnd.NextDouble() , (float) rnd.NextDouble() );
+                    ball.Motion.Velocity = 0.1f * new Vector2((float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f);
+                    ball.Motion.Rotate = (float)(Math.PI * 2 * rnd.NextDouble());
+                    ball.Motion.Scale = 0.4f + 0.6f * (float)rnd.NextDouble();
 
                     ball.StartTime = 3f * (j + i);
                     ball.Duration = 4f + 5f * (float)rnd.NextDouble();
@@ -86,33 +86,11 @@ namespace TTengineTestGame
             }
 
             HypnoEfflet eff = new HypnoEfflet();
-            eff.Alpha = 0.2f;
+            eff.DrawInfo.Alpha = 0.2f;
             screenlet.Add(eff);
-
-
-            // finally initialize our top-level (root) Gamelet using the engine
-            TTengineMaster.Initialize(rootlet);
 
             // plus call base to enumnerate all XNA (gfx) Game components to init
             base.Initialize();
-        }
-
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
-        protected override void LoadContent()
-        {
-               //
-        }
-
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// all content.
-        /// </summary>
-        protected override void UnloadContent()
-        {
-            // TODO: Unload any non ContentManager content here
         }
 
         /// <summary>

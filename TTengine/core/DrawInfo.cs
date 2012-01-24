@@ -69,38 +69,37 @@ namespace TTengine.Core
         }
 
         // draw to this.screen at drawing pos
-        internal override void Draw(ref DrawParams p)
+        protected override void OnDraw(ref DrawParams p)
         {
-            if (!Active) return;
+            base.OnDraw(ref p);
 
-            float t = (float)p.gameTime.TotalGameTime.TotalSeconds;
-            // default - take latest position in cache
-            drawPosition = DrawPosition;
-
-            // then check if an interpolated, better value can be found.
-            for (int i = 0; i < NBUF; i++)
+            if (Motion != null)
             {
-                int iNext = (i + 1) % NBUF;
-                if (posHistoryTime[i] <= t && posHistoryTime[iNext] >= t)
+                float t = (float)p.gameTime.TotalGameTime.TotalSeconds;
+                // default - take latest position in cache
+                drawPosition = DrawPosition;
+
+                // then check if an interpolated, better value can be found.
+                for (int i = 0; i < NBUF; i++)
                 {
-                    float a = (t - posHistoryTime[i]) / (posHistoryTime[iNext] - posHistoryTime[i]);
-                    // perform linear interpolation
-                    drawPosition = ToPixels((1 - a) * posHistory[i] + a * posHistory[iNext]);
-                    break;
+                    int iNext = (i + 1) % NBUF;
+                    if (posHistoryTime[i] <= t && posHistoryTime[iNext] >= t)
+                    {
+                        float a = (t - posHistoryTime[i]) / (posHistoryTime[iNext] - posHistoryTime[i]);
+                        // perform linear interpolation
+                        drawPosition = ToPixels((1 - a) * posHistory[i] + a * posHistory[iNext]);
+                        break;
+                    }
                 }
+                isDrawPositionCalculated = true;
             }
-            isDrawPositionCalculated = true;
-
-            // do actual drawing of my children and then OnDraw()
-            base.Draw(ref p);
-
         }
 
         protected override void OnUpdate(ref UpdateParams p)
         {
             base.OnUpdate(ref p);
 
-            if (Active)
+            if (Motion != null)
             {
                 // store current position in a cache to use in trajectory smoothing
                 UpdatePositionCache(Motion.PositionAbs, p.simTime);

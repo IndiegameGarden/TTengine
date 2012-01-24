@@ -19,9 +19,9 @@ namespace TTengineTestGame
             base.OnCollision(withItem);
 
             // swap the velocity vecs - pseudo-phyics eff
-            Vector2 v = withItem.Velocity;
-            withItem.Velocity = Velocity;
-            Velocity = v;
+            Vector2 v = withItem.Motion.Velocity;
+            withItem.Motion.Velocity = Motion.Velocity;
+            Motion.Velocity = v;
         }
     }
 }

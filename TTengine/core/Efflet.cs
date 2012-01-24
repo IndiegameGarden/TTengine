@@ -23,6 +23,8 @@ namespace TTengine.Core
         public Efflet(string fxFileName)
         {
             this.fxFileName = fxFileName;
+            DrawInfo = new DrawInfo();
+            Add(DrawInfo);
             LoadEffect();
         }
 

@@ -8,7 +8,7 @@ using TTengine;
 
 namespace TTengineTestGame
 {
-    public class MyTextlet : Gamelet
+    public class MyTextlet : Drawlet
     {
         protected string text;
         protected SpriteFont spriteFont;
@@ -16,7 +16,7 @@ namespace TTengineTestGame
         public MyTextlet( string text)
         {
             this.text = text;
-            DrawColor = Color.White;
+            DrawInfo.DrawColor = Color.White;
         }
 
         protected override void OnInit()
@@ -26,9 +26,9 @@ namespace TTengineTestGame
 
         protected override void OnDraw(ref DrawParams p)
         {
-            Vector2 pos = PositionAbsolute;
+            Vector2 pos = Motion.PositionAbs;
             Vector2 posPixels = pos * TTengineMaster.ActiveGame.GraphicsDevice.DisplayMode.Height;
-            Screen.spriteBatch.DrawString(spriteFont, text, posPixels, DrawColor);
+            MySpriteBatch.DrawString(spriteFont, text, posPixels, DrawInfo.DrawColor);
         }
     }
 }
