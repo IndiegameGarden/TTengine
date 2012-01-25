@@ -19,12 +19,12 @@ namespace TTengine.Core
         /// <summary>
         /// A globally kept simulation time value in seconds, 0f is start of simulation
         /// </summary>
-        public float simTime = 0.0f;
+        public float SimTime = 0.0f;
         
         /// <summary>
-        /// delta t, the simulation time passed since last Update() (i.e. Gamelet simtime) in seconds
+        /// Delta t, the simulation time passed since last Update() (i.e. Gamelet simtime) in seconds
         /// </summary>
-        public float dt = 0.0f;
+        public float Dt = 0.0f;
 
         /**
          * create all params with null or default values
@@ -46,15 +46,15 @@ namespace TTengine.Core
         public void CopyFrom(UpdateParams other)
         {
             gameTime = other.gameTime;
-            simTime = other.simTime;
-            dt = other.dt;
+            SimTime = other.SimTime;
+            Dt = other.Dt;
         }
 
         public void CopyFrom(GameTime gameTime)
         {
             this.gameTime = gameTime;
-            simTime = (float)gameTime.TotalGameTime.TotalSeconds;
-            dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            SimTime = (float)gameTime.TotalGameTime.TotalSeconds;
+            Dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
     }
 }

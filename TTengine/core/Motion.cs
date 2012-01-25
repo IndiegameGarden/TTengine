@@ -92,8 +92,8 @@ namespace TTengine.Core
             RotateModifier = 0.0f;
 
             // simple physics simulation (fixed timestep assumption)
-            Position += Vector2.Multiply(Velocity, p.dt);
-            Velocity += Vector2.Multiply(Acceleration, p.dt);
+            Position += Vector2.Multiply(Velocity, p.Dt);
+            Velocity += Vector2.Multiply(Acceleration, p.Dt);
 
         }
     }

@@ -103,7 +103,7 @@ namespace TTengine.Core
         /// If set to non-zero, item will auto-delete after simulating for specified duration time
         public float Duration { get { return duration; } set { duration = value; } }
 
-        /// If set to non-zero, item will initially pause until the set simTime is reached
+        /// If set to non-zero, item will initially pause until the set SimTime is reached
         public float StartTime { 
             get { return startTime; } 
             set { 
@@ -343,7 +343,7 @@ namespace TTengine.Core
         internal virtual void Update(ref UpdateParams p)
         {
             // check if startTime for this object already reached (if any), if yes activate it
-            if (!Active && (startTime > 0f) && (p.simTime >= startTime))
+            if (!Active && (startTime > 0f) && (p.SimTime >= startTime))
                 Active = true;
             if (!Active) return;
 
@@ -355,7 +355,7 @@ namespace TTengine.Core
             }
 
             // advance sim time
-            SimTime += p.dt;
+            SimTime += p.Dt;
 
             // simulate object and children
             //Remove any items that need deletion etc

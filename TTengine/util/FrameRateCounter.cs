@@ -35,7 +35,7 @@ namespace TTengine.Util
 
         protected override void OnUpdate(ref UpdateParams p)
         {
-            elapsedTime += TimeSpan.FromSeconds(p.dt);
+            elapsedTime += TimeSpan.FromSeconds(p.Dt);
 
             if (elapsedTime > TimeSpan.FromSeconds(1))
             {

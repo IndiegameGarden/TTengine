@@ -5,7 +5,8 @@ using Microsoft.Xna.Framework;
 namespace TTengine.Core
 {
     /**
-     * parameters collection used for Draw() method of GameItems.
+     * parameters collection used for Draw() method of GameItems. This avoids a refactoring
+     * nightmare if in the future more parameters are passed.
      */
     public class DrawParams
     {

@@ -16,13 +16,13 @@ namespace TTengine.Core
 
         internal override void Update(ref UpdateParams p)
         {
-            while (itemsSimTime < p.simTime + simulateAheadTime ) 
+            while (itemsSimTime < p.SimTime + simulateAheadTime ) 
             {
                 itemsSimTime += fixedTimestep;
                 UpdateParams updParsCache = new UpdateParams();
                 updParsCache.gameTime = p.gameTime;
-                updParsCache.simTime = itemsSimTime;
-                updParsCache.dt = fixedTimestep;
+                updParsCache.SimTime = itemsSimTime;
+                updParsCache.Dt = fixedTimestep;
                 base.Update(ref updParsCache);
             }
         }

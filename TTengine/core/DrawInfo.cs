@@ -73,37 +73,31 @@ namespace TTengine.Core
         {
             base.OnDraw(ref p);
 
-            if (Motion != null)
-            {
-                float t = (float)p.gameTime.TotalGameTime.TotalSeconds;
-                // default - take latest position in cache
-                drawPosition = DrawPosition;
+            float t = (float)p.gameTime.TotalGameTime.TotalSeconds;
+            // default - take latest position in cache
+            drawPosition = DrawPosition;
 
-                // then check if an interpolated, better value can be found.
-                for (int i = 0; i < NBUF; i++)
+            // then check if an interpolated, better value can be found.
+            for (int i = 0; i < NBUF; i++)
+            {
+                int iNext = (i + 1) % NBUF;
+                if (posHistoryTime[i] <= t && posHistoryTime[iNext] >= t)
                 {
-                    int iNext = (i + 1) % NBUF;
-                    if (posHistoryTime[i] <= t && posHistoryTime[iNext] >= t)
-                    {
-                        float a = (t - posHistoryTime[i]) / (posHistoryTime[iNext] - posHistoryTime[i]);
-                        // perform linear interpolation
-                        drawPosition = ToPixels((1 - a) * posHistory[i] + a * posHistory[iNext]);
-                        break;
-                    }
+                    float a = (t - posHistoryTime[i]) / (posHistoryTime[iNext] - posHistoryTime[i]);
+                    // perform linear interpolation
+                    drawPosition = ToPixels((1 - a) * posHistory[i] + a * posHistory[iNext]);
+                    break;
                 }
-                isDrawPositionCalculated = true;
             }
+            isDrawPositionCalculated = true;
         }
 
         protected override void OnUpdate(ref UpdateParams p)
         {
             base.OnUpdate(ref p);
 
-            if (Motion != null)
-            {
-                // store current position in a cache to use in trajectory smoothing
-                UpdatePositionCache(Motion.PositionAbs, p.simTime);
-            }
+            // store current position in a cache to use in trajectory smoothing
+            UpdatePositionCache(Motion.PositionAbs, p.SimTime);
         }
         
         private void UpdatePositionCache(Vector2 updPos, float updTime)
