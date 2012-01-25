@@ -20,7 +20,7 @@ namespace TTengine.Core
         {
             get
             {
-                if (Parent.Parent == null)
+                if (Parent.Parent == null || Parent.Parent.Motion == null )
                     return Position + PositionModifier;
                 else
                 {

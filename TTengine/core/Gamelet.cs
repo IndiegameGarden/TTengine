@@ -249,6 +249,13 @@ namespace TTengine.Core
             child.OnNewParent();
         }
 
+        public void Add(int index, Gamelet child)
+        {
+            Children.Insert(index, child);
+            child.Parent = this;
+            child.OnNewParent();
+        }
+
         /// <summary>
         /// Removes first occurrence of child gamelet from the list of children. The child.OnNewParent() is
         /// called with a null parameter as a result.
