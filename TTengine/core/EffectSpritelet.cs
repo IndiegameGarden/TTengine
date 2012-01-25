@@ -8,8 +8,24 @@ namespace TTengine.Core
      */
     public class EffectSpritelet : Spritelet
     {
-        protected Effect eff;
+        /// <summary>
+        /// whether the Effect is used when drawing (true), or not (false).
+        /// </summary>
+        public bool EffectEnabled = true;
+
+        /// <summary>
+        /// the Effect applied (if any)
+        /// </summary>
+        protected Effect eff = null;
+
+        /// <summary>
+        /// filename from which to load .fx Effect (if any)
+        /// </summary>
         protected String effectFile = null;
+
+        /// <summary>
+        /// Link to certain default parameters in the shader effect
+        /// </summary>
         protected EffectParameter timeParam, positionParam;
 
         /// <summary>
@@ -66,6 +82,9 @@ namespace TTengine.Core
             get { return eff; }
         }
 
+        /// <summary>
+        /// all Effect initialization goes here
+        /// </summary>
         protected virtual void InitEffect()
         {
             if (effectFile != null)
@@ -87,12 +106,12 @@ namespace TTengine.Core
             if (Texture != null)
             {
                 // supply the shader parameters that may have been configured
+                // TODO may not be useful with shared spritebatches: whole batch of drawn objects uses latest set shader params only.
                 if (timeParam != null)
                     timeParam.SetValue(SimTime);
                 if (positionParam != null)
                     positionParam.SetValue(Motion.Position);
-                // retrieve my shared spritebatch for this effect, and draw
-                
+
                 MySpriteBatch.Draw(Texture, DrawInfo.DrawPosition, null, DrawInfo.DrawColor,
                        Motion.RotateAbs, DrawInfo.DrawCenter, DrawInfo.DrawScale, SpriteEffects.None, DrawInfo.LayerDepth);
             }
@@ -102,8 +121,15 @@ namespace TTengine.Core
         {
             get
             {
-                Screen.UseSharedSpriteBatch(eff);
-                return mySpriteBatch;
+                if (EffectEnabled)
+                {
+                    Screen.UseSharedSpriteBatch(eff);
+                    return mySpriteBatch;
+                }
+                else
+                {
+                    return Parent.MySpriteBatch;
+                }
             }
 
             set

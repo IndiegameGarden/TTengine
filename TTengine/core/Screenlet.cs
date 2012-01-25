@@ -194,9 +194,9 @@ namespace TTengine.Core
         }
 
         /// <summary>
-        /// let the caller indicate that it wants to draw using the default shared SpriteBatch, which
-        /// is not linked to any shader Effect. The SpriteBatch.Begin() method will already have
-        /// been called and also SpriteBatch.End() will be called by TTengine.
+        /// let the caller indicate that it wants to draw using the given shared SpriteBatch, which
+        /// is not linked to any shader Effect. The SpriteBatch.Begin() method will be called if 
+        /// needed here and also SpriteBatch.End() will be called by TTengine later after use.
         /// </summary>
         /// <param name="spb">spritebatch to request use of</param>
         internal void UseSharedSpriteBatch(SpriteBatch spb)
@@ -206,6 +206,21 @@ namespace TTengine.Core
                 spb.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
                 spriteBatchesActive.Add(spb);
             }            
+        }
+
+        /// <summary>
+        /// let the caller indicate that it wants to draw using the default shared SpriteBatch, which
+        /// is not linked to any shader Effect. The SpriteBatch.Begin() method will already have
+        /// been called and also SpriteBatch.End() will be called by TTengine.
+        /// </summary>
+        internal SpriteBatch UseSharedSpriteBatch()
+        {
+            if (!spriteBatchesActive.Contains(mySpriteBatch))
+            {
+                mySpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+                spriteBatchesActive.Add(mySpriteBatch);
+            }
+            return mySpriteBatch;
         }
 
         /// <summary>
