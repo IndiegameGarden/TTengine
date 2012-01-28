@@ -95,7 +95,7 @@ namespace TTengine.Core
 
         #region Private and internal variables
 
-        private SpriteFont DebugFont = null;
+        internal SpriteFont DebugFont = null;
         internal int screenWidth = 0;
         internal int screenHeight = 0;
         private float aspectRatio;
