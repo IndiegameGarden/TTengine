@@ -15,7 +15,7 @@ namespace TTengine.Util
         protected string txt ;
 
         /// <summary>
-        /// construct a box with initial text. Can be changed later with the Text property.
+        /// construct a box with initial text. Can be changed later with the Text propertyOrField.
         /// </summary>
         /// <param name="initialText">initial text to display</param>
         public DebugMessage(string initialText)

@@ -9,7 +9,7 @@ namespace TTengine.Modifiers
     /**
      * modifies a parameter according to a sine-wave function
      */
-    public class SineModifier : Gamelet
+    public class SineModifier : Modifier
     {
         float ampl, frequency, offset;
         ValueModifier action;
@@ -32,21 +32,10 @@ namespace TTengine.Modifiers
             this.action = action;
         }
 
-        public SineModifier(ValueModifier action, float ampl, float frequency, float offset, float startTime, float duration)
-            : base()
-        {
-            this.ampl = ampl;
-            this.frequency = frequency;
-            this.offset = offset;
-            this.action = action;
-            this.StartTime = startTime;
-            this.Duration = duration;
-        }
-        
-        protected override void OnUpdate(ref UpdateParams p)
+        protected override float ModifierValue(ref UpdateParams p)
         {
             float val = offset + ampl * (float)Math.Sin(MathHelper.TwoPi * (double)frequency * SimTime);
-            action(val);
+            return val;
         }
     }
 }
