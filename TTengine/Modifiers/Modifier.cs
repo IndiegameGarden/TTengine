@@ -20,7 +20,6 @@ namespace TTengine.Modifiers
      */
     public class Modifier : Gamelet
     {
-        ValueModifier action;
         Object modifiedObject;
         String propertyName, propertyContainerName;
         PropertyInfo property;
@@ -31,10 +30,9 @@ namespace TTengine.Modifiers
         /// </summary>
         /// <param name="action">piece of code (delegate) that calculates the value as a function of SimTime</param>
         /// <param name="propertyOrField">name of float type propertyOrField or field e.g. "Scale" to modify in the Parent Gamelet</param>
-        public Modifier(ValueModifier action, String propertyOrField)
+        public Modifier(String propertyOrField)
             : base()
         {
-            this.action = action;
             this.propertyName = propertyOrField;
         }
 
@@ -42,15 +40,13 @@ namespace TTengine.Modifiers
         /// construct a Modifier that modifies the named property or field 'subPropertyOrField' in
         /// this.Parent.'property'
         /// </summary>
-        /// <param name="action"></param>
         /// <param name="property">name of a property object of the Parent in which 'propertyOrField' is contained.
         ///                        For example, "Motion". </param>
         /// <param name="propertyOrField">name of a float type property or field to modify in the above indicated property object.
         ///                        For example, "RotateModifier".</param>
-        public Modifier(ValueModifier action, String property, String subPropertyOrField)
+        public Modifier(String property, String subPropertyOrField)
             : base()
         {
-            this.action = action;
             this.propertyContainerName = property;
             this.propertyName = subPropertyOrField;
         }
@@ -63,7 +59,10 @@ namespace TTengine.Modifiers
                 // try to detect a container, if specified
                 if (propertyContainerName != null)
                 {
-                    modifiedObject = Parent.GetType().GetField(propertyContainerName);
+                    FieldInfo f = Parent.GetType().GetField(propertyContainerName);
+                    if (f != null)
+                        modifiedObject = f.GetValue(Parent);
+                    //modifiedObject = Parent.GetType();
                 }
                 else
                 {
@@ -101,7 +100,7 @@ namespace TTengine.Modifiers
         /// <returns>calculated modifier value specific to the (sub)class</returns>
         protected virtual float ModifierValue(ref UpdateParams p)
         {
-            return action(SimTime);
+            return SimTime;
         }
     }
 }

@@ -12,26 +12,40 @@ namespace TTengine.Modifiers
     public class SineModifier : Modifier
     {
         float ampl, frequency, offset;
-        ValueModifier action;
 
-        public SineModifier(ValueModifier action, float ampl, float frequency)
-            : base()
+        public SineModifier(String property, float ampl, float frequency)
+            : base(property)
         {
             this.ampl = ampl;
             this.frequency = frequency;
             this.offset = 0f;
-            this.action = action;
         }
         
-        public SineModifier(ValueModifier action, float ampl, float frequency, float offset)
-            : base()
+        public SineModifier(String property, float ampl, float frequency, float offset)
+            : base(property)
         {
             this.ampl = ampl;
             this.frequency = frequency;
             this.offset = offset;
-            this.action = action;
         }
 
+        public SineModifier(String property, String subProperty, float ampl, float frequency)
+            : base(property,subProperty)
+        {
+            this.ampl = ampl;
+            this.frequency = frequency;
+            this.offset = 0f;
+        }
+
+        public SineModifier(String property, String subProperty, float ampl, float frequency, float offset)
+            : base(property,subProperty)
+        {
+            this.ampl = ampl;
+            this.frequency = frequency;
+            this.offset = offset;
+        }
+
+        // calc sine modifier values
         protected override float ModifierValue(ref UpdateParams p)
         {
             float val = offset + ampl * (float)Math.Sin(MathHelper.TwoPi * (double)frequency * SimTime);

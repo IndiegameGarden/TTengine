@@ -83,13 +83,22 @@ namespace TTengine.Core
             }
         }
 
+        internal override void Update(ref UpdateParams p)
+        {
+            // reset back the Modifiers, each Update round
+            // *before* any children are simulated.
+            if (Active)
+            {
+                PositionModifier = Vector2.Zero;
+                ScaleModifier = 1.0f;
+                RotateModifier = 0.0f;
+            }
+            base.Update(ref p);
+        }
+
         protected override void OnUpdate(ref UpdateParams p)
         {
             base.OnUpdate(ref p);
-            // reset back the Modifiers, each Update round
-            PositionModifier = Vector2.Zero;
-            ScaleModifier = 1.0f;
-            RotateModifier = 0.0f;
 
             // simple physics simulation (fixed timestep assumption)
             Position += Vector2.Multiply(Velocity, p.Dt);
