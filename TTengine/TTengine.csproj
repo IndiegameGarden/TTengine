@@ -113,6 +113,7 @@
     <Compile Include="Core\TTengineMaster.cs" />
     <Compile Include="Util\DebugMessage.cs" />
     <Compile Include="Util\Launchlet.cs" />
+    <Compile Include="Util\MotionBehavior.cs" />
     <Compile Include="Util\MsgBox.cs" />
     <Compile Include="Util\FrameRateCounter.cs" />
     <Compile Include="Util\ScreenZoomer.cs" />
