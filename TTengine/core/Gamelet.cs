@@ -307,19 +307,23 @@ namespace TTengine.Core
         /// <returns>translated to pixels coordinate</returns>
         internal Vector2 ToPixels(Vector2 pos)
         {
-            //return (pos * Screen.screenHeight - Center) * Zoom + Center;
+            //return (pos * Screen.screenHeight - Center) * Zoom + Center; // TODO check?
             return pos * Screen.screenHeight;
         }
 
-        public Vector2 ToPixelsNS(Vector2 pos)
-        {
-            return pos * Screen.screenHeight;
-        }
-
-        // FIXME?
         public float ToPixels(float coord)
         {
             return coord * Screen.screenHeight ;
+        }
+
+        public float FromPixels(float pixels)
+        {
+            return pixels / Screen.screenHeight;
+        }
+
+        public Vector2 FromPixels(Vector2 pixelCoords)
+        {
+            return pixelCoords / Screen.screenHeight;
         }
 
         internal Vector2 ToPixels(float x, float y)
