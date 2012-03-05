@@ -301,13 +301,13 @@ namespace TTengine.Core
         }
 
         /// <summary>
-        /// translate a relative coordinate to pixel coordinates, in the context of this Gamelet (with possibly Zoom applied)
+        /// translate a float screen coordinate to pixel coordinates, in the context of this Gamelet
         /// </summary>
         /// <param name="pos">relative coordinate to translate</param>
         /// <returns>translated to pixels coordinate</returns>
-        internal Vector2 ToPixels(Vector2 pos)
+        public Vector2 ToPixels(Vector2 pos)
         {
-            //return (pos * Screen.screenHeight - Center) * Zoom + Center; // TODO check?
+            //return (pos * Screen.screenHeight - Center) * Zoom + Center; // TODO check? only for internal?
             return pos * Screen.screenHeight;
         }
 
@@ -330,7 +330,6 @@ namespace TTengine.Core
         {
             return ToPixels(new Vector2(x, y));
         }
-
 
         #endregion
 

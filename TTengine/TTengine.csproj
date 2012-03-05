@@ -117,6 +117,7 @@
     <Compile Include="Util\MsgBox.cs" />
     <Compile Include="Util\FrameRateCounter.cs" />
     <Compile Include="Util\ScreenZoomer.cs" />
+    <Compile Include="Util\TTutil.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

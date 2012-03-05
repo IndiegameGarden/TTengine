@@ -15,6 +15,8 @@ namespace TTengine.Util
      */
     public class MotionBehavior: Gamelet
     {
+        public const float MIN_VELOCITY = 0.01f;
+
         /// <summary>
         /// sets a target position for cursor to move towards
         /// </summary>
@@ -52,7 +54,18 @@ namespace TTengine.Util
             base.OnUpdate(ref p);
 
             // motion towards target
-            Motion.Velocity = (Target - Motion.Position) * TargetSpeed;
+            Vector2 vDif = (Target - Motion.Position);
+            Motion.Velocity = vDif * TargetSpeed;
+            if (TargetSpeed > 0f && vDif.Length() > 0 )
+            {
+                if (Motion.Velocity.Length() < MIN_VELOCITY)
+                    Motion.Velocity *= (MIN_VELOCITY / Motion.Velocity.Length());
+                if (vDif.Length() < 0.001f) // TODO const
+                {
+                    Motion.Velocity = Vector2.Zero;
+                    Motion.Position = Target;
+                }
+            }
 
             // handle scaling over time
             ScaleToTarget(ScaleTarget, ScaleSpeed, 0.01f);
