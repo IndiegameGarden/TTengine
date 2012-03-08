@@ -118,7 +118,7 @@ namespace TTengine.Core
                 DrawInfo.Width = ToNormalizedNS(texture.Width);
                 radius = DrawInfo.Width / 2;
             }
-            if (fileName != null) 
+            if (fileName != null && texture == null) 
                 LoadTexture(fileName);
         }
 
