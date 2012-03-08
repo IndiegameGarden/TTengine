@@ -75,7 +75,7 @@ namespace TTengine.Core
 
             float t = (float)p.gameTime.TotalGameTime.TotalSeconds;
             // default - take latest position in cache
-            drawPosition = DrawPosition;
+            drawPosition = ToPixels(DrawPosition);
 
             // then check if an interpolated, better value can be found.
             for (int i = 0; i < NBUF; i++)
