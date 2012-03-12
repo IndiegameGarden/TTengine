@@ -1,6 +1,8 @@
 // (c) 2010-2012 TranceTrance.com. Distributed under the FreeBSD license in LICENSE.txt
 
+using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -24,11 +26,15 @@ namespace TTengine.Core
         }
 
         /// <summary>
-        /// create new spritelet where Texture is loaded from the content with given fileName
+        /// create new spritelet where Texture is loaded from the content with given fileName, either XNA content
+        /// or a separately loaded bitmap at runtime
         /// </summary>
-        /// <param name="fileName">name of XNA content file</param>
+        /// <param name="fileName">name of XNA content file (from content project) without file extension e.g. "test", or
+        /// name of bitmap file to load including extension e.g. "test.png"</param>
         public Spritelet(string fileName): base()
         {
+            if (fileName.Contains(".")) 
+                LoadBitmap(fileName);
             this.fileName = fileName;
             InitTextures();
         }
@@ -193,6 +199,29 @@ namespace TTengine.Core
         {
             return coord * Screen.scalingToNormalized;
         }
+
+        // load a bitmap direct from graphics file (ie bypass the XNA Content preprocessing framework)
+        protected void LoadBitmap(string fn)
+        {
+            // load texture
+            FileStream fs = null;
+            try
+            {
+                fs = new FileStream(Path.Combine(TTengineMaster.ActiveGame.Content.RootDirectory , fn), FileMode.Open);
+                Texture2D t = Texture2D.FromStream(Screen.graphicsDevice, fs);
+                Texture = t;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                if (fs != null)
+                    fs.Close();
+            }
+        }
+
 
     }
 }
