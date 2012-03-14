@@ -59,6 +59,7 @@ namespace TTengine.Core
         #region Internal Vars (private)
         private Texture2D texture = null;
         private List<Spritelet> lastCollisionsList = new List<Spritelet>();
+        public static BlendState blendAlpha = null, blendColor = null;
         #endregion
 
         #region Properties
@@ -207,9 +208,12 @@ namespace TTengine.Core
             FileStream fs = null;
             try
             {
+                /*
                 fs = new FileStream(Path.Combine(TTengineMaster.ActiveGame.Content.RootDirectory , fn), FileMode.Open);
                 Texture2D t = Texture2D.FromStream(Screen.graphicsDevice, fs);
                 Texture = t;
+                 */
+                Texture = LoadTextureStream(Screen.graphicsDevice, fn);
             }
             catch (Exception ex)
             {
@@ -222,6 +226,56 @@ namespace TTengine.Core
             }
         }
 
+        private static Texture2D LoadTextureStream(GraphicsDevice graphics, string loc)
+        {
+            Texture2D file = null;
+            RenderTarget2D result = null;
 
+            using (Stream titleStream = TitleContainer.OpenStream(Path.Combine(TTengineMaster.ActiveGame.Content.RootDirectory , loc) ))
+            {
+                file = Texture2D.FromStream(graphics, titleStream);
+            }
+
+            //Setup a render target to hold our final texture which will have premulitplied alpha values
+            result = new RenderTarget2D(graphics, file.Width, file.Height);
+            graphics.SetRenderTarget(result);
+            graphics.Clear(Color.Black);
+
+            //Multiply each color by the source alpha, and write in just the color values into the final texture
+            if (blendColor == null)
+            {
+                blendColor = new BlendState();
+                blendColor.ColorWriteChannels = ColorWriteChannels.Red | ColorWriteChannels.Green | ColorWriteChannels.Blue;
+                blendColor.AlphaDestinationBlend = Blend.Zero;
+                blendColor.ColorDestinationBlend = Blend.Zero;
+                blendColor.AlphaSourceBlend = Blend.SourceAlpha;
+                blendColor.ColorSourceBlend = Blend.SourceAlpha;
+            }
+
+            SpriteBatch spriteBatch = new SpriteBatch(graphics);
+            spriteBatch.Begin(SpriteSortMode.Immediate, blendColor);
+            spriteBatch.Draw(file, file.Bounds, Color.White);
+            spriteBatch.End();
+
+            //Now copy over the alpha values from the PNG source texture to the final one, without multiplying them
+            if (blendAlpha == null)
+            {
+                blendAlpha = new BlendState();
+                blendAlpha.ColorWriteChannels = ColorWriteChannels.Alpha;
+                blendAlpha.AlphaDestinationBlend = Blend.Zero;
+                blendAlpha.ColorDestinationBlend = Blend.Zero;
+                blendAlpha.AlphaSourceBlend = Blend.One;
+                blendAlpha.ColorSourceBlend = Blend.One;
+            }
+
+            spriteBatch.Begin(SpriteSortMode.Immediate, blendAlpha);
+            spriteBatch.Draw(file, file.Bounds, Color.White);
+            spriteBatch.End();
+
+            //Release the GPU back to drawing to the screen
+            graphics.SetRenderTarget(null);
+            return result as Texture2D;
+
+        }
     }
 }
