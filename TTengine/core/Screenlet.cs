@@ -274,58 +274,61 @@ namespace TTengine.Core
             }
 
             // start draw cycle by clearing efflets. Draw() call may spawn new efflets later.
-            effletsList.Clear();
-            spriteBatchesActive.Clear();
-
-            // render my children to render buffer, in sprite order using depth info.
-            RenderTargetBinding[] rts = null;
-            if (renderTarget != null)
+            lock (graphicsDevice)
             {
-                rts = graphicsDevice.GetRenderTargets();
-                graphicsDevice.SetRenderTarget(renderTarget);
-            }
-            if (DrawInfo.Alpha > 0)   // only clear if background is not fully transparent
-                graphicsDevice.Clear(DrawInfo.DrawColor);
+                effletsList.Clear();
+                spriteBatchesActive.Clear();
 
-            // Draw() all children items:
-            base.Draw(ref p);            
-
-            // close all remaining open effect-related spriteBatches
-            foreach (SpriteBatch sb in spriteBatchesActive)
-                sb.End();
-
-            // then apply all Efflets            
-            if (effletsList.Count > 0)
-            {
-                RenderTarget2D currentSourceBuffer = renderTarget;
-                RenderTarget2D currentTargetBuffer = effletRenderTarget;
-                if  (renderTarget == null) throw new Exception("Efflets can only be used on Screenlets with a RenderTarget2D buffer set");
-                foreach (Efflet eff in effletsList)
+                // render my children to render buffer, in sprite order using depth info.
+                RenderTargetBinding[] rts = null;
+                if (renderTarget != null)
                 {
-                    graphicsDevice.SetRenderTarget(currentTargetBuffer);
-                    eff.OnDrawEfflet(ref p, currentSourceBuffer); // apply eff to sourceBuffer
-                    
-                    // Swap trick! for a next round.
-                    RenderTarget2D temp = currentSourceBuffer; 
-                    currentSourceBuffer = currentTargetBuffer;
-                    currentTargetBuffer = temp;
+                    rts = graphicsDevice.GetRenderTargets();
+                    graphicsDevice.SetRenderTarget(renderTarget);
                 }
-                renderTarget = currentSourceBuffer;
-                effletRenderTarget = currentTargetBuffer;
-            }
+                if (DrawInfo.Alpha > 0)   // only clear if background is not fully transparent
+                    graphicsDevice.Clear(DrawInfo.DrawColor);
 
-            // restore render target as it was before. TODO check if needed
-            if (renderTarget != null)
-            {
-                graphicsDevice.SetRenderTargets(rts); // restore from above changes
-            }
+                // Draw() all children items:
+                base.Draw(ref p);
 
-            // render the renderTarget buffer, to screen if Visible
-            if (Visible && renderTarget != null)
-            {
-                mySpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
-                mySpriteBatch.Draw(renderTarget, ScreenRectangle, Color.White); // TODO may apply a selectable drawing color here?
-                mySpriteBatch.End();
+                // close all remaining open effect-related spriteBatches
+                foreach (SpriteBatch sb in spriteBatchesActive)
+                    sb.End();
+
+                // then apply all Efflets            
+                if (effletsList.Count > 0)
+                {
+                    RenderTarget2D currentSourceBuffer = renderTarget;
+                    RenderTarget2D currentTargetBuffer = effletRenderTarget;
+                    if (renderTarget == null) throw new Exception("Efflets can only be used on Screenlets with a RenderTarget2D buffer set");
+                    foreach (Efflet eff in effletsList)
+                    {
+                        graphicsDevice.SetRenderTarget(currentTargetBuffer);
+                        eff.OnDrawEfflet(ref p, currentSourceBuffer); // apply eff to sourceBuffer
+
+                        // Swap trick! for a next round.
+                        RenderTarget2D temp = currentSourceBuffer;
+                        currentSourceBuffer = currentTargetBuffer;
+                        currentTargetBuffer = temp;
+                    }
+                    renderTarget = currentSourceBuffer;
+                    effletRenderTarget = currentTargetBuffer;
+                }
+
+                // restore render target as it was before. TODO check if needed
+                if (renderTarget != null)
+                {
+                    graphicsDevice.SetRenderTargets(rts); // restore from above changes
+                }
+
+                // render the renderTarget buffer, to screen if Visible
+                if (Visible && renderTarget != null)
+                {
+                    mySpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
+                    mySpriteBatch.Draw(renderTarget, ScreenRectangle, Color.White); // TODO may apply a selectable drawing color here?
+                    mySpriteBatch.End();
+                }
             }
         }
     }
