@@ -32,6 +32,7 @@ namespace TTengine.Core
         /// </summary>
         /// <param name="fileName">name of XNA content file (from content project) without file extension e.g. "test", or
         /// name of bitmap file to load including extension e.g. "test.png"</param>
+        /// <exception cref="InvalidOperationException">when invalid image file is attempted to load</exception>
         public Spritelet(string fileName): base()
         {
             if (fileName.Contains("."))
@@ -211,6 +212,7 @@ namespace TTengine.Core
         /// <param name="fn"></param>
         /// <param name="contentDir"></param>
         /// <returns></returns>
+        /// <exception cref="InvalidOperationException">when invalid image file is found</exception>
         protected Texture2D LoadBitmap(string fn, string contentDir, bool atRunTime)
         {
             // load texture
@@ -227,6 +229,14 @@ namespace TTengine.Core
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="graphics"></param>
+        /// <param name="fileName"></param>
+        /// <param name="contentDir"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException">when invalid image file is found</exception>
         private static Texture2D LoadTextureStreamAtRuntime(GraphicsDevice graphics, string fileName, string contentDir)
         {
             Texture2D tex = null;
@@ -234,7 +244,15 @@ namespace TTengine.Core
 
             using (Stream titleStream = File.Open(Path.Combine(contentDir, fileName), FileMode.Open)) //TitleContainer.OpenStream
             {
-                tex = Texture2D.FromStream(graphics, titleStream);
+                try
+                {
+                    tex = Texture2D.FromStream(graphics, titleStream);
+                }
+                catch (InvalidOperationException ex)                
+                {
+                    // invalid or corrupt image file was loaded
+                    throw(ex);
+                }
                 // in case of png file, apply pre-multiply on texture color data:
                 // http://blogs.msdn.com/b/shawnhar/archive/2009/11/10/premultiplied-alpha-in-xna-game-studio.aspx
                 // http://blogs.msdn.com/b/shawnhar/archive/2010/04/08/premultiplied-alpha-in-xna-game-studio-4-0.aspx
