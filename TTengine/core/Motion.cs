@@ -192,7 +192,8 @@ namespace TTengine.Core
             {
                 // motion towards target
                 //Velocity = (TargetPos - Position) * 0.01f;
-                MoveToTarget(ref p);
+                // FIXME allow to choose linear vs 'smoothed' motion mode???
+                MoveToTarget(ref p, false);
             }
             else
             {
@@ -211,7 +212,7 @@ namespace TTengine.Core
 
         }
 
-        protected void MoveToTarget(ref UpdateParams p)
+        protected void MoveToTarget(ref UpdateParams p, bool isLinearMotionMode)
         {
             float vel = Velocity.Length();
             if (vel > 0f)
@@ -220,8 +221,15 @@ namespace TTengine.Core
                 if (vdif.Length() > 0)
                 {
                     Vector2 vmove = vdif;
-                    vmove.Normalize();
-                    vmove *= vel * p.Dt;
+                    if (isLinearMotionMode)
+                    {
+                        vmove.Normalize();
+                        vmove *= vel * p.Dt;
+                    }
+                    else
+                    {
+                        vmove *= vel * p.Dt;
+                    }
                     if (vmove.LengthSquared() > vdif.LengthSquared())
                     {
                         // target reached
