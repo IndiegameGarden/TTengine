@@ -36,6 +36,11 @@ namespace TTengine.Core
                 get { return Position + PositionModifier; }
             }
 
+            public override Vector2 PositionDraw
+            {
+                get { return PositionAbs; } // FIXME - find what to do here
+            }
+
             public override float ScaleAbs
             {
                 get { return Scale * ScaleModifier; }

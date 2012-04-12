@@ -4,33 +4,62 @@ using Microsoft.Xna.Framework;
 
 namespace TTengine.Core
 {
+    /// <summary>
+    /// contains all elements to provide motion (position, velocity, scale, rotation, zoom, etc.) to a gamelet
+    /// </summary>
     public class Motion: Gamelet
     {
-        protected Vector2 targetPos = Vector2.Zero;
-        protected bool isTargetSet = false;
-
         public Vector2 Position = Vector2.Zero;
         public Vector2 PositionModifier = Vector2.Zero;
         /// 2D acceleration vector in normalized coordinates
         public Vector2 Acceleration = Vector2.Zero;
         /// 2D velocity vector in normalized coordinates
         public Vector2 Velocity = Vector2.Zero;
+        /// <summary>
+        /// If true, my position/rotation/scale will be relative to the parent's pos/rot/scale. If false, not. True by default.
+        /// </summary>
+        public Motion MotionParent
+        {
+            get
+            {
+                if (motionParent == null)
+                {
+                    if (Parent.Parent.Motion == null)
+                        return null;
+                    else
+                        return Parent.Parent.Motion;
+                }
+                return motionParent;
+            }
+            set
+            {
+                motionParent = value;
+            }
+        }
+
         public virtual Vector2 PositionAbs
         {
             get
             {
-                if (Parent.Parent == null || Parent.Parent.Motion == null )
+                if (MotionParent == null )
                     return Position + PositionModifier;
                 else
-                {
-                    Vector2 p = (Parent.LinkedToParent ? Parent.Parent.Motion.PositionAbs : Parent.Parent.Parent.Motion.PositionAbs);
-                    p += ((Position + PositionModifier) - Parent.Parent.Motion.ZoomCenter) * Parent.Parent.Motion.Zoom + Parent.Parent.Motion.ZoomCenter;
-                    //return ((Position + PositionModifier + (LinkedToParent ? Parent.PositionAbs : Parent.Parent.PositionAbs)) - Parent.ZoomCenter) * Parent.Zoom + Parent.ZoomCenter;
-                    //return Position + PositionModifier + (LinkedToParent ? Parent.PositionAbs : Parent.Parent.PositionAbs);
-                    return p;
-                }
+                    return MotionParent.PositionAbs + Position + PositionModifier ;
             }
         } // FIXME do a realtime calc based on parents compound value so far.
+
+        /// <summary>
+        /// return the position for drawing in screen coordinates (after zoom applied etc.)
+        /// FIXME rename with DrawPosition 
+        /// </summary>
+        public virtual Vector2 PositionDraw
+        {
+            get
+            {
+                Vector2 p = (PositionAbs - MotionParent.ZoomCenter) * MotionParent.Zoom + MotionParent.ZoomCenter;
+                return p;
+            }
+        }
 
         public Vector2 TargetPos
         {
@@ -46,13 +75,28 @@ namespace TTengine.Core
         }
 
         /// <summary>
+        /// velocity of moving towards target TargetPos. Setting modifies Velocity.
+        /// </summary>
+        public float TargetPosSpeed
+        {
+            get
+            {
+                return Velocity.Length();
+            }
+            set
+            {
+                Velocity = new Vector2(value, 0f);
+            }
+        }
+
+        /// <summary>
         /// absolute drawing position on screen in units of pixels for use in Draw() calls
         /// </summary>
         public virtual Vector2 DrawPosition
         {
             get
             {
-                return ToPixels(PositionAbs);
+                return ToPixels(PositionDraw);
             }
         }
 
@@ -66,7 +110,7 @@ namespace TTengine.Core
                 if (Parent.Parent == null)
                     return Rotate + RotateModifier;
                 else
-                    return Rotate + RotateModifier + (Parent.LinkedToParent ? Parent.Parent.Motion.RotateAbs : Parent.Parent.Parent.Motion.RotateAbs);
+                    return Rotate + RotateModifier + MotionParent.RotateAbs;
             }
         }
 
@@ -81,7 +125,7 @@ namespace TTengine.Core
                 if (Parent.Parent == null)
                     return Scale * ScaleModifier;
                 else
-                    return Scale * ScaleModifier * (Parent.LinkedToParent ? Parent.Parent.Motion.ScaleAbs : Parent.Parent.Parent.Motion.ScaleAbs);
+                    return Scale * ScaleModifier * MotionParent.ScaleAbs;
             }
         }
         public virtual float ZoomAbs
@@ -91,9 +135,39 @@ namespace TTengine.Core
                 if (Parent.Parent == null)
                     return Zoom;
                 else
-                    return Zoom * (Parent.LinkedToParent ? Parent.Parent.Motion.ZoomAbs : Parent.Parent.Parent.Motion.ZoomAbs);
+                    return Zoom * MotionParent.ZoomAbs;
             }
         }
+
+        /// <summary>
+        /// set target for Scale
+        /// </summary>
+        public float ScaleTarget = 1.0f;
+
+        /// <summary>
+        /// speed for scaling towards ScaleTarget
+        /// </summary>
+        public float ScaleSpeed = 0f;
+
+        // zoom, scale etc. related vars for panel
+        public float ZoomTarget = 1.0f;
+
+        public float ZoomSpeed = 0f;
+
+        public Motion ZoomCenterTarget = null;
+
+        public float RotateTarget = 0f;
+
+        public float RotateSpeed = 0f;
+
+        
+        protected Vector2 targetPos = Vector2.Zero;
+        protected bool isTargetSet = false;
+
+        /// <summary>
+        /// if null, means use default parent ("one up")
+        /// </summary>
+        protected Motion motionParent = null;
 
         internal override void Update(ref UpdateParams p)
         {
@@ -116,29 +190,149 @@ namespace TTengine.Core
             // with optional target to move to with given velocity
             if (isTargetSet)
             {
-                float vel = Velocity.Length();
-                Vector2 vdif = TargetPos - Position;
-                Vector2 vmove = vdif;
-                vmove.Normalize();
-                vmove *= vel * p.Dt;
-                if (vmove.LengthSquared() > vdif.LengthSquared())
-                {
-                    // target reached
-                    isTargetSet = false;
-                    Position = TargetPos;
-                }
-                else
-                {
-                    Position += vmove;
-                }
-                // adapt velocity normally with acceleration, for next round
-                Velocity += Vector2.Multiply(Acceleration, p.Dt);
+                // motion towards target
+                //Velocity = (TargetPos - Position) * 0.01f;
+                MoveToTarget(ref p);
             }
             else
             {
                 Position += Vector2.Multiply(Velocity, p.Dt);
                 Velocity += Vector2.Multiply(Acceleration, p.Dt);
             }
+
+            // handle scaling over time
+            ScaleToTarget(ScaleTarget, ScaleSpeed, ScaleSpeed * 0.01f); // FIXME ref p or empty? no 0.01 , scalespeed consider
+
+            // handle dynamic zooming
+            ZoomToTarget(ref p);
+
+            // rotation
+            RotateToTarget();
+
         }
+
+        protected void MoveToTarget(ref UpdateParams p)
+        {
+            float vel = Velocity.Length();
+            if (vel > 0f)
+            {
+                Vector2 vdif = TargetPos - Position;
+                if (vdif.Length() > 0)
+                {
+                    Vector2 vmove = vdif;
+                    vmove.Normalize();
+                    vmove *= vel * p.Dt;
+                    if (vmove.LengthSquared() > vdif.LengthSquared())
+                    {
+                        // target reached
+                        isTargetSet = false;
+                        Position = TargetPos;
+                        Velocity = Vector2.Zero;
+                    }
+                    else
+                    {
+                        Position += vmove;
+                    }
+                }
+            }
+
+            // adapt velocity normally with acceleration, for next round
+            Velocity += Vector2.Multiply(Acceleration, p.Dt);
+        }
+
+        protected void ZoomToTarget(ref UpdateParams p)
+        {
+            // handle dynamic zooming
+            if (ZoomSpeed > 0f)
+            {
+                // handle zoom value
+                if (Zoom < ZoomTarget)
+                {
+                    Zoom *= (1.0f + ZoomSpeed);
+                    if (Zoom > ZoomTarget)
+                        Zoom = ZoomTarget;
+                }
+                else if (Zoom > ZoomTarget)
+                {
+                    Zoom /= (1.0f + ZoomSpeed);
+                    if (Zoom < ZoomTarget)
+                        Zoom = ZoomTarget;
+                }
+
+                // handle zoom center moving                
+                if (ZoomCenterTarget != null && !ZoomCenter.Equals(ZoomCenterTarget.Position))
+                {
+                    ZoomCenter = ZoomCenterTarget.PositionAbs;
+                  /*
+                    Vector2 vdif = ZoomCenterTarget.PositionAbs - ZoomCenter;
+                    float vel = 1000.0f * ZoomSpeed * vdif.Length();
+                    if (vel < ZoomSpeed * 100.0f)
+                        vel = ZoomSpeed * 100.0f;
+                    Vector2 vmove = vdif;
+                    vmove.Normalize();
+                    vmove *= vel * p.Dt;
+                    if (vmove.LengthSquared() > vdif.LengthSquared())
+                    {
+                        // target reached
+                        ZoomCenter = ZoomCenterTarget.PositionAbs; // FIXME abs?
+                    }
+                    else
+                    {
+                        ZoomCenter += vmove;
+                    }
+                 */
+                }
+
+            }
+            // Screen.Center; // TODO add Screen.Origin? Screen.TopRightCorner?
+
+        }
+
+        protected void RotateToTarget()
+        {
+            // handle dynamic zooming
+            if (RotateSpeed > 0f)
+            {
+                if (Rotate < RotateTarget)
+                {
+                    Rotate += (RotateSpeed);
+                    if (Rotate > RotateTarget)
+                        Rotate = RotateTarget;
+                }
+                else if (Rotate > RotateTarget)
+                {
+                    Rotate -= (RotateSpeed);
+                    if (Rotate < RotateTarget)
+                        Rotate = RotateTarget;
+                }
+            }
+        }
+
+        // scaling logic during OnUpdate()
+        protected void ScaleToTarget(float targetScale, float spd, float spdMin)
+        {
+            if (spd > 0)
+            {
+                if (Scale < targetScale)
+                {
+                    Scale += spdMin + spd * (targetScale - Scale); //*= 1.01f;
+                    if (Scale > targetScale)
+                    {
+                        Scale = targetScale;
+                    }
+                }
+                else if (Scale > targetScale)
+                {
+                    Scale += -spdMin + spd * (targetScale - Scale); //*= 1.01f;
+                    if (Scale < targetScale)
+                    {
+                        Scale = targetScale;
+                    }
+                }
+                if (Parent.DrawInfo != null)
+                    Parent.DrawInfo.LayerDepth = 0.8f - Scale / 1000.0f;
+            }
+        }
+
     }
 }

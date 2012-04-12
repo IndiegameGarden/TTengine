@@ -92,9 +92,6 @@ namespace TTengine.Core
             }
         }
 
-        /// If true, my position/rotation/scale will be relative to the parent's pos/rot/scale. If false, not. True by default.
-        public bool LinkedToParent = true; 
-
         /// My parent item, or null if none (in that case I am root or not attached yet)
         public Gamelet Parent = null ;
 

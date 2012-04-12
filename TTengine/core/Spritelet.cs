@@ -86,7 +86,7 @@ namespace TTengine.Core
             get
             {
                 if (!Visible) return false;
-                Vector2 p = Motion.PositionAbs;
+                Vector2 p = Motion.PositionDraw;
                 float w = DrawInfo.WidthAbs / 2;
                 float h = DrawInfo.HeightAbs / 2;
                 if (p.X < -w) return false;

@@ -56,7 +56,7 @@ namespace TTengine.Core
             {
                 // if not yet calculated, return the current abs position as a best guess.
                 if (!isDrawPositionCalculated)
-                    return Motion.PositionAbs;
+                    return Motion.PositionDraw;
                 return drawPosition;
             }
         }
@@ -97,7 +97,7 @@ namespace TTengine.Core
             base.OnUpdate(ref p);
 
             // store current position in a cache to use in trajectory smoothing
-            UpdatePositionCache(Motion.PositionAbs, p.SimTime);
+            UpdatePositionCache(Motion.PositionDraw, p.SimTime);
         }
         
         private void UpdatePositionCache(Vector2 updPos, float updTime)
