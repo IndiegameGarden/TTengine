@@ -15,6 +15,7 @@ namespace TTengine.Core
         public Vector2 Acceleration = Vector2.Zero;
         /// 2D velocity vector in normalized coordinates
         public Vector2 Velocity = Vector2.Zero;
+        
         /// <summary>
         /// If true, my position/rotation/scale will be relative to the parent's pos/rot/scale. If false, not. True by default.
         /// </summary>
@@ -56,7 +57,7 @@ namespace TTengine.Core
         {
             get
             {
-                Vector2 p = (PositionAbs - MotionParent.ZoomCenter) * MotionParent.Zoom + MotionParent.ZoomCenter;
+                Vector2 p = (PositionAbs - MotionParent.ZoomCenter) * MotionParent.Zoom + Screen.Center;
                 return p;
             }
         }
@@ -116,7 +117,28 @@ namespace TTengine.Core
 
         public float Scale = 1f;
         public float Zoom = 1f;
-        public Vector2 ZoomCenter = Vector2.Zero;
+
+        /// <summary>
+        /// the center of zooming actions (expressed in PositionAbs coordinates).
+        /// Setting this will reset any ZoomCenterTarget that was set.
+        /// </summary>
+        public Vector2 ZoomCenter
+        {
+            get
+            {
+                if (!isZoomCenterSet)
+                    return Screen.Center;
+                else
+                    return zoomCenter;
+            }
+            set
+            {
+                zoomCenter = value;
+                ZoomCenterTarget = null;
+                isZoomCenterSet = true;
+            }
+        }
+
         public float ScaleModifier = 1f;
         public virtual float ScaleAbs
         {
@@ -154,6 +176,10 @@ namespace TTengine.Core
 
         public float ZoomSpeed = 0f;
 
+        /// <summary>
+        /// Specify a ZoomCenter position from the given Motion object i.e. Motion.PositionAbs.
+        /// This is overridden by a coordinate setting done on ZoomCenter.
+        /// </summary>
         public Motion ZoomCenterTarget = null;
 
         public float RotateTarget = 0f;
@@ -163,11 +189,17 @@ namespace TTengine.Core
         
         protected Vector2 targetPos = Vector2.Zero;
         protected bool isTargetSet = false;
+        protected Vector2 zoomCenter;
+        protected bool isZoomCenterSet = false;
 
         /// <summary>
         /// if null, means use default parent ("one up")
         /// </summary>
         protected Motion motionParent = null;
+
+        public Motion()
+        {
+        }
 
         internal override void Update(ref UpdateParams p)
         {
@@ -266,33 +298,12 @@ namespace TTengine.Core
                     if (Zoom < ZoomTarget)
                         Zoom = ZoomTarget;
                 }
-
-                // handle zoom center moving                
-                if (ZoomCenterTarget != null && !ZoomCenter.Equals(ZoomCenterTarget.Position))
-                {
-                    ZoomCenter = ZoomCenterTarget.PositionAbs;
-                  /*
-                    Vector2 vdif = ZoomCenterTarget.PositionAbs - ZoomCenter;
-                    float vel = 1000.0f * ZoomSpeed * vdif.Length();
-                    if (vel < ZoomSpeed * 100.0f)
-                        vel = ZoomSpeed * 100.0f;
-                    Vector2 vmove = vdif;
-                    vmove.Normalize();
-                    vmove *= vel * p.Dt;
-                    if (vmove.LengthSquared() > vdif.LengthSquared())
-                    {
-                        // target reached
-                        ZoomCenter = ZoomCenterTarget.PositionAbs; // FIXME abs?
-                    }
-                    else
-                    {
-                        ZoomCenter += vmove;
-                    }
-                 */
-                }
-
             }
-            // Screen.Center; // TODO add Screen.Origin? Screen.TopRightCorner?
+            if (ZoomCenterTarget != null)
+            {
+                zoomCenter = ZoomCenterTarget.PositionAbs; // update zoom-center
+            }
+
 
         }
 
