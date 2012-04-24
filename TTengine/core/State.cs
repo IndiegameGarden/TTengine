@@ -12,11 +12,14 @@ namespace TTengine.Core
         }
 
         public virtual void OnExit(Gamelet g)
-        {
-            
+        {            
         }
 
         public virtual void OnUpdate(Gamelet g)
+        {
+        }
+
+        public virtual void OnDraw(Gamelet g)
         {
         }
 

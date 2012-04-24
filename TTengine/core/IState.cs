@@ -16,5 +16,8 @@ namespace TTengine.Core
 
         /// Called every gamelet update cycle
         void OnUpdate(Gamelet g);
+
+        /// Called every gamelet draw cycle
+        void OnDraw(Gamelet g);
     }
 }

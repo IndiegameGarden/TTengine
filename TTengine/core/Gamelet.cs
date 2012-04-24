@@ -416,7 +416,11 @@ namespace TTengine.Core
 
             // render this item
             if (Visible)
+            {
                 OnDraw(ref p);
+                if (myState != null)
+                    myState.OnDraw(this);
+            }
             
             // then render all of the child nodes
             foreach (Gamelet item in Children)
