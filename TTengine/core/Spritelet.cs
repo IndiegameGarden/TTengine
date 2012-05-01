@@ -37,7 +37,7 @@ namespace TTengine.Core
         {
             if (fileName.Contains("."))
             {
-                Texture = LoadBitmap(fileName, TTengineMaster.ActiveGame.Content.RootDirectory, false );
+                Texture = LoadBitmap(fileName, TTengineMaster.ActiveGame.Content.RootDirectory, true);
             }
             this.fileName = fileName;
             InitTextures();
