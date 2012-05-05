@@ -74,10 +74,10 @@ namespace TTengine.Core
         }
 
         /// Width of visible screen in relative coordinates
-        public float Width { get { return aspectRatio / Motion.ScaleAbs; } }
+        public float Width { get { return aspectRatio; } }
 
         /// Height of visible screen in relative coordinates
-        public float Height { get { return 1.0f / Motion.ScaleAbs; } }
+        public float Height { get { return 1.0f; } }
 
         /// Width of visible screen in pixels
         public int WidthPixels { get { return screenWidth; } }
