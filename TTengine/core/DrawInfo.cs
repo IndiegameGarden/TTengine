@@ -17,7 +17,7 @@ namespace TTengine.Core
         private Vector2[] posHistory = new Vector2[NBUF];
         private float[] posHistoryTime = new float[NBUF];
         private bool isFirstUpdatePosition = true;
-        private int phIndex = 0;
+        private uint phIndex = 0;
 
         /// a value indicating drawing depth of sprite 0f (front)....1f (back)
         public float LayerDepth = 0.5f;
@@ -36,27 +36,52 @@ namespace TTengine.Core
             set { drawColor.A = (byte)(value * 255.0f); }
         }
 
+        /// <summary>
+        /// Center of sprite expressed in relative width/height coordinates, where 1.0 is full width or full height.
+        /// By default the center of the sprite is chosen in the middle.
+        /// </summary>
         public Vector2 Center = new Vector2(0.5f, 0.5f); 
 
+        /// <summary>
+        /// returns a compound scale value for scaling use in Draw() calls, taking into account zoom as well.
+        /// </summary>
         public virtual float DrawScale { get { return Motion.ScaleAbs * Motion.ZoomAbs; } }
 
+        /// <summary>
+        /// calculates a center coordinate for direct use in Draw() calls, expressed in pixels
+        /// </summary>
         public virtual Vector2 DrawCenter { get { return ToPixels(Center.X * width, Center.Y * height); } }
 
+        /// <summary>
+        /// relative width of sprite in normalized coordinates
+        /// </summary>
         public virtual float Width { get { return width; } set { width = value; } }
 
+        /// <summary>
+        /// relative height of sprite in normalized coordinates
+        /// </summary>
         public virtual float Height { get { return height; } set { height = value; } }
 
-        public virtual float HeightAbs { get { return height * Motion.ScaleAbs; } }
-
+        /// <summary>
+        /// absolute width of sprite, being Width after applying any scaling
+        /// </summary>
         public virtual float WidthAbs { get { return width * Motion.ScaleAbs; } }
 
+        /// <summary>
+        /// absolute height of sprite, being Height after applying any scaling
+        /// </summary>
+        public virtual float HeightAbs { get { return height * Motion.ScaleAbs; } }
+
+        /// <summary>
+        /// an interpolated position in pixels for sprite drawing with smooth motion, directly usable in Draw() calls
+        /// </summary>
         public Vector2 DrawPosition
         {
             get
             {
                 // if not yet calculated, return the current abs position as a best guess.
                 if (!isDrawPositionCalculated)
-                    return Motion.PositionDraw;
+                    return Motion.PositionAbsZoomedPixels;
                 return drawPosition;
             }
         }
@@ -68,24 +93,24 @@ namespace TTengine.Core
             Motion = Parent.Motion;
         }
 
-        // draw to this.screen at drawing pos
+        // calculates drawing positions based on interpolation
         protected override void OnDraw(ref DrawParams p)
         {
             base.OnDraw(ref p);
 
             float t = (float)p.gameTime.TotalGameTime.TotalSeconds;
             // default - take latest position in cache
-            drawPosition = ToPixels(DrawPosition);
+            drawPosition = DrawPosition;
 
             // then check if an interpolated, better value can be found.
-            for (int i = 0; i < NBUF; i++)
+            for (uint i = 0; i < NBUF; i++)
             {
-                int iNext = (i + 1) % NBUF;
+                uint iNext = (i + 1) % NBUF;
                 if (posHistoryTime[i] <= t && posHistoryTime[iNext] >= t)
                 {
                     float a = (t - posHistoryTime[i]) / (posHistoryTime[iNext] - posHistoryTime[i]);
                     // perform linear interpolation
-                    drawPosition = ToPixels((1 - a) * posHistory[i] + a * posHistory[iNext]);
+                    drawPosition = (1 - a) * posHistory[i] + a * posHistory[iNext];
                     break;
                 }
             }
@@ -97,14 +122,14 @@ namespace TTengine.Core
             base.OnUpdate(ref p);
 
             // store current position in a cache to use in trajectory smoothing
-            UpdatePositionCache(Motion.PositionDraw, p.SimTime);
+            UpdatePositionCache(Motion.PositionAbsZoomedPixels, p.SimTime);
         }
         
         private void UpdatePositionCache(Vector2 updPos, float updTime)
         {
             if (isFirstUpdatePosition)
             {
-                for (int i = 0; i < NBUF; i++)
+                for (uint i = 0; i < NBUF; i++)
                 {
                     posHistory[i] = updPos;
                     posHistoryTime[i] = updTime;
@@ -119,7 +144,7 @@ namespace TTengine.Core
             }
 
             phIndex++;
-            if (phIndex >= NBUF)
+            if (phIndex == NBUF)
                 phIndex = 0;
         }
 

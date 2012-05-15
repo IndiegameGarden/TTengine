@@ -86,7 +86,7 @@ namespace TTengine.Core
             get
             {
                 if (!Visible) return false;
-                Vector2 p = Motion.PositionDraw;
+                Vector2 p = Motion.PositionAbsZoomed;
                 float w = DrawInfo.WidthAbs / 2;
                 float h = DrawInfo.HeightAbs / 2;
                 if (p.X < -w) return false;
@@ -253,19 +253,19 @@ namespace TTengine.Core
                     // invalid or corrupt image file was loaded
                     throw(ex);
                 }
-                // in case of png file, apply pre-multiply on texture color data:
-                // http://blogs.msdn.com/b/shawnhar/archive/2009/11/10/premultiplied-alpha-in-xna-game-studio.aspx
-                // http://blogs.msdn.com/b/shawnhar/archive/2010/04/08/premultiplied-alpha-in-xna-game-studio-4-0.aspx
-                if (fileName.ToLower().EndsWith(".png"))
+            }
+            // in case of png file, apply pre-multiply on texture color data:
+            // http://blogs.msdn.com/b/shawnhar/archive/2009/11/10/premultiplied-alpha-in-xna-game-studio.aspx
+            // http://blogs.msdn.com/b/shawnhar/archive/2010/04/08/premultiplied-alpha-in-xna-game-studio-4-0.aspx
+            if (fileName.ToLower().EndsWith(".png"))
+            {
+                Color[] data = new Color[tex.Width * tex.Height];
+                tex.GetData<Color>(data);
+                for (long i = data.LongLength - 1; i != 0; --i)
                 {
-                    Color[] data = new Color[tex.Width * tex.Height];
-                    tex.GetData<Color>(data);
-                    for (long i = data.LongLength - 1; i != 0; --i)
-                    {
-                        data[i] = Color.FromNonPremultiplied(data[i].ToVector4());
-                    }
-                    tex.SetData<Color>(data);
+                    data[i] = Color.FromNonPremultiplied(data[i].ToVector4());
                 }
+                tex.SetData<Color>(data);
             }
 
             return tex ;

@@ -53,7 +53,7 @@ namespace TTengine.Util
             if (SimTime > 0f)
                 frameRateAvg = (int)(frameCounterTotal / SimTime);
             string fps = string.Format("{0} fps [{1}]", frameRate, frameRateAvg );
-            Vector2 pos = Motion.DrawPosition;
+            Vector2 pos = Motion.PositionAbsZoomedPixels;
             MySpriteBatch.DrawString(spriteFont, fps, pos,
                         Color.Black, 0f, Vector2.Zero, 1f, SpriteEffects.None, DrawInfo.LayerDepth - 0.00001f);
             MySpriteBatch.DrawString(spriteFont, fps, pos,
