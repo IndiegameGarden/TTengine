@@ -85,6 +85,8 @@ namespace TTengine.Core
         {
             get
             {
+                throw (new NotImplementedException("not yet updated properly - consider zoom/scale of screen."));
+                /*
                 if (!Visible) return false;
                 Vector2 p = Motion.PositionAbsZoomed;
                 float w = DrawInfo.WidthAbs / 2;
@@ -94,6 +96,7 @@ namespace TTengine.Core
                 if (p.Y < -h) return false;
                 if (p.Y > (1.0f + h)) return false;
                 return true;
+                 */
             }
         }
 
