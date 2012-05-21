@@ -76,6 +76,11 @@ namespace TTengine.Modifiers
                     field = modifiedObject.GetType().GetField(propertyName);
                 }
 
+                if (field == null)
+                {
+                    throw new MissingMemberException("Member " + propertyName + " could not be found in " + Parent );
+                }
+
             }
         }
 
