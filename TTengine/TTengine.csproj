@@ -111,6 +111,7 @@
     <Compile Include="Modifiers\SineModifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\TTengineMaster.cs" />
+    <Compile Include="Util\DarkeningHBar.cs" />
     <Compile Include="Util\DebugMessage.cs" />
     <Compile Include="Util\Launchlet.cs" />
     <Compile Include="Util\MotionBehavior.cs" />
