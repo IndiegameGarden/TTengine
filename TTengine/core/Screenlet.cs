@@ -36,7 +36,7 @@ namespace TTengine.Core
                 get { return Position + PositionModifier; }
             }
 
-            public override Vector2 PositionDraw
+            public override Vector2 PositionAbsZoomed
             {
                 get { return PositionAbs; } // FIXME - find what to do here
             }

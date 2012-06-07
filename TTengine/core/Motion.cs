@@ -11,13 +11,20 @@ namespace TTengine.Core
     {
         public Vector2 Position = Vector2.Zero;
         public Vector2 PositionModifier = Vector2.Zero;
+
+        /// <summary>
         /// 2D acceleration vector in normalized coordinates
+        /// </summary>
         public Vector2 Acceleration = Vector2.Zero;
+
+        /// <summary>
         /// 2D velocity vector in normalized coordinates
+        /// </summary>
         public Vector2 Velocity = Vector2.Zero;
         
         /// <summary>
-        /// If true, my position/rotation/scale will be relative to the parent's pos/rot/scale. If false, not. True by default.
+        /// If a MotionParent exists, my position/rotation/scale will be relative to the parent's pos/rot/scale. 
+        /// If null, no motion parent exists.
         /// </summary>
         public Motion MotionParent
         {
@@ -38,6 +45,11 @@ namespace TTengine.Core
             }
         }
 
+        /// <summary>
+        /// the absolute position in normalized coordinates after applying any position modifiers and
+        /// possible parent's positions.
+        /// TODO do a realtime calc based on parents compound value so far.
+        /// </summary>
         public virtual Vector2 PositionAbs
         {
             get
@@ -47,13 +59,12 @@ namespace TTengine.Core
                 else
                     return MotionParent.PositionAbs + Position + PositionModifier ;
             }
-        } // FIXME do a realtime calc based on parents compound value so far.
+        } 
 
         /// <summary>
-        /// return the position for drawing in screen coordinates (after zoom applied etc.)
-        /// FIXME rename with DrawPosition 
+        /// return the absolute position in normalized coordinates after zoom is applied
         /// </summary>
-        public virtual Vector2 PositionDraw
+        public virtual Vector2 PositionAbsZoomed
         {
             get
             {
@@ -91,13 +102,14 @@ namespace TTengine.Core
         }
 
         /// <summary>
-        /// absolute drawing position on screen in units of pixels for use in Draw() calls
+        /// absolute drawing position on screen in units of pixels for example for use in Draw() calls
+        /// Warning: this value is instantaneous and not obtaining using interpolation.
         /// </summary>
-        public virtual Vector2 DrawPosition
+        public virtual Vector2 PositionAbsZoomedPixels
         {
             get
             {
-                return ToPixels(PositionDraw);
+                return ToPixels(PositionAbsZoomed);
             }
         }
 
