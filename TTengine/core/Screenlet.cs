@@ -334,7 +334,7 @@ namespace TTengine.Core
                     mySpriteBatch.Draw(renderTarget, ScreenRectangle, Color.White); // TODO may apply a selectable drawing color here?
                     mySpriteBatch.End();
                 }
-            }
+            }// end lock(graphicsDevice)
         }
     }
 }
