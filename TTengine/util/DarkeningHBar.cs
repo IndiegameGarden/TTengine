@@ -33,7 +33,7 @@ namespace TTengine.Util
         {
             Texture = new Texture2D(Screen.graphicsDevice, 1, 1);
             Texture.SetData<Color> (  new Color[] { Color.White } );
-            scaleVec = new Vector2(Screen.WidthPixels, height * Screen.HeightPixels);
+            scaleVec = new Vector2(Screen.WidthPixels * 2f, height * Screen.HeightPixels);
             posX = Screen.WidthPixels / 2f;
         }
 
