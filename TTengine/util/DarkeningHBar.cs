@@ -34,6 +34,7 @@ namespace TTengine.Util
             Texture = new Texture2D(Screen.graphicsDevice, 1, 1);
             Texture.SetData<Color> (  new Color[] { Color.White } );
             scaleVec = new Vector2(Screen.WidthPixels * 2f, height * Screen.HeightPixels);
+            DrawInfo.Center = new Vector2(0.5f, 0f); // horiz-centered and vertically-aligned-top
             posX = Screen.WidthPixels / 2f;
         }
 
@@ -41,8 +42,8 @@ namespace TTengine.Util
         {
             if (Texture != null)
             {
-                Vector2 pos = Parent.DrawInfo.DrawPosition + ToPixels(Motion.Position);
-                pos.X = posX;
+                Vector2 pos = Parent.DrawInfo.DrawPosition +ToPixels(Motion.Position);
+                pos.X += posX;
                 MySpriteBatch.Draw(Texture, pos, null, DrawInfo.DrawColor,
                        Motion.RotateAbs, DrawInfo.DrawCenter, scaleVec * DrawInfo.DrawScale, SpriteEffects.None, DrawInfo.LayerDepth);
             }
