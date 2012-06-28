@@ -10,11 +10,17 @@ namespace TTengine.Util
         private static extern int MessageBox(IntPtr hWnd, String text, String caption, uint type);
 
         /**
-         * Shows a Windows MessageBox with title and content 'msg'
+         * Shows a Windows MessageBox with title and content 'msg', returning true when
+         * successfully shown and false if MsgBox could not be created/shown.
          */
-        public static void Show(String windowTitle, String msg) 
+        public static bool Show(String windowTitle, String msg) 
         {
-            MessageBox(new IntPtr(0), msg, windowTitle, 0);
+            try{
+                MessageBox(new IntPtr(0), msg, windowTitle, 0);
+                return true;
+            }catch(Exception) {
+          	    return false;
+            }
         }
     }
 }
