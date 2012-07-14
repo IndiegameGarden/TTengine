@@ -97,6 +97,8 @@ namespace TTengine.Core
 
         public List<Gamelet> Children = new List<Gamelet>();
 
+        protected List<Gamelet> childrenToAdd = new List<Gamelet>();
+
         /// If set to non-zero, item will auto-delete after simulating for specified duration time
         public float Duration { get { return duration; } set { duration = value; } }
 
@@ -237,6 +239,18 @@ namespace TTengine.Core
         }
 
         /// <summary>
+        /// add a child gamelet with Add() next update, useful for adding gamelet from another thread
+        /// </summary>
+        /// <param name="child"></param>
+        public void AddNextUpdate(Gamelet child)
+        {
+            lock (childrenToAdd)
+            {
+                childrenToAdd.Add(child);
+            }
+        }
+
+        /// <summary>
         /// Adds (inserts) a Gamelet as child in _begin_ i.e. front of the children's list this.Children
         /// </summary>
         public void AddFront(Gamelet child)
@@ -363,6 +377,14 @@ namespace TTengine.Core
 
             // advance sim time
             SimTime += p.Dt;
+
+            // add any children that were queued to add
+            lock (childrenToAdd)
+            {
+                foreach (Gamelet g in childrenToAdd)
+                    Add(g);
+                childrenToAdd.Clear();
+            }
 
             // simulate object and children
             //Remove any items that need deletion etc
