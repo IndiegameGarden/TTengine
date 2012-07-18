@@ -117,7 +117,7 @@ namespace TTengine.Core
             }
         }
 
-        public override SpriteBatch MySpriteBatch
+        public override TTSpriteBatch MySpriteBatch
         {
             get
             {
