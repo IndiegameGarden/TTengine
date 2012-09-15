@@ -63,11 +63,11 @@ namespace TTengine.Core
         public bool Visible = true; 
 
         /// <summary>
-        /// get the default SpriteBatch to use for drawing for this Gamelet. If a Gamelet is not configured
+        /// get the default TTSpriteBatch to use for drawing for this Gamelet. If a Gamelet is not configured
         /// with this, it will first try to use a Parent's (or Parent's Parent etc.) value. If not configured
-        /// either, it will use the default SpriteBatch of the Screenlet it renders to.
+        /// either, it will use the default TTSpriteBatch of the Screenlet it renders to.
         /// </summary>
-        public virtual SpriteBatch MySpriteBatch
+        public virtual TTSpriteBatch MySpriteBatch
         {
             get
             {
@@ -75,7 +75,7 @@ namespace TTengine.Core
                 {
                     if (Parent == null)
                     {
-                        SpriteBatch spb = Screen.MySpriteBatch;
+                        TTSpriteBatch spb = Screen.MySpriteBatch;
                         Screen.UseSharedSpriteBatch(spb);
                         return spb;
                     }
@@ -136,7 +136,7 @@ namespace TTengine.Core
         #endregion
 
         #region Internal Vars
-        internal SpriteBatch mySpriteBatch = null;
+        internal TTSpriteBatch mySpriteBatch = null;
         internal float duration = -1f;
         internal float startTime = 0f;
         private int _ID = -1;

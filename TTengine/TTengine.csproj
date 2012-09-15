@@ -111,6 +111,7 @@
     <Compile Include="Core\Screenlet.cs" />
     <Compile Include="Core\Spritelet.cs" />
     <Compile Include="Core\State.cs" />
+    <Compile Include="Core\TTSpriteBatch.cs" />
     <Compile Include="Core\UpdateParams.cs" />
     <Compile Include="Modifiers\Modifier.cs" />
     <Compile Include="Modifiers\MyFuncyModifier.cs" />

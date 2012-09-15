@@ -108,8 +108,8 @@ namespace TTengine.Core
         private Rectangle screenRect;
         private RenderTarget2D renderTarget, effletRenderTarget;
         internal List<Efflet> effletsList;
-        internal Dictionary<Effect, SpriteBatch> effect2spritebatchTable = new Dictionary<Effect, SpriteBatch>();
-        internal List<SpriteBatch> spriteBatchesActive = new List<SpriteBatch>();
+        internal Dictionary<Effect, TTSpriteBatch> effect2spritebatchTable = new Dictionary<Effect, TTSpriteBatch>();
+        internal List<TTSpriteBatch> spriteBatchesActive = new List<TTSpriteBatch>();
         
         #endregion
 
@@ -168,7 +168,7 @@ namespace TTengine.Core
                 ; // TODO maybe put a warning out here?
             }
             effletsList = new List<Efflet>();
-            mySpriteBatch = new SpriteBatch(graphicsDevice);
+            mySpriteBatch = new TTSpriteBatch(graphicsDevice);
             collisionObjects = new List<Spritelet>();
         }
 
@@ -204,11 +204,11 @@ namespace TTengine.Core
         /// needed here and also SpriteBatch.End() will be called by TTengine later after use.
         /// </summary>
         /// <param name="spb">spritebatch to request use of</param>
-        internal void UseSharedSpriteBatch(SpriteBatch spb)
+        internal void UseSharedSpriteBatch(TTSpriteBatch spb)
         {
             if (!spriteBatchesActive.Contains(spb))
             {
-                spb.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+                spb.BeginParameterized();
                 spriteBatchesActive.Add(spb);
             }            
         }
@@ -218,7 +218,7 @@ namespace TTengine.Core
         /// is not linked to any shader Effect. The SpriteBatch.Begin() method will already have
         /// been called and also SpriteBatch.End() will be called by TTengine.
         /// </summary>
-        internal SpriteBatch UseSharedSpriteBatch()
+        internal TTSpriteBatch UseSharedSpriteBatch()
         {
             if (!spriteBatchesActive.Contains(mySpriteBatch))
             {
@@ -231,11 +231,11 @@ namespace TTengine.Core
         /// <summary>
         /// Create (if needed) a shared spritebatch that uses shader Effect eff
         /// </summary>
-        /// <param name="eff">shader Effect to create a shared SpriteBatch for</param>
+        /// <param name="eff">shader Effect to create a shared TTSpriteBatch for</param>
         /// <returns>The created or fetched-from-cache (if already there) SpriteBatch</returns>
-        internal SpriteBatch CreateSharedSpriteBatch(Effect eff)
+        internal TTSpriteBatch CreateSharedSpriteBatch(Effect eff)
         {
-            SpriteBatch sb = null;
+            TTSpriteBatch sb = null;
             try
             {
                 sb = effect2spritebatchTable[eff];
@@ -243,22 +243,22 @@ namespace TTengine.Core
             catch (KeyNotFoundException)
             {
                 // create it on 1st time
-                sb = new SpriteBatch(graphicsDevice);
+                sb = new TTSpriteBatch(graphicsDevice);
                 effect2spritebatchTable[eff] = sb;
             }
             return sb;
         }
         
         /// <summary>
-        /// let the caller indicate that it wants to draw using a shared SpriteBatch, where the
-        /// SpriteBatch is associated to a shader Effect to be used while drawing. The SpriteBatch.Begin() method will already have
-        /// been called and also SpriteBatch.End() will be called by TTengine.
+        /// let the caller indicate that it wants to draw using a shared TTSpriteBatch, where the
+        /// TTSpriteBatch is associated to a shader Effect to be used while drawing. The TTSpriteBatch.BeginParameterized()
+        /// method will already have been called and also TTSpriteBatch.End() will be called by TTengine.
         /// </summary>
-        /// <param name="eff">the Effect linked to the shared SpriteBatch that the caller wishes to use</param>
-        /// <returns>the shared SpriteBatch to be used for drawing</returns>
-        internal SpriteBatch UseSharedSpriteBatch(Effect eff)
+        /// <param name="eff">the Effect linked to the shared TTSpriteBatch that the caller wishes to use</param>
+        /// <returns>the shared TTSpriteBatch to be used for drawing</returns>
+        internal TTSpriteBatch UseSharedSpriteBatch(Effect eff)
         {
-            SpriteBatch sb = CreateSharedSpriteBatch(eff);
+            TTSpriteBatch sb = CreateSharedSpriteBatch(eff);
             if (!spriteBatchesActive.Contains(sb))
             {
                 sb.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, eff);
