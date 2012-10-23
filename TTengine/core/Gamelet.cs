@@ -364,8 +364,12 @@ namespace TTengine.Core
         internal virtual void Update(ref UpdateParams p)
         {
             // check if startTime for this object already reached (if any), if yes activate it
-            if (!Active && (startTime > 0f) && (p.SimTime >= startTime))
-                Active = true;
+            if (!Active && (startTime > 0f)) {
+                float t = Parent.SimTime;
+                // finally, check if already time to start, if so activate
+                if( t >= startTime)
+                    Active = true;
+            }
             if (!Active) return;
 
             // check active in state
@@ -375,7 +379,7 @@ namespace TTengine.Core
                     return;
             }
 
-            // advance sim time
+            // advance sim time if Active
             SimTime += p.Dt;
 
             // add any children that were queued to add
