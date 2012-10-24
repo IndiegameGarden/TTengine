@@ -16,10 +16,10 @@ namespace TTengine.Util
         /// Rounds the components of Vector2 in-place
         /// </summary>
         /// <param name="input">Vector2 to round</param>
-        public static void Round(Vector2 input)
+        public static void Round(ref Vector2 input)
         {
-            input.X = (float)Math.Round((float)input.X);
-            input.Y = (float)Math.Round((float)input.Y);
+            input.X = (float)Math.Round(input.X);
+            input.Y = (float)Math.Round(input.Y);
         }
 
         public static int LineCount(string s)
