@@ -23,7 +23,15 @@ namespace TTengine.Core
 
         /// a value indicating drawing depth of sprite 0f (front)....1f (back)
         public float LayerDepth = 0.5f;
-        
+
+        public DrawInfo(): base()
+        {
+            for (int i = 0; i < NBUF; i++)
+            {
+                posHistoryTime[i] = -1.0f; // init to out-of-scope value
+            }
+        }
+
         /// Color for drawing shape/sprite, setting it will replace Alpha value with DrawColor.A
         public virtual Color DrawColor
         {
