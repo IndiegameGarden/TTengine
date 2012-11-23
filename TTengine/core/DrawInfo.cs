@@ -9,19 +9,29 @@ namespace TTengine.Core
     public class DrawInfo: Gamelet
     {
         protected Vector2 drawPosition = Vector2.Zero;
+        protected float drawScale = 1f;
         protected bool isDrawPositionCalculated = false;
         protected float width = 0f;
         protected float height = 0f;
         internal Color drawColor = Color.White;
         private const int NBUF = 10; // TODO tune?
         private Vector2[] posHistory = new Vector2[NBUF];
+        private float[] drawScaleHistory = new float[NBUF];
         private float[] posHistoryTime = new float[NBUF];
         private bool isFirstUpdatePosition = true;
         private uint phIndex = 0;
 
         /// a value indicating drawing depth of sprite 0f (front)....1f (back)
         public float LayerDepth = 0.5f;
-        
+
+        public DrawInfo(): base()
+        {
+            for (int i = 0; i < NBUF; i++)
+            {
+                posHistoryTime[i] = -1.0f; // init to out-of-scope value
+            }
+        }
+
         /// Color for drawing shape/sprite, setting it will replace Alpha value with DrawColor.A
         public virtual Color DrawColor
         {
@@ -45,7 +55,18 @@ namespace TTengine.Core
         /// <summary>
         /// returns a compound scale value for scaling use in Draw() calls, taking into account zoom as well.
         /// </summary>
-        public virtual float DrawScale { get { return Motion.ScaleAbs * Motion.ZoomAbs; } }
+        public virtual float DrawScaleCurrent { get { return Motion.ScaleAbs * Motion.ZoomAbs; } }
+
+        public virtual float DrawScale
+        {
+            get
+            {
+                // if not yet calculated, return the current abs position as a best guess.
+                if (!isDrawPositionCalculated)
+                    return DrawScaleCurrent;
+                return drawScale;
+            }
+        }
 
         /// <summary>
         /// calculates a center coordinate for direct use in Draw() calls, expressed in pixels
@@ -101,6 +122,7 @@ namespace TTengine.Core
             float t = (float)p.gameTime.TotalGameTime.TotalSeconds;
             // default - take latest position in cache
             drawPosition = DrawPosition;
+            drawScale = DrawScaleCurrent;
 
             // then check if an interpolated, better value can be found.
             for (uint i = 0; i < NBUF; i++)
@@ -111,6 +133,7 @@ namespace TTengine.Core
                     float a = (t - posHistoryTime[i]) / (posHistoryTime[iNext] - posHistoryTime[i]);
                     // perform linear interpolation
                     drawPosition = (1 - a) * posHistory[i] + a * posHistory[iNext];
+                    drawScale = (1 - a) * drawScaleHistory[i] + a * drawScaleHistory[iNext];
                     break;
                 }
             }
@@ -122,10 +145,10 @@ namespace TTengine.Core
             base.OnUpdate(ref p);
 
             // store current position in a cache to use in trajectory smoothing
-            UpdatePositionCache(Motion.PositionAbsZoomedPixels, p.SimTime);
+            UpdatePositionCache(Motion.PositionAbsZoomedPixels, DrawScaleCurrent, p.SimTime);
         }
         
-        private void UpdatePositionCache(Vector2 updPos, float updTime)
+        private void UpdatePositionCache(Vector2 updPos, float updDrawScale, float updTime)
         {
             if (isFirstUpdatePosition)
             {
@@ -133,6 +156,7 @@ namespace TTengine.Core
                 {
                     posHistory[i] = updPos;
                     posHistoryTime[i] = updTime;
+                    drawScaleHistory[i] = updDrawScale;
                 }
                 isFirstUpdatePosition = false;
                 phIndex = 0;
@@ -141,6 +165,7 @@ namespace TTengine.Core
             {
                 posHistory[phIndex] = updPos;
                 posHistoryTime[phIndex] = updTime;
+                drawScaleHistory[phIndex] = updDrawScale;
             }
 
             phIndex++;

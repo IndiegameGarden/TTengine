@@ -260,7 +260,7 @@ namespace TTengine.Core
             // in case of png file, apply pre-multiply on texture color data:
             // http://blogs.msdn.com/b/shawnhar/archive/2009/11/10/premultiplied-alpha-in-xna-game-studio.aspx
             // http://blogs.msdn.com/b/shawnhar/archive/2010/04/08/premultiplied-alpha-in-xna-game-studio-4-0.aspx
-            if (fileName.ToLower().EndsWith(".png"))
+            if (fileName.ToLower().EndsWith(".png") || fileName.ToLower().EndsWith(".dat"))
             {
                 Color[] data = new Color[tex.Width * tex.Height];
                 tex.GetData<Color>(data);
