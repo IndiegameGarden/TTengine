@@ -24,5 +24,14 @@ namespace TTengine.Core
             Add(Motion);
             Add(DrawInfo);
         }
+
+        internal override void Update(ref UpdateParams p)
+        {
+            base.Update(ref p);
+            if (Active && DrawInfo != null)
+            {
+                DrawInfo.UpdateSmoothingCache(ref p);
+            }
+        }
     }
 }

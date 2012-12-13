@@ -143,7 +143,10 @@ namespace TTengine.Core
         protected override void OnUpdate(ref UpdateParams p)
         {
             base.OnUpdate(ref p);
+        }
 
+        internal void UpdateSmoothingCache(ref UpdateParams p)
+        {
             // store current position in a cache to use in trajectory smoothing
             UpdatePositionCache(Motion.PositionAbsZoomedPixels, DrawScaleCurrent, p.SimTime);
         }

@@ -421,7 +421,7 @@ namespace TTengine.Core
                 item.Update(ref p);
             }
 
-            // finally call custom update handler of current object and its state, if any
+            // call custom update handler of current object and its state, if any
             OnUpdate(ref p);
             if (myState != null)
                 myState.OnUpdate(this, ref p);
