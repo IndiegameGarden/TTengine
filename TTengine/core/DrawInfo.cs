@@ -39,6 +39,24 @@ namespace TTengine.Core
             set { drawColor = value; }
         }
 
+        public virtual float R
+        {
+            get {return drawColor.R / 255.0f; }
+            set { drawColor.R = (byte)(value * 255.0f); } 
+        }
+
+        public virtual float G
+        {
+            get { return drawColor.G / 255.0f; }
+            set { drawColor.G = (byte)(value * 255.0f); }
+        }
+
+        public virtual float B
+        {
+            get { return drawColor.B / 255.0f; }
+            set { drawColor.B = (byte)(value * 255.0f); }
+        }
+
         /// Alpha value for the DrawColor of this Spritelet, range 0-1, replacing whatever was in DrawColor.A
         public virtual float Alpha
         {
