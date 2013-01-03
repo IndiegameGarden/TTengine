@@ -111,9 +111,12 @@ namespace TTengine.Core
             set
             {
                 texture = value;
-                DrawInfo.Height = ToNormalizedNS(texture.Height );
-                DrawInfo.Width = ToNormalizedNS(texture.Width);
-                radius = DrawInfo.Width / 2;
+                if (texture != null)
+                {
+                    DrawInfo.Height = ToNormalizedNS(texture.Height);
+                    DrawInfo.Width = ToNormalizedNS(texture.Width);
+                    radius = DrawInfo.Width / 2;
+                }
             }
             get
             {
