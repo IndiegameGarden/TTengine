@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TTengine")]
-[assembly: AssemblyProduct("TTengine")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("TTengine Test Game")]
+[assembly: AssemblyProduct("TTengine Test Game")]
+[assembly: AssemblyDescription("Just a TTengine Test Game")]
 [assembly: AssemblyCompany("TranceTrance.com")]
-[assembly: AssemblyCopyright("Copyright © TranceTrance.com 2010-2011")]
+[assembly: AssemblyCopyright("Copyright © TranceTrance.com 2010-2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

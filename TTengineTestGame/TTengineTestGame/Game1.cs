@@ -14,55 +14,23 @@ using TTengine.Util;
 
 namespace TTengineTestGame
 {
-    /// <summary>
-    /// This is the main type for your game
-    /// </summary>
-    public class Game1 : Microsoft.Xna.Framework.Game
+    public class Game1 : TTGame
     {
-        GraphicsDeviceManager graphics;
-        // a root gamelet that will contain all others
-        Gamelet rootlet;
-        Screenlet screenlet;
-
-        public Game1()
+        protected override void InitTTGame()
         {
-            graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
-            this.IsFixedTimeStep = false;
-            graphics.PreferredBackBufferHeight = 480;
-            graphics.PreferredBackBufferWidth = 640;
-
-            // create the TTengine instance, linked to this Game class
-            TTengineMaster.Create(this);
-
+            MyWindowWidth = 640;
+            MyWindowHeight = 480;
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
-        protected override void Initialize()
+        protected override void InitTTContent()
         {
-            // create one root gamelet
-            rootlet = new FixedTimestepPhysics();
-
-            // init one Screenlet
-            screenlet = new Screenlet(640, 480);
-            screenlet.DrawInfo.DrawColor = Color.White;
-            rootlet.Add(screenlet);
-
-            // add a FrameRateCounter utility Gamelet
-            Drawlet fps = new FrameRateCounter();
-            fps.DrawInfo.DrawColor = Color.Black;
-            screenlet.Add(fps);
+            Screen.DrawInfo.DrawColor = Color.White;
 
             // add a static text 'MyTextlet'
             MyTextlet txt = new MyTextlet("TTengine shader test using Efflet");
             txt.Motion.Position = new Vector2(0.01f, 0.4f);
             txt.DrawInfo.DrawColor = Color.Black;
-            screenlet.Add(txt);
+            Screen.Add(txt);
 
             // add several Spritelets and set some specific velocity per item
             Random rnd = new Random();
@@ -81,46 +49,19 @@ namespace TTengineTestGame
                     ball.StartTime = 3f * (j + i);
                     ball.Duration = 4f + 5f * (float)rnd.NextDouble();
 
-                    screenlet.Add(ball);
+                    Screen.Add(ball);
                 }
             }
 
             HypnoEfflet eff = new HypnoEfflet();
             eff.DrawInfo.Alpha = 0.2f;
-            screenlet.Add(eff);
+            Screen.Add(eff);
 
-            // plus call base to enumnerate all XNA (gfx) Game components to init
-            base.Initialize();
         }
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Update(GameTime gameTime)
+        protected override void LoadTTContent()
         {
-            // call the TTengine Update method on our root gamelet
-            TTengineMaster.Update(gameTime, rootlet);
-
-            // Allows the game to exit
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape) || GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-            {
-                this.Exit();
-            }
-
-            base.Update(gameTime);
         }
 
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Draw(GameTime gameTime)
-        {
-            // draw all my gamelet items
-            TTengineMaster.Draw(gameTime, rootlet);
-            base.Draw(gameTime);
-        }
     }
 }

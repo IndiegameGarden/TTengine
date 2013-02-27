@@ -1,4 +1,4 @@
-(License for files in FMOD folder:)
+(License for fmodex.dll and all files in FMOD folder:)
 FMOD Ex - Copyright (c), Firelight Technologies Pty, Ltd. 2004-2008.      
 Consult http://www.fmod.org/ for license conditions.
 
