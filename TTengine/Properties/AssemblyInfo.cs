@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("TTengine")]
 [assembly: AssemblyDescription("2D game engine for C# XNA")]
 [assembly: AssemblyCompany("TranceTrance.com")]
-[assembly: AssemblyCopyright("Copyright © TranceTrance.com 2010-2012")]
+[assembly: AssemblyCopyright("Copyright © TranceTrance.com 2010-2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,4 +32,4 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("2.0.0.26")]
+[assembly: AssemblyVersion("3.0.0.1")]

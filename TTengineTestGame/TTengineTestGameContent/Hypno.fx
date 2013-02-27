@@ -1,4 +1,4 @@
-// (c) 2010-2011 TranceTrance.com. Distributed under the FreeBSD license in LICENSE.txt
+// (c) 2010-2013 TranceTrance.com. Distributed under the FreeBSD license in LICENSE.txt
 
 // parameters used directly from Efflet class
 float4 DrawColor = float4(1,1,1,1);

@@ -13,7 +13,7 @@ namespace TTengine.Core
      * Subclasses of Efflet can use inside the shader these predefined variables:
      *   DrawColor - value of Gamelet.DrawColor as RGB plus the alpha value
      */
-    public class Efflet: Gamelet
+    public class Efflet: Drawlet
     {
         protected string fxFileName = "";
         protected Effect effect = null;

@@ -112,6 +112,7 @@
     <Compile Include="Core\Screenlet.cs" />
     <Compile Include="Core\Spritelet.cs" />
     <Compile Include="Core\State.cs" />
+    <Compile Include="Core\TTGame.cs" />
     <Compile Include="Core\TTSpriteBatch.cs" />
     <Compile Include="Core\UpdateParams.cs" />
     <Compile Include="Modifiers\Modifier.cs" />
@@ -127,6 +128,12 @@
     <Compile Include="Util\FrameRateCounter.cs" />
     <Compile Include="Util\ScreenZoomer.cs" />
     <Compile Include="Util\TTutil.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TTMusicEngine\TTMusicEngine.csproj">
+      <Project>{CB99D0C9-FD0E-4B90-91BD-7D5816B38A2C}</Project>
+      <Name>TTMusicEngine</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />

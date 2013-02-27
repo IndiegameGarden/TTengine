@@ -1,4 +1,12 @@
-Copyright (c) 2010-2011, TranceTrance.com and its domain owner
+(License for files in FMOD folder:)
+FMOD Ex - Copyright (c), Firelight Technologies Pty, Ltd. 2004-2008.      
+Consult http://www.fmod.org/ for license conditions.
+
+---------------------------
+
+(License for other files:)
+
+Copyright (c) 2010-2013, TranceTrance.com and its domain owner
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, 
