@@ -3,10 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace TTengine.Core
 {
-    /**
-     * SpriteInfo that supports drawing sprites with a given shader effect applied (HLSL)
-     */
-    public class EffectSpriteInfo : SpriteInfo
+    /// <summary>
+    /// SpriteComplet that supports drawing sprites with a given shader effect applied (HLSL)  
+    /// </summary>
+    public class EffectSpriteComplet : SpriteComplet
     {
         /// <summary>
         /// whether the Effect is used when drawing (true), or not (false).
@@ -34,7 +34,7 @@ namespace TTengine.Core
         /// construct with BasicEffect and given texture loaded from content file
         /// </summary>
         /// <param name="textureFile">texture content file</param>
-        public EffectSpriteInfo(String textureFile)
+        public EffectSpriteComplet(String textureFile)
             : base(textureFile)
         {
             this.effectFile = null;
@@ -45,7 +45,7 @@ namespace TTengine.Core
         /// construct with BasicEffect and given Texture2D
         /// </summary>
         /// <param name="texture">texture content file</param>
-        public EffectSpriteInfo(Texture2D texture)
+        public EffectSpriteComplet(Texture2D texture)
             : base(texture)
         {
             this.effectFile = null;
@@ -57,7 +57,7 @@ namespace TTengine.Core
         /// </summary>
         /// <param name="textureFile">texture content file</param>
         /// <param name="effectFile">shader effect file</param>
-        public EffectSpriteInfo(String textureFile, String effectFile)
+        public EffectSpriteComplet(String textureFile, String effectFile)
             : base(textureFile)
         {
             this.effectFile = effectFile;
@@ -69,7 +69,7 @@ namespace TTengine.Core
         /// </summary>
         /// <param name="texture">texture to use</param>
         /// <param name="effectFile">shader effect file to load</param>
-        public EffectSpriteInfo(Texture2D texture, String effectFile)
+        public EffectSpriteComplet(Texture2D texture, String effectFile)
             : base(texture)
         {
             this.effectFile = effectFile;

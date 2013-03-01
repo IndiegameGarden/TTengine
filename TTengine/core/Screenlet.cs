@@ -27,9 +27,9 @@ namespace TTengine.Core
         public Vector2 Center = Vector2.Zero;
 
         /**
-         * The Motion class specifically adapted for use by Screenlet
+         * The MotionComplet class specifically adapted for use by Screenlet
          */
-        class ScreenletMotion : Motion
+        class ScreenletMotion : MotionComplet
         {
             public override Vector2 PositionAbs
             {
@@ -153,7 +153,7 @@ namespace TTengine.Core
             TTengineMaster.ActiveScreen = this;
             Motion = new ScreenletMotion();
             Add(Motion);
-            DrawInfo = new DrawInfo();
+            DrawInfo = new DrawComplet();
             Add(DrawInfo);
             Screen = this;
             TTengineMaster.AddScreenlet(this);

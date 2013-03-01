@@ -48,17 +48,17 @@ namespace TTengine.Core
         /// <summary>
         /// Includes position, velocity, any motion behaviors of Gamelet; or null if not motion-capable
         /// </summary>
-        public Motion Motion;
+        public MotionComplet Motion;
 
         /// <summary>
         /// Information for drawing this Gamelet, or null if not drawable
         /// </summary>
-        public DrawInfo DrawInfo;
+        public DrawComplet DrawInfo;
 
         /// <summary>
         /// Sprite for this Gamelet, or null if none
         /// </summary>
-        public SpriteInfo Sprite;
+        public SpriteComplet Sprite;
 
         /// <summary>
         /// get the unique ID of this Gamelet
@@ -139,8 +139,8 @@ namespace TTengine.Core
         /// </summary>
         public void CreateDrawlet()
         {
-            Motion = new Motion();
-            DrawInfo = new DrawInfo();
+            Motion = new MotionComplet();
+            DrawInfo = new DrawComplet();
             Add(Motion);
             Add(DrawInfo);
         }
@@ -151,7 +151,7 @@ namespace TTengine.Core
         public void CreateSpritelet()
         {
             CreateDrawlet();
-            Sprite = new SpriteInfo((Texture2D) null);
+            Sprite = new SpriteComplet((Texture2D) null);
             Add(Sprite);
         }
 
@@ -161,7 +161,7 @@ namespace TTengine.Core
         public void CreateSpritelet(String textureFile)
         {
             CreateDrawlet();
-            Sprite = new SpriteInfo(textureFile);
+            Sprite = new SpriteComplet(textureFile);
             Add(Sprite);
         }
 
@@ -171,7 +171,7 @@ namespace TTengine.Core
         public void CreateEffectSpritelet(String textureFile, String effectFile)
         {
             CreateDrawlet();
-            Sprite = new EffectSpriteInfo(textureFile, effectFile);
+            Sprite = new EffectSpriteComplet(textureFile, effectFile);
             Add(Sprite);
         }
 

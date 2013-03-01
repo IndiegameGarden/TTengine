@@ -9,14 +9,14 @@ using Microsoft.Xna.Framework.Graphics.PackedVector;
 
 namespace TTengine.Core
 {
-    /**
-     * functions for a sprite with a rectangle or circle physical shape. It supports collission detection,
-     * and has interpolation code for time-smoothed sprite drawing based on a fixed-timestep physics model.
-     * Also it supports on-screen visibility detection. Shape dimension is supported by Width/Height/Radius
-     * properties. 
-     */
-    public class SpriteInfo : Gamelet
+    /// <summary>
+    /// Component for a sprite with a rectangle or circle physical shape. 
+    /// It has interpolation code for time-smoothed sprite drawing based on a fixed-timestep physics model.
+    /// Shape dimensions are supported by Width/Height/Radius/Center properties. 
+    /// </summary>
+    public class SpriteComplet : Gamelet
     {
+
         #region Constructors
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace TTengine.Core
         /// <param name="fileName">name of XNA content file (from content project) without file extension e.g. "test", or
         /// name of bitmap file to load including extension e.g. "test.png"</param>
         /// <exception cref="InvalidOperationException">when invalid image file is attempted to load</exception>
-        public SpriteInfo(string fileName): base()
+        public SpriteComplet(string fileName): base()
         {
             if (fileName.Contains("."))
             {
@@ -39,7 +39,7 @@ namespace TTengine.Core
         /// <summary>
         /// create new spritelet with given Texture2D texture, or null if no texture yet
         /// </summary>
-        public SpriteInfo(Texture2D texture): base()
+        public SpriteComplet(Texture2D texture): base()
         {
             this.texture = texture;
             InitTextures();
@@ -55,7 +55,7 @@ namespace TTengine.Core
         protected float width = 0f;
         protected float height = 0f;
         private Texture2D texture = null;
-        private List<SpriteInfo> lastCollisionsList = new List<SpriteInfo>();
+        private List<SpriteComplet> lastCollisionsList = new List<SpriteComplet>();
         public static BlendState blendAlpha = null, blendColor = null;
 
         #endregion
@@ -189,8 +189,8 @@ namespace TTengine.Core
             if (!Active || !Visible ) return;
 
             // phase 1: check which items collide with me and add to list
-            List<SpriteInfo> collItems = new List<SpriteInfo>();
-            foreach (SpriteInfo s in Screen.collisionObjects)
+            List<SpriteComplet> collItems = new List<SpriteComplet>();
+            foreach (SpriteComplet s in Screen.collisionObjects)
             {
                 if (s.Active  && s != this && 
                     CollidesWith(s) && s.CollidesWith(this) ) // a collision is detected
@@ -200,7 +200,7 @@ namespace TTengine.Core
             }
 
             // phase 2: process the colliding items, to see if they are newly colliding or not
-            foreach (SpriteInfo s in collItems)
+            foreach (SpriteComplet s in collItems)
             {
                 if (!lastCollisionsList.Contains(s)) // if was not previously colliding, in previous round...
                 {
