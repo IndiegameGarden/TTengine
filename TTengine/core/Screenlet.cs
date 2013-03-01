@@ -19,7 +19,7 @@ namespace TTengine.Core
         public GraphicsDevice graphicsDevice;
 
         /// list of all Spritelets for which mutual collision detection is done
-        public List<Spritelet> collisionObjects;
+        public List<Gamelet> collisionObjects;
 
         /// <summary>
         /// The center coordinate of the screen
@@ -101,6 +101,7 @@ namespace TTengine.Core
         #region Private and internal variables
 
         internal SpriteFont DebugFont = null;
+        internal TTSpriteBatch mySpriteBatch = null;
         internal int screenWidth = 0;
         internal int screenHeight = 0;
         private float aspectRatio;
@@ -139,7 +140,7 @@ namespace TTengine.Core
 
         public void DebugText(float x, float y, string text)
         {
-            MySpriteBatch.DrawString(DebugFont, text, ToPixels(x, y), Color.White, 0f, Vector2.Zero, Motion.Zoom, SpriteEffects.None, 0f);
+            mySpriteBatch.DrawString(DebugFont, text, ToPixels(x, y), Color.White, 0f, Vector2.Zero, Motion.Zoom, SpriteEffects.None, 0f);
         }
 
         public void DebugText(Vector2 pos, string text)
@@ -169,7 +170,7 @@ namespace TTengine.Core
             }
             effletsList = new List<Efflet>();
             mySpriteBatch = new TTSpriteBatch(graphicsDevice);
-            collisionObjects = new List<Spritelet>();
+            collisionObjects = new List<Gamelet>();
         }
 
         protected void InitRenderTarget()

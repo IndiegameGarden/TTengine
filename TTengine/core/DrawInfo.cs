@@ -11,9 +11,8 @@ namespace TTengine.Core
         protected Vector2 drawPosition = Vector2.Zero;
         protected float drawScale = 1f;
         protected bool isDrawPositionCalculated = false;
-        protected float width = 0f;
-        protected float height = 0f;
         internal Color drawColor = Color.White;
+        internal TTSpriteBatch mySpriteBatch = null;
         private const int NBUF = 10; // TODO tune?
         private Vector2[] posHistory = new Vector2[NBUF];
         private float[] drawScaleHistory = new float[NBUF];
@@ -21,7 +20,9 @@ namespace TTengine.Core
         private bool isFirstUpdatePosition = true;
         private uint phIndex = 0;
 
+        /// <summary>
         /// a value indicating drawing depth of sprite 0f (front)....1f (back)
+        /// </summary>
         public float LayerDepth = 0.5f;
 
         public DrawInfo(): base()
@@ -65,15 +66,9 @@ namespace TTengine.Core
         }
 
         /// <summary>
-        /// Center of sprite expressed in relative width/height coordinates, where 1.0 is full width or full height.
-        /// By default the center of the sprite is chosen in the middle.
-        /// </summary>
-        public Vector2 Center = new Vector2(0.5f, 0.5f); 
-
-        /// <summary>
         /// returns a compound scale value for scaling use in Draw() calls, taking into account zoom as well.
         /// </summary>
-        public virtual float DrawScaleCurrent { get { return Motion.ScaleAbs * Motion.ZoomAbs; } }
+        public virtual float DrawScaleCurrent { get { return Parent.Motion.ScaleAbs * Parent.Motion.ZoomAbs; } }
 
         public virtual float DrawScale
         {
@@ -87,31 +82,6 @@ namespace TTengine.Core
         }
 
         /// <summary>
-        /// calculates a center coordinate for direct use in Draw() calls, expressed in pixels
-        /// </summary>
-        public virtual Vector2 DrawCenter { get { return ToPixels(Center.X * width, Center.Y * height); } }
-
-        /// <summary>
-        /// relative width of sprite in normalized coordinates
-        /// </summary>
-        public virtual float Width { get { return width; } set { width = value; } }
-
-        /// <summary>
-        /// relative height of sprite in normalized coordinates
-        /// </summary>
-        public virtual float Height { get { return height; } set { height = value; } }
-
-        /// <summary>
-        /// absolute width of sprite, being Width after applying any scaling
-        /// </summary>
-        public virtual float WidthAbs { get { return width * Motion.ScaleAbs; } }
-
-        /// <summary>
-        /// absolute height of sprite, being Height after applying any scaling
-        /// </summary>
-        public virtual float HeightAbs { get { return height * Motion.ScaleAbs; } }
-
-        /// <summary>
         /// an interpolated position in pixels for sprite drawing with smooth motion, directly usable in Draw() calls
         /// </summary>
         public Vector2 DrawPosition
@@ -120,16 +90,27 @@ namespace TTengine.Core
             {
                 // if not yet calculated, return the current abs position as a best guess.
                 if (!isDrawPositionCalculated)
-                    return Motion.PositionAbsZoomedPixels;
+                    return Parent.Motion.PositionAbsZoomedPixels;
                 return drawPosition;
             }
         }
 
-        protected override void OnNewParent()
+        /// <summary>
+        /// get the default TTSpriteBatch to use for drawing for this Gamelet. If not configured
+        /// explicitly, it will use the default TTSpriteBatch of the Screenlet it renders to.
+        /// </summary>
+        public virtual TTSpriteBatch MySpriteBatch
         {
-            base.OnNewParent();
-            // attach to parent's Motion object
-            Motion = Parent.Motion;
+            get
+            {
+                Screen.UseSharedSpriteBatch(mySpriteBatch);
+                return mySpriteBatch;
+            }
+
+            set
+            {
+                mySpriteBatch = value;
+            }
         }
 
         // calculates drawing positions based on interpolation
@@ -161,12 +142,19 @@ namespace TTengine.Core
         protected override void OnUpdate(ref UpdateParams p)
         {
             base.OnUpdate(ref p);
+            UpdateSmoothingCache(ref p);
+        }
+
+        protected override void OnNewParent()
+        {
+            base.OnNewParent();
+            mySpriteBatch = Screen.mySpriteBatch;
         }
 
         internal void UpdateSmoothingCache(ref UpdateParams p)
         {
             // store current position in a cache to use in trajectory smoothing
-            UpdatePositionCache(Motion.PositionAbsZoomedPixels, DrawScaleCurrent, p.SimTime);
+            UpdatePositionCache(Parent.Motion.PositionAbsZoomedPixels, DrawScaleCurrent, p.SimTime);
         }
         
         private void UpdatePositionCache(Vector2 updPos, float updDrawScale, float updTime)

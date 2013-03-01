@@ -8,27 +8,28 @@ using TTengine;
 
 namespace TTengineTestGame
 {
-    public class MyTextlet : Drawlet
+    public class MyTextlet : Gamelet
     {
         protected string text;
         protected SpriteFont spriteFont;
 
         public MyTextlet( string text)
         {
+            CreateDrawlet();
             this.text = text;
             DrawInfo.DrawColor = Color.White;
         }
 
         protected override void OnInit()
         {
-            spriteFont = TTengineMaster.ActiveGame.Content.Load<SpriteFont>("Font1");
+            spriteFont = TTGame.Instance.Content.Load<SpriteFont>("Font1");
         }
 
         protected override void OnDraw(ref DrawParams p)
         {
             Vector2 pos = Motion.PositionAbs;
-            Vector2 posPixels = pos * TTengineMaster.ActiveGame.GraphicsDevice.DisplayMode.Height;
-            MySpriteBatch.DrawString(spriteFont, text, posPixels, DrawInfo.DrawColor);
+            Vector2 posPixels = pos * TTGame.Instance.GraphicsDevice.DisplayMode.Height;
+            DrawInfo.MySpriteBatch.DrawString(spriteFont, text, posPixels, DrawInfo.DrawColor);
         }
     }
 }

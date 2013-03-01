@@ -10,9 +10,16 @@ namespace TTengine.Util
     /**
      * a debug text message that shows on screen
      */
-    public class DebugMessage: Drawlet
+    public class DebugMessage: Gamelet
     {
         protected string txt ;
+
+        public DebugMessage Create(string initialText)
+        {
+            DebugMessage m = new DebugMessage(initialText);
+
+            return m;
+        }
 
         /// <summary>
         /// construct a box with initial text. Can be changed later with the Text propertyOrField.
@@ -51,7 +58,7 @@ namespace TTengine.Util
             base.OnDraw(ref p);
 
             Vector2 origin = Vector2.Zero; // new Vector2(2f * txt.Length, 0f);
-            MySpriteBatch.DrawString(Screen.DebugFont, txt, Motion.PositionAbsZoomedPixels, DrawInfo.DrawColor,
+            DrawInfo.MySpriteBatch.DrawString(Screen.DebugFont, txt, Motion.PositionAbsZoomedPixels, DrawInfo.DrawColor,
                                     Motion.RotateAbs, origin, Motion.ScaleAbs, SpriteEffects.None, DrawInfo.LayerDepth);
         }
 

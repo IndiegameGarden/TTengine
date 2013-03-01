@@ -7,24 +7,34 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace TTengine.Core
 {
+    /// <summary>
     /// Generic event arguments class to be used for Gamelet related events
+    /// </summary>
     public class GameletEventArgs : EventArgs
     {
+        /// <summary>
+        /// describes item that is subject of event (e.g. colliding Gamelet)
+        /// </summary>
+        public Gamelet otherItem;
+
         public GameletEventArgs(Gamelet otherItem)
         {
             this.otherItem = otherItem;
         }
-
-        public Gamelet otherItem;
+        
     }
 
+    /// <summary>
+    /// Generic event handler
+    /// </summary>
+    /// <param name="sender">generator of event</param>
+    /// <param name="e">see above class, which contains any event arguments</param>
     public delegate void GameletEventHandler(Gamelet sender, GameletEventArgs e);
 
     /**
-     * basic game item class that can contain children items. It may have Shape (which is 
-     * a Spritelet). It has simulated motion and provides subclass extendibility via On...() methods.
-     * Also defines some eventing.
-     * See also: Spritelet
+     * basic game item class that can contain children items. 
+     * Provides subclass extendibility via On...() methods.
+     * Also defines some (collission) eventing.
      */
     public class Gamelet: IDisposable
     {
@@ -35,21 +45,38 @@ namespace TTengine.Core
         
         #region Properties
 
+        /// <summary>
+        /// Includes position, velocity, any motion behaviors of Gamelet; or null if not motion-capable
+        /// </summary>
         public Motion Motion;
 
+        /// <summary>
+        /// Information for drawing this Gamelet, or null if not drawable
+        /// </summary>
         public DrawInfo DrawInfo;
 
-        // get the unique ID of this Gamelet
+        /// <summary>
+        /// Sprite for this Gamelet, or null if none
+        /// </summary>
+        public SpriteInfo Sprite;
+
+        /// <summary>
+        /// get the unique ID of this Gamelet
+        /// </summary>
         public int ID     { get { return _ID; } }
         
+        /// <summary>
         /// Flag indicating if Gamelet should be deleted - if true deletion occurs during next Update
+        /// </summary>
         public bool Delete = false;
-        
-        /// If false this Gamelet will not update/draw and my children will not update/draw
+
+        /// <summary>
+        /// If false this Gamelet will not update/draw/collide and my children will not update/draw/collide
+        /// </summary>
         public bool Active = true;
 
         /// <summary>
-        /// Set the State in which this Gamelet is Active only. If null (default), it means active in any state.
+        /// Set the IState in which this Gamelet is Active only. If null (default), it means active in any state.
         /// </summary>
         public IState ActiveInState
         {
@@ -58,39 +85,9 @@ namespace TTengine.Core
         }
 
         /// <summary>
-        /// Flag indicating whether visibility is enabled, which means that if true OnDraw() is called
+        /// Flag indicating whether visibility is enabled, which means if true OnDraw() is called
         /// </summary>
         public bool Visible = true; 
-
-        /// <summary>
-        /// get the default TTSpriteBatch to use for drawing for this Gamelet. If a Gamelet is not configured
-        /// with this, it will first try to use a Parent's (or Parent's Parent etc.) value. If not configured
-        /// either, it will use the default TTSpriteBatch of the Screenlet it renders to.
-        /// </summary>
-        public virtual TTSpriteBatch MySpriteBatch
-        {
-            get
-            {
-                if (mySpriteBatch == null)
-                {
-                    if (Parent == null)
-                    {
-                        TTSpriteBatch spb = Screen.MySpriteBatch;
-                        Screen.UseSharedSpriteBatch(spb);
-                        return spb;
-                    }
-                    else
-                        return Parent.MySpriteBatch;                    
-                }
-                Screen.UseSharedSpriteBatch(mySpriteBatch);
-                return mySpriteBatch;
-            }
-
-            set
-            {
-                mySpriteBatch = value;
-            }
-        }
 
         /// My parent item, or null if none (in that case I am root or not attached yet)
         public Gamelet Parent = null ;
@@ -126,17 +123,70 @@ namespace TTengine.Core
         #endregion
 
         #region Constructors
-        /// <summary>creates Gamelet without shape and position Zero. Can be used to create a root item or container item</summary>
+        
+        /// <summary>
+        /// creates basic Gamelet that attaches to the currently active Screen
+        /// </summary>
         public Gamelet()
         {
             CreateID();
             Screen = TTengineMaster.ActiveScreen;
             OnInit();
         }
+
+        /// <summary>
+        /// turn into a Drawlet
+        /// </summary>
+        public void CreateDrawlet()
+        {
+            Motion = new Motion();
+            DrawInfo = new DrawInfo();
+            Add(Motion);
+            Add(DrawInfo);
+        }
+
+        /// <summary>
+        /// turn into a Spritelet
+        /// </summary>
+        public void CreateSpritelet()
+        {
+            CreateDrawlet();
+            Sprite = new SpriteInfo((Texture2D) null);
+            Add(Sprite);
+        }
+
+        /// <summary>
+        /// turn into a Spritelet
+        /// </summary>
+        public void CreateSpritelet(String textureFile)
+        {
+            CreateDrawlet();
+            Sprite = new SpriteInfo(textureFile);
+            Add(Sprite);
+        }
+
+        /// <summary>
+        /// turn into an EffectSpritelet
+        /// </summary>
+        public void CreateEffectSpritelet(String textureFile, String effectFile)
+        {
+            CreateDrawlet();
+            Sprite = new EffectSpriteInfo(textureFile, effectFile);
+            Add(Sprite);
+        }
+
+        /// <summary>
+        /// turn into an Efflet, TODO only called from efflet class now.
+        /// </summary>
+        public void CreateEfflet()
+        {
+            CreateDrawlet();
+        }
+
+
         #endregion
 
-        #region Internal Vars
-        internal TTSpriteBatch mySpriteBatch = null;
+        #region Internal Vars        
         internal float duration = -1f;
         internal float startTime = 0f;
         private int _ID = -1;
@@ -185,7 +235,7 @@ namespace TTengine.Core
         /// <summary>
         /// Collision may imply that me or a parent of me collided
         /// </summary>
-        public virtual void OnCollision(Spritelet withItem)
+        public virtual void OnCollision(Gamelet withItem)
         {
         }
 
@@ -469,7 +519,7 @@ namespace TTengine.Core
             OnDelete();
         }
 
-        internal void OnCollideEventNotification(Spritelet s)
+        internal void OnCollideEventNotification(Gamelet s)
         {
             // event notifs to subscribers of OnCollision event
             if (OnCollisionEvent != null)

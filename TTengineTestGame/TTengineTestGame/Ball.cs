@@ -5,16 +5,16 @@ using TTengine.Core;
 
 namespace TTengineTestGame
 {
-    public class Ball: Spritelet
+    public class Ball: Gamelet
     {
         public Ball()
-            : base("ball")
         {
-            checksCollisions = true;
-            radius *= 0.9f;
+            CreateSpritelet("ball");
+            Sprite.ChecksCollisions = true;
+            Sprite.Radius *= 0.9f;
         }
 
-        public override void OnCollision(Spritelet withItem)
+        public override void OnCollision(Gamelet withItem)
         {
             base.OnCollision(withItem);
 

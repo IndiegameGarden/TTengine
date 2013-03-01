@@ -11,7 +11,7 @@ namespace TTengine.Util
      * shows a framerate counter on screen (FPS) calculated
      * from timing of draw/upd calls.
      */
-    public class FrameRateCounter : Drawlet
+    public class FrameRateCounter : Gamelet
     {
         SpriteFont spriteFont;
         int frameRate = 0;
@@ -19,11 +19,9 @@ namespace TTengine.Util
         int frameCounterTotal = 0;
         TimeSpan elapsedTime = TimeSpan.Zero;
 
-        public FrameRateCounter()
+        public FrameRateCounter(): this(0.5f, 0.01f)
         {
-            DrawInfo.LayerDepth = 0.0f;
-            Motion.Position = new Vector2(0.5f, 0.01f);
-            spriteFont = TTengineMaster.ActiveGame.Content.Load<SpriteFont>(@"TTFrameRateCounter");
+            //
         }
 
         public FrameRateCounter(float x, float y)
@@ -54,9 +52,9 @@ namespace TTengine.Util
                 frameRateAvg = (int)(frameCounterTotal / SimTime);
             string fps = string.Format("{0} fps [{1}]", frameRate, frameRateAvg );
             Vector2 pos = Motion.PositionAbsZoomedPixels;
-            MySpriteBatch.DrawString(spriteFont, fps, pos,
+            DrawInfo.MySpriteBatch.DrawString(spriteFont, fps, pos,
                         Color.Black, 0f, Vector2.Zero, 1f, SpriteEffects.None, DrawInfo.LayerDepth - 0.00001f);
-            MySpriteBatch.DrawString(spriteFont, fps, pos,
+            DrawInfo.MySpriteBatch.DrawString(spriteFont, fps, pos,
                         DrawInfo.DrawColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, DrawInfo.LayerDepth);
         }
     }

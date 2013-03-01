@@ -34,7 +34,7 @@ namespace TTengineTestGame
 
             // add several Spritelets and set some specific velocity per item
             Random rnd = new Random();
-            Spritelet ball = null;
+            Gamelet ball = null;
             for (float j = 0.1f; j < 1.6f; j += 0.20f)
             {
                 for (float i = 0.1f; i < 1.0f; i += 0.1f)
