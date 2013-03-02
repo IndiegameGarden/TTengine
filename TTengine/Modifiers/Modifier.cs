@@ -51,7 +51,7 @@ namespace TTengine.Modifiers
             this.propertyName = subPropertyOrField;
         }
 
-        protected override void OnNewParent()
+        public override void OnNewParent()
         {
             base.OnNewParent();
             if (propertyName != null && Parent != null) 

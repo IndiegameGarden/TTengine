@@ -41,7 +41,7 @@ namespace TTengine.Util
 
         public float ZoomSpeed = 0f;
 
-        protected override void OnNewParent()
+        public override void OnNewParent()
         {
             base.OnNewParent();
             Motion = Parent.Motion;

@@ -14,7 +14,7 @@ namespace TTengine.Core
     /// It has interpolation code for time-smoothed sprite drawing based on a fixed-timestep physics model.
     /// Shape dimensions are supported by Width/Height/Radius/Center properties. 
     /// </summary>
-    public class SpriteComplet : Gamelet
+    public class SpriteComplet : Complet
     {
 
         #region Constructors
@@ -55,7 +55,7 @@ namespace TTengine.Core
         protected float width = 0f;
         protected float height = 0f;
         private Texture2D texture = null;
-        private List<SpriteComplet> lastCollisionsList = new List<SpriteComplet>();
+        private List<Gamelet> lastCollisionsList = new List<Gamelet>();
         public static BlendState blendAlpha = null, blendColor = null;
 
         #endregion
@@ -68,10 +68,10 @@ namespace TTengine.Core
             get { return checksCollisions;  } 
             set { 
                 checksCollisions = value;
-                if (checksCollisions && !Screen.collisionObjects.Contains(Parent))
-                    Screen.collisionObjects.Add(Parent);
+                if (checksCollisions && !Parent.Screen.collisionObjects.Contains(Parent))
+                    Parent.Screen.collisionObjects.Add(Parent);
                 if (!checksCollisions)
-                    Screen.collisionObjects.Remove(Parent);
+                    Parent.Screen.collisionObjects.Remove(Parent);
             } 
         }
 
@@ -109,7 +109,7 @@ namespace TTengine.Core
         /// <summary>
         /// calculates a center coordinate for direct use in Draw() calls, expressed in pixels
         /// </summary>
-        public virtual Vector2 DrawCenter { get { return ToPixels(Center.X * width, Center.Y * height); } }
+        public virtual Vector2 DrawCenter { get { return Parent.ToPixels(Center.X * width, Center.Y * height); } }
 
         /**
          * get/set the Texture of this shape
@@ -147,10 +147,6 @@ namespace TTengine.Core
                 LoadTexture(fileName);
         }
 
-        protected override void OnDelete()
-        {
-            Screen.collisionObjects.Remove(this);
-        }
 
         /**
          * load  a (first-time, or new) texture for this shape)
@@ -160,10 +156,24 @@ namespace TTengine.Core
             Texture = TTengineMaster.ActiveGame.Content.Load<Texture2D>(textureFilename);
         }
 
+        protected override void OnDelete()
+        {
+            // FIXME move to collision complet class
+            Parent.Screen.collisionObjects.Remove(Parent);
+        }
+
+        public override void OnNewParent()
+        {
+            //
+        }
+
+        protected override void OnUpdate(ref UpdateParams p)
+        {
+            //
+        }
+
         protected override void OnDraw(ref DrawParams p)
         {
-            base.OnDraw(ref p);
-
             if (texture != null)
             {                
                 Parent.DrawInfo.MySpriteBatch.Draw(texture, Parent.DrawInfo.DrawPosition, null, Parent.DrawInfo.DrawColor,
@@ -186,27 +196,27 @@ namespace TTengine.Core
         /// run collision detection of this against all other relevant Spritelets
         internal void HandleCollisions(UpdateParams p)
         {
-            if (!Active || !Visible ) return;
+            if (!Parent.Active || !Parent.Visible) return;
 
             // phase 1: check which items collide with me and add to list
-            List<SpriteComplet> collItems = new List<SpriteComplet>();
-            foreach (SpriteComplet s in Screen.collisionObjects)
+            List<Gamelet> collItems = new List<Gamelet>();
+            foreach (Gamelet s in Parent.Screen.collisionObjects)
             {
-                if (s.Active  && s != this && 
-                    CollidesWith(s) && s.CollidesWith(this) ) // a collision is detected
+                if (s.Active  && s != Parent &&
+                    CollidesWith(s) && s.Sprite.CollidesWith(Parent)) // a collision is detected
                 {
                     collItems.Add(s);
                 }
             }
 
             // phase 2: process the colliding items, to see if they are newly colliding or not
-            foreach (SpriteComplet s in collItems)
+            foreach (Gamelet s in collItems)
             {
                 if (!lastCollisionsList.Contains(s)) // if was not previously colliding, in previous round...
                 {
                     // ... notify the collision methods
-                    OnCollision(s);
-                    OnCollideEventNotification(s);
+                    Parent.OnCollision(s);
+                    Parent.OnCollideEventNotification(s);
                 }
             }
 
@@ -216,7 +226,7 @@ namespace TTengine.Core
 
         internal float ToNormalizedNS(float coord)
         {
-            return coord * Screen.scalingToNormalized;
+            return coord * Parent.Screen.scalingToNormalized;
         }
 
         /// <summary>
@@ -233,9 +243,9 @@ namespace TTengine.Core
             try
             {
                 if (atRunTime)
-                    return LoadTextureStreamAtRuntime(Screen.graphicsDevice, fn, contentDir);
+                    return LoadTextureStreamAtRuntime(Parent.Screen.graphicsDevice, fn, contentDir);
                 else
-                    return LoadTextureStream(Screen.graphicsDevice, fn, contentDir);
+                    return LoadTextureStream(Parent.Screen.graphicsDevice, fn, contentDir);
             }
             catch (Exception ex)
             {

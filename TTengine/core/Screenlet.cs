@@ -18,7 +18,7 @@ namespace TTengine.Core
         /// ref to the GraphicsDevice to use by child Gamelets
         public GraphicsDevice graphicsDevice;
 
-        /// list of all Spritelets for which mutual collision detection is done
+        /// list of all Gamelets for which mutual collision detection is done
         public List<Gamelet> collisionObjects;
 
         /// <summary>

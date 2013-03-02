@@ -10,7 +10,7 @@ namespace TTengine.Util
     {
         Screenlet screen = null;
 
-        protected override void OnNewParent()
+        public override void OnNewParent()
         {
             base.OnNewParent();
             if (Parent is Screenlet)

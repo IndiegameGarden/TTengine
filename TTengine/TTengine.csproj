@@ -99,6 +99,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Complet.cs" />
     <Compile Include="Core\DrawComplet.cs" />
     <Compile Include="Core\DrawParams.cs" />
     <Compile Include="Core\EffectSpriteComplet.cs" />

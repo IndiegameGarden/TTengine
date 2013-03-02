@@ -8,7 +8,7 @@ namespace TTengine.Core
     /// Component with elements to provide basic physics-based motion 
     /// (position, velocity, scale, rotation, zoom, etc.) to a gamelet
     /// </summary>
-    public class MotionComplet: Gamelet
+    public class MotionComplet : Complet
     {
         public Vector2 Position = Vector2.Zero;
         public Vector2 PositionModifier = Vector2.Zero;
@@ -69,7 +69,7 @@ namespace TTengine.Core
         {
             get
             {
-                Vector2 p = (PositionAbs - MotionParent.ZoomCenter) * MotionParent.Zoom + Screen.Center;
+                Vector2 p = (PositionAbs - MotionParent.ZoomCenter) * MotionParent.Zoom + Parent.Screen.Center;
                 return p;
             }
         }
@@ -110,7 +110,7 @@ namespace TTengine.Core
         {
             get
             {
-                return ToPixels(PositionAbsZoomed);
+                return Parent.ToPixels(PositionAbsZoomed);
             }
         }
 
@@ -140,7 +140,7 @@ namespace TTengine.Core
             get
             {
                 if (!isZoomCenterSet)
-                    return Screen.Center;
+                    return Parent.Screen.Center;
                 else
                     return zoomCenter;
             }
@@ -210,13 +210,9 @@ namespace TTengine.Core
         /// </summary>
         protected MotionComplet motionParent = null;
 
-        public MotionComplet()
+        protected override void OnUpdate(ref UpdateParams p)
         {
-        }
-
-        internal override void Update(ref UpdateParams p)
-        {
-            // reset back the Modifiers, each Update round
+            // FIXME ? reset back the Modifiers, each Update round
             // *before* any children are simulated.
             if (Active)
             {
@@ -224,12 +220,6 @@ namespace TTengine.Core
                 ScaleModifier = 1.0f;
                 RotateModifier = 0.0f;
             }
-            base.Update(ref p);
-        }
-
-        protected override void OnUpdate(ref UpdateParams p)
-        {
-            base.OnUpdate(ref p);
 
             // simple physics simulation (fixed timestep assumption)
             // with optional target to move to with given velocity
@@ -255,6 +245,21 @@ namespace TTengine.Core
             // rotation
             RotateToTarget();
 
+        }
+
+        protected override void OnDelete()
+        {
+            //
+        }
+
+        protected override void OnDraw(ref DrawParams p)
+        {
+            //
+        }
+
+        public override void OnNewParent()
+        {
+            //
         }
 
         protected void MoveToTarget(ref UpdateParams p, bool isLinearMotionMode)

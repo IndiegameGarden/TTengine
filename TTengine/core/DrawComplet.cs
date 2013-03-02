@@ -9,7 +9,7 @@ namespace TTengine.Core
     /// <summary>
     /// Component that allows drawing of the gamelet, offering very basic drawing functions
     /// </summary>
-    public class DrawComplet: Gamelet
+    public class DrawComplet: Complet
     {
 
         public DrawComplet()
@@ -113,7 +113,7 @@ namespace TTengine.Core
         {
             get
             {
-                Screen.UseSharedSpriteBatch(mySpriteBatch);
+                Parent.Screen.UseSharedSpriteBatch(mySpriteBatch);
                 return mySpriteBatch;
             }
 
@@ -126,8 +126,6 @@ namespace TTengine.Core
         // calculates drawing positions based on interpolation
         protected override void OnDraw(ref DrawParams p)
         {
-            base.OnDraw(ref p);
-
             float t = (float)p.gameTime.TotalGameTime.TotalSeconds;
             // default - take latest position in cache
             drawPosition = DrawPosition;
@@ -151,14 +149,18 @@ namespace TTengine.Core
 
         protected override void OnUpdate(ref UpdateParams p)
         {
-            base.OnUpdate(ref p);
             UpdateSmoothingCache(ref p);
         }
 
-        protected override void OnNewParent()
+        public override void OnNewParent()
         {
-            base.OnNewParent();
-            mySpriteBatch = Screen.mySpriteBatch;
+            if (Parent.Screen != null)
+                mySpriteBatch = Parent.Screen.mySpriteBatch;
+        }
+
+        protected override void OnDelete()
+        {
+            //
         }
 
         internal void UpdateSmoothingCache(ref UpdateParams p)

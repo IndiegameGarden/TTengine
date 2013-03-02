@@ -18,10 +18,6 @@ namespace TTengineTestGame
             CreateDrawlet();
             this.text = text;
             DrawInfo.DrawColor = Color.White;
-        }
-
-        protected override void OnInit()
-        {
             spriteFont = TTGame.Instance.Content.Load<SpriteFont>("Font1");
         }
 

@@ -92,11 +92,11 @@ namespace TTengine.Core
             if (effectFile != null)
                 eff = TTengineMaster.ActiveGame.Content.Load<Effect>(effectFile);
             else
-                eff = new BasicEffect(Screen.graphicsDevice);
-            VertexShaderInit(eff);
+                eff = new BasicEffect(Parent.Screen.graphicsDevice);
+            Parent.VertexShaderInit(eff); // FIXME move away from gamelet
 
             // find or create my effect-related spritebatch
-            MySpriteBatch = Screen.CreateSharedSpriteBatch(eff);
+            MySpriteBatch = Parent.Screen.CreateSharedSpriteBatch(eff);
 
             // try to find common parameters in the Effect (gets null if not found)
             timeParam = eff.Parameters["Time"];
@@ -110,12 +110,12 @@ namespace TTengine.Core
                 // supply the shader parameters that may have been configured
                 // TODO may not be useful with shared spritebatches: whole batch of drawn objects uses latest set shader params only.
                 if (timeParam != null)
-                    timeParam.SetValue(SimTime);
+                    timeParam.SetValue(Parent.SimTime);
                 if (positionParam != null)
-                    positionParam.SetValue(Motion.Position);
+                    positionParam.SetValue(Parent.Motion.Position);
 
                 MySpriteBatch.Draw(Texture, Parent.DrawInfo.DrawPosition, null, Parent.DrawInfo.DrawColor,
-                       Motion.RotateAbs, DrawCenter, Parent.DrawInfo.DrawScale, SpriteEffects.None, Parent.DrawInfo.LayerDepth);
+                       Parent.Motion.RotateAbs, DrawCenter, Parent.DrawInfo.DrawScale, SpriteEffects.None, Parent.DrawInfo.LayerDepth);
             }
         }
 
@@ -125,7 +125,7 @@ namespace TTengine.Core
             {
                 if (EffectEnabled)
                 {
-                    Screen.UseSharedSpriteBatch(eff);
+                    Parent.Screen.UseSharedSpriteBatch(eff);
                     return mySpriteBatch;
                 }
                 else
@@ -136,7 +136,7 @@ namespace TTengine.Core
 
             set
             {
-                Screen.CreateSharedSpriteBatch(eff);
+                Parent.Screen.CreateSharedSpriteBatch(eff);
                 mySpriteBatch = value;
             }
         }

@@ -24,7 +24,7 @@ namespace TTengine.Util
             this.height = height;
         }
 
-        protected override void OnNewParent()
+        public override void OnNewParent()
         {
             base.OnNewParent();
             InitTextureBuffer();
