@@ -9,7 +9,12 @@ namespace TTengineTestGame
     {
         public Ball()
         {
-            CreateSpritelet("ball");
+            ConstructSpritelet("ball");
+        }
+
+        public override void OnInit()
+        {
+            base.OnInit();
             Sprite.ChecksCollisions = true;
             Sprite.Radius *= 0.9f;
         }

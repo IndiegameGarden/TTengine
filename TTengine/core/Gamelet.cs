@@ -74,19 +74,6 @@ namespace TTengine.Core
         /// </summary>
         public bool Visible = true; 
 
-        /// If set to non-zero, item will auto-delete after simulating for specified duration time
-        public float Duration { get { return duration; } set { duration = value; } }
-
-        /// If set to non-zero, item will initially pause until the set SimTime is reached
-        public float StartTime { 
-            get { return startTime; } 
-            set { 
-                startTime = value;
-                if (startTime > 0f)
-                    Active = false; // initially paused until startTime reached.
-            } 
-        }
-
         /// <summary>
         /// total cumulative amount of simulation time of this specific item (i.e. time being Active)
         /// </summary>
@@ -107,7 +94,7 @@ namespace TTengine.Core
         /// <summary>
         /// turn into a Drawlet
         /// </summary>
-        public void CreateDrawlet()
+        public void ConstructDrawlet()
         {
             Motion = new MotionComp();
             DrawC = new DrawComp();
@@ -118,9 +105,9 @@ namespace TTengine.Core
         /// <summary>
         /// turn into a Spritelet
         /// </summary>
-        public void CreateSpritelet()
+        public void ConstructSpritelet()
         {
-            CreateDrawlet();
+            ConstructDrawlet();
             Sprite = new SpriteComp((Texture2D) null);
             Add(Sprite);
         }
@@ -128,9 +115,9 @@ namespace TTengine.Core
         /// <summary>
         /// turn into a Spritelet
         /// </summary>
-        public void CreateSpritelet(String textureFile)
+        public void ConstructSpritelet(String textureFile)
         {
-            CreateDrawlet();
+            ConstructDrawlet();
             Sprite = new SpriteComp(textureFile);
             Add(Sprite);
         }
@@ -138,9 +125,9 @@ namespace TTengine.Core
         /// <summary>
         /// turn into an EffectSpritelet
         /// </summary>
-        public void CreateEffectSpritelet(String textureFile, String effectFile)
+        public void ConstructEffectSpritelet(String textureFile, String effectFile)
         {
-            CreateDrawlet();
+            ConstructDrawlet();
             Sprite = new ShaderSpriteComp(textureFile, effectFile);
             Add(Sprite);
         }
@@ -148,9 +135,9 @@ namespace TTengine.Core
         /// <summary>
         /// turn into an Efflet, TODO only called from efflet class now.
         /// </summary>
-        public void CreateEfflet()
+        public void ConstructEfflet()
         {
-            CreateDrawlet();
+            ConstructDrawlet();
         }
 
 
@@ -288,9 +275,10 @@ namespace TTengine.Core
             }
             
             // then render all of the child nodes
-            foreach (Gamelet item in Children)
+            foreach (TTObject item in Children)
             {
-                item.Draw(ref p);
+                if (item is Gamelet)
+                    (item as Gamelet).Draw(ref p);
             }
         }
 

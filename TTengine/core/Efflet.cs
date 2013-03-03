@@ -23,13 +23,13 @@ namespace TTengine.Core
         public Efflet(string fxFileName)
         {
             this.fxFileName = fxFileName;
-            CreateEfflet();
+            ConstructEfflet();
             LoadEffect();
         }
 
         protected virtual void LoadEffect()
         {
-            spriteBatch = new SpriteBatch(Parent.DrawC.Screen.graphicsDevice);
+            spriteBatch = new SpriteBatch(DrawC.Screen.graphicsDevice);
             if (fxFileName != null)
             {
                 effect = TTengineMaster.ActiveGame.Content.Load<Effect>(fxFileName);
@@ -49,7 +49,7 @@ namespace TTengine.Core
             base.Draw(ref p);
 
             // add myself to list of efflets for post-process, in case I'm visible.
-            if (Visible) Parent.DrawC.Screen.effletsList.Add(this);
+            if (Visible) DrawC.Screen.effletsList.Add(this);
         }
 
         /// to override, called when eff should apply itself to a sourceBuffer, drawing to screen.RenderTarget as usual.

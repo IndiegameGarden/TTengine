@@ -19,7 +19,7 @@ namespace TTengine.Util
 
         public DarkeningHBar(float opacity, float height)
         {
-            CreateSpritelet();
+            ConstructSpritelet();
         	DrawC.DrawColor = Color.Black * opacity ;
             this.height = height;
         }

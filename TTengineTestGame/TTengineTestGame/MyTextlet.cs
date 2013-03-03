@@ -15,7 +15,7 @@ namespace TTengineTestGame
 
         public MyTextlet( string text)
         {
-            CreateDrawlet();
+            ConstructDrawlet();
             this.text = text;
             DrawC.DrawColor = Color.White;
             spriteFont = TTGame.Instance.Content.Load<SpriteFont>("Font1");

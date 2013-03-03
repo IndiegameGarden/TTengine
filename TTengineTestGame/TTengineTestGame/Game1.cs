@@ -46,16 +46,13 @@ namespace TTengineTestGame
                     ball.Motion.Rotate = (float)(Math.PI * 2 * rnd.NextDouble());
                     ball.Motion.Scale = 0.4f + 0.6f * (float)rnd.NextDouble();
 
-                    ball.StartTime = 3f * (j + i);
-                    ball.Duration = 4f + 5f * (float)rnd.NextDouble();
-
                     Screen.Add(ball);
                 }
             }
 
             HypnoEfflet eff = new HypnoEfflet();
             eff.DrawC.Alpha = 0.2f;
-            Screen.Add(eff);
+            //Screen.Add(eff);
 
         }
 
