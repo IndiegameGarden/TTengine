@@ -80,7 +80,7 @@ namespace TTengine.Core
         /// <summary>
         /// Called on drawing of the parent Gamelet
         /// </summary>
-        protected abstract void OnDraw(ref DrawParams p);
+        public abstract void OnDraw(ref DrawParams p);
     
         /// <summary>
         /// Called on moment of parent Gamelet deletion

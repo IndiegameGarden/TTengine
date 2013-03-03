@@ -21,7 +21,7 @@ namespace TTengineTestGame
             spriteFont = TTGame.Instance.Content.Load<SpriteFont>("Font1");
         }
 
-        protected override void OnDraw(ref DrawParams p)
+        public override void OnDraw(ref DrawParams p)
         {
             Vector2 pos = Motion.PositionAbs;
             Vector2 posPixels = pos * TTGame.Instance.GraphicsDevice.DisplayMode.Height;

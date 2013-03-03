@@ -39,7 +39,7 @@ namespace TTengine.Util
             posX = DrawC.Screen.WidthPixels / 2f;
         }
 
-        protected override void OnDraw(ref DrawParams p)
+        public override void OnDraw(ref DrawParams p)
         {
             if (Sprite.Texture != null)
             {

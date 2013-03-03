@@ -51,8 +51,8 @@ namespace TTengineTestGame
             }
 
             HypnoEfflet eff = new HypnoEfflet();
-            eff.DrawC.Alpha = 0.2f;
-            //Screen.Add(eff);
+            eff.DrawC.Alpha = 0.84f;
+            Screen.Add(eff);
 
         }
 

@@ -109,7 +109,7 @@
     <Compile Include="Core\IState.cs" />
     <Compile Include="Core\MotionComp.cs" />
     <Compile Include="Core\Screenlet.cs" />
-    <Compile Include="Core\SpriteComplet.cs" />
+    <Compile Include="Core\SpriteComp.cs" />
     <Compile Include="Core\State.cs" />
     <Compile Include="Core\TTGame.cs" />
     <Compile Include="Core\TTSpriteBatch.cs" />

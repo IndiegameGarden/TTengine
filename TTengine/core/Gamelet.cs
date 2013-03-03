@@ -170,7 +170,7 @@ namespace TTengine.Core
             //
         }
 
-        protected override void OnDraw(ref DrawParams p)
+        public override void OnDraw(ref DrawParams p)
         {
             //
         }
@@ -279,6 +279,8 @@ namespace TTengine.Core
             {
                 if (item is Gamelet)
                     (item as Gamelet).Draw(ref p);
+                else 
+                    item.OnDraw(ref p);
             }
         }
 

@@ -179,7 +179,7 @@ namespace TTengine.Core
             //
         }
 
-        protected override void OnDraw(ref DrawParams p)
+        public override void OnDraw(ref DrawParams p)
         {
             if (texture != null)
             {                

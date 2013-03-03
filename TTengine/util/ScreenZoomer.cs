@@ -19,7 +19,7 @@ namespace TTengine.Util
             }
         }
 
-        protected override void OnDraw(ref DrawParams p)
+        public override void OnDraw(ref DrawParams p)
         {
             base.OnDraw(ref p);
 

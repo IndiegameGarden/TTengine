@@ -131,7 +131,7 @@ namespace TTengine.Core
         }
 
         // calculates drawing positions based on interpolation
-        protected override void OnDraw(ref DrawParams p)
+        public override void OnDraw(ref DrawParams p)
         {
             float t = (float)p.gameTime.TotalGameTime.TotalSeconds;
             // default - take latest position in cache

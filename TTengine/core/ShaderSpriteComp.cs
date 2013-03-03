@@ -103,7 +103,7 @@ namespace TTengine.Core
             positionParam = eff.Parameters["Position"];
         }
 
-        protected override void OnDraw(ref DrawParams p)
+        public override void OnDraw(ref DrawParams p)
         {
             if (Texture != null)
             {
