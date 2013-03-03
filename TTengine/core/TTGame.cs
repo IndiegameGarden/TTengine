@@ -91,6 +91,7 @@ namespace TTengine.Core
         protected override void LoadContent()
         {
             LoadTTContent();
+            Root.Init();
             base.LoadContent();
         }
 
