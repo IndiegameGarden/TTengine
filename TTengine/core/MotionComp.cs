@@ -115,7 +115,7 @@ namespace TTengine.Core
         {
             get
             {
-                return Parent.DrawInfo.ToPixels(PositionAbsZoomed);
+                return Parent.DrawC.ToPixels(PositionAbsZoomed);
             }
         }
 
@@ -376,8 +376,8 @@ namespace TTengine.Core
                         Scale = targetScale;
                     }
                 }
-                if (Parent.DrawInfo != null)
-                    Parent.DrawInfo.LayerDepth = 0.8f - Scale / 1000.0f;
+                if (Parent.DrawC != null)
+                    Parent.DrawC.LayerDepth = 0.8f - Scale / 1000.0f;
             }
         }
 

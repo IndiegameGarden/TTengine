@@ -53,7 +53,7 @@ namespace TTengine.Core
         /// <summary>
         /// Information for drawing this Gamelet, or null if not drawable
         /// </summary>
-        public DrawComp DrawInfo;
+        public DrawComp DrawC;
 
         /// <summary>
         /// Sprite for this Gamelet, or null if none
@@ -110,9 +110,9 @@ namespace TTengine.Core
         public void CreateDrawlet()
         {
             Motion = new MotionComp();
-            DrawInfo = new DrawComp();
+            DrawC = new DrawComp();
             Add(Motion);
-            Add(DrawInfo);
+            Add(DrawC);
         }
 
         /// <summary>

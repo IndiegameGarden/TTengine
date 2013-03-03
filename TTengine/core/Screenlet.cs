@@ -140,7 +140,7 @@ namespace TTengine.Core
 
         public void DebugText(float x, float y, string text)
         {
-            mySpriteBatch.DrawString(DebugFont, text, DrawInfo.ToPixels(x, y), Color.White, 0f, Vector2.Zero, Motion.Zoom, SpriteEffects.None, 0f);
+            mySpriteBatch.DrawString(DebugFont, text, DrawC.ToPixels(x, y), Color.White, 0f, Vector2.Zero, Motion.Zoom, SpriteEffects.None, 0f);
         }
 
         public void DebugText(Vector2 pos, string text)
@@ -153,10 +153,10 @@ namespace TTengine.Core
             TTengineMaster.ActiveScreen = this;
             Motion = new ScreenletMotion();
             Add(Motion);
-            DrawInfo = new DrawComp();
-            Add(DrawInfo);
+            DrawC = new DrawComp();
+            Add(DrawC);
             TTengineMaster.AddScreenlet(this);
-            DrawInfo.DrawColor = Color.Black; // for screen - default black background.
+            DrawC.DrawColor = Color.Black; // for screen - default black background.
             graphicsDevice = TTengineMaster.ActiveGame.GraphicsDevice;
             try
             {
@@ -291,8 +291,8 @@ namespace TTengine.Core
                     rts = graphicsDevice.GetRenderTargets();
                     graphicsDevice.SetRenderTarget(renderTarget);
                 }
-                if (DrawInfo.Alpha > 0)   // only clear if background is not fully transparent
-                    graphicsDevice.Clear(DrawInfo.DrawColor);
+                if (DrawC.Alpha > 0)   // only clear if background is not fully transparent
+                    graphicsDevice.Clear(DrawC.DrawColor);
 
                 // Draw() all children items:
                 base.Draw(ref p);

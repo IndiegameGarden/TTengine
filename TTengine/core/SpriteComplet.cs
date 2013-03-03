@@ -111,7 +111,7 @@ namespace TTengine.Core
         /// <summary>
         /// calculates a center coordinate for direct use in Draw() calls, expressed in pixels
         /// </summary>
-        public virtual Vector2 DrawCenter { get { return Parent.DrawInfo.ToPixels(Center.X * width, Center.Y * height); } }
+        public virtual Vector2 DrawCenter { get { return Parent.DrawC.ToPixels(Center.X * width, Center.Y * height); } }
 
         /**
          * get/set the Texture of this shape
@@ -183,8 +183,8 @@ namespace TTengine.Core
         {
             if (texture != null)
             {                
-                Parent.DrawInfo.MySpriteBatch.Draw(texture, Parent.DrawInfo.DrawPosition, null, Parent.DrawInfo.DrawColor,
-                       Parent.Motion.RotateAbs, DrawCenter, Parent.DrawInfo.DrawScale, SpriteEffects.None, Parent.DrawInfo.LayerDepth);
+                Parent.DrawC.MySpriteBatch.Draw(texture, Parent.DrawC.DrawPosition, null, Parent.DrawC.DrawColor,
+                       Parent.Motion.RotateAbs, DrawCenter, Parent.DrawC.DrawScale, SpriteEffects.None, Parent.DrawC.LayerDepth);
             }
         }
 

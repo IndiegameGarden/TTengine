@@ -92,11 +92,11 @@ namespace TTengine.Core
             if (effectFile != null)
                 eff = TTengineMaster.ActiveGame.Content.Load<Effect>(effectFile);
             else
-                eff = new BasicEffect(Parent.DrawInfo.Screen.graphicsDevice);
-            Parent.DrawInfo.VertexShaderInit(eff); // FIXME move away from gamelet
+                eff = new BasicEffect(Parent.DrawC.Screen.graphicsDevice);
+            Parent.DrawC.VertexShaderInit(eff); // FIXME move away from gamelet
 
             // find or create my effect-related spritebatch
-            MySpriteBatch = Parent.DrawInfo.Screen.CreateSharedSpriteBatch(eff);
+            MySpriteBatch = Parent.DrawC.Screen.CreateSharedSpriteBatch(eff);
 
             // try to find common parameters in the Effect (gets null if not found)
             timeParam = eff.Parameters["Time"];
@@ -114,8 +114,8 @@ namespace TTengine.Core
                 if (positionParam != null)
                     positionParam.SetValue(Parent.Motion.Position);
 
-                MySpriteBatch.Draw(Texture, Parent.DrawInfo.DrawPosition, null, Parent.DrawInfo.DrawColor,
-                       Parent.Motion.RotateAbs, DrawCenter, Parent.DrawInfo.DrawScale, SpriteEffects.None, Parent.DrawInfo.LayerDepth);
+                MySpriteBatch.Draw(Texture, Parent.DrawC.DrawPosition, null, Parent.DrawC.DrawColor,
+                       Parent.Motion.RotateAbs, DrawCenter, Parent.DrawC.DrawScale, SpriteEffects.None, Parent.DrawC.LayerDepth);
             }
         }
 
@@ -125,18 +125,18 @@ namespace TTengine.Core
             {
                 if (EffectEnabled)
                 {
-                    Parent.DrawInfo.Screen.UseSharedSpriteBatch(eff);
+                    Parent.DrawC.Screen.UseSharedSpriteBatch(eff);
                     return mySpriteBatch;
                 }
                 else
                 {
-                    return Parent.DrawInfo.MySpriteBatch;
+                    return Parent.DrawC.MySpriteBatch;
                 }
             }
 
             set
             {
-                Parent.DrawInfo.Screen.CreateSharedSpriteBatch(eff);
+                Parent.DrawC.Screen.CreateSharedSpriteBatch(eff);
                 mySpriteBatch = value;
             }
         }

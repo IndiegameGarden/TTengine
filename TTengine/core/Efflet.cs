@@ -29,18 +29,18 @@ namespace TTengine.Core
 
         protected virtual void LoadEffect()
         {
-            spriteBatch = new SpriteBatch(Parent.DrawInfo.Screen.graphicsDevice);
+            spriteBatch = new SpriteBatch(Parent.DrawC.Screen.graphicsDevice);
             if (fxFileName != null)
             {
                 effect = TTengineMaster.ActiveGame.Content.Load<Effect>(fxFileName);
                 drawColorParameter = effect.Parameters["DrawColor"];
             }
-            DrawInfo.VertexShaderInit(effect);
+            DrawC.VertexShaderInit(effect);
         }
 
         protected override void OnUpdate(ref UpdateParams p)
         {
-            if (drawColorParameter != null) drawColorParameter.SetValue(DrawInfo.DrawColor.ToVector4() );
+            if (drawColorParameter != null) drawColorParameter.SetValue(DrawC.DrawColor.ToVector4() );
         }
 
         internal override void Draw(ref DrawParams p)
@@ -49,14 +49,14 @@ namespace TTengine.Core
             base.Draw(ref p);
 
             // add myself to list of efflets for post-process, in case I'm visible.
-            if (Visible) Parent.DrawInfo.Screen.effletsList.Add(this);
+            if (Visible) Parent.DrawC.Screen.effletsList.Add(this);
         }
 
         /// to override, called when eff should apply itself to a sourceBuffer, drawing to screen.RenderTarget as usual.
         public virtual void OnDrawEfflet(ref DrawParams p, RenderTarget2D sourceBuffer)
         {
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque, null, null, null, effect);
-            spriteBatch.Draw(sourceBuffer, DrawInfo.Screen.ScreenRectangle, Color.White);
+            spriteBatch.Draw(sourceBuffer, DrawC.Screen.ScreenRectangle, Color.White);
             spriteBatch.End();
         }
 

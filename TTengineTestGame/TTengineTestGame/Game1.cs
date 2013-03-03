@@ -24,12 +24,12 @@ namespace TTengineTestGame
 
         protected override void InitTTContent()
         {
-            Screen.DrawInfo.DrawColor = Color.White;
+            Screen.DrawC.DrawColor = Color.White;
 
             // add a static text 'MyTextlet'
             MyTextlet txt = new MyTextlet("TTengine shader test using Efflet");
             txt.Motion.Position = new Vector2(0.01f, 0.4f);
-            txt.DrawInfo.DrawColor = Color.Black;
+            txt.DrawC.DrawColor = Color.Black;
             Screen.Add(txt);
 
             // add several Spritelets and set some specific velocity per item
@@ -54,7 +54,7 @@ namespace TTengineTestGame
             }
 
             HypnoEfflet eff = new HypnoEfflet();
-            eff.DrawInfo.Alpha = 0.2f;
+            eff.DrawC.Alpha = 0.2f;
             Screen.Add(eff);
 
         }

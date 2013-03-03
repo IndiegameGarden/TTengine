@@ -20,7 +20,7 @@ namespace TTengine.Util
         public DarkeningHBar(float opacity, float height)
         {
             CreateSpritelet();
-        	DrawInfo.DrawColor = Color.Black * opacity ;
+        	DrawC.DrawColor = Color.Black * opacity ;
             this.height = height;
         }
 
@@ -32,21 +32,21 @@ namespace TTengine.Util
 
         void InitTextureBuffer()
         {
-            Sprite.Texture = new Texture2D(DrawInfo.Screen.graphicsDevice, 1, 1);
+            Sprite.Texture = new Texture2D(DrawC.Screen.graphicsDevice, 1, 1);
             Sprite.Texture.SetData<Color>(new Color[] { Color.White });
-            scaleVec = new Vector2(DrawInfo.Screen.WidthPixels * 2f, height * DrawInfo.Screen.HeightPixels);
+            scaleVec = new Vector2(DrawC.Screen.WidthPixels * 2f, height * DrawC.Screen.HeightPixels);
             Sprite.Center = new Vector2(0.5f, 0f); // horiz-centered and vertically-aligned-top
-            posX = DrawInfo.Screen.WidthPixels / 2f;
+            posX = DrawC.Screen.WidthPixels / 2f;
         }
 
         protected override void OnDraw(ref DrawParams p)
         {
             if (Sprite.Texture != null)
             {
-                Vector2 pos = DrawInfo.DrawPosition + DrawInfo.ToPixels(Motion.Position);
+                Vector2 pos = DrawC.DrawPosition + DrawC.ToPixels(Motion.Position);
                 pos.X += posX;
-                DrawInfo.MySpriteBatch.Draw(Sprite.Texture, pos, null, DrawInfo.DrawColor,
-                       Motion.RotateAbs, Sprite.DrawCenter, scaleVec * DrawInfo.DrawScale, SpriteEffects.None, DrawInfo.LayerDepth);
+                DrawC.MySpriteBatch.Draw(Sprite.Texture, pos, null, DrawC.DrawColor,
+                       Motion.RotateAbs, Sprite.DrawCenter, scaleVec * DrawC.DrawScale, SpriteEffects.None, DrawC.LayerDepth);
             }
         }
 

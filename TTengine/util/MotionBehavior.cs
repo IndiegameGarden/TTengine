@@ -45,7 +45,7 @@ namespace TTengine.Util
         {
             base.OnNewParent();
             Motion = Parent.Motion;
-            DrawInfo = Parent.DrawInfo;
+            DrawC = Parent.DrawC;
         }
 
         protected override void OnUpdate(ref UpdateParams p)
@@ -115,8 +115,8 @@ namespace TTengine.Util
                         Motion.Scale = targetScale;
                     }
                 }
-                if (DrawInfo != null)
-                    DrawInfo.LayerDepth = 0.8f - Motion.Scale / 1000.0f;
+                if (DrawC != null)
+                    DrawC.LayerDepth = 0.8f - Motion.Scale / 1000.0f;
             }
         }
 

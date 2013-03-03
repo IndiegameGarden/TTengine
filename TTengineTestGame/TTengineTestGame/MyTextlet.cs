@@ -17,7 +17,7 @@ namespace TTengineTestGame
         {
             CreateDrawlet();
             this.text = text;
-            DrawInfo.DrawColor = Color.White;
+            DrawC.DrawColor = Color.White;
             spriteFont = TTGame.Instance.Content.Load<SpriteFont>("Font1");
         }
 
@@ -25,7 +25,7 @@ namespace TTengineTestGame
         {
             Vector2 pos = Motion.PositionAbs;
             Vector2 posPixels = pos * TTGame.Instance.GraphicsDevice.DisplayMode.Height;
-            DrawInfo.MySpriteBatch.DrawString(spriteFont, text, posPixels, DrawInfo.DrawColor);
+            DrawC.MySpriteBatch.DrawString(spriteFont, text, posPixels, DrawC.DrawColor);
         }
     }
 }
