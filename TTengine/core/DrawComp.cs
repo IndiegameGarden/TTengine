@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace TTengine.Core
 {
     /// <summary>
     /// Component that allows drawing of the gamelet, offering very basic drawing functions
     /// </summary>
-    public class DrawComplet: Complet
+    public class DrawComp: TTObject
     {
 
-        public DrawComplet()
-            : base()
+        public DrawComp()
         {
+            Screen = TTengineMaster.ActiveScreen;
             for (int i = 0; i < NBUF; i++)
             {
                 posHistoryTime[i] = -1.0f; // init to out-of-scope value
@@ -42,6 +43,12 @@ namespace TTengine.Core
         /// a value indicating drawing depth of sprite 0f (front)....1f (back)
         /// </summary>
         public float LayerDepth = 0.5f;
+
+        /// <summary>
+        /// to which Screenlet the item belongs (e.g. where a shape will draw itself). Also non-drawables may use this info.
+        /// Null if not set yet or unknown.
+        /// </summary>
+        public Screenlet Screen = null;
 
         /// Color for drawing shape/sprite, setting it will replace Alpha value with DrawColor.A
         public virtual Color DrawColor
@@ -113,7 +120,7 @@ namespace TTengine.Core
         {
             get
             {
-                Parent.Screen.UseSharedSpriteBatch(mySpriteBatch);
+                Screen.UseSharedSpriteBatch(mySpriteBatch);
                 return mySpriteBatch;
             }
 
@@ -154,8 +161,8 @@ namespace TTengine.Core
 
         public override void OnNewParent()
         {
-            if (Parent.Screen != null)
-                mySpriteBatch = Parent.Screen.mySpriteBatch;
+            if (Screen != null)
+                mySpriteBatch = Screen.mySpriteBatch;
         }
 
         protected override void OnDelete()
@@ -163,12 +170,61 @@ namespace TTengine.Core
             //
         }
 
+        public override void OnInit()
+        {
+            //
+        }
+
+        /// <summary>
+        /// FIXME move away to a component?
+        /// translate a float screen coordinate to pixel coordinates, in the context of this Gamelet
+        /// </summary>
+        /// <param name="pos">relative coordinate to translate</param>
+        /// <returns>translated to pixels coordinate</returns>
+        public Vector2 ToPixels(Vector2 pos)
+        {
+            //return (pos * Screen.screenHeight - Center) * Zoom + Center; // TODO check? only for internal?
+            return pos * Screen.screenHeight;
+        }
+
+        public float ToPixels(float coord)
+        {
+            return coord * Screen.screenHeight;
+        }
+
+        public float FromPixels(float pixels)
+        {
+            return pixels / Screen.screenHeight;
+        }
+
+        public Vector2 FromPixels(Vector2 pixelCoords)
+        {
+            return pixelCoords / Screen.screenHeight;
+        }
+
+        internal Vector2 ToPixels(float x, float y)
+        {
+            return ToPixels(new Vector2(x, y));
+        }
+
+
         internal void UpdateSmoothingCache(ref UpdateParams p)
         {
             // store current position in a cache to use in trajectory smoothing
             UpdatePositionCache(Parent.Motion.PositionAbsZoomedPixels, DrawScaleCurrent, p.SimTime);
         }
-        
+
+        internal void VertexShaderInit(Effect eff)
+        {
+            // vertex shader init            
+            Matrix projection = Matrix.CreateOrthographicOffCenter(0, Screen.WidthPixels, Screen.HeightPixels, 0, 0, 1);
+            Matrix halfPixelOffset = Matrix.CreateTranslation(-0.5f, -0.5f, 0);
+            Matrix m = halfPixelOffset * projection;
+            EffectParameter mtPar = eff.Parameters["MatrixTransform"];
+            if (mtPar != null)
+                mtPar.SetValue(m);
+        }
+
         private void UpdatePositionCache(Vector2 updPos, float updDrawScale, float updTime)
         {
             if (isFirstUpdatePosition)

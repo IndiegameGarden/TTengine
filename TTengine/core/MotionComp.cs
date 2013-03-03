@@ -8,8 +8,13 @@ namespace TTengine.Core
     /// Component with elements to provide basic physics-based motion 
     /// (position, velocity, scale, rotation, zoom, etc.) to a gamelet
     /// </summary>
-    public class MotionComplet : Complet
+    public class MotionComp : TTObject
     {
+        public MotionComp()
+        {
+            Screen = TTengineMaster.ActiveScreen;
+        }
+
         public Vector2 Position = Vector2.Zero;
         public Vector2 PositionModifier = Vector2.Zero;
 
@@ -27,7 +32,7 @@ namespace TTengine.Core
         /// If a MotionParent exists, my position/rotation/scale will be relative to the parent's pos/rot/scale. 
         /// If null, no motion parent exists.
         /// </summary>
-        public MotionComplet MotionParent
+        public MotionComp MotionParent
         {
             get
             {
@@ -69,7 +74,7 @@ namespace TTengine.Core
         {
             get
             {
-                Vector2 p = (PositionAbs - MotionParent.ZoomCenter) * MotionParent.Zoom + Parent.Screen.Center;
+                Vector2 p = (PositionAbs - MotionParent.ZoomCenter) * MotionParent.Zoom + Screen.Center;
                 return p;
             }
         }
@@ -110,7 +115,7 @@ namespace TTengine.Core
         {
             get
             {
-                return Parent.ToPixels(PositionAbsZoomed);
+                return Parent.DrawInfo.ToPixels(PositionAbsZoomed);
             }
         }
 
@@ -140,7 +145,7 @@ namespace TTengine.Core
             get
             {
                 if (!isZoomCenterSet)
-                    return Parent.Screen.Center;
+                    return Screen.Center;
                 else
                     return zoomCenter;
             }
@@ -193,13 +198,13 @@ namespace TTengine.Core
         /// Specify a ZoomCenter position from the given Motion object i.e. Motion.PositionAbs.
         /// This is overridden by a coordinate setting done on ZoomCenter.
         /// </summary>
-        public MotionComplet ZoomCenterTarget = null;
+        public MotionComp ZoomCenterTarget = null;
 
         public float RotateTarget = 0f;
 
         public float RotateSpeed = 0f;
 
-        
+        protected Screenlet Screen = null;
         protected Vector2 targetPos = Vector2.Zero;
         protected bool isTargetSet = false;
         protected Vector2 zoomCenter;
@@ -208,7 +213,7 @@ namespace TTengine.Core
         /// <summary>
         /// if null, means use default parent ("one up")
         /// </summary>
-        protected MotionComplet motionParent = null;
+        protected MotionComp motionParent = null;
 
         protected override void OnUpdate(ref UpdateParams p)
         {
@@ -258,6 +263,11 @@ namespace TTengine.Core
         }
 
         public override void OnNewParent()
+        {
+            //
+        }
+
+        public override void OnInit()
         {
             //
         }

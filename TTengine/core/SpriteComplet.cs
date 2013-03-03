@@ -14,7 +14,7 @@ namespace TTengine.Core
     /// It has interpolation code for time-smoothed sprite drawing based on a fixed-timestep physics model.
     /// Shape dimensions are supported by Width/Height/Radius/Center properties. 
     /// </summary>
-    public class SpriteComplet : Complet
+    public class SpriteComp : TTObject
     {
 
         #region Constructors
@@ -26,8 +26,9 @@ namespace TTengine.Core
         /// <param name="fileName">name of XNA content file (from content project) without file extension e.g. "test", or
         /// name of bitmap file to load including extension e.g. "test.png"</param>
         /// <exception cref="InvalidOperationException">when invalid image file is attempted to load</exception>
-        public SpriteComplet(string fileName): base()
+        public SpriteComp(string fileName): base()
         {
+            Screen = TTengineMaster.ActiveScreen;
             if (fileName.Contains("."))
             {
                 Texture = LoadBitmap(fileName, TTengineMaster.ActiveGame.Content.RootDirectory, true);
@@ -39,8 +40,9 @@ namespace TTengine.Core
         /// <summary>
         /// create new spritelet with given Texture2D texture, or null if no texture yet
         /// </summary>
-        public SpriteComplet(Texture2D texture): base()
+        public SpriteComp(Texture2D texture): base()
         {
+            Screen = TTengineMaster.ActiveScreen;
             this.texture = texture;
             InitTextures();
         }
@@ -48,7 +50,7 @@ namespace TTengine.Core
         #endregion
 
         #region Class-internal properties
-
+        protected Screenlet Screen = null;
         protected bool checksCollisions = false;
         protected string fileName = null;
         protected float radius = 0f;
@@ -68,10 +70,10 @@ namespace TTengine.Core
             get { return checksCollisions;  } 
             set { 
                 checksCollisions = value;
-                if (checksCollisions && !Parent.Screen.collisionObjects.Contains(Parent))
-                    Parent.Screen.collisionObjects.Add(Parent);
+                if (checksCollisions && !Screen.collisionObjects.Contains(Parent))
+                    Screen.collisionObjects.Add(Parent);
                 if (!checksCollisions)
-                    Parent.Screen.collisionObjects.Remove(Parent);
+                    Screen.collisionObjects.Remove(Parent);
             } 
         }
 
@@ -109,7 +111,7 @@ namespace TTengine.Core
         /// <summary>
         /// calculates a center coordinate for direct use in Draw() calls, expressed in pixels
         /// </summary>
-        public virtual Vector2 DrawCenter { get { return Parent.ToPixels(Center.X * width, Center.Y * height); } }
+        public virtual Vector2 DrawCenter { get { return Parent.DrawInfo.ToPixels(Center.X * width, Center.Y * height); } }
 
         /**
          * get/set the Texture of this shape
@@ -159,7 +161,12 @@ namespace TTengine.Core
         protected override void OnDelete()
         {
             // FIXME move to collision complet class
-            Parent.Screen.collisionObjects.Remove(Parent);
+            Screen.collisionObjects.Remove(Parent);
+        }
+
+        public override void OnInit()
+        {
+            //
         }
 
         public override void OnNewParent()
@@ -200,7 +207,7 @@ namespace TTengine.Core
 
             // phase 1: check which items collide with me and add to list
             List<Gamelet> collItems = new List<Gamelet>();
-            foreach (Gamelet s in Parent.Screen.collisionObjects)
+            foreach (Gamelet s in Screen.collisionObjects)
             {
                 if (s.Active  && s != Parent &&
                     CollidesWith(s) && s.Sprite.CollidesWith(Parent)) // a collision is detected
@@ -226,7 +233,7 @@ namespace TTengine.Core
 
         internal float ToNormalizedNS(float coord)
         {
-            return coord * Parent.Screen.scalingToNormalized;
+            return coord * Screen.scalingToNormalized;
         }
 
         /// <summary>
@@ -243,9 +250,9 @@ namespace TTengine.Core
             try
             {
                 if (atRunTime)
-                    return LoadTextureStreamAtRuntime(Parent.Screen.graphicsDevice, fn, contentDir);
+                    return LoadTextureStreamAtRuntime(Screen.graphicsDevice, fn, contentDir);
                 else
-                    return LoadTextureStream(Parent.Screen.graphicsDevice, fn, contentDir);
+                    return LoadTextureStream(Screen.graphicsDevice, fn, contentDir);
             }
             catch (Exception ex)
             {

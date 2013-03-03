@@ -99,15 +99,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\Complet.cs" />
-    <Compile Include="Core\DrawComplet.cs" />
+    <Compile Include="Core\TTObject.cs" />
+    <Compile Include="Core\DrawComp.cs" />
     <Compile Include="Core\DrawParams.cs" />
-    <Compile Include="Core\EffectSpriteComplet.cs" />
+    <Compile Include="Core\ShaderSpriteComp.cs" />
     <Compile Include="Core\Efflet.cs" />
     <Compile Include="Core\FixedTimestepPhysics.cs" />
     <Compile Include="Core\Gamelet.cs" />
     <Compile Include="Core\IState.cs" />
-    <Compile Include="Core\MotionComplet.cs" />
+    <Compile Include="Core\MotionComp.cs" />
     <Compile Include="Core\Screenlet.cs" />
     <Compile Include="Core\SpriteComplet.cs" />
     <Compile Include="Core\State.cs" />

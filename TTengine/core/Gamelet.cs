@@ -36,7 +36,7 @@ namespace TTengine.Core
      * Provides subclass extendibility via On...() methods.
      * Also defines some (collission) eventing.
      */
-    public class Gamelet: Complet
+    public class Gamelet: TTObject
     {
 
         #region Eventing
@@ -48,17 +48,17 @@ namespace TTengine.Core
         /// <summary>
         /// Includes position, velocity, any motion behaviors of Gamelet; or null if not motion-capable
         /// </summary>
-        public MotionComplet Motion;
+        public MotionComp Motion;
 
         /// <summary>
         /// Information for drawing this Gamelet, or null if not drawable
         /// </summary>
-        public DrawComplet DrawInfo;
+        public DrawComp DrawInfo;
 
         /// <summary>
         /// Sprite for this Gamelet, or null if none
         /// </summary>
-        public SpriteComplet Sprite;
+        public SpriteComp Sprite;
 
         /// <summary>
         /// Set the IState in which this Gamelet is Active only. If null (default), it means active in any state.
@@ -74,10 +74,6 @@ namespace TTengine.Core
         /// </summary>
         public bool Visible = true; 
 
-        public List<Complet> Children = new List<Complet>();
-
-        protected List<Complet> childrenToAdd = new List<Complet>();
-
         /// If set to non-zero, item will auto-delete after simulating for specified duration time
         public float Duration { get { return duration; } set { duration = value; } }
 
@@ -90,12 +86,6 @@ namespace TTengine.Core
                     Active = false; // initially paused until startTime reached.
             } 
         }
-
-        /// <summary>
-        /// to which Screenlet the item belongs (e.g. where a shape will draw itself). Also non-drawables may use this info.
-        /// Null if not set yet or unknown.
-        /// </summary>
-        public Screenlet Screen = null;
 
         /// <summary>
         /// total cumulative amount of simulation time of this specific item (i.e. time being Active)
@@ -111,7 +101,7 @@ namespace TTengine.Core
         /// </summary>
         public Gamelet()
         {
-            Screen = TTengineMaster.ActiveScreen;
+            //
         }
 
         /// <summary>
@@ -119,8 +109,8 @@ namespace TTengine.Core
         /// </summary>
         public void CreateDrawlet()
         {
-            Motion = new MotionComplet();
-            DrawInfo = new DrawComplet();
+            Motion = new MotionComp();
+            DrawInfo = new DrawComp();
             Add(Motion);
             Add(DrawInfo);
         }
@@ -131,7 +121,7 @@ namespace TTengine.Core
         public void CreateSpritelet()
         {
             CreateDrawlet();
-            Sprite = new SpriteComplet((Texture2D) null);
+            Sprite = new SpriteComp((Texture2D) null);
             Add(Sprite);
         }
 
@@ -141,7 +131,7 @@ namespace TTengine.Core
         public void CreateSpritelet(String textureFile)
         {
             CreateDrawlet();
-            Sprite = new SpriteComplet(textureFile);
+            Sprite = new SpriteComp(textureFile);
             Add(Sprite);
         }
 
@@ -151,7 +141,7 @@ namespace TTengine.Core
         public void CreateEffectSpritelet(String textureFile, String effectFile)
         {
             CreateDrawlet();
-            Sprite = new EffectSpriteComplet(textureFile, effectFile);
+            Sprite = new ShaderSpriteComp(textureFile, effectFile);
             Add(Sprite);
         }
 
@@ -184,6 +174,11 @@ namespace TTengine.Core
         }
 
         protected override void OnDelete()
+        {
+            //
+        }
+
+        public override void OnInit()
         {
             //
         }
@@ -238,126 +233,6 @@ namespace TTengine.Core
             return (myState == s || (sType.IsAssignableFrom(myType) && myType.IsAssignableFrom(sType)));
         }
 
-        /// <summary>
-        /// Adds a Gamelet as child at the _end_ (back) of the children's list this.Children. Does not add
-        /// if 'child' is already a child Gamelet of this one.
-        /// </summary>
-        public void Add(Complet child)
-        {
-            if (!Children.Contains(child))
-            {
-                child.Parent = this;
-                Children.Add(child);
-                child.OnNewParent();
-            }
-        }
-
-        /// <summary>
-        /// add a child gamelet with Add() next update, useful for adding gamelet from another thread
-        /// </summary>
-        /// <param name="child"></param>
-        public void AddNextUpdate(Complet child)
-        {
-            lock (childrenToAdd)
-            {
-                childrenToAdd.Add(child);
-            }
-        }
-
-        /// <summary>
-        /// Adds (inserts) a Gamelet as child in _begin_ i.e. front of the children's list this.Children
-        /// </summary>
-        public void AddFront(Complet child)
-        {
-            Children.Insert(0,child);
-            child.Parent = this;
-            child.OnNewParent();
-        }
-
-        public void Add(int index, Complet child)
-        {
-            Children.Insert(index, child);
-            child.Parent = this;
-            child.OnNewParent();
-        }
-
-        /// <summary>
-        /// Removes first occurrence of child gamelet from the list of children. The child.OnNewParent() is
-        /// called with a null parameter as a result.
-        /// </summary>
-        /// <returns>true if item is successfully removed; otherwise, false. </returns>
-        public bool Remove(Complet child)
-        {
-            if (Children.Contains(child))
-            {
-                Children.Remove(child);
-                child.Parent = null;
-                child.OnNewParent();
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Implements IDisposable, to instantly stop this Gamelet and its children and free up all unmanaged resources
-        /// </summary>
-        public override void Dispose()
-        {
-            for (int i = 0; i < Children.Count; i++ )
-            {
-                Children[i].Dispose();
-            }
-            Visible = false;
-
-            base.Dispose();
-        }
-
-        internal void VertexShaderInit(Effect eff)
-        {
-            // vertex shader init            
-            Matrix projection = Matrix.CreateOrthographicOffCenter(0, Screen.WidthPixels, Screen.HeightPixels, 0, 0, 1);
-            Matrix halfPixelOffset = Matrix.CreateTranslation(-0.5f, -0.5f, 0);
-            Matrix m = halfPixelOffset * projection;
-            EffectParameter mtPar = eff.Parameters["MatrixTransform"];
-            if (mtPar != null)
-                mtPar.SetValue(m);
-        }
-
-        /// <summary>
-        /// FIXME move away to a component?
-        /// translate a float screen coordinate to pixel coordinates, in the context of this Gamelet
-        /// </summary>
-        /// <param name="pos">relative coordinate to translate</param>
-        /// <returns>translated to pixels coordinate</returns>
-        public Vector2 ToPixels(Vector2 pos)
-        {
-            //return (pos * Screen.screenHeight - Center) * Zoom + Center; // TODO check? only for internal?
-            return pos * Screen.screenHeight;
-        }
-
-        public float ToPixels(float coord)
-        {
-            return coord * Screen.screenHeight ;
-        }
-
-        public float FromPixels(float pixels)
-        {
-            return pixels / Screen.screenHeight;
-        }
-
-        public Vector2 FromPixels(Vector2 pixelCoords)
-        {
-            return pixelCoords / Screen.screenHeight;
-        }
-
-        internal Vector2 ToPixels(float x, float y)
-        {
-            return ToPixels(new Vector2(x, y));
-        }
-
         #endregion
 
         #region Private (internal) methods
@@ -370,15 +245,8 @@ namespace TTengine.Core
             return Parent.FindScreen();
         }
 
-        internal virtual void Update(ref UpdateParams p)
+        internal override void Update(ref UpdateParams p)
         {
-            // check if startTime for this object already reached (if any), if yes activate it
-            if (!Active && (startTime > 0f)) {
-                float t = Parent.SimTime;
-                // finally, check if already time to start, if so activate
-                if( t >= startTime)
-                    Active = true;
-            }
             if (!Active) return;
 
             // check active in state
@@ -391,49 +259,11 @@ namespace TTengine.Core
             // advance sim time if Active
             SimTime += p.Dt;
 
-            // add any children that were queued to add
-            lock (childrenToAdd)
-            {
-                foreach (Gamelet g in childrenToAdd)
-                    Add(g);
-                childrenToAdd.Clear();
-            }
-
-            // simulate object and children
-            //Remove any items that need deletion etc
-            int i = 0;
-            while (i < Children.Count)
-            {
-                // deleted items
-                if (Children[i].Delete)
-                {
-                    Children[i].DeleteItem();
-                    Children.RemoveAt(i);
-                }
-                // remove items from my tree that were transferred to another parent
-                else if (Children[i].Parent != this)
-                    Children.RemoveAt(i);
-                else
-                    i++;
-            }
-
-            // check if deletion is needed based on duration propertyName of item
-            if (duration > 0)
-            {
-                if (SimTime >= duration)
-                    Delete = true;
-            }
-
-            //Update each child item. Note each child _may_ modify updPars.
-            foreach (Gamelet item in Children)
-            {
-                item.Update(ref p);
-            }
-
             // call custom update handler of current object and its state, if any
-            OnUpdate(ref p);
             if (myState != null)
                 myState.OnUpdate(this, ref p);
+
+            base.Update(ref p);
 
         }
 
@@ -462,21 +292,6 @@ namespace TTengine.Core
             {
                 item.Draw(ref p);
             }
-        }
-
-        /// Called for deletion of this item - includes deletion of all children and calling OnDeletion
-        internal override void DeleteItem()
-        {
-            int i = 0;
-            while (i < Children.Count)
-            {
-                Children[i].Delete = true;
-                Children[i].DeleteItem();
-                i++;
-            }
-            Children.Clear();
-
-            base.DeleteItem();
         }
 
         internal void OnCollideEventNotification(Gamelet s)

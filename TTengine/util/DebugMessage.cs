@@ -58,7 +58,7 @@ namespace TTengine.Util
             base.OnDraw(ref p);
 
             Vector2 origin = Vector2.Zero; // new Vector2(2f * txt.Length, 0f);
-            DrawInfo.MySpriteBatch.DrawString(Screen.DebugFont, txt, Motion.PositionAbsZoomedPixels, DrawInfo.DrawColor,
+            DrawInfo.MySpriteBatch.DrawString(DrawInfo.Screen.DebugFont, txt, Motion.PositionAbsZoomedPixels, DrawInfo.DrawColor,
                                     Motion.RotateAbs, origin, Motion.ScaleAbs, SpriteEffects.None, DrawInfo.LayerDepth);
         }
 

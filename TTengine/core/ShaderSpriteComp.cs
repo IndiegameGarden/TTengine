@@ -4,9 +4,9 @@ using Microsoft.Xna.Framework.Graphics;
 namespace TTengine.Core
 {
     /// <summary>
-    /// SpriteComplet that supports drawing sprites with a given shader effect applied (HLSL)  
+    /// SpriteComp that supports drawing sprites with a given shader effect applied (HLSL)  
     /// </summary>
-    public class EffectSpriteComplet : SpriteComplet
+    public class ShaderSpriteComp : SpriteComp
     {
         /// <summary>
         /// whether the Effect is used when drawing (true), or not (false).
@@ -34,7 +34,7 @@ namespace TTengine.Core
         /// construct with BasicEffect and given texture loaded from content file
         /// </summary>
         /// <param name="textureFile">texture content file</param>
-        public EffectSpriteComplet(String textureFile)
+        public ShaderSpriteComp(String textureFile)
             : base(textureFile)
         {
             this.effectFile = null;
@@ -45,7 +45,7 @@ namespace TTengine.Core
         /// construct with BasicEffect and given Texture2D
         /// </summary>
         /// <param name="texture">texture content file</param>
-        public EffectSpriteComplet(Texture2D texture)
+        public ShaderSpriteComp(Texture2D texture)
             : base(texture)
         {
             this.effectFile = null;
@@ -57,7 +57,7 @@ namespace TTengine.Core
         /// </summary>
         /// <param name="textureFile">texture content file</param>
         /// <param name="effectFile">shader effect file</param>
-        public EffectSpriteComplet(String textureFile, String effectFile)
+        public ShaderSpriteComp(String textureFile, String effectFile)
             : base(textureFile)
         {
             this.effectFile = effectFile;
@@ -69,7 +69,7 @@ namespace TTengine.Core
         /// </summary>
         /// <param name="texture">texture to use</param>
         /// <param name="effectFile">shader effect file to load</param>
-        public EffectSpriteComplet(Texture2D texture, String effectFile)
+        public ShaderSpriteComp(Texture2D texture, String effectFile)
             : base(texture)
         {
             this.effectFile = effectFile;
@@ -92,11 +92,11 @@ namespace TTengine.Core
             if (effectFile != null)
                 eff = TTengineMaster.ActiveGame.Content.Load<Effect>(effectFile);
             else
-                eff = new BasicEffect(Parent.Screen.graphicsDevice);
-            Parent.VertexShaderInit(eff); // FIXME move away from gamelet
+                eff = new BasicEffect(Parent.DrawInfo.Screen.graphicsDevice);
+            Parent.DrawInfo.VertexShaderInit(eff); // FIXME move away from gamelet
 
             // find or create my effect-related spritebatch
-            MySpriteBatch = Parent.Screen.CreateSharedSpriteBatch(eff);
+            MySpriteBatch = Parent.DrawInfo.Screen.CreateSharedSpriteBatch(eff);
 
             // try to find common parameters in the Effect (gets null if not found)
             timeParam = eff.Parameters["Time"];
@@ -125,7 +125,7 @@ namespace TTengine.Core
             {
                 if (EffectEnabled)
                 {
-                    Parent.Screen.UseSharedSpriteBatch(eff);
+                    Parent.DrawInfo.Screen.UseSharedSpriteBatch(eff);
                     return mySpriteBatch;
                 }
                 else
@@ -136,7 +136,7 @@ namespace TTengine.Core
 
             set
             {
-                Parent.Screen.CreateSharedSpriteBatch(eff);
+                Parent.DrawInfo.Screen.CreateSharedSpriteBatch(eff);
                 mySpriteBatch = value;
             }
         }

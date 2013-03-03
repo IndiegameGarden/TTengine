@@ -27,9 +27,9 @@ namespace TTengine.Core
         public Vector2 Center = Vector2.Zero;
 
         /**
-         * The MotionComplet class specifically adapted for use by Screenlet
+         * The MotionComp class specifically adapted for use by Screenlet
          */
-        class ScreenletMotion : MotionComplet
+        class ScreenletMotion : MotionComp
         {
             public override Vector2 PositionAbs
             {
@@ -121,7 +121,7 @@ namespace TTengine.Core
         /// </summary>
         public Screenlet()
         {
-            Init();
+            OnConstruction();
             InitRenderTarget();
         }
 
@@ -132,7 +132,7 @@ namespace TTengine.Core
         {
             screenWidth = x;
             screenHeight = y;
-            Init();
+            OnConstruction();
             InitRenderTarget();
         }
 
@@ -140,7 +140,7 @@ namespace TTengine.Core
 
         public void DebugText(float x, float y, string text)
         {
-            mySpriteBatch.DrawString(DebugFont, text, ToPixels(x, y), Color.White, 0f, Vector2.Zero, Motion.Zoom, SpriteEffects.None, 0f);
+            mySpriteBatch.DrawString(DebugFont, text, DrawInfo.ToPixels(x, y), Color.White, 0f, Vector2.Zero, Motion.Zoom, SpriteEffects.None, 0f);
         }
 
         public void DebugText(Vector2 pos, string text)
@@ -148,14 +148,13 @@ namespace TTengine.Core
             DebugText(pos.X, pos.Y, text);
         }
 
-        protected void Init()
+        protected void OnConstruction()
         {
             TTengineMaster.ActiveScreen = this;
             Motion = new ScreenletMotion();
             Add(Motion);
-            DrawInfo = new DrawComplet();
+            DrawInfo = new DrawComp();
             Add(DrawInfo);
-            Screen = this;
             TTengineMaster.AddScreenlet(this);
             DrawInfo.DrawColor = Color.Black; // for screen - default black background.
             graphicsDevice = TTengineMaster.ActiveGame.GraphicsDevice;

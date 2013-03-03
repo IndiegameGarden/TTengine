@@ -32,18 +32,18 @@ namespace TTengine.Util
 
         void InitTextureBuffer()
         {
-            Sprite.Texture = new Texture2D(Screen.graphicsDevice, 1, 1);
+            Sprite.Texture = new Texture2D(DrawInfo.Screen.graphicsDevice, 1, 1);
             Sprite.Texture.SetData<Color>(new Color[] { Color.White });
-            scaleVec = new Vector2(Screen.WidthPixels * 2f, height * Screen.HeightPixels);
+            scaleVec = new Vector2(DrawInfo.Screen.WidthPixels * 2f, height * DrawInfo.Screen.HeightPixels);
             Sprite.Center = new Vector2(0.5f, 0f); // horiz-centered and vertically-aligned-top
-            posX = Screen.WidthPixels / 2f;
+            posX = DrawInfo.Screen.WidthPixels / 2f;
         }
 
         protected override void OnDraw(ref DrawParams p)
         {
             if (Sprite.Texture != null)
             {
-                Vector2 pos = Parent.DrawInfo.DrawPosition +ToPixels(Motion.Position);
+                Vector2 pos = DrawInfo.DrawPosition + DrawInfo.ToPixels(Motion.Position);
                 pos.X += posX;
                 DrawInfo.MySpriteBatch.Draw(Sprite.Texture, pos, null, DrawInfo.DrawColor,
                        Motion.RotateAbs, Sprite.DrawCenter, scaleVec * DrawInfo.DrawScale, SpriteEffects.None, DrawInfo.LayerDepth);
