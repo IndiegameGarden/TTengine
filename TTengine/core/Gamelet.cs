@@ -61,6 +61,11 @@ namespace TTengine.Core
         public SpriteComp Sprite;
 
         /// <summary>
+        /// Timing control
+        /// </summary>
+        public TimingComp Timing;
+
+        /// <summary>
         /// Set the IState in which this Gamelet is Active only. If null (default), it means active in any state.
         /// </summary>
         public IState ActiveInState
@@ -70,12 +75,20 @@ namespace TTengine.Core
         }
 
         /// <summary>
+        /// Check whether the current ActiveInState setting equals Gamelet's current state
+        /// </summary>
+        public bool IsInActiveState
+        {
+            get { return isInActiveState; }
+        }
+
+        /// <summary>
         /// Flag indicating whether visibility is enabled, which means if true OnDraw() is called
         /// </summary>
         public bool Visible = true; 
 
         /// <summary>
-        /// total cumulative amount of simulation time of this specific item (i.e. time being Active)
+        /// total cumulative amount of simulation time of this specific item
         /// </summary>
         public float SimTime = 0f;
 
@@ -144,6 +157,7 @@ namespace TTengine.Core
         #endregion
 
         #region Internal Vars        
+        internal bool isInActiveState = true;
         internal float duration = -1f;
         internal float startTime = 0f;
         private IState activeInState = null;
@@ -234,17 +248,12 @@ namespace TTengine.Core
 
         internal override void Update(ref UpdateParams p)
         {
-            if (!Active) return;
+            // advance sim time
+            SimTime += p.Dt;
 
             // check active in state
             if (activeInState != null)
-            {
-                if (!IsInState(activeInState))
-                    return;
-            }
-
-            // advance sim time if Active
-            SimTime += p.Dt;
+                Active = IsInState(activeInState);
 
             // call custom update handler of current object and its state, if any
             if (myState != null)
@@ -254,20 +263,11 @@ namespace TTengine.Core
 
         }
 
-        /// Called when item should draw itself. A Gamelet typically does not draw itself but a Spritelet may (e.g. a child of this).
+        /// Called when item should draw itself, even for non-drawable objects (e.g. parents of drawable objects). 
         internal virtual void Draw(ref DrawParams p)
         {
-            if (!Active) return;
-
-            // check active in state
-            if (activeInState != null)
-            {
-                if (!IsInState(activeInState))
-                    return;
-            }
-
             // render this item
-            if (Visible)
+            if (Visible && Active)
             {
                 OnDraw(ref p);
                 if (myState != null)
@@ -279,7 +279,7 @@ namespace TTengine.Core
             {
                 if (item is Gamelet)
                     (item as Gamelet).Draw(ref p);
-                else 
+                else
                     item.OnDraw(ref p);
             }
         }

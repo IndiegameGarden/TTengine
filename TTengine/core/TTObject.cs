@@ -27,7 +27,7 @@ namespace TTengine.Core
         public bool Delete = false;
 
         /// <summary>
-        /// If false this Gamelet will not update/draw/collide and my children will not update/draw/collide
+        /// whether this Gamelet is active; if not: OnUpdate() and OnDraw() will not be called
         /// </summary>
         public bool Active = true;
 
@@ -80,12 +80,18 @@ namespace TTengine.Core
         /// <summary>
         /// Called on drawing of the parent Gamelet
         /// </summary>
-        public abstract void OnDraw(ref DrawParams p);
+        public virtual void OnDraw(ref DrawParams p)
+        {
+            //
+        }
     
         /// <summary>
         /// Called on moment of parent Gamelet deletion
         /// </summary>
-        protected abstract void OnDelete();
+        protected virtual void OnDelete()
+        {
+            //
+        }
 
         #endregion
 
@@ -185,8 +191,6 @@ namespace TTengine.Core
 
         internal virtual void Update(ref UpdateParams p)
         {
-            if (!Active) return;
-
             // add any children that were queued to add
             lock (childrenToAdd)
             {
@@ -220,7 +224,8 @@ namespace TTengine.Core
             }
 
             // call custom update handler of current object 
-            OnUpdate(ref p);
+            if (Active)
+                OnUpdate(ref p);
 
         }
 

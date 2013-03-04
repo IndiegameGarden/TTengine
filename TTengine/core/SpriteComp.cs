@@ -181,7 +181,7 @@ namespace TTengine.Core
 
         public override void OnDraw(ref DrawParams p)
         {
-            if (texture != null)
+            if (texture != null && Parent.Visible && Parent.Active )
             {                
                 Parent.DrawC.MySpriteBatch.Draw(texture, Parent.DrawC.DrawPosition, null, Parent.DrawC.DrawColor,
                        Parent.Motion.RotateAbs, DrawCenter, Parent.DrawC.DrawScale, SpriteEffects.None, Parent.DrawC.LayerDepth);

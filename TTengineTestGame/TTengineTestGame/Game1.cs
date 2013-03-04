@@ -45,6 +45,9 @@ namespace TTengineTestGame
                     ball.Motion.Velocity = 0.1f * new Vector2((float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f);
                     ball.Motion.Rotate = (float)(Math.PI * 2 * rnd.NextDouble());
                     ball.Motion.Scale = 0.4f + 0.6f * (float)rnd.NextDouble();
+                    
+                    ball.Timing.StartTime = 10f * (float)rnd.NextDouble();
+                    ball.Timing.Duration = 10f + 5f * (float)rnd.NextDouble();
 
                     Screen.Add(ball);
                 }
