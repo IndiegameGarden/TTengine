@@ -159,7 +159,7 @@ namespace TTengine.Core
             UpdateSmoothingCache(ref p);
         }
 
-        public override void OnNewParent()
+        public override void OnNewParent(TTObject oldParent)
         {
             if (Screen != null)
                 mySpriteBatch = Screen.mySpriteBatch;

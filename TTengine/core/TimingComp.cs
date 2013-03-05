@@ -82,7 +82,7 @@ namespace TTengine.Core
             }
         }
 
-        public override void OnNewParent()
+        public override void OnNewParent(TTObject oldParent)
         {
             Parent.Active = false; // allow timed activation later in OnUpdate()
         }

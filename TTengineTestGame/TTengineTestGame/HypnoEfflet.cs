@@ -18,7 +18,7 @@ namespace TTengineTestGame
 
             float z = 17f - 15f * (float) Math.Sin( MathHelper.TwoPi * 0.03324 * p.SimTime );
             effect.Parameters["Zoom"].SetValue(z);
-            effect.Parameters["Time"].SetValue((float) p.gameTime.TotalGameTime.TotalSeconds);
+            effect.Parameters["Time"].SetValue(p.SimTime);
         }
         
     }

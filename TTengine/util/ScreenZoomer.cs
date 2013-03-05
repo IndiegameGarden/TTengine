@@ -10,9 +10,9 @@ namespace TTengine.Util
     {
         Screenlet screen = null;
 
-        public override void OnNewParent()
+        public override void OnNewParent(TTObject oldParent)
         {
-            base.OnNewParent();
+            base.OnNewParent(oldParent);
             if (Parent is Screenlet)
             {
                 screen = Parent as Screenlet;

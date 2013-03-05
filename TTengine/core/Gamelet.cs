@@ -61,9 +61,14 @@ namespace TTengine.Core
         public SpriteComp Sprite;
 
         /// <summary>
-        /// Timing control
+        /// Timing control, or null if none
         /// </summary>
         public TimingComp Timing;
+
+        /// <summary>
+        /// Collision detection, or null if none
+        /// </summary>
+        public CollisionComp Collision;
 
         /// <summary>
         /// Set the IState in which this Gamelet is Active only. If null (default), it means active in any state.
@@ -189,7 +194,7 @@ namespace TTengine.Core
             //
         }
 
-        public override void OnNewParent()
+        public override void OnNewParent(TTObject oldParent)
         {
             //
         }

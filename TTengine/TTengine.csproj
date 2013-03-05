@@ -99,6 +99,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\CollisionComp.cs" />
     <Compile Include="Core\TimingComp.cs" />
     <Compile Include="Core\TTObject.cs" />
     <Compile Include="Core\DrawComp.cs" />

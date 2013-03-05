@@ -24,9 +24,9 @@ namespace TTengine.Util
             this.height = height;
         }
 
-        public override void OnNewParent()
+        public override void OnNewParent(TTObject oldParent)
         {
-            base.OnNewParent();
+            base.OnNewParent(oldParent);
             InitTextureBuffer();
         }
 

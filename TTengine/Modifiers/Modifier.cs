@@ -51,9 +51,9 @@ namespace TTengine.Modifiers
             this.propertyName = subPropertyOrField;
         }
 
-        public override void OnNewParent()
+        public override void OnNewParent(TTObject oldParent)
         {
-            base.OnNewParent();
+            base.OnNewParent(oldParent);
             if (propertyName != null && Parent != null) 
             {
                 // try to detect a container, if specified

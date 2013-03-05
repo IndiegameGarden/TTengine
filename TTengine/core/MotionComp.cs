@@ -262,7 +262,7 @@ namespace TTengine.Core
             //
         }
 
-        public override void OnNewParent()
+        public override void OnNewParent(TTObject oldParent)
         {
             //
         }

@@ -11,6 +11,7 @@ namespace TTengineTestGame
         {
             ConstructSpritelet("ball");
             TimingComp.AddTiming(this);
+            CollisionComp.AddCollision(this);
         }
 
         public override void OnInit()

@@ -65,7 +65,7 @@ namespace TTengine.Core
         /// <summary>
         /// called when parent changes, check Parent member for the new parent.
         /// </summary>
-        public abstract void OnNewParent();
+        public abstract void OnNewParent(TTObject oldParent);
 
         /// <summary>
         /// called on TTObject tree init
@@ -112,9 +112,10 @@ namespace TTengine.Core
         {
             if (!Children.Contains(child))
             {
+                TTObject oldParent = child.ParentObj;
                 child.ParentObj = this;
                 Children.Add(child);
-                child.OnNewParent();
+                child.OnNewParent(oldParent);
             }
         }
 
@@ -136,15 +137,17 @@ namespace TTengine.Core
         public void AddFront(TTObject child)
         {
             Children.Insert(0, child);
+            TTObject oldParent = child.ParentObj;
             child.ParentObj = this;
-            child.OnNewParent();
+            child.OnNewParent(oldParent);
         }
 
         public void Add(int index, TTObject child)
         {
             Children.Insert(index, child);
+            TTObject oldParent = child.ParentObj;
             child.ParentObj = this;
-            child.OnNewParent();
+            child.OnNewParent(oldParent);
         }
 
         /// <summary>
@@ -157,8 +160,9 @@ namespace TTengine.Core
             if (Children.Contains(child))
             {
                 Children.Remove(child);
+                TTObject oldParent = child.ParentObj;
                 child.ParentObj = null;
-                child.OnNewParent();
+                child.OnNewParent(oldParent);
                 return true;
             }
             else
