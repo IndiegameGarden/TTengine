@@ -1,4 +1,5 @@
 // (c) 2010-2013 TranceTrance.com. Distributed under the FreeBSD license in LICENSE.txt
+using System;
 
 namespace TTengine.Core
 {
@@ -14,8 +15,18 @@ namespace TTengine.Core
 
         protected float itemsSimTime = 0f;
 
+        /// <summary>
+        /// Time it took for last Update() of this gamelet
+        /// </summary>
+        public long LastUpdateDurationMs = 0;
+
+        public FixedTimestepPhysics():base()
+        {
+        }
+
         internal override void Update(ref UpdateParams p)
         {
+            long t1 = DateTime.Now.Ticks;
             while (itemsSimTime < p.SimTime + simulateAheadTime ) 
             {
                 itemsSimTime += fixedTimestep;
@@ -25,6 +36,8 @@ namespace TTengine.Core
                 updParsCache.Dt = fixedTimestep;
                 base.Update(ref updParsCache);
             }
+            long t2 = DateTime.Now.Ticks;
+            LastUpdateDurationMs = (t2 - t1) / TimeSpan.TicksPerMillisecond;
         }
        
     }
