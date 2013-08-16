@@ -158,6 +158,7 @@ namespace TTengine.Core
         }
 
         public float ScaleModifier = 1f;
+        
         public virtual float ScaleAbs
         {
             get
@@ -168,6 +169,7 @@ namespace TTengine.Core
                     return Scale * ScaleModifier * MotionParent.ScaleAbs;
             }
         }
+        
         public virtual float ZoomAbs
         {
             get

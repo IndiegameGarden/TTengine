@@ -244,6 +244,7 @@ namespace TTengine.Core
         #region Private (internal) methods
 
         /// <summary>Find the screen that this item should render to (by recursively looking upward in tree)</summary>
+        /// TODO check if not called too often - can also assign items to a fixed screen.
         private Screenlet FindScreen()
         {
             if (this is Screenlet) return (this as Screenlet);
