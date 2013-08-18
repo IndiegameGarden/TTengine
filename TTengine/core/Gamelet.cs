@@ -1,5 +1,4 @@
 // (c) 2010-2013 TranceTrance.com. Distributed under the FreeBSD license in LICENSE.txt
-
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
@@ -32,11 +31,10 @@ namespace TTengine.Core
     public delegate void GameletEventHandler(Gamelet sender, GameletEventArgs e);
 
     /**
-     * basic game item class that can contain children items. 
-     * Provides subclass extendibility via On...() methods.
-     * Also defines some (collission) eventing.
+     * basic game entity class that can refer to children entities. 
+     * TODO: ? Provides subclass extendibility via On...() methods.
      */
-    public class Gamelet: TTObject
+    public class Gamelet: Complet
     {
 
         #region Eventing
@@ -46,257 +44,92 @@ namespace TTengine.Core
         #region Properties
 
         /// <summary>
-        /// Includes position, velocity, any motion behaviors of Gamelet; or null if not motion-capable
+        /// Children of this gamelet
         /// </summary>
-        public MotionComp Motion;
+        public List<Gamelet> Children = new List<Gamelet>();
 
         /// <summary>
-        /// Information for drawing this Gamelet, or null if not drawable
-        /// </summary>
-        public DrawComp DrawC;
-
-        /// <summary>
-        /// Sprite for this Gamelet, or null if none
-        /// </summary>
-        public SpriteComp Sprite;
-
-        /// <summary>
-        /// Timing control, or null if none
-        /// </summary>
-        public TimingComp Timing;
-
-        /// <summary>
-        /// Collision detection, or null if none
-        /// </summary>
-        public CollisionComp Collision;
-
-        /// <summary>
-        /// Set the IState in which this Gamelet is Active only. If null (default), it means active in any state.
-        /// </summary>
-        public IState ActiveInState
-        {
-            get { return activeInState; }
-            set { activeInState = value; }
-        }
-
-        /// <summary>
-        /// Check whether the current ActiveInState setting equals Gamelet's current state
-        /// </summary>
-        public bool IsInActiveState
-        {
-            get { return isInActiveState; }
-        }
-
-        /// <summary>
-        /// Flag indicating whether visibility is enabled, which means if true OnDraw() is called
-        /// </summary>
-        public bool Visible = true; 
-
-        /// <summary>
-        /// total cumulative amount of simulation time of this specific item
+        /// total cumulative amount of simulation time of this gamelet
         /// </summary>
         public float SimTime = 0f;
 
+        /// <summary>
+        /// whether this Gamelet is active; if not updates for it will not be done
+        /// </summary>
+        public bool Active = true;
+
+        /// <summary>
+        /// Flag indicating if Gamelet should be deleted - if true deletion occurs during next Update
+        /// </summary>
+        public bool Delete = false;
+
         #endregion
 
-        #region Constructors
-        
         /// <summary>
-        /// creates basic Gamelet that attaches to the currently active Screen
+        /// constructor
         /// </summary>
         public Gamelet()
         {
             //
         }
 
-        /// <summary>
-        /// turn into a Drawlet
-        /// </summary>
-        public void ConstructDrawlet()
-        {
-            Motion = new MotionComp();
-            DrawC = new DrawComp();
-            Add(Motion);
-            Add(DrawC);
-        }
-
-        /// <summary>
-        /// turn into a Spritelet
-        /// </summary>
-        public void ConstructSpritelet()
-        {
-            ConstructDrawlet();
-            Sprite = new SpriteComp((Texture2D) null);
-            Add(Sprite);
-        }
-
-        /// <summary>
-        /// turn into a Spritelet
-        /// </summary>
-        public void ConstructSpritelet(String textureFile)
-        {
-            ConstructDrawlet();
-            Sprite = new SpriteComp(textureFile);
-            Add(Sprite);
-        }
-
-        /// <summary>
-        /// turn into an EffectSpritelet
-        /// </summary>
-        public void ConstructEffectSpritelet(String textureFile, String effectFile)
-        {
-            ConstructDrawlet();
-            Sprite = new ShaderSpriteComp(textureFile, effectFile);
-            Add(Sprite);
-        }
-
-        /// <summary>
-        /// turn into an Efflet, TODO only called from efflet class now.
-        /// </summary>
-        public void ConstructEfflet()
-        {
-            ConstructDrawlet();
-        }
-
-
-        #endregion
-
-        #region Internal Vars        
-        internal bool isInActiveState = true;
-        internal float duration = -1f;
-        internal float startTime = 0f;
-        private IState activeInState = null;
-        private IState myState = null;
-        #endregion
-
         #region Overridable Handler methods (On...() methods)
 
-        /// <summary>
-        /// Collision may imply that me or a parent of me collided
-        /// </summary>
-        public virtual void OnCollision(Gamelet withItem)
+        public virtual void OnDelete()
         {
             //
         }
 
-        protected override void OnDelete()
+        public virtual void OnInit()
         {
             //
         }
 
-        public override void OnInit()
-        {
-            //
-        }
-
-        public override void OnDraw(ref DrawParams p)
-        {
-            //
-        }
-
-        public override void OnNewParent(TTObject oldParent)
-        {
-            //
-        }
-
-        protected override void OnUpdate(ref UpdateParams p)
+        public virtual void OnNewParent(Gamelet oldParent)
         {
             //
         }
 
         #endregion
 
-        #region User methods
-        public void SetNextState(IState st)
+        #region Children methods
+        /// <summary>
+        /// Adds a Gamelet as child. 
+        /// Note: Does not add again if 'child' is already a child Gamelet of this one.
+        /// </summary>
+        public void Add(Gamelet child)
         {
-            if(myState != null)
-                myState.OnExit(this);
-            myState = st;
-            myState.OnEntry(this);
-        }
-
-        public IState GetState()
-        {
-            return myState;
+            if (!Children.Contains(child))
+            {
+                Gamelet oldParent = child.Parent;
+                child.Parent = this;
+                Children.Add(child);
+                child.OnNewParent(oldParent);
+            }
         }
 
         /// <summary>
-        /// checks whether the Gamelet is in indicated state s. State is determined by IState s CLASS not specific instances.
-        /// If Gamelet has no state (ie state==null), then state is determined by my Parent or Parent's Parent etc., recursively up the Gamelet tree.
+        /// Removes specified child gamelet from the list of children. The child.OnNewParent() is
+        /// called with a null parameter, indicating it is parentless.
         /// </summary>
-        /// <param name="s">an instance of a class with IState interface, the CLASS will be compared to this.GetState()</param>
-        public bool IsInState(IState s)
+        /// <returns>true if item is successfully removed; otherwise, false. </returns>
+        public bool Remove(Gamelet child)
         {
-            if (myState == null)
+            if (Children.Contains(child))
             {
-                if (Parent == null)
-                    return false;
-                else
-                    return Parent.IsInState(s);
+                Children.Remove(child);
+                Gamelet oldParent = child.Parent;
+                child.Parent = null;
+                child.OnNewParent(oldParent);
+                return true;
             }
-            Type sType = s.GetType();
-            Type myType = myState.GetType();
-            return (myState == s || (sType.IsAssignableFrom(myType) && myType.IsAssignableFrom(sType)));
+            else
+            {
+                return false;
+            }
         }
 
         #endregion
 
-        #region Private (internal) methods
-
-        /// <summary>Find the screen that this item should render to (by recursively looking upward in tree)</summary>
-        /// TODO check if not called too often - can also assign items to a fixed screen.
-        private Screenlet FindScreen()
-        {
-            if (this is Screenlet) return (this as Screenlet);
-            if (Parent == null) return null;
-            return Parent.FindScreen();
-        }
-
-        internal override void Update(ref UpdateParams p)
-        {
-            // advance sim time
-            SimTime += p.Dt;
-
-            // check active in state
-            if (activeInState != null)
-                Active = IsInState(activeInState);
-
-            // call custom update handler of current object and its state, if any
-            if (myState != null)
-                myState.OnUpdate(this, ref p);
-
-            base.Update(ref p);
-
-        }
-
-        /// Called when item should draw itself, even for non-drawable objects (e.g. parents of drawable objects). 
-        internal virtual void Draw(ref DrawParams p)
-        {
-            // render this item
-            if (Visible && Active)
-            {
-                OnDraw(ref p);
-                if (myState != null)
-                    myState.OnDraw(this);
-            }
-            
-            // then render all of the child nodes
-            foreach (TTObject item in Children)
-            {
-                if (item is Gamelet)
-                    (item as Gamelet).Draw(ref p);
-                else
-                    item.OnDraw(ref p);
-            }
-        }
-
-        internal void OnCollideEventNotification(Gamelet s)
-        {
-            // event notifs to subscribers of OnCollision event
-            if (OnCollisionEvent != null)
-                OnCollisionEvent(this, new GameletEventArgs(s));
-        }
-
-        #endregion
     }
 }

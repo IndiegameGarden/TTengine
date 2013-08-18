@@ -6,13 +6,13 @@ namespace TTengine.Core
 {
     /// <summary>
     /// Component with elements to provide basic physics-based motion 
-    /// (position, velocity, scale, rotation, zoom, etc.) to a gamelet
+    /// (velocity, scale, rotation, zoom, etc.) to a gamelet
     /// </summary>
-    public class MotionComp : TTObject
+    public class MotionComp : Complet
     {
         public MotionComp()
         {
-            Screen = TTengineMaster.ActiveScreen;
+            
         }
 
         public Vector2 Position = Vector2.Zero;
@@ -34,21 +34,8 @@ namespace TTengine.Core
         /// </summary>
         public MotionComp MotionParent
         {
-            get
-            {
-                if (motionParent == null)
-                {
-                    if (Parent.Parent.Motion == null)
-                        return null;
-                    else
-                        return Parent.Parent.Motion;
-                }
-                return motionParent;
-            }
-            set
-            {
-                motionParent = value;
-            }
+            get;
+            set;
         }
 
         /// <summary>
@@ -106,19 +93,6 @@ namespace TTengine.Core
                 Velocity = new Vector2(value, 0f);
             }
         }
-
-        /// <summary>
-        /// absolute drawing position on screen in units of pixels for example for use in Draw() calls
-        /// Warning: this value is instantaneous and not obtaining using interpolation.
-        /// </summary>
-        public virtual Vector2 PositionAbsZoomedPixels
-        {
-            get
-            {
-                return Parent.DrawC.ToPixels(PositionAbsZoomed);
-            }
-        }
-
 
         public float Rotate = 0f;
         public float RotateModifier = 0f;

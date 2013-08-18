@@ -100,8 +100,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\CollisionComp.cs" />
+    <Compile Include="Core\Complet.cs" />
     <Compile Include="Core\TimingComp.cs" />
-    <Compile Include="Core\TTObject.cs" />
     <Compile Include="Core\DrawComp.cs" />
     <Compile Include="Core\DrawParams.cs" />
     <Compile Include="Core\ShaderSpriteComp.cs" />
