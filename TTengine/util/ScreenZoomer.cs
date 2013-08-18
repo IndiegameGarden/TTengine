@@ -10,16 +10,16 @@ namespace TTengine.Util
     {
         Screenlet screen = null;
 
-        protected override void OnNewParent()
+        public override void OnNewParent(TTObject oldParent)
         {
-            base.OnNewParent();
+            base.OnNewParent(oldParent);
             if (Parent is Screenlet)
             {
                 screen = Parent as Screenlet;
             }
         }
 
-        protected override void OnDraw(ref DrawParams p)
+        public override void OnDraw(ref DrawParams p)
         {
             base.OnDraw(ref p);
 
@@ -28,12 +28,12 @@ namespace TTengine.Util
                 if (Keyboard.GetState().IsKeyDown(Keys.PageUp))
                 {
                     screen.Motion.Zoom += 0.003f;
-                    Screen.DebugText(0.1f, 0.3f, "Zoom=" + screen.Motion.Zoom);
+                    screen.DebugText(0.1f, 0.3f, "Zoom=" + screen.Motion.Zoom);
                 }
                 if (Keyboard.GetState().IsKeyDown(Keys.PageDown))
                 {
                     screen.Motion.Zoom -= 0.003f;
-                    Screen.DebugText(0.1f, 0.3f, "Zoom=" + screen.Motion.Zoom);
+                    screen.DebugText(0.1f, 0.3f, "Zoom=" + screen.Motion.Zoom);
                 }
             }
 

@@ -1,14 +1,20 @@
-﻿// (c) 2010-2013 TranceTrance.com. Distributed under the FreeBSD license in LICENSE.txt
+// (c) 2010-2013 TranceTrance.com. Distributed under the FreeBSD license in LICENSE.txt
 
 using Microsoft.Xna.Framework;
 
 namespace TTengine.Core
 {
     /// <summary>
-    /// contains all elements to provide motion (position, velocity, scale, rotation, zoom, etc.) to a gamelet
+    /// Component with elements to provide basic physics-based motion 
+    /// (position, velocity, scale, rotation, zoom, etc.) to a gamelet
     /// </summary>
-    public class Motion: Gamelet
+    public class MotionComp : TTObject
     {
+        public MotionComp()
+        {
+            Screen = TTengineMaster.ActiveScreen;
+        }
+
         public Vector2 Position = Vector2.Zero;
         public Vector2 PositionModifier = Vector2.Zero;
 
@@ -26,7 +32,7 @@ namespace TTengine.Core
         /// If a MotionParent exists, my position/rotation/scale will be relative to the parent's pos/rot/scale. 
         /// If null, no motion parent exists.
         /// </summary>
-        public Motion MotionParent
+        public MotionComp MotionParent
         {
             get
             {
@@ -109,7 +115,7 @@ namespace TTengine.Core
         {
             get
             {
-                return ToPixels(PositionAbsZoomed);
+                return Parent.DrawC.ToPixels(PositionAbsZoomed);
             }
         }
 
@@ -152,6 +158,7 @@ namespace TTengine.Core
         }
 
         public float ScaleModifier = 1f;
+        
         public virtual float ScaleAbs
         {
             get
@@ -162,6 +169,7 @@ namespace TTengine.Core
                     return Scale * ScaleModifier * MotionParent.ScaleAbs;
             }
         }
+        
         public virtual float ZoomAbs
         {
             get
@@ -192,13 +200,13 @@ namespace TTengine.Core
         /// Specify a ZoomCenter position from the given Motion object i.e. Motion.PositionAbs.
         /// This is overridden by a coordinate setting done on ZoomCenter.
         /// </summary>
-        public Motion ZoomCenterTarget = null;
+        public MotionComp ZoomCenterTarget = null;
 
         public float RotateTarget = 0f;
 
         public float RotateSpeed = 0f;
 
-        
+        protected Screenlet Screen = null;
         protected Vector2 targetPos = Vector2.Zero;
         protected bool isTargetSet = false;
         protected Vector2 zoomCenter;
@@ -207,15 +215,11 @@ namespace TTengine.Core
         /// <summary>
         /// if null, means use default parent ("one up")
         /// </summary>
-        protected Motion motionParent = null;
+        protected MotionComp motionParent = null;
 
-        public Motion()
+        protected override void OnUpdate(ref UpdateParams p)
         {
-        }
-
-        internal override void Update(ref UpdateParams p)
-        {
-            // reset back the Modifiers, each Update round
+            // FIXME ? reset back the Modifiers, each Update round
             // *before* any children are simulated.
             if (Active)
             {
@@ -223,12 +227,6 @@ namespace TTengine.Core
                 ScaleModifier = 1.0f;
                 RotateModifier = 0.0f;
             }
-            base.Update(ref p);
-        }
-
-        protected override void OnUpdate(ref UpdateParams p)
-        {
-            base.OnUpdate(ref p);
 
             // simple physics simulation (fixed timestep assumption)
             // with optional target to move to with given velocity
@@ -254,6 +252,26 @@ namespace TTengine.Core
             // rotation
             RotateToTarget();
 
+        }
+
+        protected override void OnDelete()
+        {
+            //
+        }
+
+        public override void OnDraw(ref DrawParams p)
+        {
+            //
+        }
+
+        public override void OnNewParent(TTObject oldParent)
+        {
+            //
+        }
+
+        public override void OnInit()
+        {
+            //
         }
 
         protected void MoveToTarget(ref UpdateParams p, bool isLinearMotionMode)
@@ -360,8 +378,8 @@ namespace TTengine.Core
                         Scale = targetScale;
                     }
                 }
-                if (Parent.DrawInfo != null)
-                    Parent.DrawInfo.LayerDepth = 0.8f - Scale / 1000.0f;
+                if (Parent.DrawC != null)
+                    Parent.DrawC.LayerDepth = 0.8f - Scale / 1000.0f;
             }
         }
 

@@ -11,7 +11,7 @@ namespace TTengine.Util
      * shows a framerate counter on screen (FPS) calculated
      * from timing of draw/upd calls.
      */
-    public class DarkeningHBar : Spritelet
+    public class DarkeningHBar : Gamelet
     {
         Vector2 scaleVec;
         float height;
@@ -19,33 +19,34 @@ namespace TTengine.Util
 
         public DarkeningHBar(float opacity, float height)
         {
-        	DrawInfo.DrawColor = Color.Black * opacity ;
+            ConstructSpritelet();
+        	DrawC.DrawColor = Color.Black * opacity ;
             this.height = height;
         }
 
-        protected override void OnNewParent()
+        public override void OnNewParent(TTObject oldParent)
         {
-            base.OnNewParent();
+            base.OnNewParent(oldParent);
             InitTextureBuffer();
         }
 
         void InitTextureBuffer()
         {
-            Texture = new Texture2D(Screen.graphicsDevice, 1, 1);
-            Texture.SetData<Color> (  new Color[] { Color.White } );
-            scaleVec = new Vector2(Screen.WidthPixels * 2f, height * Screen.HeightPixels);
-            DrawInfo.Center = new Vector2(0.5f, 0f); // horiz-centered and vertically-aligned-top
-            posX = Screen.WidthPixels / 2f;
+            Sprite.Texture = new Texture2D(DrawC.Screen.graphicsDevice, 1, 1);
+            Sprite.Texture.SetData<Color>(new Color[] { Color.White });
+            scaleVec = new Vector2(DrawC.Screen.WidthPixels * 2f, height * DrawC.Screen.HeightPixels);
+            Sprite.Center = new Vector2(0.5f, 0f); // horiz-centered and vertically-aligned-top
+            posX = DrawC.Screen.WidthPixels / 2f;
         }
 
-        protected override void OnDraw(ref DrawParams p)
+        public override void OnDraw(ref DrawParams p)
         {
-            if (Texture != null)
+            if (Sprite.Texture != null)
             {
-                Vector2 pos = Parent.DrawInfo.DrawPosition +ToPixels(Motion.Position);
+                Vector2 pos = DrawC.DrawPosition + DrawC.ToPixels(Motion.Position);
                 pos.X += posX;
-                MySpriteBatch.Draw(Texture, pos, null, DrawInfo.DrawColor,
-                       Motion.RotateAbs, DrawInfo.DrawCenter, scaleVec * DrawInfo.DrawScale, SpriteEffects.None, DrawInfo.LayerDepth);
+                DrawC.MySpriteBatch.Draw(Sprite.Texture, pos, null, DrawC.DrawColor,
+                       Motion.RotateAbs, Sprite.DrawCenter, scaleVec * DrawC.DrawScale, SpriteEffects.None, DrawC.LayerDepth);
             }
         }
 

@@ -17,7 +17,7 @@ namespace TTengine.Core
         /// Called every gamelet update cycle
         void OnUpdate(Gamelet g, ref UpdateParams p);
 
-        /// Called every gamelet draw cycle
+        /// Called every gamelet draw cycle, TODO check if states need draw?
         void OnDraw(Gamelet g);
     }
 }

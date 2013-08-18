@@ -99,19 +99,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\DrawInfo.cs" />
-    <Compile Include="Core\Drawlet.cs" />
+    <Compile Include="Core\CollisionComp.cs" />
+    <Compile Include="Core\TimingComp.cs" />
+    <Compile Include="Core\TTObject.cs" />
+    <Compile Include="Core\DrawComp.cs" />
     <Compile Include="Core\DrawParams.cs" />
-    <Compile Include="Core\EffectSpritelet.cs" />
+    <Compile Include="Core\ShaderSpriteComp.cs" />
     <Compile Include="Core\Efflet.cs" />
     <Compile Include="Core\FixedTimestepPhysics.cs" />
     <Compile Include="Core\Gamelet.cs" />
     <Compile Include="Core\IState.cs" />
-    <Compile Include="Core\LODSpritelet.cs" />
-    <Compile Include="Core\Motion.cs" />
+    <Compile Include="Core\MotionComp.cs" />
     <Compile Include="Core\Screenlet.cs" />
-    <Compile Include="Core\Spritelet.cs" />
+    <Compile Include="Core\SpriteComp.cs" />
     <Compile Include="Core\State.cs" />
+    <Compile Include="Core\TTGame.cs" />
     <Compile Include="Core\TTSpriteBatch.cs" />
     <Compile Include="Core\UpdateParams.cs" />
     <Compile Include="Modifiers\Modifier.cs" />
@@ -127,6 +129,17 @@
     <Compile Include="Util\FrameRateCounter.cs" />
     <Compile Include="Util\ScreenZoomer.cs" />
     <Compile Include="Util\TTutil.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TTMusicEngine\TTMusicEngine.csproj">
+      <Project>{CB99D0C9-FD0E-4B90-91BD-7D5816B38A2C}</Project>
+      <Name>TTMusicEngine</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="fmodex.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />

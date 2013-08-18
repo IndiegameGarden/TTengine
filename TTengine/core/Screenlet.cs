@@ -18,8 +18,8 @@ namespace TTengine.Core
         /// ref to the GraphicsDevice to use by child Gamelets
         public GraphicsDevice graphicsDevice;
 
-        /// list of all Spritelets for which mutual collision detection is done
-        public List<Spritelet> collisionObjects;
+        /// list of all Gamelets for which mutual collision detection is done
+        public List<Gamelet> collisionObjects;
 
         /// <summary>
         /// The center coordinate of the screen
@@ -27,9 +27,9 @@ namespace TTengine.Core
         public Vector2 Center = Vector2.Zero;
 
         /**
-         * The Motion class specifically adapted for use by Screenlet
+         * The MotionComp class specifically adapted for use by Screenlet
          */
-        class ScreenletMotion : Motion
+        class ScreenletMotion : MotionComp
         {
             public override Vector2 PositionAbs
             {
@@ -101,6 +101,7 @@ namespace TTengine.Core
         #region Private and internal variables
 
         internal SpriteFont DebugFont = null;
+        internal TTSpriteBatch mySpriteBatch = null;
         internal int screenWidth = 0;
         internal int screenHeight = 0;
         private float aspectRatio;
@@ -120,7 +121,7 @@ namespace TTengine.Core
         /// </summary>
         public Screenlet()
         {
-            Init();
+            OnConstruction();
             InitRenderTarget();
         }
 
@@ -131,7 +132,7 @@ namespace TTengine.Core
         {
             screenWidth = x;
             screenHeight = y;
-            Init();
+            OnConstruction();
             InitRenderTarget();
         }
 
@@ -139,7 +140,7 @@ namespace TTengine.Core
 
         public void DebugText(float x, float y, string text)
         {
-            MySpriteBatch.DrawString(DebugFont, text, ToPixels(x, y), Color.White, 0f, Vector2.Zero, Motion.Zoom, SpriteEffects.None, 0f);
+            mySpriteBatch.DrawString(DebugFont, text, DrawC.ToPixels(x, y), Color.White, 0f, Vector2.Zero, Motion.Zoom, SpriteEffects.None, 0f);
         }
 
         public void DebugText(Vector2 pos, string text)
@@ -147,16 +148,15 @@ namespace TTengine.Core
             DebugText(pos.X, pos.Y, text);
         }
 
-        protected void Init()
+        protected void OnConstruction()
         {
             TTengineMaster.ActiveScreen = this;
             Motion = new ScreenletMotion();
             Add(Motion);
-            DrawInfo = new DrawInfo();
-            Add(DrawInfo);
-            Screen = this;
+            DrawC = new DrawComp();
+            Add(DrawC);
             TTengineMaster.AddScreenlet(this);
-            DrawInfo.DrawColor = Color.Black; // for screen - default black background.
+            DrawC.DrawColor = Color.Black; // for screen - default black background.
             graphicsDevice = TTengineMaster.ActiveGame.GraphicsDevice;
             try
             {
@@ -169,7 +169,7 @@ namespace TTengine.Core
             }
             effletsList = new List<Efflet>();
             mySpriteBatch = new TTSpriteBatch(graphicsDevice);
-            collisionObjects = new List<Spritelet>();
+            collisionObjects = new List<Gamelet>();
         }
 
         protected void InitRenderTarget()
@@ -291,8 +291,8 @@ namespace TTengine.Core
                     rts = graphicsDevice.GetRenderTargets();
                     graphicsDevice.SetRenderTarget(renderTarget);
                 }
-                if (DrawInfo.Alpha > 0)   // only clear if background is not fully transparent
-                    graphicsDevice.Clear(DrawInfo.DrawColor);
+                if (DrawC.Alpha > 0)   // only clear if background is not fully transparent
+                    graphicsDevice.Clear(DrawC.DrawColor);
 
                 // Draw() all children items:
                 base.Draw(ref p);

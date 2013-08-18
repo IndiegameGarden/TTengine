@@ -1,27 +1,33 @@
-// (c) 2010-2011 TranceTrance.com. Distributed under the FreeBSD license in LICENSE.txt
+// (c) 2010-2013 TranceTrance.com. Distributed under the FreeBSD license in LICENSE.txt
 
 using Microsoft.Xna.Framework;
 using TTengine.Core;
 
 namespace TTengineTestGame
 {
-    public class Ball: Spritelet
+    public class Ball: Gamelet
     {
         public Ball()
-            : base("ball")
         {
-            checksCollisions = true;
-            radius *= 0.9f;
+            ConstructSpritelet("ball");
+            TimingComp.AddTiming(this);
+            CollisionComp.AddCollision(this);
         }
 
-        public override void OnCollision(Spritelet withItem)
+        public override void OnInit()
         {
-            base.OnCollision(withItem);
+            // FIXME separate obj; add headers to files
+            Sprite.ChecksCollisions = true;
+            Sprite.Radius *= 0.9f;            
+        }
 
-            // swap the velocity vecs - pseudo-phyics eff
+        public override void OnCollision(Gamelet withItem)
+        {
+            // swap the velocity vecs - pseudo-phyics effect
             Vector2 v = withItem.Motion.Velocity;
             withItem.Motion.Velocity = Motion.Velocity;
             Motion.Velocity = v;
         }
+
     }
 }
