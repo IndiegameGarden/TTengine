@@ -77,7 +77,7 @@ namespace TTengine.Core
         internal float scalingToNormalized;
         private Rectangle screenRect;
         private RenderTarget2D renderTarget, effletRenderTarget;
-        internal List<ScreenShaderComp> effletsList;
+        // FIXME internal List<ScreenShaderComp> effletsList;
         internal Dictionary<Effect, TTSpriteBatch> effect2spritebatchTable = new Dictionary<Effect, TTSpriteBatch>();
         internal List<TTSpriteBatch> spriteBatchesActive = new List<TTSpriteBatch>();
         
@@ -238,7 +238,7 @@ namespace TTengine.Core
 
         internal void Draw(ref DrawParams p)
         {
-            if (!Active) return;
+            if (!IsActive) return;
 
             // start draw cycle by clearing efflets. Draw() call may spawn new efflets later.
             lock (graphicsDevice)

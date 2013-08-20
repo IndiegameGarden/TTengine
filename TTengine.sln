@@ -1,11 +1,11 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C# Express 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTengineTestGame", "TTengineTestGame\TTengineTestGame\TTengineTestGame.csproj", "{529A2029-70CC-4820-8BA7-AFBE17B0CF6A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game1", "Game1\Game1\Game1.csproj", "{529A2029-70CC-4820-8BA7-AFBE17B0CF6A}"
 	ProjectSection(ProjectDependencies) = postProject
 		{616035D5-3927-44CD-BD41-2EEE846AC3A3} = {616035D5-3927-44CD-BD41-2EEE846AC3A3}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTengineTestGameContent", "TTengineTestGame\TTengineTestGameContent\TTengineTestGameContent.contentproj", "{2F267F79-84E8-480E-A0A9-14CE0367A4D5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game1Content", "Game1\Game1Content\Game1Content.contentproj", "{2F267F79-84E8-480E-A0A9-14CE0367A4D5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTengine", "TTengine\TTengine.csproj", "{616035D5-3927-44CD-BD41-2EEE846AC3A3}"
 EndProject

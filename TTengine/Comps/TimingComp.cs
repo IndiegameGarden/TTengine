@@ -63,24 +63,24 @@ namespace TTengine.Core
         {
             if (StartTime >= 0)
             {
-                if (!Parent.Active && Parent.SimTime >= StartTime )
+                if (!Parent.IsActive && Parent.SimTime >= StartTime )
                 {
-                    Parent.Active = true;
+                    Parent.IsActive = true;
                 }
             }
 
             if (Duration >= 0)
             {
-                if (Parent.Active && (Parent.SimTime - StartTime) > Duration )
+                if (Parent.IsActive && (Parent.SimTime - StartTime) > Duration )
                 {
-                    Parent.Active = false;
+                    Parent.IsActive = false;
                 }
             }
         }
 
         public void OnNewParent(Gamelet oldParent)
         {
-            Parent.Active = false; // allow timed activation by this component
+            Parent.IsActive = false; // allow timed activation by this component
         }
     }
 }

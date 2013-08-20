@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using TTengine.Core;
 using TTengine.Util;
-using TTengine.Modifiers;
+//using TTengine.Modifiers; // TODO
 using TTMusicEngine;
 using TTMusicEngine.Soundevents;
 
@@ -91,7 +91,7 @@ namespace TTengine.Core
         protected override void LoadContent()
         {
             LoadTTContent();
-            Root.Init();
+            // FIXME Root.Init();
             base.LoadContent();
         }
 

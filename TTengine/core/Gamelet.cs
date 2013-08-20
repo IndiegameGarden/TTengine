@@ -74,12 +74,19 @@ namespace TTengine.Core
         /// <summary>
         /// whether this Gamelet is active; if not updates for it will not be done
         /// </summary>
-        public bool Active = true;
+        public bool IsActive = true;
 
         /// <summary>
         /// Flag indicating if Gamelet should be deleted - if true deletion occurs during next Update
         /// </summary>
-        public bool Delete = false;
+        public bool IsDeleted = false;
+
+        public MotionComp MotionComp
+        {
+            get
+            {
+            }
+        }
 
         #endregion
 
