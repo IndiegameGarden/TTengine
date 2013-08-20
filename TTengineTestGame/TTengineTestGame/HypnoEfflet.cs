@@ -2,17 +2,18 @@
 ﻿using System;
 ﻿using Microsoft.Xna.Framework;
 ﻿using TTengine.Core;
+﻿using TTengine.Comps;
 
 namespace TTengineTestGame
 {
-    public class HypnoEfflet: Efflet
+    public class HypnoEfflet: ScreenShaderComp
     {
         public HypnoEfflet()
             : base("Hypno")
         {
         }
 
-        protected override void OnUpdate(ref UpdateParams p)
+        protected void OnUpdate(ref UpdateParams p)
         {
             base.OnUpdate(ref p);
 

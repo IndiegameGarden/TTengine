@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 namespace TTengine.Core
 {
     /**
+     * FIXME needed?
      * parameters collection used for Draw() method of GameItems. This avoids a refactoring
      * nightmare if in the future more parameters are passed.
      */

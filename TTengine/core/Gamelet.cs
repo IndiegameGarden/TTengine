@@ -31,11 +31,17 @@ namespace TTengine.Core
     public delegate void GameletEventHandler(Gamelet sender, GameletEventArgs e);
 
     /**
-     * basic game entity class that can refer to children entities. 
+     * basic game-object class that can refer to children entities and
+     * can contain components (Comps).
      * TODO: ? Provides subclass extendibility via On...() methods.
      */
-    public class Gamelet: Complet
+    public class Gamelet
     {
+
+        public Gamelet()
+        {
+            CreateID();
+        }
 
         #region Eventing
         public event GameletEventHandler OnCollisionEvent;
@@ -44,9 +50,21 @@ namespace TTengine.Core
         #region Properties
 
         /// <summary>
+        /// get the unique ID of this object
+        /// </summary>
+        public int ID { get { return _ID; } }
+
+        /// <summary>
+        /// the parent Gamelet (entity) that this Complet (component) is attached to, or null if none
+        /// </summary>
+        public Gamelet Parent = null;
+
+        /// <summary>
         /// Children of this gamelet
         /// </summary>
         public List<Gamelet> Children = new List<Gamelet>();
+
+        public List<Comp> Complets = new List<Comp>();
 
         /// <summary>
         /// total cumulative amount of simulation time of this gamelet
@@ -64,14 +82,6 @@ namespace TTengine.Core
         public bool Delete = false;
 
         #endregion
-
-        /// <summary>
-        /// constructor
-        /// </summary>
-        public Gamelet()
-        {
-            //
-        }
 
         #region Overridable Handler methods (On...() methods)
 
@@ -108,6 +118,16 @@ namespace TTengine.Core
             }
         }
 
+        public void AddComp(Comp child)
+        {
+            if (!Complets.Contains(child))
+            {
+                //Gamelet oldParent = child.Parent;
+                child.Parent = this;
+                Complets.Add(child);
+            }
+        }
+
         /// <summary>
         /// Removes specified child gamelet from the list of children. The child.OnNewParent() is
         /// called with a null parameter, indicating it is parentless.
@@ -127,6 +147,34 @@ namespace TTengine.Core
             {
                 return false;
             }
+        }
+
+        public bool RemoveComp(Comp child)
+        {
+            if (Complets.Contains(child))
+            {
+                Complets.Remove(child);
+                child.Parent = null;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        #endregion
+
+        #region Internal Vars and methods
+
+        private int _ID = -1;
+        private static int _IDcounter = 0;
+
+        private void CreateID()
+        {
+            // set my unique id
+            _ID = _IDcounter;
+            _IDcounter++;
         }
 
         #endregion

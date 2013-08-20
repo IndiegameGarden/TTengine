@@ -24,7 +24,7 @@ namespace TTengine.Util
             this.FilePath = filepath;
         }
 
-        protected override void OnUpdate(ref UpdateParams p)
+        protected void OnUpdate(ref UpdateParams p)
         {
             base.OnUpdate(ref p);
             if (!IsStarted && !IsFailed)

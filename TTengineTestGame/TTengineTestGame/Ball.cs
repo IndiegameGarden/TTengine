@@ -10,7 +10,7 @@ namespace TTengineTestGame
         public Ball()
         {
             ConstructSpritelet("ball");
-            TimingComp.AddTiming(this);
+            TimingComp.AddTo(this);
             CollisionComp.AddCollision(this);
         }
 

@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 namespace TTengine.Core
 {
     /**
-     * parameters collection used for Update() and Draw() methods of GameItems.
+     * parameters collection used for Update() calls to convey global simulation knowledge.
      * This avoids passing lists of parameters around which may change (being a refactoring
      * nightmare!). Also provides crucial rendering/updating info for items in a game-tree.
      */
@@ -19,30 +19,32 @@ namespace TTengine.Core
         /// <summary>
         /// A globally kept simulation time value in seconds, 0f is start of simulation
         /// </summary>
-        public float SimTime = 0.0f;
+        public double SimTime = 0.0;
         
         /// <summary>
         /// Delta t, the simulation time passed since last Update() (i.e. Gamelet simtime) in seconds
         /// </summary>
-        public float Dt = 0.0f;
+        public double Dt = 0.0;
 
-        /**
-         * create all params with null or default values
-         */
+        /// <summary>
+        /// create all params with null or default values
+        /// </summary>
         public UpdateParams()
         {
         }
 
-        /**
-         * create params set with times according to a given GameTime
-         */
+        /// <summary>
+        /// create params set with times according to a given GameTime
+        /// </summary>
         public UpdateParams(GameTime gameTime)
         {
             CopyFrom(gameTime);
         }
 
+        /// <summary>
         /// Copy all fields from an 'other' params to the current one. 
         /// (Useful for re-initializing avoiding new obj creation)
+        /// </summary>
         public void CopyFrom(UpdateParams other)
         {
             gameTime = other.gameTime;
@@ -50,6 +52,10 @@ namespace TTengine.Core
             Dt = other.Dt;
         }
 
+        /// <summary>
+        /// Fill all fields based on a XNA GameTime object
+        /// </summary>
+        /// <param name="gameTime"></param>
         public void CopyFrom(GameTime gameTime)
         {
             this.gameTime = gameTime;

@@ -6,22 +6,21 @@ using Microsoft.Xna.Framework;
 namespace TTengine.Core
 {
     /**
-     * base class for (shader) effects that are applied to an entire screen, i.e. Screenlet.
-     * Screenlet takes care of rendering the Efflets in order by calling OnDrawEfflet()
-     * at the end of a Draw() cycle.
+     * base class for shader effects applied to an entire screen, i.e. Screenlet.
      * 
-     * Subclasses of Efflet can use inside the shader these predefined variables:
+     * TODO: Subclasses of Efflet can use inside the shader these predefined variables: ?
      *   DrawColor - value of Gamelet.DrawColor as RGB plus the alpha value
      */
-    public class Efflet: Gamelet
+    public class ScreenShaderComp: Comp
     {
         protected string fxFileName = "";
         protected Effect effect = null;
         protected SpriteBatch spriteBatch = null;
         protected EffectParameter drawColorParameter=null;
 
-        public Efflet(string fxFileName)
+        public ScreenShaderComp(string fxFileName)
         {
+            Register(this);
             this.fxFileName = fxFileName;
             ConstructEfflet();
             LoadEffect();
@@ -38,12 +37,12 @@ namespace TTengine.Core
             DrawC.VertexShaderInit(effect);
         }
 
-        protected override void OnUpdate(ref UpdateParams p)
+        protected void OnUpdate(ref UpdateParams p)
         {
             if (drawColorParameter != null) drawColorParameter.SetValue(DrawC.DrawColor.ToVector4() );
         }
 
-        internal override void Draw(ref DrawParams p)
+        internal void Draw(ref DrawParams p)
         {
             if (!Active) return;
             base.Draw(ref p);

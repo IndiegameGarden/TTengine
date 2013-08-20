@@ -10,24 +10,23 @@ using Microsoft.Xna.Framework.Graphics.PackedVector;
 namespace TTengine.Core
 {
     /// <summary>
-    /// Component for a sprite with a rectangle or circle physical shape. 
-    /// It has interpolation code for time-smoothed sprite drawing based on a fixed-timestep physics model.
-    /// Shape dimensions are supported by Width/Height/Radius/Center properties. 
+    /// Component for a sprite 
     /// </summary>
-    public class SpriteComp : TTObject
+    public class SpriteComp : Comp
     {
 
         #region Constructors
 
         /// <summary>
-        /// create new spritelet where Texture is loaded from the content with given fileName, either XNA content
+        /// create new sprite where Texture is loaded from the content with given fileName, either XNA content
         /// or a separately loaded bitmap at runtime
         /// </summary>
         /// <param name="fileName">name of XNA content file (from content project) without file extension e.g. "test", or
         /// name of bitmap file to load including extension e.g. "test.png"</param>
         /// <exception cref="InvalidOperationException">when invalid image file is attempted to load</exception>
-        public SpriteComp(string fileName): base()
+        public SpriteComp(string fileName)
         {
+            Register(this);
             Screen = TTengineMaster.ActiveScreen;
             if (fileName.Contains("."))
             {
@@ -40,8 +39,9 @@ namespace TTengine.Core
         /// <summary>
         /// create new spritelet with given Texture2D texture, or null if no texture yet
         /// </summary>
-        public SpriteComp(Texture2D texture): base()
+        public SpriteComp(Texture2D texture)
         {
+            Register(this);
             Screen = TTengineMaster.ActiveScreen;
             this.texture = texture;
             InitTextures();
@@ -49,15 +49,14 @@ namespace TTengine.Core
 
         #endregion
 
+        
         #region Class-internal properties
+
         protected Screenlet Screen = null;
-        protected bool checksCollisions = false;
         protected string fileName = null;
-        protected float radius = 0f;
         protected float width = 0f;
         protected float height = 0f;
         private Texture2D texture = null;
-        private List<Gamelet> lastCollisionsList = new List<Gamelet>();
         public static BlendState blendAlpha = null, blendColor = null;
 
         #endregion
@@ -65,42 +64,15 @@ namespace TTengine.Core
 
         #region Properties
         
-        /// Flag indicating whether this item checks collisions with other Spritelets, by default false to save CPU
-        public bool ChecksCollisions { 
-            get { return checksCollisions;  } 
-            set { 
-                checksCollisions = value;
-                if (checksCollisions && !Screen.collisionObjects.Contains(Parent))
-                    Screen.collisionObjects.Add(Parent);
-                if (!checksCollisions)
-                    Screen.collisionObjects.Remove(Parent);
-            } 
-        }
-
-        /// Radius of item (if any) assuming a circular shape model
-        public virtual float RadiusAbs { get { return radius * Parent.Motion.ScaleAbs; } }
-
-        public float Radius { get { return radius; } set { radius = value; } }
+        /// <summary>
+        /// width of sprite in normalized coordinates
+        /// </summary>
+        public float Width { get { return width; } set { width = value; } }
 
         /// <summary>
-        /// relative width of sprite in normalized coordinates
+        /// height of sprite in normalized coordinates
         /// </summary>
-        public virtual float Width { get { return width; } set { width = value; } }
-
-        /// <summary>
-        /// relative height of sprite in normalized coordinates
-        /// </summary>
-        public virtual float Height { get { return height; } set { height = value; } }
-
-        /// <summary>
-        /// absolute width of sprite, being Width after applying any scaling
-        /// </summary>
-        public virtual float WidthAbs { get { return width * Parent.Motion.ScaleAbs; } }
-
-        /// <summary>
-        /// absolute height of sprite, being Height after applying any scaling
-        /// </summary>
-        public virtual float HeightAbs { get { return height * Parent.Motion.ScaleAbs; } }
+        public float Height { get { return height; } set { height = value; } }
 
         /// <summary>
         /// Center of sprite expressed in relative width/height coordinates, where 1.0 is full width or full height.
@@ -111,10 +83,10 @@ namespace TTengine.Core
         /// <summary>
         /// calculates a center coordinate for direct use in Draw() calls, expressed in pixels
         /// </summary>
-        public virtual Vector2 DrawCenter { get { return Parent.DrawC.ToPixels(Center.X * width, Center.Y * height); } }
+        public Vector2 DrawCenter = Vector2.Zero;
 
         /**
-         * get/set the Texture of this shape
+         * get/set the Texture of this sprite
          */
         public Texture2D Texture
         {
@@ -125,7 +97,6 @@ namespace TTengine.Core
                 {
                     Height = ToNormalizedNS(texture.Height);
                     Width = ToNormalizedNS(texture.Width);
-                    Radius = Width / 2;
                 }
             }
             get
@@ -143,7 +114,6 @@ namespace TTengine.Core
             {
                 Height = ToNormalizedNS(texture.Height);
                 Width = ToNormalizedNS(texture.Width);
-                Radius = Width / 2;
             }
             if (fileName != null && texture == null) 
                 LoadTexture(fileName);
@@ -158,27 +128,7 @@ namespace TTengine.Core
             Texture = TTengineMaster.ActiveGame.Content.Load<Texture2D>(textureFilename);
         }
 
-        protected override void OnDelete()
-        {
-            // FIXME move to collision complet class
-            Screen.collisionObjects.Remove(Parent);
-        }
-
-        public override void OnInit()
-        {
-            //
-        }
-
-        public override void OnNewParent(TTObject oldParent)
-        {
-            //
-        }
-
-        protected override void OnUpdate(ref UpdateParams p)
-        {
-            //
-        }
-
+        /*
         public override void OnDraw(ref DrawParams p)
         {
             if (texture != null && Parent.Visible && Parent.Active )
@@ -187,19 +137,9 @@ namespace TTengine.Core
                        Parent.Motion.RotateAbs, DrawCenter, Parent.DrawC.DrawScale, SpriteEffects.None, Parent.DrawC.LayerDepth);
             }
         }
+         * */
 
-        /// Checks if there is a collision between the this and another item. Default Spritelet implementation
-        /// is a circular collision shape. Can be overridden with more complex detections.
-        /// <returns>True if there is a collision, false if not</returns>
-        public virtual bool CollidesWith(Gamelet item)
-        {
-            // simple sphere (well circle!) check
-            if ((Parent.Motion.PositionAbs - item.Motion.PositionAbs).Length() < (RadiusAbs + item.Sprite.RadiusAbs))
-                return true;
-            else
-                return false;
-        }
-
+        /*
         /// run collision detection of this against all other relevant Spritelets
         internal void HandleCollisions(UpdateParams p)
         {
@@ -230,6 +170,7 @@ namespace TTengine.Core
             // phase 3: store list of colliding items for next round
             lastCollisionsList = collItems;
         }
+         */
 
         internal float ToNormalizedNS(float coord)
         {

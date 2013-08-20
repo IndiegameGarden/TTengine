@@ -10,26 +10,17 @@ using Microsoft.Xna.Framework.Graphics.PackedVector;
 namespace TTengine.Core
 {
     /// <summary>
-    /// Component for simle circular physical shape collision detection
+    /// Component for simple 2D circular physical shape collision detection.
+    /// Requires: MotionComp
     /// </summary>
-    public class CollisionComp : TTObject
+    public class CollisionComp : Comp
     {
-
-        #region Constructors
-
-        public static void AddCollision(Gamelet g)
-        {
-            g.Collision = new CollisionComp();
-            g.Add(g.Collision);
-
-        }
 
         public CollisionComp()
         {
+            Register(this);
             Screen = TTengineMaster.ActiveScreen;
         }
-
-        #endregion
 
         #region Class-internal properties
 
@@ -43,19 +34,7 @@ namespace TTengine.Core
 
         #region Properties
         
-        /// Flag indicating whether this item checks collisions with other Spritelets, by default true
-        public bool ChecksCollisions { 
-            get { return checksCollisions;  } 
-            set { 
-                checksCollisions = value;
-                if (checksCollisions && !Screen.collisionObjects.Contains(Parent))
-                    Screen.collisionObjects.Add(Parent);
-                if (!checksCollisions)
-                    Screen.collisionObjects.Remove(Parent);
-            } 
-        }
-
-        /// Radius of item (if any) assuming a circular shape model
+        /// Radius of item assuming a circular shape model
         public virtual float RadiusAbs { get { return radius * Parent.Motion.ScaleAbs; } }
 
         /// <summary>
@@ -64,21 +43,6 @@ namespace TTengine.Core
         public float Radius { get { return radius; } set { radius = value; } }
 
         #endregion
-
-        protected override void OnDelete()
-        {
-            Screen.collisionObjects.Remove(Parent);
-        }
-
-        public override void OnInit()
-        {
-            ChecksCollisions = checksCollisions;
-        }
-
-        public override void OnNewParent(TTObject oldParent)
-        {
-            Screen.collisionObjects.Add(Parent);
-        }
 
         /// Checks if there is a collision between the this and another item. Default Spritelet implementation
         /// is a circular collision shape. Can be overridden with more complex detections.
@@ -93,7 +57,7 @@ namespace TTengine.Core
         }
 
         /// run collision detection of this against all other relevant Spritelets
-        protected override void OnUpdate(ref UpdateParams p)
+        protected void TodoDoCollission(ref UpdateParams p)
         {
             // phase 1: check which items collide with me and add to list
             List<Gamelet> collItems = new List<Gamelet>();

@@ -10,15 +10,16 @@ namespace TTengine.Core
     /// <summary>
     /// Component that allows drawing of the gamelet, offering very basic drawing functions
     /// </summary>
-    public class DrawComp: TTObject
+    public class DrawComp: Comp
     {
 
         public DrawComp()
         {
+            Register(this);
             Screen = TTengineMaster.ActiveScreen;
             for (int i = 0; i < NBUF; i++)
             {
-                posHistoryTime[i] = -1.0f; // init to out-of-scope value
+                posHistoryTime[i] = -1.0; // init to out-of-scope value
             }
         }
 
@@ -31,8 +32,8 @@ namespace TTengine.Core
         internal TTSpriteBatch mySpriteBatch = null;
         private const int NBUF = 10; // TODO tune?
         private Vector2[] posHistory = new Vector2[NBUF];
-        private float[] drawScaleHistory = new float[NBUF];
-        private float[] posHistoryTime = new float[NBUF];
+        private double[] drawScaleHistory = new double[NBUF];
+        private double[] posHistoryTime = new double[NBUF];
         private bool isFirstUpdatePosition = true;
         private uint phIndex = 0;
 
@@ -82,21 +83,9 @@ namespace TTengine.Core
             set { drawColor.A = (byte)(value * 255.0f); }
         }
 
-        /// <summary>
-        /// returns a compound scale value for scaling use in Draw() calls, taking into account zoom as well.
-        /// </summary>
-        public virtual float DrawScaleCurrent { get { return Parent.Motion.ScaleAbs * Parent.Motion.ZoomAbs; } }
+        public double DrawScale = 1.0;
 
-        public virtual float DrawScale
-        {
-            get
-            {
-                // if not yet calculated, return the current abs position as a best guess.
-                if (!isDrawPositionCalculated)
-                    return DrawScaleCurrent;
-                return drawScale;
-            }
-        }
+        public double DrawScaleAbs = 1.0;
 
         /// <summary>
         /// an interpolated position in pixels for sprite drawing with smooth motion, directly usable in Draw() calls
@@ -105,14 +94,12 @@ namespace TTengine.Core
         {
             get
             {
-                // if not yet calculated, return the current abs position as a best guess.
-                if (!isDrawPositionCalculated)
-                    return Parent.Motion.PositionAbsZoomedPixels;
                 return drawPosition;
             }
         }
 
         /// <summary>
+        /// TODO needed?
         /// get the default TTSpriteBatch to use for drawing for this Gamelet. If not configured
         /// explicitly, it will use the default TTSpriteBatch of the Screenlet it renders to.
         /// </summary>
@@ -131,6 +118,7 @@ namespace TTengine.Core
         }
 
         // calculates drawing positions based on interpolation
+        /*
         public override void OnDraw(ref DrawParams p)
         {
             float t = (float)p.gameTime.TotalGameTime.TotalSeconds;
@@ -153,28 +141,22 @@ namespace TTengine.Core
             }
             isDrawPositionCalculated = true;
         }
+         */
 
+        /*
         protected override void OnUpdate(ref UpdateParams p)
         {
             UpdateSmoothingCache(ref p);
         }
+         */
 
-        public override void OnNewParent(TTObject oldParent)
+        public void OnNewParent(Gamelet oldParent)
         {
             if (Screen != null)
                 mySpriteBatch = Screen.mySpriteBatch;
         }
 
-        protected override void OnDelete()
-        {
-            //
-        }
-
-        public override void OnInit()
-        {
-            //
-        }
-
+        /*
         /// <summary>
         /// FIXME move away to a component?
         /// translate a float screen coordinate to pixel coordinates, in the context of this Gamelet
@@ -206,8 +188,9 @@ namespace TTengine.Core
         {
             return ToPixels(new Vector2(x, y));
         }
+        */
 
-
+        /*
         internal void UpdateSmoothingCache(ref UpdateParams p)
         {
             // store current position in a cache to use in trajectory smoothing
@@ -224,6 +207,7 @@ namespace TTengine.Core
             if (mtPar != null)
                 mtPar.SetValue(m);
         }
+        */
 
         private void UpdatePositionCache(Vector2 updPos, float updDrawScale, float updTime)
         {

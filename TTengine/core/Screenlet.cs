@@ -15,6 +15,9 @@ namespace TTengine.Core
      */
     public class Screenlet : Gamelet
     {
+        // TODO
+        bool Visible = true;
+
         /// ref to the GraphicsDevice to use by child Gamelets
         public GraphicsDevice graphicsDevice;
 
@@ -25,40 +28,6 @@ namespace TTengine.Core
         /// The center coordinate of the screen
         /// </summary>
         public Vector2 Center = Vector2.Zero;
-
-        /**
-         * The MotionComp class specifically adapted for use by Screenlet
-         */
-        class ScreenletMotion : MotionComp
-        {
-            public override Vector2 PositionAbs
-            {
-                get { return Position + PositionModifier; }
-            }
-
-            public override Vector2 PositionAbsZoomed
-            {
-                get { return PositionAbs; } // FIXME - find what to do here
-            }
-
-            public override float ScaleAbs
-            {
-                get { return Scale * ScaleModifier; }
-            }
-
-            public override float RotateAbs
-            {
-                get { return Rotate + RotateModifier; }
-            }
-
-            public override float ZoomAbs
-            {
-                get
-                {
-                    return Zoom /* + ZoomModifier */ ;
-                }
-            }
-        }
 
         public RenderTarget2D RenderTarget
         {
@@ -108,7 +77,7 @@ namespace TTengine.Core
         internal float scalingToNormalized;
         private Rectangle screenRect;
         private RenderTarget2D renderTarget, effletRenderTarget;
-        internal List<Efflet> effletsList;
+        internal List<ScreenShaderComp> effletsList;
         internal Dictionary<Effect, TTSpriteBatch> effect2spritebatchTable = new Dictionary<Effect, TTSpriteBatch>();
         internal List<TTSpriteBatch> spriteBatchesActive = new List<TTSpriteBatch>();
         
@@ -167,7 +136,7 @@ namespace TTengine.Core
             {
                 ; // TODO maybe put a warning out here?
             }
-            effletsList = new List<Efflet>();
+            effletsList = new List<ScreenShaderComp>();
             mySpriteBatch = new TTSpriteBatch(graphicsDevice);
             collisionObjects = new List<Gamelet>();
         }
@@ -267,16 +236,9 @@ namespace TTengine.Core
             return sb;
         }
 
-        internal override void Draw(ref DrawParams p)
+        internal void Draw(ref DrawParams p)
         {
             if (!Active) return;
-
-            // check active in state
-            if (ActiveInState != null)
-            {
-                if (!IsInState(ActiveInState))
-                    return;
-            }
 
             // start draw cycle by clearing efflets. Draw() call may spawn new efflets later.
             lock (graphicsDevice)
@@ -307,7 +269,7 @@ namespace TTengine.Core
                     RenderTarget2D currentSourceBuffer = renderTarget;
                     RenderTarget2D currentTargetBuffer = effletRenderTarget;
                     if (renderTarget == null) throw new Exception("Efflets can only be used on Screenlets with a RenderTarget2D buffer set");
-                    foreach (Efflet eff in effletsList)
+                    foreach (ScreenShaderComp eff in effletsList)
                     {
                         graphicsDevice.SetRenderTarget(currentTargetBuffer);
                         eff.OnDrawEfflet(ref p, currentSourceBuffer); // apply eff to sourceBuffer

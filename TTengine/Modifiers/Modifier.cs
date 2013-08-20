@@ -51,7 +51,7 @@ namespace TTengine.Modifiers
             this.propertyName = subPropertyOrField;
         }
 
-        public override void OnNewParent(TTObject oldParent)
+        public override void OnNewParent(Gamelet oldParent)
         {
             base.OnNewParent(oldParent);
             if (propertyName != null && Parent != null) 
@@ -84,7 +84,7 @@ namespace TTengine.Modifiers
             }
         }
 
-        protected override void OnUpdate(ref UpdateParams p)
+        protected void OnUpdate(ref UpdateParams p)
         {
             if (modifiedObject != null)
             {

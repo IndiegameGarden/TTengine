@@ -14,7 +14,7 @@ namespace TTengine.Core
 
         protected float itemsSimTime = 0f;
 
-        internal override void Update(ref UpdateParams p)
+        internal void Update(ref UpdateParams p)
         {
             while (itemsSimTime < p.SimTime + simulateAheadTime ) 
             {
@@ -23,7 +23,7 @@ namespace TTengine.Core
                 updParsCache.gameTime = p.gameTime;
                 updParsCache.SimTime = itemsSimTime;
                 updParsCache.Dt = fixedTimestep;
-                base.Update(ref updParsCache);
+                //base.Update(ref updParsCache);
             }
         }
        
