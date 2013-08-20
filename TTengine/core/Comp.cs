@@ -10,7 +10,7 @@ namespace TTengine.Core
     /// <summary>
     /// A component that can be attached to a Gamelet, providing specific behavior/functions
     /// </summary>
-    public class Comp
+    public abstract class Comp
     {
         public Comp()
         {
