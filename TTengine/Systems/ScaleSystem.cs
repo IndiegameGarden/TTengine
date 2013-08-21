@@ -9,13 +9,16 @@ namespace TTengine.Systems
     public class ScaleSystem: Sys
     {
         public ScaleSystem()
-            : base(typeof(ScaleComp))
+            : base(typeof(ScaleComp), true)
         {         
+            //
         }
 
         public override void UpdateComp(Comp c, UpdateParams p)
         {
             ScaleComp sc = c as ScaleComp;
+
+            ScaleComp parentSc = c.FindParentComp() as ScaleComp; //c.Parent.Parent.FindComp(typeof(ScaleComp)) as ScaleComp;
 
             // scaling logic towards target
             if (sc.ScaleSpeed > 0)

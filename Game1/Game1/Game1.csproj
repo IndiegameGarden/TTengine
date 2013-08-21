@@ -125,7 +125,7 @@
       <Project>{616035D5-3927-44CD-BD41-2EEE846AC3A3}</Project>
       <Name>TTengine</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TTengineTestGameContent\Game1Content.contentproj">
+    <ProjectReference Include="..\Game1Content\Game1Content.contentproj">
       <Name>Game1Content %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
       <Project>{2F267F79-84E8-480E-A0A9-14CE0367A4D5}</Project>

@@ -12,7 +12,6 @@ namespace TTengine.Core
     /// </summary>
     public class DrawComp: Comp
     {
-
         public DrawComp()
         {
             Register(this);

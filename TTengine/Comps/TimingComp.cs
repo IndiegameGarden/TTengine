@@ -29,6 +29,7 @@ namespace TTengine.Core
 
         public double Duration = DURATION_INFINITY;
 
+        /*
         /// <summary>
         /// Add timed behavior to a Gamelet
         /// </summary>
@@ -54,6 +55,7 @@ namespace TTengine.Core
         {
             AddTo(g, 0f);
         }
+        */
 
         /// <summary>
         /// FIXME: run by System

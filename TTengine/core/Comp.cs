@@ -15,12 +15,15 @@ namespace TTengine.Core
         public Comp()
         {
             CreateID();
+            Register(this);
         }
 
         /// <summary>
         /// get the unique ID of this object
         /// </summary>
-        public int ID { get { return _ID; } }
+        public uint ID { get { return _ID; } }
+
+        //public abstract uint TypeID { get { return _typeID; } }
 
         /// <summary>
         /// the parent Gamelet (entity) that this Complet (component) is attached to, or null if none
@@ -44,12 +47,24 @@ namespace TTengine.Core
             CompsDict[t].Remove(compToRemove);
         }
 
+        /// <summary>
+        /// Find the first Comp of same type as this in parent gamelet.
+        /// </summary>
+        /// <returns>Comp instance found in parent Gamelet, or null if none found</returns>
+        protected Comp FindParentComp()
+        {
+            if (Parent == null || Parent.Parent == null)
+                return null;
+            return Parent.Parent.FindComp(this.GetType());
+        }
+
         #region Internal Vars and methods
 
         internal static Dictionary<Type,List<Comp>> CompsDict = new Dictionary<Type,List<Comp>>();
 
-        private int _ID = -1;
-        private static int _IDcounter = 1000000000; // offset to differ from Gamelet ID
+        private uint _ID = 0;
+        //protected static uint typeID = 0;
+        private static uint _IDcounter = 1000000000; // offset to differ from Gamelet ID
 
         private void CreateID()
         {

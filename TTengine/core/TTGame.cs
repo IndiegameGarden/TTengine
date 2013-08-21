@@ -43,27 +43,10 @@ namespace TTengine.Core
             Content.RootDirectory = "Content";
             graphics = new GraphicsDeviceManager(this);
 
-            // call user's custom init to set/change parameters
-            InitTTGame();
             graphics.IsFullScreen = IsFullScreen;
             graphics.PreferredBackBufferHeight = MyWindowHeight;
             graphics.PreferredBackBufferWidth = MyWindowWidth;
         }
-
-        /// <summary>
-        /// Initialize the configurable parameters in TTGame
-        /// </summary>
-        protected abstract void InitTTGame();
-
-        /// <summary>
-        /// Initialize content for this TTGame (called from Game.Initialize())
-        /// </summary>
-        protected abstract void InitTTContent();
-
-        /// <summary>
-        /// Load content for this TTGame (called from Game.LoadContent())
-        /// </summary>
-        protected abstract void LoadTTContent();
 
         protected override void Initialize()
         {

@@ -52,7 +52,7 @@ namespace TTengine.Core
         /// <summary>
         /// get the unique ID of this object
         /// </summary>
-        public int ID { get { return _ID; } }
+        public uint ID { get { return _ID; } }
 
         /// <summary>
         /// the parent Gamelet (entity) that this Complet (component) is attached to, or null if none
@@ -64,7 +64,7 @@ namespace TTengine.Core
         /// </summary>
         public List<Gamelet> Children = new List<Gamelet>();
 
-        public List<Comp> Complets = new List<Comp>();
+        public List<Comp> Comps = new List<Comp>();
 
         /// <summary>
         /// total cumulative amount of simulation time of this gamelet
@@ -127,11 +127,11 @@ namespace TTengine.Core
 
         public void AddComp(Comp child)
         {
-            if (!Complets.Contains(child))
+            if (!Comps.Contains(child))
             {
                 //Gamelet oldParent = child.Parent;
                 child.Parent = this;
-                Complets.Add(child);
+                Comps.Add(child);
             }
         }
 
@@ -158,9 +158,9 @@ namespace TTengine.Core
 
         public bool RemoveComp(Comp child)
         {
-            if (Complets.Contains(child))
+            if (Comps.Contains(child))
             {
-                Complets.Remove(child);
+                Comps.Remove(child);
                 child.Parent = null;
                 return true;
             }
@@ -170,12 +170,27 @@ namespace TTengine.Core
             }
         }
 
+        /// <summary>
+        /// Finds the first component of a given Type, if any.
+        /// </summary>
+        /// <param name="compType"></param>
+        /// <returns>Comp instance found or null if none found of that Type</returns>
+        public Comp FindComp(Type compType)
+        {
+            foreach (Comp c in Comps)
+            {
+                if (c.GetType().Equals(compType))
+                    return c;
+            }
+            return null;
+        }
+
         #endregion
 
         #region Internal Vars and methods
 
-        private int _ID = -1;
-        private static int _IDcounter = 0;
+        private uint _ID = 0;
+        private static uint _IDcounter = 0;
 
         private void CreateID()
         {

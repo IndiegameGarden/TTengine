@@ -10,7 +10,7 @@ namespace TTengine.Core
     {
         public ScaleComp()
         {
-            Register(this);
+            //
         }
 
         public double Scale = 1;
