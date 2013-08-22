@@ -2,7 +2,7 @@
 
 using Microsoft.Xna.Framework;
 
-namespace TTengine.Core
+namespace TTengine.Comps
 {
     /// <summary>
     /// Component for simple physics-based motion 

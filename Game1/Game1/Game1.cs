@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 using TTengine.Core;
 using TTengine.Util;
 
-namespace TTengineTestGame
+namespace Game1
 {
     /// <summary>
     /// Main game class

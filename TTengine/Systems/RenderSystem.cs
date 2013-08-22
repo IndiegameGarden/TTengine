@@ -34,7 +34,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 #endregion File description
 
-namespace StarWarrior.Systems
+namespace TTengine.Systems
 {
     #region Using statements
 

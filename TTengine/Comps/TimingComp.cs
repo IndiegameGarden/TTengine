@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace TTengine.Core
+namespace TTengine.Comps
 {
     /// <summary>
     /// a basic timing component including start-time definition and duration

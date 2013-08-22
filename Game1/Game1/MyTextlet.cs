@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using TTengine;
  using TTengine.Core;
 
-namespace TTengineTestGame
+namespace Game1
 {
     public class MyTextlet : Gamelet
     {

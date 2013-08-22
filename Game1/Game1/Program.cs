@@ -1,7 +1,7 @@
 // (c) 2010-2013 TranceTrance.com. Distributed under the FreeBSD license in LICENSE.txt
 using System;
 
-namespace TTengineTestGame
+namespace Game1
 {
 #if WINDOWS || XBOX
     static class Program

@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace TTengine.Core
+namespace TTengine.Comps
 {
     /// <summary>
     /// Component that allows drawing of the gamelet, offering very basic drawing functions

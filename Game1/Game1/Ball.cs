@@ -3,7 +3,7 @@
 using Microsoft.Xna.Framework;
 using TTengine.Core;
 
-namespace TTengineTestGame
+namespace Game1
 {
     public class Ball: Gamelet
     {

@@ -8,7 +8,7 @@ namespace TTengine.Core
     /// <summary>
     /// the Master is a top-level entry point to TTengine
     /// </summary>
-    public class TTengineMaster
+    public class TTengineMasterx
     {
         private static Game activeGame = null;
         private static Screenlet activeScreen = null;
