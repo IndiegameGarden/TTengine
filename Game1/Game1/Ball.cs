@@ -16,7 +16,7 @@ namespace Game1
 
         public override void OnInit()
         {
-            // FIXME separate obj; add headers to files
+            // FIXME separate allObj; add headers to files
             Sprite.ChecksCollisions = true;
             Sprite.Radius *= 0.9f;            
         }

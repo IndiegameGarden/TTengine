@@ -58,7 +58,7 @@ namespace TTengine.Systems
     {
         /// <summary>Initializes a new instance of the <see cref="CollisionSystem" /> class.</summary>
         public CollisionSystem()
-            : base(Aspect.All(typeof(PositionComp),typeof(ShapeComp))
+            : base(Aspect.All(typeof(PositionComp),typeof(ShapeComp)))
         {
         }
 
@@ -66,15 +66,15 @@ namespace TTengine.Systems
         /// <param name="entities">The entities.</param>
         protected override void ProcessEntities(IDictionary<int, Entity> entities)
         {
-            Bag<Entity> obj = this.EntityWorld.GroupManager.GetEntities("TTOBJECTS");
-            if (obj != null )
+            Bag<Entity> allObj = this.EntityWorld.GroupManager.GetEntities("TTCOLLIDABLES");
+            if (allObj != null )
             {
-                for (int i1 = 0; obj.Count > i1; ++i1)
+                for (int i1 = 0; allObj.Count > i1; ++i1)
                 {
-                    Entity e1 = obj.Get(i1);
-                    for (int i2 = i1; obj.Count > i2; ++i2)
+                    Entity e1 = allObj.Get(i1);
+                    for (int i2 = i1+1; allObj.Count > i2; ++i2)
                     {
-                        Entity e2 = obj.Get(i2);
+                        Entity e2 = allObj.Get(i2);
 
                         if (this.CollisionExists(e1, e2))
                         {
@@ -91,10 +91,12 @@ namespace TTengine.Systems
         /// <returns>The <see cref="bool" />.</returns>
         private bool CollisionExists(Entity entity1, Entity entity2)
         {
-            var c1 = entity1.GetComponent<PositionComp>();
-            var c2 = entity2.GetComponent<PositionComp>();
-            float dist = Vector2.Distance(c1.Position, c2.Position);
-            return (dist < (r1+r2));
+            var p1 = entity1.GetComponent<PositionComp>();
+            var p2 = entity2.GetComponent<PositionComp>();
+            var s1 = entity1.GetComponent<ShapeComp>();
+            var s2 = entity1.GetComponent<ShapeComp>();
+            float dist = Vector2.Distance(p1.Position, p2.Position);
+            return (dist < (s1.Radius + s2.Radius));
             
         }
     }

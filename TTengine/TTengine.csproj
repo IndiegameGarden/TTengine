@@ -106,7 +106,6 @@
     <Compile Include="Comps\PositionComp.cs" />
     <Compile Include="Comps\ScaleComp.cs" />
     <Compile Include="Comps\ShapeComp.cs" />
-    <Compile Include="Comps\TimingComp.cs" />
     <Compile Include="Comps\DrawComp.cs" />
     <Compile Include="Comps\VelocityComp.cs" />
     <Compile Include="Core\DrawParams.cs" />

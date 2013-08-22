@@ -43,7 +43,7 @@ namespace TTengine.Core
 
         /// <summary>
         /// Copy all fields from an 'other' params to the current one. 
-        /// (Useful for re-initializing avoiding new obj creation)
+        /// (Useful for re-initializing avoiding new allObj creation)
         /// </summary>
         public void CopyFrom(UpdateParams other)
         {
