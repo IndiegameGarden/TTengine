@@ -31,7 +31,7 @@ namespace TTengine.Core
         public MusicEngine MusicEngine;
 
         /// <summary>The Artemis entity world</summary>
-        private EntityWorld World;
+        public EntityWorld World;
 
         public TTGame()
         {

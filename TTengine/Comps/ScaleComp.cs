@@ -1,12 +1,13 @@
 // (c) 2010-2013 TranceTrance.com. Distributed under the FreeBSD license in LICENSE.txt
 using Microsoft.Xna.Framework;
+using Artemis.Interface;
 
 namespace TTengine.Core
 {
     /// <summary>
     /// Component for scale modification
     /// </summary>
-    public class ScaleComp : Comp
+    public class ScaleComp : IComponent
     {
         public ScaleComp()
         {

@@ -9,7 +9,12 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 using TTengine.Core;
+using TTengine.Comps;
 using TTengine.Util;
+
+using Artemis;
+
+using Game1.Factories;
 
 namespace Game1
 {
@@ -46,22 +51,22 @@ namespace Game1
 
             // add several sprites and set some specific velocity per item
             Random rnd = new Random();
-            Gamelet ball = null;
+            Entity ball = null;
             for (float j = 0.1f; j < 1.6f; j += 0.20f)
             {
                 for (float i = 0.1f; i < 1.0f; i += 0.1f)
                 {
-                    //Spritelet ball = new Spritelet("ball");
-                    ball = new Ball();
-                    ball.Motion.Position = new Vector2(j, i); //(float) rnd.NextDouble() , (float) rnd.NextDouble() );
-                    ball.Motion.Velocity = 0.1f * new Vector2((float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f);
-                    ball.Motion.Rotate = (float)(Math.PI * 2 * rnd.NextDouble());
-                    ball.Motion.Scale = 0.4f + 0.6f * (float)rnd.NextDouble();
-                    
-                    ball.Timing.StartTime = 10f * (float)rnd.NextDouble();
-                    ball.Timing.Duration = 10f + 5f * (float)rnd.NextDouble();
+                    ball = Factory.CreateBall(0.04f + 0.06f * (float)rnd.NextDouble());
 
-                    Screen.Add(ball);
+                    // position and velocity set
+                    ball.GetComponent<PositionComp>().Position = new Vector2(j, i);
+                    ball.GetComponent<VelocityComp>().Velocity = 0.1f * new Vector2((float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f);
+                    //ball.Motion.Rotate = (float)(Math.PI * 2 * rnd.NextDouble());                    
+                    //ball.Timing.StartTime = 10f * (float)rnd.NextDouble();
+
+                    // duration of entity
+                    ball.AddComponent(new ExpiresComp(10f + 5f * (float)rnd.NextDouble()));
+
                 }
             }
 

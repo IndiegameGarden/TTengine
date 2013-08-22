@@ -5,17 +5,19 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using TTengine.Core;
+
+using Artemis.Interface;
+
 namespace TTengine.Comps
 {
     /// <summary>
     /// Component that allows drawing of the gamelet, offering very basic drawing functions
     /// </summary>
-    public class DrawComp: Comp
+    public class DrawComp: IComponent
     {
         public DrawComp()
         {
-            Register(this);
-            Screen = TTengineMaster.ActiveScreen;
             for (int i = 0; i < NBUF; i++)
             {
                 posHistoryTime[i] = -1.0; // init to out-of-scope value
@@ -43,12 +45,6 @@ namespace TTengine.Comps
         /// a value indicating drawing depth of sprite 0f (front)....1f (back)
         /// </summary>
         public float LayerDepth = 0.5f;
-
-        /// <summary>
-        /// to which Screenlet the item belongs (e.g. where a shape will draw itself). Also non-drawables may use this info.
-        /// Null if not set yet or unknown.
-        /// </summary>
-        public Screenlet Screen = null;
 
         /// Color for drawing shape/sprite, setting it will replace Alpha value with DrawColor.A
         public virtual Color DrawColor
@@ -106,7 +102,7 @@ namespace TTengine.Comps
         {
             get
             {
-                Screen.UseSharedSpriteBatch(mySpriteBatch);
+                // FIXME Screen.UseSharedSpriteBatch(mySpriteBatch);
                 return mySpriteBatch;
             }
 
@@ -151,8 +147,8 @@ namespace TTengine.Comps
 
         public void OnNewParent(Gamelet oldParent)
         {
-            if (Screen != null)
-                mySpriteBatch = Screen.mySpriteBatch;
+            //if (Screen != null)
+            //    mySpriteBatch = Screen.mySpriteBatch;
         }
 
         /*

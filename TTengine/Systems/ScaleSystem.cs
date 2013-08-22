@@ -4,15 +4,14 @@ using System.Linq;
 using System.Text;
 using TTengine.Core;
 
+using Artemis.Attributes;
+using Artemis.System;
+
 namespace TTengine.Systems
 {
-    public class ScaleSystem: Sys
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 0)]
+    public class ScaleSystem : EntityComponentProcessingSystem<ScaleComp>
     {
-        public ScaleSystem()
-            : base(typeof(ScaleComp), true)
-        {         
-            //
-        }
 
         public override void UpdateComp(Comp c, UpdateParams p)
         {

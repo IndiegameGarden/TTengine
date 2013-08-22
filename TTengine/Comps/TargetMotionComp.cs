@@ -1,6 +1,7 @@
 // (c) 2010-2013 TranceTrance.com. Distributed under the FreeBSD license in LICENSE.txt
 
 using Microsoft.Xna.Framework;
+using Artemis.Interface;
 
 namespace TTengine.Comps
 {
@@ -8,11 +9,10 @@ namespace TTengine.Comps
     /// Component for simple physics-based motion 
     /// (velocity, scale, rotation, zoom, etc.)
     /// </summary>
-    public class MotionComp : Comp
+    public class TargetMotionComp : IComponent
     {
-        public MotionComp()
+        public TargetMotionComp()
         {
-            Register(this);
         }
 
         public Vector2 Position = Vector2.Zero;
