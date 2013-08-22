@@ -13,6 +13,7 @@ namespace TTengine.Util
      */
     public class FrameRateCounter : Gamelet
     {
+        /*
         SpriteFont spriteFont;
         int frameRate = 0;
         int frameCounter = 0;
@@ -57,5 +58,6 @@ namespace TTengine.Util
             DrawC.MySpriteBatch.DrawString(spriteFont, fps, pos,
                         DrawC.DrawColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, DrawC.LayerDepth);
         }
+         */
     }
 }

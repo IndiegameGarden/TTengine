@@ -46,6 +46,8 @@ namespace TTengine.Comps
         /// </summary>
         public float LayerDepth = 0.5f;
 
+        public Screenlet Screen = TTGame.Instance.ActiveScreen;
+
         /// Color for drawing shape/sprite, setting it will replace Alpha value with DrawColor.A
         public virtual Color DrawColor
         {
@@ -151,7 +153,6 @@ namespace TTengine.Comps
             //    mySpriteBatch = Screen.mySpriteBatch;
         }
 
-        /*
         /// <summary>
         /// FIXME move away to a component?
         /// translate a float screen coordinate to pixel coordinates, in the context of this Gamelet
@@ -183,7 +184,6 @@ namespace TTengine.Comps
         {
             return ToPixels(new Vector2(x, y));
         }
-        */
 
         /*
         internal void UpdateSmoothingCache(ref UpdateParams p)

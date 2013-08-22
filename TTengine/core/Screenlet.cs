@@ -237,6 +237,14 @@ namespace TTengine.Core
             return sb;
         }
 
+        public void BeginDraw()
+        {
+        }
+
+        public void EndDraw()
+        {
+        }
+
         /*
         internal void Draw(ref DrawParams p)
         {

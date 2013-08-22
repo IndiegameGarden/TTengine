@@ -7,6 +7,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
 
+using TTengine.Core;
+
+using Artemis;
+using Artemis.Interface;
+
 namespace TTengine.Comps
 {
     /// <summary>
@@ -28,7 +33,7 @@ namespace TTengine.Comps
         {
             if (fileName.Contains("."))
             {
-                Texture = LoadBitmap(fileName, TTengineMaster.ActiveGame.Content.RootDirectory, true);
+                Texture = LoadBitmap(fileName, TTGame.Instance.Content.RootDirectory, true);
             }
             this.fileName = fileName;
             InitTextures();
@@ -48,7 +53,6 @@ namespace TTengine.Comps
         
         #region Class-internal properties
 
-        protected Screenlet Screen = null;
         protected string fileName = null;
         protected float width = 0f;
         protected float height = 0f;
@@ -59,7 +63,9 @@ namespace TTengine.Comps
 
 
         #region Properties
-        
+
+        public Screenlet Screen = TTGame.Instance.ActiveScreen;
+
         /// <summary>
         /// width of sprite in normalized coordinates
         /// </summary>
@@ -121,7 +127,7 @@ namespace TTengine.Comps
          */
         protected void LoadTexture(string textureFilename)
         {
-            Texture = TTengineMaster.ActiveGame.Content.Load<Texture2D>(textureFilename);
+            Texture = TTGame.Instance.Content.Load<Texture2D>(textureFilename);
         }
 
         /*
@@ -187,9 +193,9 @@ namespace TTengine.Comps
             try
             {
                 if (atRunTime)
-                    return LoadTextureStreamAtRuntime(Screen.graphicsDevice, fn, contentDir);
+                    return LoadTextureStreamAtRuntime( TTGame.Instance.GraphicsDevice, fn, contentDir);
                 else
-                    return LoadTextureStream(Screen.graphicsDevice, fn, contentDir);
+                    return LoadTextureStream(TTGame.Instance.GraphicsDevice, fn, contentDir);
             }
             catch (Exception ex)
             {

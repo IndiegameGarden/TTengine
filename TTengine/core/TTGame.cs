@@ -26,7 +26,7 @@ namespace TTengine.Core
 
         public GraphicsDeviceManager Graphics;
 
-        public Screenlet Screen;
+        public Screenlet ActiveScreen;
         
         public MusicEngine MusicEngine;
 
@@ -40,7 +40,7 @@ namespace TTengine.Core
             Content.RootDirectory = "Content";
 
 #if DEBUG
-            graphics.SynchronizeWithVerticalRetrace = false;
+            Graphics.SynchronizeWithVerticalRetrace = false;
 #else
             Graphics.SynchronizeWithVerticalRetrace = true;
 #endif
@@ -49,16 +49,14 @@ namespace TTengine.Core
 
         protected override void Initialize()
         {
-            TTengineMaster.Create(this);
-
             // open the TTMusicEngine
-            musicEngine = MusicEngine.GetInstance();
-            musicEngine.AudioPath = "Content";
-            if (!musicEngine.Initialize())
-                throw new Exception(musicEngine.StatusMsg);
+            MusicEngine = MusicEngine.GetInstance();
+            MusicEngine.AudioPath = "Content";
+            if (!MusicEngine.Initialize())
+                throw new Exception(MusicEngine.StatusMsg);
 
             // create screen for drawing to
-            Screen = new Screenlet(Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight);
+            ActiveScreen = new Screenlet(false, Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight);
 
             base.Initialize();
         }
@@ -70,16 +68,16 @@ namespace TTengine.Core
 
         protected override void Update(GameTime gameTime)
         {
-            world.Update();
+            World.Update();
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             this.GraphicsDevice.Clear(Color.Black);
-            this.Screen.BeginDraw();
+            this.ActiveScreen.BeginDraw();
             this.World.Draw();
-            this.Screen.EndDraw();
+            this.ActiveScreen.EndDraw();
         }
 
     }

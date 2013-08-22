@@ -44,17 +44,17 @@ namespace TTengine.Systems
     using Artemis.Attributes;
     using Artemis.System;
 
-    using StarWarrior.Components;
+    using TTengine.Comps;
 
     #endregion
 
     /// <summary>The expiration system.</summary>
     [ArtemisEntitySystem]
-    public class ExpirationSystem : EntityComponentProcessingSystem<ExpiresComponent>
+    public class ExpirationSystem : EntityComponentProcessingSystem<ExpiresComp>
     {
         /// <summary>Processes the specified entity.</summary>
         /// <param name="entity">The entity.</param>
-        public override void Process(Entity entity,ExpiresComponent expiresComponent)
+        public override void Process(Entity entity,ExpiresComp expiresComponent)
         {
             if (expiresComponent != null)
             {

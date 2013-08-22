@@ -53,6 +53,7 @@ namespace TTengine.Util
             }
         }
 
+        /*
         public void OnDraw(ref DrawParams p)
         {
             base.OnDraw(ref p);
@@ -61,6 +62,7 @@ namespace TTengine.Util
             DrawC.MySpriteBatch.DrawString(DrawC.Screen.DebugFont, txt, Motion.PositionAbsZoomedPixels, DrawC.DrawColor,
                                     Motion.RotateAbs, origin, Motion.ScaleAbs, SpriteEffects.None, DrawC.LayerDepth);
         }
+         */
 
     }
 }

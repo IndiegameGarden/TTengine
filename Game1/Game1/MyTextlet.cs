@@ -15,17 +15,20 @@ namespace Game1
 
         public MyTextlet( string text)
         {
-            ConstructDrawlet();
+            /*
             this.text = text;
             DrawC.DrawColor = Color.White;
             spriteFont = TTGame.Instance.Content.Load<SpriteFont>("Font1");
+             */
         }
 
-        public override void OnDraw(ref DrawParams p)
+        public void OnDraw(ref DrawParams p)
         {
+            /*
             Vector2 pos = Motion.PositionAbs;
             Vector2 posPixels = pos * TTGame.Instance.GraphicsDevice.DisplayMode.Height;
             DrawC.MySpriteBatch.DrawString(spriteFont, text, posPixels, DrawC.DrawColor);
+             */
         }
     }
 }

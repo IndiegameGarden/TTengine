@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using TTengine.Core;
 
+using Artemis;
+using Artemis.Manager;
 using Artemis.Attributes;
 using Artemis.System;
 
@@ -13,12 +15,8 @@ namespace TTengine.Systems
     public class ScaleSystem : EntityComponentProcessingSystem<ScaleComp>
     {
 
-        public override void UpdateComp(Comp c, UpdateParams p)
+        public override void Process(Entity entity, ScaleComp sc)
         {
-            ScaleComp sc = c as ScaleComp;
-
-            ScaleComp parentSc = c.FindParentComp() as ScaleComp; //c.Parent.Parent.FindComp(typeof(ScaleComp)) as ScaleComp;
-
             // scaling logic towards target
             if (sc.ScaleSpeed > 0)
             {

@@ -38,6 +38,7 @@ namespace TTengine.Core
     public class Gamelet
     {
 
+        /*
         public Gamelet()
         {
             CreateID();
@@ -201,5 +202,6 @@ namespace TTengine.Core
 
         #endregion
 
+         */
     }
 }

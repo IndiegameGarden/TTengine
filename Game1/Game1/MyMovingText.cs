@@ -13,13 +13,15 @@ namespace Game1
             //
         }
 
-        protected override void OnUpdate(ref UpdateParams p)
+        protected void OnUpdate(ref UpdateParams p)
         {
-            base.OnUpdate(ref p);
+            //base.OnUpdate(ref p);
             float spd = 0.2f;
+            /*
             Motion.Acceleration = new Vector2( spd * (float)Math.Sin(Math.PI * p.SimTime), 
                                         spd * (float)Math.Cos(Math.PI * p.SimTime)
                                       );
+             */
         }
     }
 }
