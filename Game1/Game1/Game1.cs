@@ -13,25 +13,38 @@ using TTengine.Util;
 
 namespace TTengineTestGame
 {
+    /// <summary>
+    /// Main game class
+    /// </summary>
     public class Game1 : TTGame
     {
-        protected override void InitTTGame()
+        public Game1()
         {
-            MyWindowWidth = 640;
-            MyWindowHeight = 480;
+            Graphics = new GraphicsDeviceManager(this);
+            Graphics.IsFullScreen = false;
+            Graphics.PreferredBackBufferHeight = 640;
+            Graphics.PreferredBackBufferWidth = 480;
+            this.IsMusicEngine = false;
         }
 
-        protected override void InitTTContent()
+        protected override void Initialize()
         {
-            // FIXME Screen.DrawC.DrawColor = Color.White;
+            base.Initialize();
+        }
 
-            // add a static text 'MyTextlet'
-            MyTextlet txt = new MyTextlet("TTengine shader test using Efflet");
+        protected override void LoadContent()
+        {
+            base.LoadContent();
+
+            /*
+            // add a static text
+            MyTextlet txt = new MyTextlet("TTengine basic test!");
             txt.Motion.Position = new Vector2(0.01f, 0.4f);
-            txt.DrawC.DrawColor = Color.Black;
+            txt.DrawC.DrawColor = Color.White;
             Screen.Add(txt);
+            */
 
-            // add several Spritelets and set some specific velocity per item
+            // add several sprites and set some specific velocity per item
             Random rnd = new Random();
             Gamelet ball = null;
             for (float j = 0.1f; j < 1.6f; j += 0.20f)
@@ -52,14 +65,6 @@ namespace TTengineTestGame
                 }
             }
 
-            HypnoEfflet eff = new HypnoEfflet();
-            eff.DrawC.Alpha = 0.84f;
-            Screen.Add(eff);
-
-        }
-
-        protected override void LoadTTContent()
-        {
         }
 
     }

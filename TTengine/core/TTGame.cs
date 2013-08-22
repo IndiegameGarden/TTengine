@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using TTengine.Core;
 using TTengine.Util;
+using Artemis;
 //using TTengine.Modifiers; // TODO
 using TTMusicEngine;
 using TTMusicEngine.Soundevents;
@@ -17,35 +18,33 @@ namespace TTengine.Core
 {
     public abstract class TTGame: Game
     {
-        // list of configurable paramaters
-        public bool IsFullScreen = false;
-        public int MyWindowWidth = 1024;
-        public int MyWindowHeight = 768;
+        /// <summary>If set true, starts the TTMusicEngine</summary>
+        public bool IsMusicEngine = false;
 
-        /// <summary>
-        /// Root gamelet
-        /// </summary>
-        public Gamelet Root;
-        
-        /// <summary>
-        /// The currently running (single) instance of TTGame
-        /// </summary>
+        /// <summary>The currently running (single) instance of TTGame</summary>
         public static TTGame Instance = null;
 
-        public GraphicsDeviceManager graphics;
+        public GraphicsDeviceManager Graphics;
+
         public Screenlet Screen;
-        public MusicEngine musicEngine;        
+        
+        public MusicEngine MusicEngine;
+
+        /// <summary>The Artemis entity world</summary>
+        private EntityWorld World;
 
         public TTGame()
         {
             Instance = this;
             IsFixedTimeStep = false;
             Content.RootDirectory = "Content";
-            graphics = new GraphicsDeviceManager(this);
 
-            graphics.IsFullScreen = IsFullScreen;
-            graphics.PreferredBackBufferHeight = MyWindowHeight;
-            graphics.PreferredBackBufferWidth = MyWindowWidth;
+#if DEBUG
+            graphics.SynchronizeWithVerticalRetrace = false;
+#else
+            Graphics.SynchronizeWithVerticalRetrace = true;
+#endif
+
         }
 
         protected override void Initialize()
@@ -58,40 +57,29 @@ namespace TTengine.Core
             if (!musicEngine.Initialize())
                 throw new Exception(musicEngine.StatusMsg);
 
-            // from here on, main screen
-            Screen = new Screenlet(MyWindowWidth, MyWindowHeight);
-            TTengineMaster.ActiveScreen = Screen;
-            Root = new FixedTimestepPhysics();
-            Root.Add(Screen);
+            // create screen for drawing to
+            Screen = new Screenlet(Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight);
 
-            // user's content init
-            InitTTContent();
-
-            // finally call base to enumnerate all (gfx) Game components to init
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            LoadTTContent();
-            // FIXME Root.Init();
             base.LoadContent();
         }
 
         protected override void Update(GameTime gameTime)
         {
-            TTengineMaster.Update(gameTime, Root);
-
-            // update any other XNA components
+            world.Update();
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            TTengineMaster.Draw(gameTime, Root);
-
-            // then draw other (if any) XNA game components on the screen
-            base.Draw(gameTime);
+            this.GraphicsDevice.Clear(Color.Black);
+            this.Screen.BeginDraw();
+            this.World.Draw();
+            this.Screen.EndDraw();
         }
 
     }

@@ -12,7 +12,7 @@ namespace TTengine.Core
     /// <summary>
     /// Component for a sprite 
     /// </summary>
-    public class SpriteComp : Comp
+    public class SpriteComp : IComponent
     {
 
         #region Constructors
@@ -26,8 +26,6 @@ namespace TTengine.Core
         /// <exception cref="InvalidOperationException">when invalid image file is attempted to load</exception>
         public SpriteComp(string fileName)
         {
-            Register(this);
-            Screen = TTengineMaster.ActiveScreen;
             if (fileName.Contains("."))
             {
                 Texture = LoadBitmap(fileName, TTengineMaster.ActiveGame.Content.RootDirectory, true);
@@ -41,8 +39,6 @@ namespace TTengine.Core
         /// </summary>
         public SpriteComp(Texture2D texture)
         {
-            Register(this);
-            Screen = TTengineMaster.ActiveScreen;
             this.texture = texture;
             InitTextures();
         }

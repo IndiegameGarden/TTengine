@@ -69,7 +69,7 @@ namespace TTengine.Core
 
         #region Private and internal variables
 
-        internal SpriteFont DebugFont = null;
+        //internal SpriteFont DebugFont = null;
         internal TTSpriteBatch mySpriteBatch = null;
         internal int screenWidth = 0;
         internal int screenHeight = 0;
@@ -83,30 +83,34 @@ namespace TTengine.Core
         
         #endregion
 
-        #region Constructors
-
         /// <summary>
-        /// create a Screenlet with no RenderTarget set (yet)
+        /// create a Screenlet of given dimensions with optionally a RenderTarget 
         /// </summary>
-        public Screenlet()
-        {
-            OnConstruction();
-            InitRenderTarget();
-        }
-
-        /// <summary>
-        /// create a Screenlet with a RenderTarget buffer of given dimensions
-        /// </summary>
-        public Screenlet(int x, int y)
+        public Screenlet(bool hasRenderBuffer, int x, int y)
         {
             screenWidth = x;
             screenHeight = y;
             OnConstruction();
-            InitRenderTarget();
+            if (hasRenderBuffer)
+                InitRenderTarget();
+            InitScreenDimensions();
         }
 
-        #endregion
+        /// <summary>
+        /// create a Screenlet of full-screen dimensions with optionally a RenderTarget 
+        /// </summary>
+        public Screenlet(bool hasRenderBuffer)
+        {
+            screenWidth = TTGame.Instance.GraphicsDevice.Viewport.Width;
+            screenHeight = TTGame.Instance.GraphicsDevice.Viewport.Height;
+            OnConstruction();
+            if (hasRenderBuffer)
+                InitRenderTarget();
+            InitScreenDimensions();
+        }
 
+
+        /* TODO
         public void DebugText(float x, float y, string text)
         {
             mySpriteBatch.DrawString(DebugFont, text, DrawC.ToPixels(x, y), Color.White, 0f, Vector2.Zero, Motion.Zoom, SpriteEffects.None, 0f);
@@ -116,17 +120,13 @@ namespace TTengine.Core
         {
             DebugText(pos.X, pos.Y, text);
         }
+        */
 
         protected void OnConstruction()
         {
-            TTengineMaster.ActiveScreen = this;
-            Motion = new ScreenletMotion();
-            Add(Motion);
-            DrawC = new DrawComp();
-            Add(DrawC);
-            TTengineMaster.AddScreenlet(this);
-            DrawC.DrawColor = Color.Black; // for screen - default black background.
-            graphicsDevice = TTengineMaster.ActiveGame.GraphicsDevice;
+            // FIXME DrawC.DrawColor = Color.Black; // for screen - default black background.
+            //graphicsDevice = TTengineMaster.ActiveGame.GraphicsDevice;
+            /*
             try
             {
                 // load the optional debug font.
@@ -136,17 +136,18 @@ namespace TTengine.Core
             {
                 ; // TODO maybe put a warning out here?
             }
-            effletsList = new List<ScreenShaderComp>();
+             */
+            //effletsList = new List<ScreenShaderComp>();
             mySpriteBatch = new TTSpriteBatch(graphicsDevice);
-            collisionObjects = new List<Gamelet>();
         }
 
         protected void InitRenderTarget()
         {
             if (screenWidth > 0 && screenHeight > 0)  // init based on constructor parameters
                 renderTarget = new RenderTarget2D(graphicsDevice, screenWidth, screenHeight);
-            InitScreenDimensions(); // screenWidth / screenHeight are modified here
-            effletRenderTarget = new RenderTarget2D(graphicsDevice, screenWidth, screenHeight);
+            else
+                renderTarget = null;
+            //effletRenderTarget = new RenderTarget2D(graphicsDevice, screenWidth, screenHeight);
         }
 
         protected void InitScreenDimensions()
@@ -158,8 +159,8 @@ namespace TTengine.Core
             }
             else
             {
-                screenWidth = graphicsDevice.Viewport.Width;
-                screenHeight = graphicsDevice.Viewport.Height;
+                screenWidth = TTGame.Instance.GraphicsDevice.Viewport.Width;
+                screenHeight = TTGame.Instance.GraphicsDevice.Viewport.Height;
             }
             scalingToNormalized = 1.0f / (float)screenHeight;
             screenRect = new Rectangle(0, 0, screenWidth, screenHeight);
@@ -236,6 +237,7 @@ namespace TTengine.Core
             return sb;
         }
 
+        /*
         internal void Draw(ref DrawParams p)
         {
             if (!IsActive) return;
@@ -298,5 +300,6 @@ namespace TTengine.Core
                 }
             }// end lock(graphicsDevice)
         }
+         */
     }
 }
