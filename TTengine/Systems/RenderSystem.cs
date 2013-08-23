@@ -69,7 +69,7 @@ namespace TTengine.Systems
         {
             if (spriteComp != null && posComp != null)
             {
-                spriteComp.Screen.mySpriteBatch.Draw( spriteComp.Texture, drawComp.DrawPosition, null, drawComp.DrawColor,
+                spriteComp.Screen.SpriteBatch.Draw( spriteComp.Texture, drawComp.DrawPosition, null, drawComp.DrawColor,
                     0f, spriteComp.DrawCenter, 1f, SpriteEffects.None, drawComp.LayerDepth);
 
             }

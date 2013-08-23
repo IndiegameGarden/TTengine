@@ -117,7 +117,7 @@ namespace TTengine.Comps
                 Height = ToNormalizedNS(texture.Height);
                 Width = ToNormalizedNS(texture.Width);
             }
-            if (fileName != null && texture == null) 
+            if (fileName != null && texture == null)
                 LoadTexture(fileName);
         }
 

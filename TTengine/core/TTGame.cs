@@ -82,10 +82,11 @@ namespace TTengine.Core
 
         protected override void Draw(GameTime gameTime)
         {
-            this.GraphicsDevice.Clear(Color.Black);
+            this.GraphicsDevice.Clear(ActiveScreen.BackgroundColor);
             this.ActiveScreen.BeginDraw();
             this.World.Draw();
             this.ActiveScreen.EndDraw();
+            base.Draw(gameTime);
         }
 
     }

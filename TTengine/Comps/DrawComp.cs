@@ -12,16 +12,13 @@ using Artemis.Interface;
 namespace TTengine.Comps
 {
     /// <summary>
-    /// Component that allows drawing of the gamelet, offering very basic drawing functions
+    /// Component that allows drawing of the gamelet, including basic drawing parameters
+    /// like drawing position, layer depth, drawing color, to which Screenlet, etc
     /// </summary>
     public class DrawComp: IComponent
     {
         public DrawComp()
         {
-            for (int i = 0; i < NBUF; i++)
-            {
-                posHistoryTime[i] = -1.0; // init to out-of-scope value
-            }
         }
 
         #region Internal vars
@@ -41,76 +38,58 @@ namespace TTengine.Comps
         #endregion
 
 
-        /// <summary>
-        /// a value indicating drawing depth of sprite 0f (front)....1f (back)
-        /// </summary>
+        /// <summary>drawing depth of graphics 0f (front)....1f (back)</summary>
         public float LayerDepth = 0.5f;
 
+        /// <summary>to which Screenlet an Entity will be drawn</summary>
         public Screenlet Screen = TTGame.Instance.ActiveScreen;
 
-        /// Color for drawing shape/sprite, setting it will replace Alpha value with DrawColor.A
+        /// <summary>Color for drawing, setting this will replace Alpha value with DrawColor.A</summary>
         public virtual Color DrawColor
         {
             get { return drawColor; }
             set { drawColor = value; }
         }
 
+        /// <summary>Red color component of DrawColor</summary>
         public virtual float R
         {
             get {return drawColor.R / 255.0f; }
             set { drawColor.R = (byte)(value * 255.0f); } 
         }
 
+        /// <summary>Green color component of DrawColor</summary>
         public virtual float G
         {
             get { return drawColor.G / 255.0f; }
             set { drawColor.G = (byte)(value * 255.0f); }
         }
 
+        /// <summary>Blue color component of DrawColor</summary>
         public virtual float B
         {
             get { return drawColor.B / 255.0f; }
             set { drawColor.B = (byte)(value * 255.0f); }
         }
 
-        /// Alpha value for the DrawColor of this Spritelet, range 0-1, replacing whatever was in DrawColor.A
+        /// <summary>Alpha value for DrawColor, range 0f-1f, setting replaces DrawColor.A</summary>
         public virtual float Alpha
         {
             get { return drawColor.A / 255.0f; }
             set { drawColor.A = (byte)(value * 255.0f); }
         }
 
+        /// <summary>Scale to used in Draw() calls</summary>
         public double DrawScale = 1.0;
 
-        public double DrawScaleAbs = 1.0;
-
         /// <summary>
-        /// an interpolated position in pixels for sprite drawing with smooth motion, directly usable in Draw() calls
+        /// position in pixels for drawing, directly usable in Draw() calls
         /// </summary>
         public Vector2 DrawPosition
         {
             get
             {
                 return drawPosition;
-            }
-        }
-
-        /// <summary>
-        /// TODO needed?
-        /// get the default TTSpriteBatch to use for drawing for this Gamelet. If not configured
-        /// explicitly, it will use the default TTSpriteBatch of the Screenlet it renders to.
-        /// </summary>
-        public virtual TTSpriteBatch MySpriteBatch
-        {
-            get
-            {
-                // FIXME Screen.UseSharedSpriteBatch(mySpriteBatch);
-                return mySpriteBatch;
-            }
-
-            set
-            {
-                mySpriteBatch = value;
             }
         }
 
@@ -146,12 +125,6 @@ namespace TTengine.Comps
             UpdateSmoothingCache(ref p);
         }
          */
-
-        public void OnNewParent(Gamelet oldParent)
-        {
-            //if (Screen != null)
-            //    mySpriteBatch = Screen.mySpriteBatch;
-        }
 
         /// <summary>
         /// FIXME move away to a component?

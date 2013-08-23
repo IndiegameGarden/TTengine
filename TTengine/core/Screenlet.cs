@@ -15,14 +15,9 @@ namespace TTengine.Core
      */
     public class Screenlet : Gamelet
     {
-        // TODO
-        bool Visible = true;
+        public Color BackgroundColor = Color.Black;
 
-        /// ref to the GraphicsDevice to use by child Gamelets
-        public GraphicsDevice graphicsDevice;
-
-        /// list of all Gamelets for which mutual collision detection is done
-        public List<Gamelet> collisionObjects;
+        public bool Visible = true;
 
         /// <summary>
         /// The center coordinate of the screen
@@ -70,13 +65,13 @@ namespace TTengine.Core
         #region Private and internal variables
 
         //internal SpriteFont DebugFont = null;
-        internal TTSpriteBatch mySpriteBatch = null;
+        internal TTSpriteBatch SpriteBatch = null;
         internal int screenWidth = 0;
         internal int screenHeight = 0;
         private float aspectRatio;
         internal float scalingToNormalized;
         private Rectangle screenRect;
-        private RenderTarget2D renderTarget, effletRenderTarget;
+        private RenderTarget2D renderTarget;
         // FIXME internal List<ScreenShaderComp> effletsList;
         internal Dictionary<Effect, TTSpriteBatch> effect2spritebatchTable = new Dictionary<Effect, TTSpriteBatch>();
         internal List<TTSpriteBatch> spriteBatchesActive = new List<TTSpriteBatch>();
@@ -138,13 +133,13 @@ namespace TTengine.Core
             }
              */
             //effletsList = new List<ScreenShaderComp>();
-            mySpriteBatch = new TTSpriteBatch(TTGame.Instance.GraphicsDevice);
+            SpriteBatch = new TTSpriteBatch(TTGame.Instance.GraphicsDevice);
         }
 
         protected void InitRenderTarget()
         {
             if (screenWidth > 0 && screenHeight > 0)  // init based on constructor parameters
-                renderTarget = new RenderTarget2D(graphicsDevice, screenWidth, screenHeight);
+                renderTarget = new RenderTarget2D(TTGame.Instance.GraphicsDevice, screenWidth, screenHeight);
             else
                 renderTarget = null;
             //effletRenderTarget = new RenderTarget2D(graphicsDevice, screenWidth, screenHeight);
@@ -190,12 +185,12 @@ namespace TTengine.Core
         /// </summary>
         internal TTSpriteBatch UseSharedSpriteBatch()
         {
-            if (!spriteBatchesActive.Contains(mySpriteBatch))
+            if (!spriteBatchesActive.Contains(SpriteBatch))
             {
-                mySpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
-                spriteBatchesActive.Add(mySpriteBatch);
+                SpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+                spriteBatchesActive.Add(SpriteBatch);
             }
-            return mySpriteBatch;
+            return SpriteBatch;
         }
 
         /// <summary>
@@ -213,7 +208,7 @@ namespace TTengine.Core
             catch (KeyNotFoundException)
             {
                 // create it on 1st time
-                sb = new TTSpriteBatch(graphicsDevice);
+                sb = new TTSpriteBatch(TTGame.Instance.GraphicsDevice);
                 effect2spritebatchTable[eff] = sb;
             }
             return sb;
@@ -239,10 +234,12 @@ namespace TTengine.Core
 
         public void BeginDraw()
         {
+            SpriteBatch.Begin();
         }
 
         public void EndDraw()
         {
+            SpriteBatch.End();
         }
 
         /*
