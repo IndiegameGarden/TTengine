@@ -62,7 +62,8 @@ namespace TTengine.Systems
             {
                 if (posComp != null)
                 {
-                    float dt = TimeSpan.FromTicks(this.EntityWorld.Delta).Seconds;
+                    // TODO optimize with the fixed ticks-to-seconds scale factor?
+                    float dt = (float) TimeSpan.FromTicks(this.EntityWorld.Delta).TotalSeconds;
 
                     posComp.X += (float)(veloComp.X * dt);
                     posComp.Y += (float)(veloComp.Y * dt);

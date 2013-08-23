@@ -50,9 +50,6 @@
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Artemis">
-      <HintPath>..\Artemis-DLL\$(Configuration)\PC\artemis.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <Private>False</Private>
     </Reference>
@@ -130,6 +127,10 @@
     <Compile Include="Util\TTutil.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Artemis_XNA_INDEPENDENT\Artemis.csproj">
+      <Project>{22C89AF2-E1CF-4976-91B9-7D33773DC6E7}</Project>
+      <Name>Artemis</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TTMusicEngine\TTMusicEngine.csproj">
       <Project>{CB99D0C9-FD0E-4B90-91BD-7D5816B38A2C}</Project>
       <Name>TTMusicEngine</Name>

@@ -19,15 +19,15 @@ using Game1.Factories;
 namespace Game1
 {
     /// <summary>
-    /// Main game class
+    /// Main game class, using TTGame template
     /// </summary>
     public class Game1 : TTGame
     {
         public Game1()
         {
             GraphicsMgr.IsFullScreen = false;
-            GraphicsMgr.PreferredBackBufferHeight = 640;
-            GraphicsMgr.PreferredBackBufferWidth = 480;
+            GraphicsMgr.PreferredBackBufferWidth = 800; 
+            GraphicsMgr.PreferredBackBufferHeight = 600;
             IsMusicEngine = false;
         }
 
@@ -65,7 +65,7 @@ namespace Game1
 
                     // duration of entity
                     ball.AddComponent(new ExpiresComp(10f + 5f * (float)rnd.NextDouble()));
-
+                    ball.Refresh();
                 }
             }
 

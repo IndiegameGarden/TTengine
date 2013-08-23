@@ -80,7 +80,7 @@ namespace TTengine.Comps
         }
 
         /// <summary>Scale to used in Draw() calls</summary>
-        public double DrawScale = 1.0;
+        public float DrawScale = 1.0f;
 
         /// <summary>
         /// position in pixels for drawing, directly usable in Draw() calls
