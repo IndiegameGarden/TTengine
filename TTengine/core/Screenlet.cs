@@ -138,7 +138,7 @@ namespace TTengine.Core
             }
              */
             //effletsList = new List<ScreenShaderComp>();
-            mySpriteBatch = new TTSpriteBatch(graphicsDevice);
+            mySpriteBatch = new TTSpriteBatch(TTGame.Instance.GraphicsDevice);
         }
 
         protected void InitRenderTarget()

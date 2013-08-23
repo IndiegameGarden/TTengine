@@ -40,6 +40,7 @@ namespace TTengine.Comps
 
     using Artemis;
     using Artemis.Attributes;
+    using Artemis.Interface;
 
     using Microsoft.Xna.Framework;
 
@@ -48,8 +49,8 @@ namespace TTengine.Comps
     /// <summary>The transform component pool-able.</summary>
     /// just to show how to use the pool =P 
     /// (just add this annotation and extend ArtemisComponentPool =P)
-    [ArtemisComponentPool(InitialSize = 5, IsResizable = true, ResizeSize = 20, IsSupportMultiThread = false)]
-    public class PositionComp : ComponentPoolable
+    //[ArtemisComponentPool(InitialSize = 5, IsResizable = true, ResizeSize = 20, IsSupportMultiThread = false)]
+    public class PositionComp : IComponent //ComponentPoolable
     {
         /// <summary>Initializes a new instance of the <see cref="PositionComp" /> class.</summary>
         public PositionComp()
@@ -97,7 +98,7 @@ namespace TTengine.Comps
         public float Y { get; set; }
 
         /// <summary>The clean up.</summary>
-        public override void CleanUp()
+        public /*override*/ void CleanUp()
         {
             this.Position = Vector2.Zero;
         }

@@ -25,11 +25,10 @@ namespace Game1
     {
         public Game1()
         {
-            Graphics = new GraphicsDeviceManager(this);
-            Graphics.IsFullScreen = false;
-            Graphics.PreferredBackBufferHeight = 640;
-            Graphics.PreferredBackBufferWidth = 480;
-            this.IsMusicEngine = false;
+            GraphicsMgr.IsFullScreen = false;
+            GraphicsMgr.PreferredBackBufferHeight = 640;
+            GraphicsMgr.PreferredBackBufferWidth = 480;
+            IsMusicEngine = false;
         }
 
         protected override void Initialize()

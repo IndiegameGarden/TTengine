@@ -24,7 +24,7 @@ namespace TTengine.Core
         /// <summary>The currently running (single) instance of TTGame</summary>
         public static TTGame Instance = null;
 
-        public GraphicsDeviceManager Graphics;
+        public GraphicsDeviceManager GraphicsMgr;
 
         public Screenlet ActiveScreen;
         
@@ -36,27 +36,35 @@ namespace TTengine.Core
         public TTGame()
         {
             Instance = this;
+
+            // XNA related init
+            GraphicsMgr = new GraphicsDeviceManager(this);
             IsFixedTimeStep = false;
             Content.RootDirectory = "Content";
-
 #if DEBUG
-            Graphics.SynchronizeWithVerticalRetrace = false;
+            GraphicsMgr.SynchronizeWithVerticalRetrace = false;
 #else
             Graphics.SynchronizeWithVerticalRetrace = true;
 #endif
-
         }
 
         protected override void Initialize()
         {
-            // open the TTMusicEngine
-            MusicEngine = MusicEngine.GetInstance();
-            MusicEngine.AudioPath = "Content";
-            if (!MusicEngine.Initialize())
-                throw new Exception(MusicEngine.StatusMsg);
+            // the TTMusicEngine
+            if (IsMusicEngine)
+            {
+                MusicEngine = MusicEngine.GetInstance();
+                MusicEngine.AudioPath = "Content";
+                if (!MusicEngine.Initialize())
+                    throw new Exception(MusicEngine.StatusMsg);
+            }
 
             // create screen for drawing to
-            ActiveScreen = new Screenlet(false, Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight);
+            ActiveScreen = new Screenlet(false, GraphicsMgr.PreferredBackBufferWidth, GraphicsMgr.PreferredBackBufferHeight);
+
+            // Artemis game world
+            World = new EntityWorld();
+            World.InitializeAll(true);
 
             base.Initialize();
         }
