@@ -40,8 +40,8 @@ namespace TTengine.Core
         /// Create a Spritelet, which is a collidable, moveable sprite in TTengine
         /// </summary>
         /// <param name="graphicsFile">The content graphics file with or without extension. If
-        /// extension given eg "ball.png", the PNG file will be loaded at runtime. If no extension
-        /// given eg "ball", default XNA content will be loaded (.xnb files).</param>
+        /// extension given eg "ball.png", the uncompiled file will be loaded at runtime. If no extension
+        /// given eg "ball", precompiled XNA content will be loaded (.xnb files).</param>
         /// <returns></returns>
         public static Entity CreateSpritelet(string graphicsFile)
         {

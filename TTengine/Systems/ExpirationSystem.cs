@@ -43,13 +43,14 @@ namespace TTengine.Systems
     using Artemis;
     using Artemis.Attributes;
     using Artemis.System;
+    using Artemis.Manager;
 
     using TTengine.Comps;
 
     #endregion
 
     /// <summary>The expiration system.</summary>
-    [ArtemisEntitySystem]
+    //[ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 3)]
     public class ExpirationSystem : EntityComponentProcessingSystem<ExpiresComp>
     {
         /// <summary>Processes the specified entity.</summary>

@@ -51,9 +51,9 @@ namespace Game1
             // add several sprites and set some specific velocity per item
             Random rnd = new Random();
             Entity ball = null;
-            for (float j = 0.1f; j < 1.6f; j += 0.20f)
+            for (float j = 0.1f; j < 0.2f; j += 0.20f)
             {
-                for (float i = 0.1f; i < 1.0f; i += 0.1f)
+                for (float i = 0.1f; i < 0.2f; i += 0.1f)
                 {
                     ball = Factory.CreateBall(0.04f + 0.06f * (float)rnd.NextDouble());
 

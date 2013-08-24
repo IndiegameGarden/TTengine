@@ -67,12 +67,8 @@ namespace TTengine.Systems
         /// <param name="entity">The entity.</param>
         public override void Process(Entity entity, SpriteComp spriteComp, PositionComp posComp, DrawComp drawComp)
         {
-            if (spriteComp != null && posComp != null)
-            {
-                spriteComp.Screen.SpriteBatch.Draw( spriteComp.Texture, drawComp.DrawPosition, null, drawComp.DrawColor,
-                    0f, spriteComp.DrawCenter, drawComp.DrawScale, SpriteEffects.None, drawComp.LayerDepth);
-
-            }
+            spriteComp.Screen.SpriteBatch.Draw( spriteComp.Texture, drawComp.DrawPosition, null, drawComp.DrawColor,
+                0f, spriteComp.DrawCenter, drawComp.DrawScale, SpriteEffects.None, drawComp.LayerDepth);
         }
 
     }
