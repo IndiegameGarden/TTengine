@@ -50,7 +50,7 @@ namespace TTengine.Systems
     #endregion
 
     /// <summary>The expiration system.</summary>
-    //[ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 3)]
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 3)]
     public class ExpirationSystem : EntityComponentProcessingSystem<ExpiresComp>
     {
         /// <summary>Processes the specified entity.</summary>
@@ -59,8 +59,8 @@ namespace TTengine.Systems
         {
             if (expiresComponent != null)
             {
-                float ms = TimeSpan.FromTicks(this.EntityWorld.Delta).Milliseconds;
-                expiresComponent.ReduceLifeTime(ms);
+                float s = (float) TimeSpan.FromTicks(this.EntityWorld.Delta).TotalSeconds;
+                expiresComponent.ReduceLifeTime(s);
 
                 if (expiresComponent.IsExpired)
                 {
