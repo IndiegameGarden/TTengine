@@ -87,10 +87,7 @@ namespace TTengine.Comps
         /// </summary>
         public Vector2 DrawPosition
         {
-            get
-            {
-                return drawPosition;
-            }
+            get; set;
         }
 
         // calculates drawing positions based on interpolation

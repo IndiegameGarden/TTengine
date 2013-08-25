@@ -40,6 +40,8 @@ namespace Game1
         {
             base.LoadContent();
 
+            ActiveScreen.BackgroundColor = Color.White;
+
             /*
             // add a static text
             MyTextlet txt = new MyTextlet("TTengine basic test!");
@@ -51,20 +53,20 @@ namespace Game1
             // add several sprites and set some specific velocity per item
             Random rnd = new Random();
             Entity ball = null;
-            for (float j = 0.1f; j < 0.2f; j += 0.20f)
+            for (float j = 0.1f; j < 1.6f; j += 0.20f)
             {
-                for (float i = 0.1f; i < 0.2f; i += 0.1f)
+                for (float i = 0.1f; i < 1f; i += 0.1f)
                 {
                     ball = Factory.CreateBall(0.04f + 0.06f * (float)rnd.NextDouble());
 
                     // position and velocity set
                     ball.GetComponent<PositionComp>().Position = new Vector2(j, i);
-                    ball.GetComponent<VelocityComp>().Velocity = 0.1f * new Vector2((float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f);
+                    ball.GetComponent<VelocityComp>().Velocity = 0.2f * new Vector2((float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f);
                     //ball.Motion.Rotate = (float)(Math.PI * 2 * rnd.NextDouble());                    
                     //ball.Timing.StartTime = 10f * (float)rnd.NextDouble();
 
                     // duration of entity
-                    ball.AddComponent(new ExpiresComp(10f + 5f * (float)rnd.NextDouble()));
+                    ball.AddComponent(new ExpiresComp(1000f + 5f * (float)rnd.NextDouble()));
                     ball.Refresh();
                 }
             }

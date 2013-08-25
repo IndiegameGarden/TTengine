@@ -58,17 +58,11 @@ namespace TTengine.Systems
         /// <param name="entity">The entity.</param>
         public override void Process(Entity entity,PositionComp posComp,VelocityComp veloComp)
         {
-            if (veloComp != null)
-            {
-                if (posComp != null)
-                {
-                    // TODO optimize with the fixed ticks-to-seconds scale factor?
-                    float dt = (float) TimeSpan.FromTicks(this.EntityWorld.Delta).TotalSeconds;
+            // TODO optimize with the fixed ticks-to-seconds scale factor?
+            float dt = (float) TimeSpan.FromTicks(this.EntityWorld.Delta).TotalSeconds;
 
-                    posComp.X += (float)(veloComp.X * dt);
-                    posComp.Y += (float)(veloComp.Y * dt);
-                }
-            }
+            posComp.X += (float)(veloComp.X * dt);
+            posComp.Y += (float)(veloComp.Y * dt);
         }
     }
 }
