@@ -99,6 +99,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Behaviors\BlinkBehavior.cs" />
+    <Compile Include="Comps\AIComp.cs" />
     <Compile Include="Comps\ExpiresComp.cs" />
     <Compile Include="Comps\PositionComp.cs" />
     <Compile Include="Comps\ScaleComp.cs" />
@@ -106,6 +108,7 @@
     <Compile Include="Comps\ShapeComp.cs" />
     <Compile Include="Comps\DrawComp.cs" />
     <Compile Include="Comps\VelocityComp.cs" />
+    <Compile Include="Core\Behavior.cs" />
     <Compile Include="Core\DrawParams.cs" />
     <Compile Include="Core\Gamelet.cs" />
     <Compile Include="Comps\TargetMotionComp.cs" />
@@ -116,6 +119,7 @@
     <Compile Include="Core\TTSpriteBatch.cs" />
     <Compile Include="Core\UpdateParams.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Systems\AISystem.cs" />
     <Compile Include="Systems\CollisionSystem.cs" />
     <Compile Include="Systems\ExpirationSystem.cs" />
     <Compile Include="Systems\MovementSystem.cs" />

@@ -37,6 +37,8 @@ namespace TTengine.Comps
 
         #endregion
 
+        /// <summary>Flag whether the Entity is visible (i.e. is being drawn or not)</summary>
+        public bool IsVisible = true;
 
         /// <summary>drawing depth of graphics 0f (front)....1f (back)</summary>
         public float LayerDepth = 0.5f;

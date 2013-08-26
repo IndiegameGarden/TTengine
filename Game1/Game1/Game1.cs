@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+using TTengine.Behaviors;
 using TTengine.Core;
 using TTengine.Comps;
 using TTengine.Util;
@@ -52,12 +53,11 @@ namespace Game1
 
             // add several sprites and set some specific velocity per item
             Random rnd = new Random();
-            Entity ball = null;
             for (float j = 0.1f; j < 1.6f; j += 0.20f)
             {
                 for (float i = 0.1f; i < 1f; i += 0.1f)
                 {
-                    ball = Factory.CreateBall(0.04f + 0.06f * (float)rnd.NextDouble());
+                    var ball = Factory.CreateBall(0.04f + 0.06f * (float)rnd.NextDouble());
 
                     // position and velocity set
                     ball.GetComponent<PositionComp>().Position = new Vector2(j, i);
@@ -67,6 +67,12 @@ namespace Game1
 
                     // duration of entity
                     ball.AddComponent(new ExpiresComp(1000f + 5f * (float)rnd.NextDouble()));
+
+                    // blink
+                    var ai = new AIComp();
+                    ai.Behaviors.Add(new BlinkBehavior(2,0.5));
+                    ball.AddComponent(ai);
+
                     ball.Refresh();
                 }
             }

@@ -133,7 +133,7 @@ namespace TTengine.Comps
         /*
         public override void OnDraw(ref DrawParams p)
         {
-            if (texture != null && Parent.Visible && Parent.Active )
+            if (texture != null && Parent.IsVisible && Parent.Active )
             {                
                 Parent.DrawC.MySpriteBatch.Draw(texture, Parent.DrawC.DrawPosition, null, Parent.DrawC.DrawColor,
                        Parent.Motion.RotateAbs, DrawCenter, Parent.DrawC.DrawScale, SpriteEffects.None, Parent.DrawC.LayerDepth);
@@ -145,7 +145,7 @@ namespace TTengine.Comps
         /// run collision detection of this against all other relevant Spritelets
         internal void HandleCollisions(UpdateParams p)
         {
-            if (!Parent.Active || !Parent.Visible) return;
+            if (!Parent.Active || !Parent.IsVisible) return;
 
             // phase 1: check which items collide with me and add to list
             List<Gamelet> collItems = new List<Gamelet>();

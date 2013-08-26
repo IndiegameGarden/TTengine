@@ -296,8 +296,8 @@ namespace TTengine.Core
                     graphicsDevice.SetRenderTargets(rts); // restore from above changes
                 }
 
-                // render the renderTarget buffer, to screen if Visible
-                if (Visible && renderTarget != null)
+                // render the renderTarget buffer, to screen if IsVisible
+                if (IsVisible && renderTarget != null)
                 {
                     mySpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
                     mySpriteBatch.Draw(renderTarget, ScreenRectangle, Color.White); // TODO may apply a selectable drawing color here?
