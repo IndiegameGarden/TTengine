@@ -16,10 +16,16 @@ namespace TTengine.Systems
     {
         private UpdateParams updParams = new UpdateParams();
 
-        public override void Process(Entity entity, AIComp sc)
+        protected override void ProcessEntities(IDictionary<int, Entity> entities)
         {
+            // once per update-cycle, set timing in updParams
             updParams.Dt = TimeSpan.FromTicks(this.EntityWorld.Delta).TotalSeconds;
             updParams.SimTime += updParams.Dt;
+            base.ProcessEntities(entities);
+        }
+
+        public override void Process(Entity entity, AIComp sc)
+        {
             updParams.Entity = entity;
             updParams.Comp = sc;
             // simulate all Behaviors

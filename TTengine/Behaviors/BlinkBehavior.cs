@@ -59,7 +59,7 @@ namespace TTengine.Behaviors
         public BlinkBehavior(double timePeriod, double dutyCycle)
         {
             this.TimePeriod = timePeriod;
-            DutyCycle = dutyCycle;
+            this.DutyCycle = dutyCycle;
             IsActive = true;
         }
 
