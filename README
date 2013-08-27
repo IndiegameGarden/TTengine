@@ -5,8 +5,8 @@ Distributed under a FreeBSD license mostly. For license conditions see LICENSE.t
 and the copyright/license notices in individual source files.
 
 Branches
-master       Version 5.0
 version-1.x  Versions 1.x, used in TTR
 version-2.x  Versions 2.x, used in QFTPP games
-version-3.x  tbd
-version-4.x  Version 4.x, attempt design of own Entity-Component System
+version-3.x  Versions 3.x, tbd.
+version-4.x  Versions 4.x, attempt design of own Entity-Component System
+master       Versions 5.x, uses Artemis ECS and TreeSharp Behavior Trees framework
