@@ -12,7 +12,7 @@ using TTengine.Comps;
 namespace TTengine.Systems
 {
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 2)]
-    public class AISystem : EntityComponentProcessingSystem<AIComp>
+    public class BTAISystem : EntityComponentProcessingSystem<AIComp>
     {
         private UpdateParams updParams = new UpdateParams();
 

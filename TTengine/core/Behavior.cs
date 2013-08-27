@@ -19,13 +19,13 @@ namespace TTengine.Core
         /// depending on conditions calculated by the specific Behavior during OnUpdate().</summary>
         public virtual bool IsActive {get; set;}
 
-        /// <summary>called every update cycle of the AISystem</summary>
+        /// <summary>called every update cycle of the BTAISystem</summary>
         /// <param name="p">Informative update parameters that may be used by the Behavior</param>
         public virtual void OnUpdate(UpdateParams p)
         {
         }
 
-        /// <summary>Called when the AISystem selects this Behavior for execution.</summary>
+        /// <summary>Called when the BTAISystem selects this Behavior for execution.</summary>
         public virtual void OnExecute(UpdateParams p)
         {
         }
