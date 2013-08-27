@@ -74,9 +74,9 @@ namespace Game1
                     //ball.AddComponent(ai);
 
                     ball.Refresh();
-                    //break;
+                    break;
                 }
-                //break;
+                break;
             }
 
         }
