@@ -8,11 +8,15 @@ using Artemis.Attributes;
 using Artemis.Manager;
 using TTengine.Core;
 using TTengine.Comps;
+using TreeSharp;
 
 namespace TTengine.Systems
 {
+    /// <summary>
+    /// A Behavior Tree (BT) based AI system for Entities
+    /// </summary>
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 2)]
-    public class BTAISystem : EntityComponentProcessingSystem<AIComp>
+    public class BTAISystem : EntityComponentProcessingSystem<BTAIComp>
     {
         private UpdateParams updParams = new UpdateParams();
 
@@ -24,24 +28,17 @@ namespace TTengine.Systems
             base.ProcessEntities(entities);
         }
 
-        public override void Process(Entity entity, AIComp sc)
+        public override void Process(Entity entity, BTAIComp btComp)
         {
             updParams.Entity = entity;
-            updParams.Comp = sc;
-            // simulate all Behaviors
-            foreach (Behavior b in sc.Behaviors)
-            {
-                b.OnUpdate(updParams);
-            }
-            // select the Behavior that triggers
-            foreach (Behavior b in sc.Behaviors)
-            {
-                if (b.IsActive)
-                {
-                    b.OnExecute(updParams);
-                    break;
-                }
-            }
+            updParams.Comp = btComp;
+
+            if (btComp.rootNode.LastStatus == null)
+                btComp.rootNode.Start(updParams);
+            if (btComp.rootNode.LastStatus == RunStatus.Success)
+                btComp.rootNode.Start(updParams);
+            // TODO rename UpdateParams/updParams?
+            btComp.rootNode.Tick(updParams);
 
         }
 

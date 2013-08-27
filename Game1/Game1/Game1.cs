@@ -11,9 +11,11 @@ using Microsoft.Xna.Framework.Input;
 //using TTengine.Behaviors;
 using TTengine.Core;
 using TTengine.Comps;
+using TTengine.Behaviors;
 using TTengine.Util;
 
 using Artemis;
+using TreeSharp;
 
 using Game1.Factories;
 
@@ -68,15 +70,19 @@ namespace Game1
                     // duration of entity
                     ball.AddComponent(new ExpiresComp(1000f + 5f * (float)rnd.NextDouble()));
 
-                    // blink
-                    //var ai = new AIComp();
-                    ball.AddComponent(new BlinkComp(0.3+5*rnd.NextDouble(),0.4+0.4*rnd.NextDouble()));
-                    //ball.AddComponent(ai);
+                    // blink                    
+                    //ball.AddComponent(new BlinkComp(0.3+5*rnd.NextDouble(),0.4+0.4*rnd.NextDouble()));
+
+                    // Behavior Tree AI
+                    BTAIComp ai = new BTAIComp();
+                    var randomWanderBehavior = new RandomWanderBehavior(2,4);
+                    ai.rootNode = new PrioritySelector(randomWanderBehavior);
+                    ball.AddComponent(ai);
 
                     ball.Refresh();
-                    break;
+                    //break;
                 }
-                break;
+                //break;
             }
 
         }

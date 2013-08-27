@@ -99,8 +99,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Behaviors\RandomWanderBehavior.cs" />
     <Compile Include="Comps\BlinkComp.cs" />
-    <Compile Include="Comps\AIComp.cs" />
+    <Compile Include="Comps\BTAIComp.cs" />
     <Compile Include="Comps\ExpiresComp.cs" />
     <Compile Include="Comps\PositionComp.cs" />
     <Compile Include="Comps\ScaleComp.cs" />
@@ -143,6 +144,7 @@
     <Compile Include="Util\DebugMessage.cs" />
     <Compile Include="Util\MsgBox.cs" />
     <Compile Include="Util\FrameRateCounter.cs" />
+    <Compile Include="Util\RandomMath.cs" />
     <Compile Include="Util\TTutil.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -161,7 +163,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Behaviors\" />
     <Folder Include="Modifiers\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
