@@ -1,6 +1,12 @@
 
 TTengine is a 2D game engine for C# XNA 4.0.
-For more information and a tutorial go to http://www.trancetrance.com/
 
-Distributed under a FreeBSD license. For license conditions see LICENSE.txt 
-and the copyright notice in source files.
+Distributed under a FreeBSD license mostly. For license conditions see LICENSE.txt 
+and the copyright/license notices in individual source files.
+
+Branches
+master       Version 5.0
+version-1.x  Versions 1.x, used in TTR
+version-2.x  Versions 2.x, used in QFTPP games
+version-3.x  tbd
+version-4.x  Version 4.x, attempt design of own Entity-Component System
