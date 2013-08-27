@@ -30,9 +30,9 @@ namespace TreeSharp
     ///   The base selector class. This will attempt to execute all branches of logic, until one succeeds. 
     ///   This composite will fail only if all branches fail as well.
     /// </summary>
-    public abstract class Selector : GroupComposite
+    public abstract class Selector : GroupTreeNode
     {
-        public Selector(params Composite[] children) : base(children)
+        public Selector(params TreeNode[] children) : base(children)
         {
         }
 
@@ -41,11 +41,11 @@ namespace TreeSharp
 
     public class ProbabilitySelection
     {
-        public Composite Branch;
+        public TreeNode Branch;
 
         public double ChanceToExecute;
 
-        public ProbabilitySelection(Composite branch, double chanceToExecute)
+        public ProbabilitySelection(TreeNode branch, double chanceToExecute)
         {
             Branch = branch;
             ChanceToExecute = chanceToExecute;

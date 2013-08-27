@@ -30,12 +30,12 @@ namespace TreeSharp
     /// </summary>
     public class PrioritySelector : Selector
     {
-        public PrioritySelector(params Composite[] children)
+        public PrioritySelector(params TreeNode[] children)
             : base(children)
         {
         }
 
-        public PrioritySelector(ContextChangeHandler contextChange, params Composite[] children)
+        public PrioritySelector(ContextChangeHandler contextChange, params TreeNode[] children)
             : this(children)
         {
             ContextChanger = contextChange;
@@ -46,7 +46,7 @@ namespace TreeSharp
             lock (Locker)
             {
                 // Keep in mind; we ARE an enumerator here. So we do execute each child in tandem.
-                foreach (Composite node in Children)
+                foreach (TreeNode node in Children)
                 {
                     // All behaviors are 'Decorators' by default. This just makes it simple.
                     // and allows us to not have another class that is nothing but a Decorator : Behavior

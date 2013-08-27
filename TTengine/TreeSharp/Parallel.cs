@@ -28,7 +28,7 @@ namespace TreeSharp
     /// <summary>
     ///   This class is not yet implemented!
     /// </summary>
-    internal class Parallel : Composite
+    internal class Parallel : TreeNode
     {
         public override IEnumerable<RunStatus> Execute(object context)
         {

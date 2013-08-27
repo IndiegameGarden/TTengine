@@ -37,12 +37,12 @@ namespace TreeSharp
     /// </remarks>
     public class DecoratorContinue : Decorator
     {
-        public DecoratorContinue(CanRunDecoratorDelegate func, Composite decorated)
+        public DecoratorContinue(CanRunDecoratorDelegate func, TreeNode decorated)
             : base(func, decorated)
         {
         }
 
-        public DecoratorContinue(Composite child)
+        public DecoratorContinue(TreeNode child)
             : base(child)
         {
         }

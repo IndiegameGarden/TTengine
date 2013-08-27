@@ -31,7 +31,7 @@ namespace TreeSharp
     ///   This is useful for selecting specific branches, for different types of agents. (e.g. rogue, mage, and warrior branches)
     /// </summary>
     /// <typeparam name = "T"></typeparam>
-    public class Switch<T> : GroupComposite
+    public class Switch<T> : GroupTreeNode
     {
         public Switch(Func<T> statement, params SwitchArgument<T>[] args) : base(args.Select(a => a.Branch).ToArray())
         {
@@ -39,7 +39,7 @@ namespace TreeSharp
             Arguments = args;
         }
 
-        public Switch(Func<T> statement, Composite defaultArgument, params SwitchArgument<T>[] args) : this(statement, args)
+        public Switch(Func<T> statement, TreeNode defaultArgument, params SwitchArgument<T>[] args) : this(statement, args)
         {
             Default = defaultArgument;
         }
@@ -57,7 +57,7 @@ namespace TreeSharp
         /// <summary>
         ///   The 'default' argument to be carried out if no other switch conditions are met.
         /// </summary>
-        protected Composite Default { get; set; }
+        protected TreeNode Default { get; set; }
 
         protected void RunSwitch()
         {
@@ -127,7 +127,7 @@ namespace TreeSharp
 
     public class SwitchArgument<T>
     {
-        public SwitchArgument(Composite branch, T requiredValue = default(T))
+        public SwitchArgument(TreeNode branch, T requiredValue = default(T))
         {
             Branch = branch;
             RequiredValue = requiredValue;
@@ -136,7 +136,7 @@ namespace TreeSharp
         /// <summary>
         ///   A branch of logic that will be executed if this argument is the correct switch.
         /// </summary>
-        public Composite Branch { get; set; }
+        public TreeNode Branch { get; set; }
 
         /// <summary>
         ///   The value required for this logic branch to be executed.

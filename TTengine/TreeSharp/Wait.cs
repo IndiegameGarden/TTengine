@@ -42,7 +42,7 @@ namespace TreeSharp
         /// <param name = "timeoutSeconds"></param>
         /// <param name = "runFunc"></param>
         /// <param name = "child"></param>
-        public Wait(int timeoutSeconds, CanRunDecoratorDelegate runFunc, Composite child)
+        public Wait(int timeoutSeconds, CanRunDecoratorDelegate runFunc, TreeNode child)
             : base(runFunc, child)
         {
             Timeout = new TimeSpan(0, 0, timeoutSeconds);
@@ -53,7 +53,7 @@ namespace TreeSharp
         /// </summary>
         /// <param name = "runFunc"></param>
         /// <param name = "child"></param>
-        public Wait(CanRunDecoratorDelegate runFunc, Composite child) : this(int.MaxValue, runFunc, child)
+        public Wait(CanRunDecoratorDelegate runFunc, TreeNode child) : this(int.MaxValue, runFunc, child)
         {
         }
 
@@ -62,7 +62,7 @@ namespace TreeSharp
         /// </summary>
         /// <param name = "timeoutSeconds"></param>
         /// <param name = "child"></param>
-        public Wait(int timeoutSeconds, Composite child)
+        public Wait(int timeoutSeconds, TreeNode child)
             : base(child)
         {
             Timeout = new TimeSpan(0, 0, timeoutSeconds);

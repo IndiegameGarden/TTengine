@@ -32,7 +32,7 @@ namespace TreeSharp
     ///   The base Action class. A simple, easy to use, way to execute actions, and return their status of execution.
     ///   These are normally considered 'atoms' in that they are executed in their entirety.
     /// </summary>
-    public class Action : Composite
+    public class Action : TreeNode
     {
         public Action()
         {

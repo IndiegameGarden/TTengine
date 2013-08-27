@@ -31,14 +31,14 @@ namespace TreeSharp
     ///   If all branches succeed, this composite will return a successful run status.
     ///   If any branch fails, this composite will return a failed run status.
     /// </summary>
-    public class Sequence : GroupComposite
+    public class Sequence : GroupTreeNode
     {
-        public Sequence(params Composite[] children)
+        public Sequence(params TreeNode[] children)
             : base(children)
         {
         }
 
-        public Sequence(ContextChangeHandler contextChange, params Composite[] children)
+        public Sequence(ContextChangeHandler contextChange, params TreeNode[] children)
             : this(children)
         {
             ContextChanger = contextChange;
@@ -50,7 +50,7 @@ namespace TreeSharp
             {
                 context = ContextChanger(context);
             }
-            foreach (Composite node in Children)
+            foreach (TreeNode node in Children)
             {
                 node.Start(context);
                 while (node.Tick(context) == RunStatus.Running)

@@ -27,22 +27,22 @@ namespace TreeSharp
 {
     public delegate bool CanRunDecoratorDelegate(object context);
 
-    public class Decorator : GroupComposite
+    public class Decorator : GroupTreeNode
     {
-        public Decorator(CanRunDecoratorDelegate runFunc, Composite child)
+        public Decorator(CanRunDecoratorDelegate runFunc, TreeNode child)
             : this(child)
         {
             Runner = runFunc;
         }
 
-        public Decorator(Composite child)
+        public Decorator(TreeNode child)
             : base(child)
         {
         }
 
         protected CanRunDecoratorDelegate Runner { get; private set; }
 
-        public Composite DecoratedChild { get { return Children[0]; } }
+        public TreeNode DecoratedChild { get { return Children[0]; } }
 
         protected virtual bool CanRun(object context)
         {

@@ -24,12 +24,12 @@ using System.Collections.Generic;
 
 namespace TreeSharp
 {
-    public abstract class GroupComposite : Composite
+    public abstract class GroupTreeNode : TreeNode
     {
-        protected GroupComposite(params Composite[] children)
+        protected GroupTreeNode(params TreeNode[] children)
         {
-            Children = new List<Composite>(children);
-            foreach (Composite composite in Children)
+            Children = new List<TreeNode>(children);
+            foreach (TreeNode composite in Children)
             {
                 if (composite != null)
                 {
@@ -38,9 +38,9 @@ namespace TreeSharp
             }
         }
 
-        public List<Composite> Children { get; set; }
+        public List<TreeNode> Children { get; set; }
 
-        public Composite Selection { get; protected set; }
+        public TreeNode Selection { get; protected set; }
 
         public override void Start(object context)
         {
@@ -48,7 +48,7 @@ namespace TreeSharp
             base.Start(context);
         }
 
-        public void AddChild(Composite child)
+        public void AddChild(TreeNode child)
         {
             if (child != null)
             {
@@ -57,7 +57,7 @@ namespace TreeSharp
             }
         }
 
-        public void InsertChild(int index, Composite child)
+        public void InsertChild(int index, TreeNode child)
         {
             if (child != null)
             {
@@ -70,14 +70,14 @@ namespace TreeSharp
 
         protected class ChildrenCleanupHandler : CleanupHandler
         {
-            public ChildrenCleanupHandler(GroupComposite owner, object context)
+            public ChildrenCleanupHandler(GroupTreeNode owner, object context)
                 : base(owner, context)
             {
             }
 
             protected override void DoCleanup(object context)
             {
-                foreach (Composite composite in (Owner as GroupComposite).Children)
+                foreach (TreeNode composite in (Owner as GroupTreeNode).Children)
                 {
                     composite.Stop(context);
                 }

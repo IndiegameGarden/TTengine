@@ -8,7 +8,7 @@ namespace TreeSharp
 {
     internal class TreeExample
     {
-        private static Composite ExampleTree()
+        private static TreeNode ExampleTree()
         {
             // This allows for quick prototyping of behaviors without needing to override the composite types
             // to implement simple logic. More advanced logic may require overrides to handle them.
@@ -21,7 +21,7 @@ namespace TreeSharp
         }
 
 
-        private static void WalkTree(Composite root, object rootContext = null)
+        private static void WalkTree(TreeNode root, object rootContext = null)
         {
             // This function is meant as an EXAMPLE ONLY!
             // It is not the best way to handle walking the tree, but will suffice for simple usages.

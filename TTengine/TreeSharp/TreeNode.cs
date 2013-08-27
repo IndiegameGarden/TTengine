@@ -29,13 +29,13 @@ namespace TreeSharp
     ///   The base class of the entire behavior tree system.
     ///   Nearly all branches derive from this class.
     /// </summary>
-    public abstract class Composite : IEquatable<Composite>
+    public abstract class TreeNode : IEquatable<TreeNode>
     {
         protected static readonly object Locker = new object();
 
         private IEnumerator<RunStatus> _current;
 
-        protected Composite()
+        protected TreeNode()
         {
             Guid = Guid.NewGuid();
             CleanupHandlers = new Stack<CleanupHandler>();
@@ -47,7 +47,7 @@ namespace TreeSharp
 
         protected Stack<CleanupHandler> CleanupHandlers { get; set; }
 
-        public Composite Parent { get; set; }
+        public TreeNode Parent { get; set; }
 
         /// <summary>
         ///   Simply an identifier to make sure each composite is 'unique'.
@@ -55,7 +55,7 @@ namespace TreeSharp
         /// </summary>
         protected Guid Guid { get; set; }
 
-        #region IEquatable<Composite> Members
+        #region IEquatable<TreeNode> Members
 
         /// <summary>
         ///   Indicates whether the current object is equal to another object of the same type.
@@ -64,7 +64,7 @@ namespace TreeSharp
         ///   true if the current object is equal to the <paramref name = "other" /> parameter; otherwise, false.
         /// </returns>
         /// <param name = "other">An object to compare with this object.</param>
-        public bool Equals(Composite other)
+        public bool Equals(TreeNode other)
         {
             if (ReferenceEquals(null, other))
             {
@@ -97,11 +97,11 @@ namespace TreeSharp
             {
                 return true;
             }
-            if (obj.GetType() != typeof(Composite))
+            if (obj.GetType() != typeof(TreeNode))
             {
                 return false;
             }
-            return Equals((Composite)obj);
+            return Equals((TreeNode)obj);
         }
 
         /// <summary>
@@ -116,12 +116,12 @@ namespace TreeSharp
             return Guid.GetHashCode();
         }
 
-        public static bool operator ==(Composite left, Composite right)
+        public static bool operator ==(TreeNode left, TreeNode right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(Composite left, Composite right)
+        public static bool operator !=(TreeNode left, TreeNode right)
         {
             return !Equals(left, right);
         }
@@ -197,13 +197,13 @@ namespace TreeSharp
 
         protected abstract class CleanupHandler : IDisposable
         {
-            protected CleanupHandler(Composite owner, object context)
+            protected CleanupHandler(TreeNode owner, object context)
             {
                 Owner = owner;
                 Context = context;
             }
 
-            protected Composite Owner { get; set; }
+            protected TreeNode Owner { get; set; }
 
             private object Context { get; set; }
 
