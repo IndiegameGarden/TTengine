@@ -43,14 +43,16 @@ namespace TTengine.Comps
     using Artemis.Interface;
 
     using Microsoft.Xna.Framework;
+    using TTengine.Core;
 
     #endregion
 
     /// <summary>The transform component pool-able.</summary>
     /// just to show how to use the pool =P 
     /// (just add this annotation and extend ArtemisComponentPool =P)
+    /// TODO test component pool performance once further in development.
     //[ArtemisComponentPool(InitialSize = 5, IsResizable = true, ResizeSize = 20, IsSupportMultiThread = false)]
-    public class PositionComp : IComponent //ComponentPoolable
+    public class PositionComp : Comp //ComponentPoolable
     {
         /// <summary>Initializes a new instance of the <see cref="PositionComp" /> class.</summary>
         public PositionComp()

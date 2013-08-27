@@ -7,8 +7,16 @@ using TTengine.Core;
 
 namespace TTengine.Comps
 {
-    public class BlinkComp : SimComp
+    public class BlinkComp : Comp
     {
+        
+        public BlinkComp(double timePeriod, double dutyCycle)
+        {
+            this.TimePeriod = timePeriod;
+            this.DutyCycle = dutyCycle;
+            IsActive = true;
+        }
+
         /// <summary>
         /// the length of a single blink period
         /// </summary>
@@ -65,14 +73,6 @@ namespace TTengine.Comps
 
         protected double timeOn, dutyCycle, timePeriod;
         protected bool isVisible = true;
-
-        public BlinkComp(double timePeriod, double dutyCycle)
-        {
-            this.TimePeriod = timePeriod;
-            this.DutyCycle = dutyCycle;
-            IsActive = true;
-        }
-      
 
     }
 

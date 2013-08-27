@@ -70,13 +70,13 @@ namespace Game1
 
                     // blink
                     //var ai = new AIComp();
-                    ball.AddComponent(new BlinkComp(2,0.5));
+                    ball.AddComponent(new BlinkComp(0.3+5*rnd.NextDouble(),0.4+0.4*rnd.NextDouble()));
                     //ball.AddComponent(ai);
 
                     ball.Refresh();
-                    break;
+                    //break;
                 }
-                break;
+                //break;
             }
 
         }

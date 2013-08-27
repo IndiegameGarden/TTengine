@@ -107,7 +107,6 @@
     <Compile Include="Comps\ShaderComp.cs" />
     <Compile Include="Comps\ShapeComp.cs" />
     <Compile Include="Comps\DrawComp.cs" />
-    <Compile Include="Comps\SimComp.cs" />
     <Compile Include="Comps\VelocityComp.cs" />
     <Compile Include="Core\Behavior.cs" />
     <Compile Include="Core\Comp.cs" />
@@ -128,7 +127,6 @@
     <Compile Include="Systems\MovementSystem.cs" />
     <Compile Include="Systems\RenderSystem.cs" />
     <Compile Include="Systems\ScaleSystem.cs" />
-    <Compile Include="Systems\SimSystem.cs" />
     <Compile Include="Util\DebugMessage.cs" />
     <Compile Include="Util\MsgBox.cs" />
     <Compile Include="Util\FrameRateCounter.cs" />
