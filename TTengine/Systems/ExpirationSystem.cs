@@ -57,7 +57,7 @@ namespace TTengine.Systems
         /// <param name="entity">The entity.</param>
         public override void Process(Entity entity,ExpiresComp expiresComponent)
         {
-            if (expiresComponent != null)
+            if (expiresComponent != null && expiresComponent.IsActive)
             {
                 float s = (float) TimeSpan.FromTicks(this.EntityWorld.Delta).TotalSeconds;
                 expiresComponent.ReduceLifeTime(s);

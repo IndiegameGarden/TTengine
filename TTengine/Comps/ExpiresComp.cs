@@ -37,9 +37,10 @@
 namespace TTengine.Comps
 {
     using Artemis.Interface;
+    using TTengine.Core;
 
     /// <summary>The expires.</summary>
-    public class ExpiresComp : IComponent
+    public class ExpiresComp : Comp
     {
         /// <summary>Initializes a new instance of the <see cref="ExpiresComp" /> class.</summary>
         public ExpiresComp() 

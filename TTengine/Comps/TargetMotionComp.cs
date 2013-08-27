@@ -2,6 +2,7 @@
 
 using Microsoft.Xna.Framework;
 using Artemis.Interface;
+using TTengine.Core;
 
 namespace TTengine.Comps
 {
@@ -9,7 +10,7 @@ namespace TTengine.Comps
     /// Component for simple physics-based motion 
     /// (velocity, scale, rotation, zoom, etc.)
     /// </summary>
-    public class TargetMotionComp : IComponent
+    public class TargetMotionComp : Comp
     {
         public TargetMotionComp()
         {

@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 
 using TTengine.Core;
-using TTengine.Comps;
 
-namespace TTengine.Behaviors
+namespace TTengine.Comps
 {
-    public class BlinkBehavior : Behavior
+    public class BlinkComp : SimComp
     {
         /// <summary>
         /// the length of a single blink period
@@ -43,6 +42,17 @@ namespace TTengine.Behaviors
         }
 
         /// <summary>
+        /// the time (in seconds) that is spent in the 'on'/visible state, which is TimePeriod * DutyCycle.
+        /// </summary>
+        public double TimeOn
+        {
+            get
+            {
+                return timeOn;
+            }
+        }
+
+        /// <summary>
         /// whether the current blinking behavior sets the Entity in a visible state (true), or invisible (false).
         /// </summary>
         public bool IsVisible
@@ -56,26 +66,13 @@ namespace TTengine.Behaviors
         protected double timeOn, dutyCycle, timePeriod;
         protected bool isVisible = true;
 
-        public BlinkBehavior(double timePeriod, double dutyCycle)
+        public BlinkComp(double timePeriod, double dutyCycle)
         {
             this.TimePeriod = timePeriod;
             this.DutyCycle = dutyCycle;
             IsActive = true;
         }
-
-        public override void OnUpdate(UpdateParams p)
-        {
-            double t = p.SimTime % timePeriod;
-            if (t <= timeOn)
-                isVisible = true;
-            else
-                isVisible = false;
-        }
-
-        public override void OnExecute(UpdateParams p)
-        {
-            p.Entity.GetComponent<DrawComp>().IsVisible = isVisible;
-        }
+      
 
     }
 

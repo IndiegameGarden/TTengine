@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-using TTengine.Behaviors;
+//using TTengine.Behaviors;
 using TTengine.Core;
 using TTengine.Comps;
 using TTengine.Util;
@@ -69,12 +69,14 @@ namespace Game1
                     ball.AddComponent(new ExpiresComp(1000f + 5f * (float)rnd.NextDouble()));
 
                     // blink
-                    var ai = new AIComp();
-                    ai.Behaviors.Add(new BlinkBehavior(2,0.5));
-                    ball.AddComponent(ai);
+                    //var ai = new AIComp();
+                    ball.AddComponent(new BlinkComp(2,0.5));
+                    //ball.AddComponent(ai);
 
                     ball.Refresh();
+                    break;
                 }
+                break;
             }
 
         }

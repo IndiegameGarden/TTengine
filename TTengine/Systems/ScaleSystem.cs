@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TTengine.Core;
+using TTengine.Comps;
 
 using Artemis;
 using Artemis.Manager;
@@ -18,7 +19,7 @@ namespace TTengine.Systems
         public override void Process(Entity entity, ScaleComp sc)
         {
             // scaling logic towards target
-            if (sc.ScaleSpeed > 0)
+            if (sc.IsActive && sc.ScaleSpeed > 0)
             {
                 if (sc.Scale < sc.ScaleTarget)
                 {
