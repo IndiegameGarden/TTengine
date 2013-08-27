@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("TTengine")]
 [assembly: AssemblyProduct("TTengine")]
-[assembly: AssemblyDescription("2D game engine for C# XNA")]
+[assembly: AssemblyDescription("2D game engine for C# XNA 4.0")]
 [assembly: AssemblyCompany("TranceTrance.com")]
 [assembly: AssemblyCopyright("Copyright © TranceTrance.com 2010-2013")]
 [assembly: AssemblyTrademark("")]
@@ -23,7 +23,7 @@ using System.Runtime.InteropServices;
 // On Windows, the following GUID is for the ID of the typelib if this
 // project is exposed to COM. On other platforms, it unique identifies the
 // title storage container when deploying this assembly to the device.
-[assembly: Guid("0de778af-e676-4a74-ad03-c37ccb2e2517")]
+[assembly: Guid("0de778ef-fe76-4a50-d0e9-cabba1a02517")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -32,4 +32,4 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("3.0.0.1")]
+[assembly: AssemblyVersion("5.0.0.1")]
