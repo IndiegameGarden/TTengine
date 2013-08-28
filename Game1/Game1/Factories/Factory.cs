@@ -56,6 +56,14 @@ namespace Game1.Factories
             ai.rootNode = new PrioritySelector(randomWanderBehavior);
             ball.AddComponent(ai);
 
+            // Modifier to adapt scale
+            var mcomp = new ModifierComp();
+            var m = new Modifier( delegate(Entity entity)
+                { entity.GetComponent<ScaleComp>().Scale = 0.5 + entity.GetComponent<PositionComp>().Position.X; }
+                );
+            mcomp.Add(m);
+            ball.AddComponent(mcomp);
+
             ball.Refresh();
             return ball;
 

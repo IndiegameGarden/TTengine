@@ -103,6 +103,7 @@
     <Compile Include="Comps\BlinkComp.cs" />
     <Compile Include="Comps\BTAIComp.cs" />
     <Compile Include="Comps\ExpiresComp.cs" />
+    <Compile Include="Comps\ModifierComp.cs" />
     <Compile Include="Comps\PositionComp.cs" />
     <Compile Include="Comps\ScaleComp.cs" />
     <Compile Include="Comps\ShaderComp.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="Core\DrawParams.cs" />
     <Compile Include="Core\Gamelet.cs" />
     <Compile Include="Comps\TargetMotionComp.cs" />
+    <Compile Include="Core\Modifier.cs" />
     <Compile Include="Core\Screenlet.cs" />
     <Compile Include="Comps\SpriteComp.cs" />
     <Compile Include="Core\TTFactory.cs" />
@@ -125,6 +127,7 @@
     <Compile Include="Systems\BlinkSystem.cs" />
     <Compile Include="Systems\CollisionSystem.cs" />
     <Compile Include="Systems\ExpirationSystem.cs" />
+    <Compile Include="Systems\ModifierSystem.cs" />
     <Compile Include="Systems\MovementSystem.cs" />
     <Compile Include="Systems\RenderSystem.cs" />
     <Compile Include="Systems\ScaleSystem.cs" />
