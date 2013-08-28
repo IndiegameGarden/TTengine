@@ -12,7 +12,7 @@ using Artemis.System;
 
 namespace TTengine.Systems
 {
-    //[ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 0)]
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 1)]
     public class ScaleSystem : EntityComponentProcessingSystem<ScaleComp>
     {
 
@@ -39,6 +39,11 @@ namespace TTengine.Systems
                 }
             }
 
+            // set scale for drawing
+            if (entity.HasComponent<DrawComp>())
+            {
+                entity.GetComponent<DrawComp>().DrawScale = (float) sc.Scale;
+            }
         }
 
     }

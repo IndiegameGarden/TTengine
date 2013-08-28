@@ -36,7 +36,7 @@ namespace Game1.Factories
         /// <returns></returns>
         public static Entity CreateHyperActiveBall(Vector2 pos)
         {
-            var ball = Factory.CreateBall(0.04f + 0.06f * (float)rnd.NextDouble());
+            var ball = Factory.CreateBall(0.8f + 0.6f * (float)rnd.NextDouble());
 
             // position and velocity set
             ball.GetComponent<PositionComp>().Position = pos;
