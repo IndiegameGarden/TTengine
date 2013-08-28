@@ -243,7 +243,7 @@ namespace TTengine.Core
         }
 
         /*
-        internal void Draw(ref DrawParams p)
+        internal void Draw(ref DrawParams ctx)
         {
             if (!IsActive) return;
 
@@ -264,7 +264,7 @@ namespace TTengine.Core
                     graphicsDevice.Clear(DrawC.DrawColor);
 
                 // Draw() all children items:
-                base.Draw(ref p);
+                base.Draw(ref ctx);
 
                 // close all remaining open effect-related spriteBatches
                 foreach (SpriteBatch sb in spriteBatchesActive)
@@ -279,7 +279,7 @@ namespace TTengine.Core
                     foreach (ScreenShaderComp eff in effletsList)
                     {
                         graphicsDevice.SetRenderTarget(currentTargetBuffer);
-                        eff.OnDrawEfflet(ref p, currentSourceBuffer); // apply eff to sourceBuffer
+                        eff.OnDrawEfflet(ref ctx, currentSourceBuffer); // apply eff to sourceBuffer
 
                         // Swap trick! for a next round.
                         RenderTarget2D temp = currentSourceBuffer;

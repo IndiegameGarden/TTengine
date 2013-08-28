@@ -94,9 +94,9 @@ namespace TTengine.Comps
 
         // calculates drawing positions based on interpolation
         /*
-        public override void OnDraw(ref DrawParams p)
+        public override void OnDraw(ref DrawParams ctx)
         {
-            float t = (float)p.gameTime.TotalGameTime.TotalSeconds;
+            float t = (float)ctx.gameTime.TotalGameTime.TotalSeconds;
             // default - take latest position in cache
             drawPosition = DrawPosition;
             drawScale = DrawScaleCurrent;
@@ -119,9 +119,9 @@ namespace TTengine.Comps
          */
 
         /*
-        protected override void OnUpdate(ref UpdateParams p)
+        protected override void OnUpdate(ref UpdateParams ctx)
         {
-            UpdateSmoothingCache(ref p);
+            UpdateSmoothingCache(ref ctx);
         }
          */
 
@@ -158,10 +158,10 @@ namespace TTengine.Comps
         }
 
         /*
-        internal void UpdateSmoothingCache(ref UpdateParams p)
+        internal void UpdateSmoothingCache(ref UpdateParams ctx)
         {
             // store current position in a cache to use in trajectory smoothing
-            UpdatePositionCache(Parent.Motion.PositionAbsZoomedPixels, DrawScaleCurrent, p.SimTime);
+            UpdatePositionCache(Parent.Motion.PositionAbsZoomedPixels, DrawScaleCurrent, ctx.SimTime);
         }
 
         internal void VertexShaderInit(Effect eff)

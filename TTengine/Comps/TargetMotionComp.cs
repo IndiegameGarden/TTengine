@@ -62,7 +62,7 @@ namespace TTengine.Comps
         protected bool isTargetSet = false;
 
         /*
-        protected override void OnUpdate(ref UpdateParams p)
+        protected override void OnUpdate(ref UpdateParams ctx)
         {
             // FIXME ? reset back the Modifiers, each Update round
             // *before* any children are simulated.
@@ -80,19 +80,19 @@ namespace TTengine.Comps
                 // motion towards target
                 //Velocity = (TargetPos - Position) * 0.01f;
                 // FIXME allow to choose linear vs 'smoothed' motion mode???
-                MoveToTarget(ref p, false);
+                MoveToTarget(ref ctx, false);
             }
             else
             {
-                Position += Vector2.Multiply(Velocity, p.Dt);
-                Velocity += Vector2.Multiply(Acceleration, p.Dt);
+                Position += Vector2.Multiply(Velocity, ctx.Dt);
+                Velocity += Vector2.Multiply(Acceleration, ctx.Dt);
             }
 
             // handle scaling over time
-            ScaleToTarget(ScaleTarget, ScaleSpeed, ScaleSpeed * 0.01f); // FIXME ref p or empty? no 0.01 , scalespeed consider
+            ScaleToTarget(ScaleTarget, ScaleSpeed, ScaleSpeed * 0.01f); // FIXME ref ctx or empty? no 0.01 , scalespeed consider
 
             // handle dynamic zooming
-            ZoomToTarget(ref p);
+            ZoomToTarget(ref ctx);
 
             // rotation
             RotateToTarget();
@@ -101,7 +101,7 @@ namespace TTengine.Comps
          */
 
         /*
-        protected void MoveToTarget(ref UpdateParams p, bool isLinearMotionMode)
+        protected void MoveToTarget(ref UpdateParams ctx, bool isLinearMotionMode)
         {
             float vel = Velocity.Length();
             if (vel > 0f)
@@ -113,11 +113,11 @@ namespace TTengine.Comps
                     if (isLinearMotionMode)
                     {
                         vmove.Normalize();
-                        vmove *= vel * p.Dt;
+                        vmove *= vel * ctx.Dt;
                     }
                     else
                     {
-                        vmove *= vel * p.Dt;
+                        vmove *= vel * ctx.Dt;
                     }
                     if (vmove.LengthSquared() > vdif.LengthSquared())
                     {
@@ -134,7 +134,7 @@ namespace TTengine.Comps
             }
 
             // adapt velocity normally with acceleration, for next round
-            Velocity += Vector2.Multiply(Acceleration, p.Dt);
+            Velocity += Vector2.Multiply(Acceleration, ctx.Dt);
         }
         */
 

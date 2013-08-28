@@ -32,9 +32,9 @@ namespace TTengine.Util
             spriteFont = TTengineMaster.ActiveGame.Content.Load<SpriteFont>(@"TTFrameRateCounter");
         }
 
-        protected void OnUpdate(ref UpdateParams p)
+        protected void OnUpdate(ref UpdateParams ctx)
         {
-            elapsedTime += TimeSpan.FromSeconds(p.Dt);
+            elapsedTime += TimeSpan.FromSeconds(ctx.Dt);
 
             if (elapsedTime > TimeSpan.FromSeconds(1))
             {
@@ -44,7 +44,7 @@ namespace TTengine.Util
             }
         }
 
-        public void OnDraw(ref DrawParams p)
+        public void OnDraw(ref DrawParams ctx)
         {
             frameCounter++;
             frameCounterTotal++;

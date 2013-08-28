@@ -20,7 +20,7 @@ namespace TTengine.Core
         public virtual bool IsActive {get; set;}
 
         /// <summary>called every update cycle of the BTAISystem</summary>
-        /// <param name="p">Informative update parameters that may be used by the Behavior</param>
+        /// <param name="ctx">Informative update parameters that may be used by the Behavior</param>
         public virtual void OnUpdate(UpdateParams p)
         {
         }

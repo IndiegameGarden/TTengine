@@ -15,11 +15,11 @@ namespace Game1
 
         protected void OnUpdate(ref UpdateParams p)
         {
-            //base.OnUpdate(ref p);
+            //base.OnUpdate(ref ctx);
             float spd = 0.2f;
             /*
-            Motion.Acceleration = new Vector2( spd * (float)Math.Sin(Math.PI * p.SimTime), 
-                                        spd * (float)Math.Cos(Math.PI * p.SimTime)
+            Motion.Acceleration = new Vector2( spd * (float)Math.Sin(Math.PI * ctx.SimTime), 
+                                        spd * (float)Math.Cos(Math.PI * ctx.SimTime)
                                       );
              */
         }

@@ -54,9 +54,9 @@ namespace TTengine.Util
         }
 
         /*
-        public void OnDraw(ref DrawParams p)
+        public void OnDraw(ref DrawParams ctx)
         {
-            base.OnDraw(ref p);
+            base.OnDraw(ref ctx);
 
             Vector2 origin = Vector2.Zero; // new Vector2(2f * txt.Length, 0f);
             DrawC.MySpriteBatch.DrawString(DrawC.Screen.DebugFont, txt, Motion.PositionAbsZoomedPixels, DrawC.DrawColor,

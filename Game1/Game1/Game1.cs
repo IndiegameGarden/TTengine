@@ -29,8 +29,8 @@ namespace Game1
         public Game1()
         {
             GraphicsMgr.IsFullScreen = false;
-            GraphicsMgr.PreferredBackBufferWidth = 800; 
-            GraphicsMgr.PreferredBackBufferHeight = 600;
+            GraphicsMgr.PreferredBackBufferWidth = 1024; 
+            GraphicsMgr.PreferredBackBufferHeight = 768;
             IsMusicEngine = false;
         }
 
@@ -53,33 +53,12 @@ namespace Game1
             Screen.Add(txt);
             */
 
-            // add several sprites and set some specific velocity per item
-            Random rnd = new Random();
-            for (float j = 0.1f; j < 1.6f; j += 0.20f)
+            // add several sprites             
+            for (float x = 0.1f; x < 1.6f; x += 0.20f)
             {
-                for (float i = 0.1f; i < 1f; i += 0.1f)
+                for (float y = 0.1f; y < 1f; y += 0.1f)
                 {
-                    var ball = Factory.CreateBall(0.04f + 0.06f * (float)rnd.NextDouble());
-
-                    // position and velocity set
-                    ball.GetComponent<PositionComp>().Position = new Vector2(j, i);
-                    ball.GetComponent<VelocityComp>().Velocity = 0.2f * new Vector2((float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f);
-                    //ball.Motion.Rotate = (float)(Math.PI * 2 * rnd.NextDouble());                    
-                    //ball.Timing.StartTime = 10f * (float)rnd.NextDouble();
-
-                    // duration of entity
-                    ball.AddComponent(new ExpiresComp(1000f + 5f * (float)rnd.NextDouble()));
-
-                    // blink                    
-                    //ball.AddComponent(new BlinkComp(0.3+5*rnd.NextDouble(),0.4+0.4*rnd.NextDouble()));
-
-                    // Behavior Tree AI
-                    BTAIComp ai = new BTAIComp();
-                    var randomWanderBehavior = new RandomWanderBehavior(2,4);
-                    ai.rootNode = new PrioritySelector(randomWanderBehavior);
-                    ball.AddComponent(ai);
-
-                    ball.Refresh();
+                    var ball = Factory.CreateHyperActiveBall(new Vector2(x,y));
                     //break;
                 }
                 //break;

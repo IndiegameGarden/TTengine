@@ -131,7 +131,7 @@ namespace TTengine.Comps
         }
 
         /*
-        public override void OnDraw(ref DrawParams p)
+        public override void OnDraw(ref DrawParams ctx)
         {
             if (texture != null && Parent.IsVisible && Parent.Active )
             {                
@@ -143,7 +143,7 @@ namespace TTengine.Comps
 
         /*
         /// run collision detection of this against all other relevant Spritelets
-        internal void HandleCollisions(UpdateParams p)
+        internal void HandleCollisions(UpdateParams ctx)
         {
             if (!Parent.Active || !Parent.IsVisible) return;
 
