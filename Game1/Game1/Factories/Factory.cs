@@ -23,7 +23,7 @@ namespace Game1.Factories
         /// </summary>
         /// <param name="radius">the relative size scaling, 1 is normal</param>
         /// <returns></returns>
-        public static Entity CreateBall(float radius)
+        public static Entity CreateBall(double radius)
         {
             Entity e = CreateSpritelet("ball");
             e.AddComponent(new ScaleComp(radius));
@@ -58,15 +58,19 @@ namespace Game1.Factories
 
             // Modifier to adapt scale
             var mcomp = new ModifierComp();
-            var m = new Modifier( delegate(Entity entity)
-                { entity.GetComponent<ScaleComp>().Scale = 0.5 + entity.GetComponent<PositionComp>().Position.X; }
-                );
+            var m = new Modifier(MyScaleModifier);
+                //delegate(Entity entity){ entity.GetComponent<ScaleComp>().Scale = 0.5 + entity.GetComponent<PositionComp>().Position.X; }
+                //);
             mcomp.Add(m);
             ball.AddComponent(mcomp);
 
             ball.Refresh();
             return ball;
 
+        }
+
+        public static void MyScaleModifier(Entity entity) {
+            entity.GetComponent<ScaleComp>().Scale = 0.5 + entity.GetComponent<PositionComp>().Position.X; 
         }
     }
 }
