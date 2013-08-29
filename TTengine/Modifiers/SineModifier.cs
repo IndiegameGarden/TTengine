@@ -13,15 +13,13 @@ namespace TTengine.Modifiers
         public double Amplitude = 1;
         public double Offset = 0;
 
-        public SineModifier(ModifyEntityDelegate code):
+        public SineModifier(ModifyEntityDelegate code) :
             base(code)
-        {
-        }
+        { }
 
         public SineModifier(ModifyModifierDelegate code, Modifier modifierToModify):
             base(code,modifierToModify)
-        {
-        }
+        { }
 
         protected override double GetValue(double time)
         {
