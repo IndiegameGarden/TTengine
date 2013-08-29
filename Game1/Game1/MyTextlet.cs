@@ -22,7 +22,7 @@ namespace Game1
              */
         }
 
-        public void OnDraw(ref DrawParams p)
+        public void OnDraw()
         {
             /*
             Vector2 pos = Motion.PositionAbs;
