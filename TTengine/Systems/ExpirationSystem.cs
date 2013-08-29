@@ -39,7 +39,7 @@ namespace TTengine.Systems
     #region Using statements
 
     using System;
-
+    using System.Collections.Generic;
     using Artemis;
     using Artemis.Attributes;
     using Artemis.System;
@@ -53,14 +53,23 @@ namespace TTengine.Systems
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 3)]
     public class ExpirationSystem : EntityComponentProcessingSystem<ExpiresComp>
     {
+
+        protected double deltaTimeStep = 0;
+
+        protected override void ProcessEntities(IDictionary<int, Entity> entities)
+        {
+            // retrieve the delta time step once, before looping over all entities.
+            deltaTimeStep = TimeSpan.FromTicks(this.EntityWorld.Delta).TotalSeconds;
+            base.ProcessEntities(entities);
+        }
+
         /// <summary>Processes the specified entity.</summary>
         /// <param name="entity">The entity.</param>
-        public override void Process(Entity entity,ExpiresComp expiresComponent)
+        public override void Process(Entity entity, ExpiresComp expiresComponent)
         {
             if (expiresComponent != null && expiresComponent.IsActive)
             {
-                float s = (float) TimeSpan.FromTicks(this.EntityWorld.Delta).TotalSeconds;
-                expiresComponent.ReduceLifeTime(s);
+                expiresComponent.ReduceLifeTime(deltaTimeStep);
 
                 if (expiresComponent.IsExpired)
                 {

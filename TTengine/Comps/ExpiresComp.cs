@@ -44,13 +44,13 @@ namespace TTengine.Comps
     {
         /// <summary>Initializes a new instance of the <see cref="ExpiresComp" /> class.</summary>
         public ExpiresComp() 
-            : this(0.0f)
+            : this(0.0)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="ExpiresComp" /> class.</summary>
         /// <param name="lifeTime">The life time in seconds.</param>
-        public ExpiresComp(float lifeTime)
+        public ExpiresComp(double lifeTime)
         {
             this.LifeTime = lifeTime;
         }
@@ -67,11 +67,11 @@ namespace TTengine.Comps
 
         /// <summary>Gets or sets the life time.</summary>
         /// <value>The life time in seconds.</value>
-        public float LifeTime { get; set; }
+        public double LifeTime { get; set; }
 
         /// <summary>The reduce life time.</summary>
         /// <param name="lifeTimeDelta">The life time in seconds.</param>
-        public void ReduceLifeTime(float lifeTimeDelta)
+        public void ReduceLifeTime(double lifeTimeDelta)
         {
             this.LifeTime -= lifeTimeDelta;
             if (this.LifeTime < 0)

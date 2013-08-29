@@ -8,6 +8,7 @@ using TreeSharp;
 using TTengine.Core;
 using TTengine.Comps;
 using TTengine.Behaviors;
+using TTengine.Modifiers;
 
 namespace Game1.Factories
 {
@@ -61,7 +62,12 @@ namespace Game1.Factories
             var m = new Modifier(MyScaleModifier);
                 //delegate(Entity entity){ entity.GetComponent<ScaleComp>().Scale = 0.5 + entity.GetComponent<PositionComp>().Position.X; }
                 //);
-            mcomp.Add(m);
+            var s = new SineModifier(MyScaleModifier2);
+            //mcomp.Add(m);
+            s.Frequency = 0.5;
+            s.Amplitude = 0.25;
+            s.Offset = 1;
+            mcomp.Add(s);
             ball.AddComponent(mcomp);
 
             ball.Refresh();
@@ -69,8 +75,13 @@ namespace Game1.Factories
 
         }
 
-        public static void MyScaleModifier(Entity entity) {
+        public static void MyScaleModifier(Entity entity, double value) {
             entity.GetComponent<ScaleComp>().Scale = 0.5 + entity.GetComponent<PositionComp>().Position.X; 
+        }
+
+        public static void MyScaleModifier2(Entity entity, double value)
+        {
+            entity.GetComponent<ScaleComp>().Scale = value;
         }
     }
 }
