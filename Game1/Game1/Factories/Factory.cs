@@ -58,17 +58,16 @@ namespace Game1.Factories
             ball.AddComponent(ai);
 
             // Modifier to adapt scale
-            var mcomp = new ModifierComp();
             var m = new Modifier(MyScaleModifier);
                 //delegate(Entity entity){ entity.GetComponent<ScaleComp>().Scale = 0.5 + entity.GetComponent<PositionComp>().Position.X; }
                 //);
+            m.AttachTo(ball); 
+            
             var s = new SineModifier(MyScaleModifier2);
-            //mcomp.Add(m);
             s.Frequency = 0.5;
             s.Amplitude = 0.25;
             s.Offset = 1;
-            mcomp.Add(s);
-            ball.AddComponent(mcomp);
+            s.AttachTo(ball);            
 
             ball.Refresh();
             return ball;
@@ -76,12 +75,12 @@ namespace Game1.Factories
         }
 
         public static void MyScaleModifier(Entity entity, double value) {
-            entity.GetComponent<ScaleComp>().Scale = 0.5 + entity.GetComponent<PositionComp>().Position.X; 
+            entity.GetComponent<ScaleComp>().ScaleModifier *= 0.5 + entity.GetComponent<PositionComp>().Position.X; 
         }
 
         public static void MyScaleModifier2(Entity entity, double value)
         {
-            entity.GetComponent<ScaleComp>().Scale = value;
+            entity.GetComponent<ScaleComp>().ScaleModifier *= value;
         }
     }
 }

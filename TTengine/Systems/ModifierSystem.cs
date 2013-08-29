@@ -10,7 +10,7 @@ using TTengine.Modifiers;
 
 namespace TTengine.Systems
 {
-    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 3)]
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 0)]
     public class ModifierSystem: EntityComponentProcessingSystem<ModifierComp>
     {
         protected double deltaTimeStep = 0;

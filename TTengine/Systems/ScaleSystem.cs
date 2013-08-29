@@ -18,6 +18,8 @@ namespace TTengine.Systems
 
         public override void Process(Entity entity, ScaleComp sc)
         {
+            if (!sc.IsActive) return;
+
             // scaling logic towards target
             if (sc.IsActive && sc.ScaleSpeed > 0)
             {
@@ -42,8 +44,11 @@ namespace TTengine.Systems
             // set scale for drawing
             if (entity.HasComponent<DrawComp>())
             {
-                entity.GetComponent<DrawComp>().DrawScale = (float) sc.Scale;
+                entity.GetComponent<DrawComp>().DrawScale = (float) (sc.Scale * sc.ScaleModifier);
             }
+
+            sc.ScaleModifier = 1; // the ModifierSystem may adapt this one later. Each round reset to 1.
+
         }
 
     }

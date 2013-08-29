@@ -17,7 +17,7 @@ namespace TTengine.Comps
 
         public double Scale = 1;
 
-        public double ScaleAbs = 1;
+        public double ScaleModifier = 1;
         
         /// <summary>
         /// set target for Scale value

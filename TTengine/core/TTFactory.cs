@@ -9,7 +9,7 @@ using TTengine.Comps;
 namespace TTengine.Core
 {
     /// <summary>
-    /// Factory to create new Entities
+    /// Factory to create new Entities - typically subclass this with your own factory, dedicated to the game.
     /// </summary>
     public class TTFactory
     {
