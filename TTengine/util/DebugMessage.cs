@@ -10,7 +10,7 @@ namespace TTengine.Util
     /**
      * a debug text message that shows on screen
      */
-    public class DebugMessage: Gamelet
+    public class DebugMessage
     {
         protected string txt ;
 

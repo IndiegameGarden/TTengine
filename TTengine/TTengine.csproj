@@ -112,7 +112,6 @@
     <Compile Include="Comps\VelocityComp.cs" />
     <Compile Include="Core\Behavior.cs" />
     <Compile Include="Core\Comp.cs" />
-    <Compile Include="Core\Gamelet.cs" />
     <Compile Include="Comps\TargetMotionComp.cs" />
     <Compile Include="Modifiers\CosineModifier.cs" />
     <Compile Include="Modifiers\Modifier.cs" />

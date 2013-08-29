@@ -11,7 +11,7 @@ namespace TTengine.Util
      * shows a framerate counter on screen (FPS) calculated
      * from timing of draw/upd calls.
      */
-    public class FrameRateCounter : Gamelet
+    public class FrameRateCounter
     {
         /*
         SpriteFont spriteFont;

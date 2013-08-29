@@ -13,7 +13,7 @@ namespace TTengine.Core
      * a Gamelet that contains a screen buffer to which child Gamelets will render graphics.
      *
      */
-    public class Screenlet : Gamelet
+    public class Screenlet
     {
         public Color BackgroundColor = Color.Black;
 

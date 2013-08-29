@@ -107,15 +107,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ball.cs" />
     <Compile Include="Factories\Factory.cs" />
-    <Compile Include="MyMovingText.cs" />
     <Compile Include="Program.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Game1.cs" />
-    <Compile Include="MyTextlet.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
