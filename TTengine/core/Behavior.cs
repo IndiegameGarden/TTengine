@@ -21,12 +21,12 @@ namespace TTengine.Core
 
         /// <summary>called every update cycle of the BTAISystem</summary>
         /// <param name="ctx">Informative update parameters that may be used by the Behavior</param>
-        public virtual void OnUpdate(UpdateParams p)
+        public virtual void OnUpdate(BTAIContext p)
         {
         }
 
         /// <summary>Called when the BTAISystem selects this Behavior for execution.</summary>
-        public virtual void OnExecute(UpdateParams p)
+        public virtual void OnExecute(BTAIContext p)
         {
         }
 

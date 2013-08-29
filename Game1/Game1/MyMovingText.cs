@@ -13,7 +13,7 @@ namespace Game1
             //
         }
 
-        protected void OnUpdate(ref UpdateParams p)
+        protected void OnUpdate(ref BTAIContext p)
         {
             //base.OnUpdate(ref ctx);
             float spd = 0.2f;

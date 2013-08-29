@@ -39,7 +39,7 @@ namespace TTengine.Behaviors
         
         public override IEnumerable<RunStatus> Execute(object context)
         {
-            UpdateParams ctx = context as UpdateParams;
+            BTAIContext ctx = context as BTAIContext;
 
             // time keeping
             timeSinceLastChange += ctx.Dt;
@@ -64,7 +64,7 @@ namespace TTengine.Behaviors
         /// new CurrentDirection into VelocityComp of the Entity
         /// </summary>
         /// <param name="context">BT Entity/processing information</param>
-        protected virtual void OnExecute(UpdateParams context)
+        protected virtual void OnExecute(BTAIContext context)
         {
             context.Entity.GetComponent<VelocityComp>().Velocity = CurrentDirection;
         }

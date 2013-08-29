@@ -121,7 +121,7 @@
     <Compile Include="Core\TTFactory.cs" />
     <Compile Include="Core\TTGame.cs" />
     <Compile Include="Core\TTSpriteBatch.cs" />
-    <Compile Include="Core\UpdateParams.cs" />
+    <Compile Include="Core\BTAIContext.cs" />
     <Compile Include="Modifiers\SineModifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Systems\BTAISystem.cs" />

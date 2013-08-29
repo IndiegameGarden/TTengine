@@ -18,7 +18,7 @@ namespace TTengine.Systems
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 2)]
     public class BTAISystem : EntityComponentProcessingSystem<BTAIComp>
     {
-        private UpdateParams updParams = new UpdateParams();
+        private BTAIContext updParams = new BTAIContext();
 
         protected override void ProcessEntities(IDictionary<int, Entity> entities)
         {
