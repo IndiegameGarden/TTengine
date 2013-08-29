@@ -115,7 +115,8 @@
     <Compile Include="Core\DrawParams.cs" />
     <Compile Include="Core\Gamelet.cs" />
     <Compile Include="Comps\TargetMotionComp.cs" />
-    <Compile Include="Core\Modifier.cs" />
+    <Compile Include="Modifiers\CosineModifier.cs" />
+    <Compile Include="Modifiers\Modifier.cs" />
     <Compile Include="Core\Screenlet.cs" />
     <Compile Include="Comps\SpriteComp.cs" />
     <Compile Include="Core\TTFactory.cs" />

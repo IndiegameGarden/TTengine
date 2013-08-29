@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Artemis.Interface;
-using TTengine.Core;
+using TTengine.Modifiers;
 
 namespace TTengine.Comps
 {

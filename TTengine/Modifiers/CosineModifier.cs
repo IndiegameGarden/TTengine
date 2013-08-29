@@ -8,10 +8,10 @@ using TTengine.Core;
 namespace TTengine.Modifiers
 {
     /// <summary>
-    /// A Modifier that generates a (tunable) sine wave signal.
+    /// A Modifier that generates a (tunable) cosine wave signal.
     /// Use Frequency, Amplitude and Offset to tune it.
     /// </summary>
-    public class SineModifier: Modifier
+    public class CosineModifier: Modifier
     {
         public double Frequency = 1;
         public double Amplitude = 1;
@@ -19,21 +19,21 @@ namespace TTengine.Modifiers
 
         // TODO can we stop constructor proliferation!? solution: pass single objectToModify. Set code via a method.
 
-        public SineModifier(ModifyEntityDelegate code) :
+        public CosineModifier(ModifyEntityDelegate code) :
             base(code)
         { }
 
-        public SineModifier(ModifyModifierDelegate code, Modifier modifierToModify):
+        public CosineModifier(ModifyModifierDelegate code, Modifier modifierToModify):
             base(code,modifierToModify)
         { }
 
-        public SineModifier(ModifyCompDelegate code, Comp compToModify) :
+        public CosineModifier(ModifyCompDelegate code, Comp compToModify) :
             base(code, compToModify)
         { }
 
         protected override double GetValue(double time)
         {
-            return Amplitude * Math.Sin(MathHelper.TwoPi * Frequency * time) + Offset;
+            return Amplitude * Math.Cos(MathHelper.TwoPi * Frequency * time) + Offset;
         }
     }
 }

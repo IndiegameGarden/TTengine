@@ -3,9 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Artemis;
+using TTengine.Core;
+using TTengine.Comps;
 
-namespace TTengine.Core
+namespace TTengine.Modifiers
 {
+    /// <summary>
+    /// The available types of modifiers in Modifier. Call the proper constructor to create
+    /// one of these types.
+    /// </summary>
+    public enum ModifierType
+    {
+        ENTITY_MODIFIER, 
+        MODIFIER_MODIFIER,
+        COMP_MODIFIER
+    }
+
     /// <summary>
     /// An object that can be configured with custom code, intended to modify
     /// a certain parameter of another object or IComponent. It can also modify
@@ -17,16 +30,20 @@ namespace TTengine.Core
         public delegate void ModifyModifierDelegate(Modifier mod, double value);
         public delegate void ModifyCompDelegate(Comp comp, double value);
 
-        // class stores code for one of different types of modifier. FIXME split in different classes
-        protected ModifyEntityDelegate EntityModifierCode { get; private set; }
-        protected ModifyModifierDelegate ModifierModifierCode { get; private set; }
-        protected ModifyModifierDelegate CompModifierCode { get; private set; }
+        public ModifierType Type;
 
         /// <summary>Whether this Modifier is currently active. Only active modifiers do something.</summary>
         public bool IsActive = true;
 
-        // internal storage
+        // class stores code for one of different types of modifier. FIXME split in different classes
+        protected ModifyEntityDelegate  ModifyEntityCode { get; private set; }
+        protected ModifyModifierDelegate ModifyModifierCode { get; private set; }
+        protected ModifyCompDelegate    ModifyCompCode { get; private set; }
+
+        // internal storage of object to modify
+        // Entity not needed to store: this is passed as context at runtime.
         private Modifier modifierToModify;
+        private Comp compToModify;
 
         /// <summary>
         /// Create a new Entity Modifier that can only modify things within a single Entity.
@@ -34,13 +51,29 @@ namespace TTengine.Core
         /// <param name="code">Code (method or delegate block) to execute, must have 'void method(Entity e)' signature</param>
         public Modifier(ModifyEntityDelegate code)
         {
-            this.EntityModifierCode = code;
+            this.Type = ModifierType.ENTITY_MODIFIER;
+            this.ModifyEntityCode = code;
         }
 
         public Modifier(ModifyModifierDelegate code, Modifier modifierToModify)
         {
-            this.ModifierModifierCode = code;
+            this.Type = ModifierType.MODIFIER_MODIFIER;
+            this.ModifyModifierCode = code;
             this.modifierToModify = modifierToModify;
+        }
+
+        public Modifier(ModifyCompDelegate code, Comp compToModify)
+        {
+            this.Type = ModifierType.COMP_MODIFIER;
+            this.ModifyCompCode = code;
+            this.compToModify = compToModify;
+        }
+
+        public void AttachTo(Entity e)
+        {
+            if (!e.HasComponent<ModifierComp>())
+                e.AddComponent(new ModifierComp());
+            e.GetComponent<ModifierComp>().Add(this);
         }
 
         public void Execute(Entity contextEntity, double time)
@@ -48,10 +81,18 @@ namespace TTengine.Core
             if (IsActive)
             {
                 double value = GetValue(time);
-                if (EntityModifierCode != null)
-                    EntityModifierCode(contextEntity,value);
-                else if (ModifierModifierCode != null)
-                    ModifierModifierCode(modifierToModify,value);
+                switch (Type)
+                {
+                    case ModifierType.ENTITY_MODIFIER:
+                        ModifyEntityCode(contextEntity, value);
+                        break;
+                    case ModifierType.MODIFIER_MODIFIER:
+                        ModifyModifierCode(modifierToModify, value);
+                        break;
+                    case ModifierType.COMP_MODIFIER:
+                        ModifyCompCode(compToModify, value);
+                        break;
+                }
             }
         }
 

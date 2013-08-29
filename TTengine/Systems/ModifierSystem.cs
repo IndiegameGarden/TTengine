@@ -6,6 +6,7 @@ using Artemis.Attributes;
 using Artemis.Manager;
 using TTengine.Comps;
 using TTengine.Core;
+using TTengine.Modifiers;
 
 namespace TTengine.Systems
 {
