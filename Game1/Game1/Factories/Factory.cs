@@ -74,6 +74,15 @@ namespace Game1.Factories
 
         }
 
+        public static Entity CreateMovingTextlet(Vector2 pos, string text) {
+            var t = Factory.CreateTextlet("TTengine! @#$1234");
+            t.GetComponent<PositionComp>().Position = pos;
+            t.GetComponent<DrawComp>().DrawColor = Color.Black;
+            t.GetComponent<VelocityComp>().Velocity = 0.2f * new Vector2((float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f);
+            t.GetComponent<ScaleComp>().Scale = 0.5;
+            return t;
+        }
+
         public static void MyScaleModifier(Entity entity, double value) {
             entity.GetComponent<ScaleComp>().ScaleModifier *= 0.5 + entity.GetComponent<PositionComp>().Position.X; 
         }

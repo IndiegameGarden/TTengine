@@ -8,7 +8,6 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-//using TTengine.Behaviors;
 using TTengine.Core;
 using TTengine.Comps;
 using TTengine.Behaviors;
@@ -58,7 +57,8 @@ namespace Game1
             {
                 for (float y = 0.1f; y < 1f; y += 0.1f)
                 {
-                    var ball = Factory.CreateHyperActiveBall(new Vector2(x,y));
+                    var b = Factory.CreateHyperActiveBall(new Vector2(x,y));
+                    var t = Factory.CreateMovingTextlet(new Vector2(x,y),"This is the\nTTengine test. !@#$1234");
                     //break;
                 }
                 //break;

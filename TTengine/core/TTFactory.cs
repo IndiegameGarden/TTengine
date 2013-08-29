@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using Microsoft.Xna.Framework.Graphics;
 using Artemis;
 using TTengine.Comps;
 
@@ -57,6 +57,16 @@ namespace TTengine.Core
             return e;
         }
 
+        public static Entity CreateTextlet(string text)
+        {
+            Entity e = CreateGamelet();
+            e.AddComponent(new ScaleComp());
+            e.AddComponent(new DrawComp());
+            TextComp tc = new TextComp(text);
+            tc.Font = TTGame.Instance.Content.Load<SpriteFont>("TTDebugFont"); // FIXME allow other fonts
+            e.AddComponent(tc);
+            return e;
+        }
     }
 }
 

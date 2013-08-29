@@ -10,6 +10,11 @@ namespace TTengine.Comps
     /// </summary>
     public class ScaleComp : Comp
     {
+        public ScaleComp():
+            this(1)
+        {
+        }
+
         public ScaleComp(double scale)
         {
             this.Scale = scale;
