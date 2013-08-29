@@ -44,7 +44,7 @@ namespace TTengine.Systems
     using Artemis.Attributes;
     using Artemis.Manager;
     using Artemis.System;
-
+    using Microsoft.Xna.Framework;
     using TTengine.Comps;
 
     #endregion
@@ -62,6 +62,8 @@ namespace TTengine.Systems
             double dt = posComp.Dt;
             posComp.X += (float)(veloComp.X * dt);
             posComp.Y += (float)(veloComp.Y * dt);
+
+            posComp.PositionModifier = Vector2.Zero;
         }
     }
 }

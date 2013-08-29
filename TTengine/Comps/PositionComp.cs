@@ -91,6 +91,8 @@ namespace TTengine.Comps
             }
         }
 
+        public Vector2 PositionModifier = Vector2.Zero;
+
         /// <summary>Gets or sets the x.</summary>
         /// <value>The X.</value>
         public float X { get; set; }

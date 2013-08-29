@@ -30,6 +30,7 @@ namespace TTengine.Modifiers
         public delegate void ModifyModifierDelegate(Modifier mod, double value);
         public delegate void ModifyCompDelegate(Comp comp, double value);
 
+        /// <summary>Can be used to check the type of Modifier</summary>
         public ModifierType Type;
 
         /// <summary>Whether this Modifier is currently active. Only active modifiers do something.</summary>

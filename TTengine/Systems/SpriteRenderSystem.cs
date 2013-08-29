@@ -1,7 +1,7 @@
 #region File description
 
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RenderSystem.cs" company="GAMADU.COM">
+// <copyright file="SpriteRenderSystem.cs" company="GAMADU.COM">
 //     Copyright © 2013 GAMADU.COM. All rights reserved.
 //
 //     Redistribution and use in source and binary forms, with or without modification, are
@@ -55,7 +55,7 @@ namespace TTengine.Systems
 
     /// <summary>The system for rendering sprites</summary>
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = 0)]
-    public class RenderSystem : EntityComponentProcessingSystem<SpriteComp, PositionComp, DrawComp>
+    public class SpriteRenderSystem : EntityComponentProcessingSystem<SpriteComp, PositionComp, DrawComp>
     {
 
         /// <summary>Override to implement code that gets executed when systems are initialized.</summary>
@@ -70,8 +70,9 @@ namespace TTengine.Systems
             if (drawComp.IsVisible)
             {
                 // update drawpos
-                drawComp.DrawPosition = drawComp.ToPixels(posComp.Position);
+                drawComp.DrawPosition = drawComp.ToPixels(posComp.Position + posComp.PositionModifier);
 
+                // draw sprite
                 spriteComp.Screen.SpriteBatch.Draw(spriteComp.Texture, drawComp.DrawPosition, null, drawComp.DrawColor,
                     0f, spriteComp.DrawCenter, drawComp.DrawScale, SpriteEffects.None, drawComp.LayerDepth);
             }

@@ -129,7 +129,7 @@
     <Compile Include="Systems\ExpirationSystem.cs" />
     <Compile Include="Systems\ModifierSystem.cs" />
     <Compile Include="Systems\MovementSystem.cs" />
-    <Compile Include="Systems\RenderSystem.cs" />
+    <Compile Include="Systems\SpriteRenderSystem.cs" />
     <Compile Include="Systems\ScaleSystem.cs" />
     <Compile Include="TreeSharp\Action.cs" />
     <Compile Include="TreeSharp\TreeNode.cs" />
