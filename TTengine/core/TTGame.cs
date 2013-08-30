@@ -26,12 +26,15 @@ namespace TTengine.Core
 
         public GraphicsDeviceManager GraphicsMgr;
 
-        public Screenlet ActiveScreen;
+        /// <summary>All the screens currently rendered by this Game during Draw()</summary>
+        public List<Entity> Screens = new List<Entity>();
+
+        public ScreenletComp ActiveScreen;
         
         public MusicEngine MusicEngine;
 
         /// <summary>The Artemis entity world</summary>
-        public EntityWorld World;
+        public EntityWorld ActiveWorld;
 
         public TTGame()
         {
@@ -59,14 +62,28 @@ namespace TTengine.Core
                     throw new Exception(MusicEngine.StatusMsg);
             }
 
-            // create screen for drawing to
-            ActiveScreen = new Screenlet(false, GraphicsMgr.PreferredBackBufferWidth, GraphicsMgr.PreferredBackBufferHeight);
-
-            // Artemis game world
-            World = new EntityWorld();
-            World.InitializeAll(true);
-
+            // main screen
+            CreateScreenlet();
             base.Initialize();
+        }
+
+        protected Entity CreateScreenlet()
+        {
+            var sc = new ScreenletComp(false, GraphicsMgr.PreferredBackBufferWidth, GraphicsMgr.PreferredBackBufferHeight);
+            Entity e = CreateScreenlet(sc);
+            return e;
+        }
+
+        protected Entity CreateScreenlet(ScreenletComp sc)
+        {
+            var w = new EntityWorld();
+            w.InitializeAll(true);
+            Entity screenletEntity = w.CreateEntity();
+            screenletEntity.AddComponent(sc);
+            Screens.Add(screenletEntity);
+            ActiveScreen = sc;
+            ActiveWorld = w;
+            return screenletEntity;
         }
 
         protected override void LoadContent()
@@ -76,16 +93,31 @@ namespace TTengine.Core
 
         protected override void Update(GameTime gameTime)
         {
-            World.Update();
+            foreach (Entity screenletEntity in Screens)
+            {
+                ScreenletComp screenComp = screenletEntity.GetComponent<ScreenletComp>();
+                ActiveScreen = screenComp;
+                ActiveWorld = screenletEntity.entityWorld;
+                ActiveWorld.Update();
+            }
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             this.GraphicsDevice.Clear(ActiveScreen.BackgroundColor);
-            this.ActiveScreen.BeginDraw();
-            this.World.Draw();
-            this.ActiveScreen.EndDraw();
+
+            // loop all screens/worlds and draw them.
+            foreach (Entity screenletEntity in Screens)
+            {
+                ScreenletComp screenComp = screenletEntity.GetComponent<ScreenletComp>();
+                ActiveScreen = screenComp;
+                ActiveWorld = screenletEntity.entityWorld;
+                screenComp.SpriteBatch.Begin();
+                screenletEntity.entityWorld.Draw();
+                screenComp.SpriteBatch.End();                
+            }
+
             base.Draw(gameTime);
         }
 

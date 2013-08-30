@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace TTengine.Util
 {
     /**
-     * shows a framerate counter on screen (FPS) calculated
+     * shows a framerate counter on screenletEntity (FPS) calculated
      * from timing of draw/upd calls.
      */
     public class FrameRateCounter

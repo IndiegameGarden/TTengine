@@ -19,6 +19,12 @@ namespace TTengine.Comps
     {
         public DrawComp()
         {
+            Screen = TTGame.Instance.ActiveScreen;
+        }
+
+        public DrawComp(ScreenletComp drawToScreen)
+        {
+            Screen = drawToScreen;
         }
 
         #region Internal vars
@@ -44,7 +50,7 @@ namespace TTengine.Comps
         public float LayerDepth = 0.5f;
 
         /// <summary>to which Screenlet an Entity will be drawn</summary>
-        public Screenlet Screen = TTGame.Instance.ActiveScreen;
+        public ScreenletComp Screen ;
 
         /// <summary>Color for drawing, setting this will replace Alpha value with DrawColor.A</summary>
         public virtual Color DrawColor
@@ -127,7 +133,7 @@ namespace TTengine.Comps
 
         /// <summary>
         /// FIXME move away to a component?
-        /// translate a float screen coordinate to pixel coordinates, in the context of this Gamelet
+        /// translate a float screenletEntity coordinate to pixel coordinates, in the context of this Gamelet
         /// </summary>
         /// <param name="pos">relative coordinate to translate</param>
         /// <returns>translated to pixels coordinate</returns>

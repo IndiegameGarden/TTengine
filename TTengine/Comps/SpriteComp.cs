@@ -64,7 +64,8 @@ namespace TTengine.Comps
 
         #region Properties
 
-        public Screenlet Screen = TTGame.Instance.ActiveScreen;
+        // TODO can it be removed somehow - drawcomp has this ref.
+        public ScreenletComp Screen = TTGame.Instance.ActiveScreen;
 
         /// <summary>
         /// width of sprite in normalized coordinates
@@ -294,7 +295,7 @@ namespace TTengine.Comps
                 spriteBatch.Draw(file, file.Bounds, Color.White);
                 spriteBatch.End();
 
-                //Release the GPU back to drawing to the screen
+                //Release the GPU back to drawing to the screenletEntity
                 graphics.SetRenderTarget(null);
             }
 

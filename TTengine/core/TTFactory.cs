@@ -20,7 +20,7 @@ namespace TTengine.Core
         /// <returns></returns>
         public static Entity CreateEntity()
         {
-            return TTGame.Instance.World.CreateEntity();
+            return TTGame.Instance.ActiveWorld.CreateEntity();
         }
 
         /// <summary>

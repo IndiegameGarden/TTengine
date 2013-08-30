@@ -3,11 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game1", "Game1\Game1\Game1.csproj", "{529A2029-70CC-4820-8BA7-AFBE17B0CF6A}"
 	ProjectSection(ProjectDependencies) = postProject
 		{616035D5-3927-44CD-BD41-2EEE846AC3A3} = {616035D5-3927-44CD-BD41-2EEE846AC3A3}
+		{22C89AF2-E1CF-4976-91B9-7D33773DC6E7} = {22C89AF2-E1CF-4976-91B9-7D33773DC6E7}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game1Content", "Game1\Game1Content\Game1Content.contentproj", "{2F267F79-84E8-480E-A0A9-14CE0367A4D5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTengine", "TTengine\TTengine.csproj", "{616035D5-3927-44CD-BD41-2EEE846AC3A3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{22C89AF2-E1CF-4976-91B9-7D33773DC6E7} = {22C89AF2-E1CF-4976-91B9-7D33773DC6E7}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTMusicEngine", "TTMusicEngine\TTMusicEngine.csproj", "{CB99D0C9-FD0E-4B90-91BD-7D5816B38A2C}"
 EndProject

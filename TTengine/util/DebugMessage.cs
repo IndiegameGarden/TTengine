@@ -8,7 +8,7 @@ using TTengine.Core;
 namespace TTengine.Util
 {
     /**
-     * a debug text message that shows on screen
+     * a debug text message that shows on screenletEntity
      */
     public class DebugMessage
     {

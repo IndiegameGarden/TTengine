@@ -73,7 +73,7 @@ namespace TTengine.Systems
                 drawComp.DrawPosition = drawComp.ToPixels(posComp.Position + posComp.PositionModifier);
 
                 // draw sprite
-                spriteComp.Screen.SpriteBatch.Draw(spriteComp.Texture, drawComp.DrawPosition, null, drawComp.DrawColor,
+                drawComp.Screen.SpriteBatch.Draw(spriteComp.Texture, drawComp.DrawPosition, null, drawComp.DrawColor,
                     0f, spriteComp.DrawCenter, drawComp.DrawScale, SpriteEffects.None, drawComp.LayerDepth);
             }
         }
