@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using TTengine.Core;
+using TTengine.Comps;
 using TTengine.Util;
 using Artemis;
 //using TTengine.Modifiers; // TODO
@@ -69,7 +70,7 @@ namespace TTengine.Core
 
         protected Entity CreateScreenlet()
         {
-            var sc = new ScreenletComp(false, GraphicsMgr.PreferredBackBufferWidth, GraphicsMgr.PreferredBackBufferHeight);
+            var sc = new ScreenletComp(true, GraphicsMgr.PreferredBackBufferWidth, GraphicsMgr.PreferredBackBufferHeight);
             Entity e = CreateScreenlet(sc);
             return e;
         }
@@ -80,6 +81,7 @@ namespace TTengine.Core
             w.InitializeAll(true);
             Entity screenletEntity = w.CreateEntity();
             screenletEntity.AddComponent(sc);
+            screenletEntity.AddComponent(new DrawComp());
             Screens.Add(screenletEntity);
             ActiveScreen = sc;
             ActiveWorld = w;
@@ -95,6 +97,8 @@ namespace TTengine.Core
         {
             foreach (Entity screenletEntity in Screens)
             {
+                if (!screenletEntity.IsActive)
+                    continue;
                 ScreenletComp screenComp = screenletEntity.GetComponent<ScreenletComp>();
                 ActiveScreen = screenComp;
                 ActiveWorld = screenletEntity.entityWorld;
@@ -110,12 +114,16 @@ namespace TTengine.Core
             // loop all screens/worlds and draw them.
             foreach (Entity screenletEntity in Screens)
             {
+                if (!screenletEntity.IsActive)
+                    continue;
                 ScreenletComp screenComp = screenletEntity.GetComponent<ScreenletComp>();
                 ActiveScreen = screenComp;
                 ActiveWorld = screenletEntity.entityWorld;
-                screenComp.SpriteBatch.Begin();
+                this.GraphicsDevice.SetRenderTarget(screenComp.RenderTarget);
+                screenComp.SpriteBatch.BeginParameterized();
                 screenletEntity.entityWorld.Draw();
-                screenComp.SpriteBatch.End();                
+                screenComp.SpriteBatch.End();
+                this.GraphicsDevice.SetRenderTarget(null);
             }
 
             base.Draw(gameTime);

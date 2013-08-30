@@ -33,7 +33,7 @@ namespace TTengine.Comps
         protected float drawScale = 1f;
         protected bool isDrawPositionCalculated = false;
         internal Color drawColor = Color.White;
-        internal TTSpriteBatch mySpriteBatch = null;
+        //internal TTSpriteBatch mySpriteBatch = null;
         private const int NBUF = 10; // TODO tune?
         private Vector2[] posHistory = new Vector2[NBUF];
         private double[] drawScaleHistory = new double[NBUF];
