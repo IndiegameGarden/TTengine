@@ -17,6 +17,9 @@ using TTMusicEngine.Soundevents;
 
 namespace TTengine.Core
 {
+    /// <summary>
+    /// The Game Template. The base class for your game if you want to use TTengine.
+    /// </summary>
     public abstract class TTGame: Game
     {
         /// <summary>If set true, starts the TTMusicEngine</summary>
@@ -27,19 +30,19 @@ namespace TTengine.Core
 
         public GraphicsDeviceManager GraphicsMgr;
 
-        /// <summary>All the screens currently rendered by this Game during Draw()</summary>
-        public List<Entity> Screens = new List<Entity>();
-
-        public ScreenletComp ActiveScreen;
-        
         public MusicEngine MusicEngine;
 
         /// <summary>The Artemis entity world</summary>
         public EntityWorld ActiveWorld;
 
+        public ScreenletComp ActiveScreen;
+
+        public ChannelManager ChannelMgr ;
+
         public TTGame()
         {
             Instance = this;
+            ChannelMgr = new ChannelManager(this);
 
             // XNA related init
             GraphicsMgr = new GraphicsDeviceManager(this);
@@ -63,29 +66,10 @@ namespace TTengine.Core
                     throw new Exception(MusicEngine.StatusMsg);
             }
 
-            // main screen
-            CreateScreenlet();
+            // default channel
+            ChannelMgr.CreateChannel(true);
+
             base.Initialize();
-        }
-
-        protected Entity CreateScreenlet()
-        {
-            var sc = new ScreenletComp(true, GraphicsMgr.PreferredBackBufferWidth, GraphicsMgr.PreferredBackBufferHeight);
-            Entity e = CreateScreenlet(sc);
-            return e;
-        }
-
-        protected Entity CreateScreenlet(ScreenletComp sc)
-        {
-            var w = new EntityWorld();
-            w.InitializeAll(true);
-            Entity screenletEntity = w.CreateEntity();
-            screenletEntity.AddComponent(sc);
-            screenletEntity.AddComponent(new DrawComp());
-            Screens.Add(screenletEntity);
-            ActiveScreen = sc;
-            ActiveWorld = w;
-            return screenletEntity;
         }
 
         protected override void LoadContent()
@@ -95,13 +79,12 @@ namespace TTengine.Core
 
         protected override void Update(GameTime gameTime)
         {
-            foreach (Entity screenletEntity in Screens)
+            foreach (Channel c in ChannelMgr.Channels)
             {
-                if (!screenletEntity.IsActive)
+                if (!c.IsActive)
                     continue;
-                ScreenletComp screenComp = screenletEntity.GetComponent<ScreenletComp>();
-                ActiveScreen = screenComp;
-                ActiveWorld = screenletEntity.entityWorld;
+                ActiveScreen = c.Screen;
+                ActiveWorld = c.World;
                 ActiveWorld.Update();
             }
             base.Update(gameTime);
@@ -111,18 +94,17 @@ namespace TTengine.Core
         {
             this.GraphicsDevice.Clear(ActiveScreen.BackgroundColor);
 
-            // loop all screens/worlds and draw them.
-            foreach (Entity screenletEntity in Screens)
+            // loop all active channels and draw them.
+            foreach (Channel c in ChannelMgr.Channels)
             {
-                if (!screenletEntity.IsActive)
+                if (!c.IsActive)
                     continue;
-                ScreenletComp screenComp = screenletEntity.GetComponent<ScreenletComp>();
-                ActiveScreen = screenComp;
-                ActiveWorld = screenletEntity.entityWorld;
-                this.GraphicsDevice.SetRenderTarget(screenComp.RenderTarget);
-                screenComp.SpriteBatch.BeginParameterized();
-                screenletEntity.entityWorld.Draw();
-                screenComp.SpriteBatch.End();
+                ActiveScreen = c.Screen;
+                ActiveWorld = c.World;
+                this.GraphicsDevice.SetRenderTarget(ActiveScreen.RenderTarget);
+                ActiveScreen.SpriteBatch.BeginParameterized();
+                ActiveWorld.Draw();
+                ActiveScreen.SpriteBatch.End();
                 this.GraphicsDevice.SetRenderTarget(null);
             }
 

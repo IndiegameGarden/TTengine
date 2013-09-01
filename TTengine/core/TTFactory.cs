@@ -9,10 +9,29 @@ using TTengine.Comps;
 namespace TTengine.Core
 {
     /// <summary>
-    /// Factory to create new Entities - typically subclass this with your own factory, dedicated to the game.
+    /// The Singleton Factory to create new Entities, and other things - 
+    /// typically subclass this with your own factory, dedicated to the game.
     /// </summary>
     public class TTFactory
     {
+        private static TTFactory _instance = null;
+        private static TTGame _game = null;
+
+        public static TTFactory Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new TTFactory();
+                return _instance;
+            }
+        }
+
+        // creates the instance, linked to a TTGame
+        protected TTFactory()
+        {
+            _game = TTGame.Instance;
+        }
 
         /// <summary>
         /// Create simplest Entity without components
@@ -20,7 +39,7 @@ namespace TTengine.Core
         /// <returns></returns>
         public static Entity CreateEntity()
         {
-            return TTGame.Instance.ActiveWorld.CreateEntity();
+            return _game.ActiveWorld.CreateEntity();
         }
 
         /// <summary>
@@ -57,16 +76,22 @@ namespace TTengine.Core
             return e;
         }
 
+        /// <summary>
+        /// Creates a Textlet, which is a moveable piece of text. (TODO: font)
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public static Entity CreateTextlet(string text)
         {
             Entity e = CreateGamelet();
             e.AddComponent(new ScaleComp());
             e.AddComponent(new DrawComp());
             TextComp tc = new TextComp(text);
-            tc.Font = TTGame.Instance.Content.Load<SpriteFont>("TTDebugFont"); // FIXME allow other fonts
+            tc.Font = _game.Content.Load<SpriteFont>("TTDebugFont"); // FIXME allow other fonts
             e.AddComponent(tc);
             return e;
         }
+
     }
 }
 

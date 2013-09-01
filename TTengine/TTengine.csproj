@@ -113,6 +113,8 @@
     <Compile Include="Comps\TextComp.cs" />
     <Compile Include="Comps\VelocityComp.cs" />
     <Compile Include="Core\Behavior.cs" />
+    <Compile Include="Core\Channel.cs" />
+    <Compile Include="Core\ChannelManager.cs" />
     <Compile Include="Core\Comp.cs" />
     <Compile Include="Comps\TargetMotionComp.cs" />
     <Compile Include="Modifiers\CosineModifier.cs" />

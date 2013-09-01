@@ -17,6 +17,7 @@ namespace Game1.Factories
     /// </summary>
     public class Factory: TTFactory
     {
+
         protected static Random rnd = new Random();
 
         /// <summary>
