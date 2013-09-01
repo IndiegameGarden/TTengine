@@ -49,6 +49,7 @@ namespace TTengine.Systems
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
 
+    using TTengine.Core;
     using TTengine.Comps;
 
     #endregion
@@ -57,10 +58,17 @@ namespace TTengine.Systems
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = 0)]
     public class TextRenderSystem : EntityComponentProcessingSystem<TextComp, PositionComp, DrawComp>
     {
+        protected TTSpriteBatch activeSpriteBatch;
 
         /// <summary>Override to implement code that gets executed when systems are initialized.</summary>
         public override void LoadContent()
         {
+        }
+
+        protected override void ProcessEntities(System.Collections.Generic.IDictionary<int, Entity> entities)
+        {
+            activeSpriteBatch = TTGame.Instance.ActiveScreen.SpriteBatch;
+            base.ProcessEntities(entities);
         }
 
         /// <summary>Processes the specified entity.</summary>
@@ -73,7 +81,7 @@ namespace TTengine.Systems
                 drawComp.DrawPosition = drawComp.ToPixels(posComp.Position + posComp.PositionModifier);
 
                 // draw sprite
-                drawComp.Screen.SpriteBatch.DrawString(textComp.Font, textComp.Text, drawComp.DrawPosition, drawComp.DrawColor, 0f, 
+                activeSpriteBatch.DrawString(textComp.Font, textComp.Text, drawComp.DrawPosition, drawComp.DrawColor, 0f, 
                     Vector2.Zero, drawComp.DrawScale, SpriteEffects.None, drawComp.LayerDepth);
                     //textComp.Texture, drawComp.DrawPosition, null, drawComp.DrawColor,
                     //0f, textComp.DrawCenter, drawComp.DrawScale, SpriteEffects.None, drawComp.LayerDepth);

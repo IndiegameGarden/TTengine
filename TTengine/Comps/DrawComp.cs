@@ -13,18 +13,12 @@ namespace TTengine.Comps
 {
     /// <summary>
     /// Component that allows drawing of the gamelet, including basic drawing parameters
-    /// like drawing position, layer depth, drawing color, to which Screenlet, etc
+    /// like drawing position, layer depth, drawing color, etc
     /// </summary>
     public class DrawComp: IComponent
     {
         public DrawComp()
-        {
-            Screen = TTGame.Instance.ActiveScreen;
-        }
-
-        public DrawComp(ScreenletComp drawToScreen)
-        {
-            Screen = drawToScreen;
+        {            
         }
 
         #region Internal vars
@@ -38,8 +32,8 @@ namespace TTengine.Comps
         private Vector2[] posHistory = new Vector2[NBUF];
         private double[] drawScaleHistory = new double[NBUF];
         private double[] posHistoryTime = new double[NBUF];
-        private bool isFirstUpdatePosition = true;
-        private uint phIndex = 0;
+        //private bool isFirstUpdatePosition = true;
+        //private uint phIndex = 0;
 
         #endregion
 
@@ -48,9 +42,6 @@ namespace TTengine.Comps
 
         /// <summary>drawing depth of graphics 0f (front)....1f (back)</summary>
         public float LayerDepth = 0.5f;
-
-        /// <summary>to which Screenlet an Entity will be drawn</summary>
-        public ScreenletComp Screen ;
 
         /// <summary>Color for drawing, setting this will replace Alpha value with DrawColor.A</summary>
         public virtual Color DrawColor
@@ -87,7 +78,7 @@ namespace TTengine.Comps
             set { drawColor.A = (byte)(value * 255.0f); }
         }
 
-        /// <summary>Scale to used in Draw() calls</summary>
+        /// <summary>Scale to use in Draw() calls</summary>
         public float DrawScale = 1.0f;
 
         /// <summary>
@@ -107,7 +98,7 @@ namespace TTengine.Comps
         public Vector2 ToPixels(Vector2 pos)
         {
             //return (pos * Screen.screenHeight - Center) * Zoom + Center; // TODO check? only for internal?
-            return pos * Screen.screenHeight;
+            return pos * TTGame.Instance.ActiveScreen.screenHeight;
         }
 
     }
