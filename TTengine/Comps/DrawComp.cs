@@ -98,39 +98,6 @@ namespace TTengine.Comps
             get; set;
         }
 
-        // calculates drawing positions based on interpolation
-        /*
-        public override void OnDraw(ref DrawParams ctx)
-        {
-            float t = (float)ctx.gameTime.TotalGameTime.TotalSeconds;
-            // default - take latest position in cache
-            drawPosition = DrawPosition;
-            drawScale = DrawScaleCurrent;
-
-            // then check if an interpolated, better value can be found.
-            for (uint i = 0; i < NBUF; i++)
-            {
-                uint iNext = (i + 1) % NBUF;
-                if (posHistoryTime[i] <= t && posHistoryTime[iNext] >= t)
-                {
-                    float a = (t - posHistoryTime[i]) / (posHistoryTime[iNext] - posHistoryTime[i]);
-                    // perform linear interpolation
-                    drawPosition = (1 - a) * posHistory[i] + a * posHistory[iNext];
-                    drawScale = (1 - a) * drawScaleHistory[i] + a * drawScaleHistory[iNext];
-                    break;
-                }
-            }
-            isDrawPositionCalculated = true;
-        }
-         */
-
-        /*
-        protected override void OnUpdate(ref UpdateParams ctx)
-        {
-            UpdateSmoothingCache(ref ctx);
-        }
-         */
-
         /// <summary>
         /// FIXME move away to a component?
         /// translate a float screenletEntity coordinate to pixel coordinates, in the context of this Gamelet
@@ -142,71 +109,6 @@ namespace TTengine.Comps
             //return (pos * Screen.screenHeight - Center) * Zoom + Center; // TODO check? only for internal?
             return pos * Screen.screenHeight;
         }
-
-        public float ToPixels(float coord)
-        {
-            return coord * Screen.screenHeight;
-        }
-
-        public float FromPixels(float pixels)
-        {
-            return pixels / Screen.screenHeight;
-        }
-
-        public Vector2 FromPixels(Vector2 pixelCoords)
-        {
-            return pixelCoords / Screen.screenHeight;
-        }
-
-        internal Vector2 ToPixels(float x, float y)
-        {
-            return ToPixels(new Vector2(x, y));
-        }
-
-        /*
-        internal void UpdateSmoothingCache(ref UpdateParams ctx)
-        {
-            // store current position in a cache to use in trajectory smoothing
-            UpdatePositionCache(Parent.Motion.PositionAbsZoomedPixels, DrawScaleCurrent, ctx.SimTime);
-        }
-
-        internal void VertexShaderInit(Effect eff)
-        {
-            // vertex shader init            
-            Matrix projection = Matrix.CreateOrthographicOffCenter(0, Screen.WidthPixels, Screen.HeightPixels, 0, 0, 1);
-            Matrix halfPixelOffset = Matrix.CreateTranslation(-0.5f, -0.5f, 0);
-            Matrix m = halfPixelOffset * projection;
-            EffectParameter mtPar = eff.Parameters["MatrixTransform"];
-            if (mtPar != null)
-                mtPar.SetValue(m);
-        }
-        */
-
-        private void UpdatePositionCache(Vector2 updPos, float updDrawScale, float updTime)
-        {
-            if (isFirstUpdatePosition)
-            {
-                for (uint i = 0; i < NBUF; i++)
-                {
-                    posHistory[i] = updPos;
-                    posHistoryTime[i] = updTime;
-                    drawScaleHistory[i] = updDrawScale;
-                }
-                isFirstUpdatePosition = false;
-                phIndex = 0;
-            }
-            else
-            {
-                posHistory[phIndex] = updPos;
-                posHistoryTime[phIndex] = updTime;
-                drawScaleHistory[phIndex] = updDrawScale;
-            }
-
-            phIndex++;
-            if (phIndex == NBUF)
-                phIndex = 0;
-        }
-
 
     }
 }
