@@ -25,6 +25,8 @@ namespace Game1
     /// </summary>
     public class Game1 : TTGame
     {
+        public Factory Factory;
+
         public Game1()
         {
             GraphicsMgr.IsFullScreen = false;
@@ -35,6 +37,7 @@ namespace Game1
 
         protected override void Initialize()
         {
+            Factory = Factory.Instance;
             base.Initialize();
         }
 
@@ -43,14 +46,6 @@ namespace Game1
             base.LoadContent();
 
             ActiveScreen.BackgroundColor = Color.White;
-
-            /*
-            // add a static text
-            MyTextlet txt = new MyTextlet("TTengine basic test!");
-            txt.Motion.Position = new Vector2(0.01f, 0.4f);
-            txt.DrawC.DrawColor = Color.White;
-            Screen.Add(txt);
-            */
 
             // add several sprites             
             for (float x = 0.1f; x < 1.6f; x += 0.20f)

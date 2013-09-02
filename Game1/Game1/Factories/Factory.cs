@@ -15,19 +15,36 @@ namespace Game1.Factories
     /// <summary>
     /// Factory to create new game-specific entities
     /// </summary>
-    public class Factory: TTFactory
+    public class Factory
     {
+        private static Factory _instance = null;
+        private Game1 _game;
 
-        protected static Random rnd = new Random();
+        private Factory(Game1 game)
+        {
+            _game = game;
+        }
+
+        public Factory Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new Factory(TTGame.Instance as Game1);
+                return _instance as Factory;
+            }
+        }
+
+        protected Random rnd = new Random();
 
         /// <summary>
         /// create a ball Spritelet that can be scaled
         /// </summary>
         /// <param name="radius">the relative size scaling, 1 is normal</param>
         /// <returns></returns>
-        public static Entity CreateBall(double radius)
+        public Entity CreateBall(double radius)
         {
-            Entity e = CreateSpritelet("ball");
+            Entity e = TTFactory.CreateSpritelet("ball");
             e.AddComponent(new ScaleComp(radius));
             return e;
         }
@@ -36,9 +53,9 @@ namespace Game1.Factories
         /// create an active ball with given position and random velocity and some weird (AI) behaviors
         /// </summary>
         /// <returns></returns>
-        public static Entity CreateHyperActiveBall(Vector2 pos)
+        public Entity CreateHyperActiveBall(Vector2 pos)
         {
-            var ball = Factory.CreateBall(0.8f + 0.6f * (float)rnd.NextDouble());
+            var ball = CreateBall(0.8f + 0.6f * (float)rnd.NextDouble());
 
             // position and velocity set
             ball.GetComponent<PositionComp>().Position = pos;
@@ -75,8 +92,8 @@ namespace Game1.Factories
 
         }
 
-        public static Entity CreateMovingTextlet(Vector2 pos, string text) {
-            var t = Factory.CreateTextlet("TTengine! @#$1234");
+        public Entity CreateMovingTextlet(Vector2 pos, string text) {
+            var t = TTFactory.CreateTextlet("TTengine! @#$1234");
             t.GetComponent<PositionComp>().Position = pos;
             t.GetComponent<DrawComp>().DrawColor = Color.Black;
             t.GetComponent<VelocityComp>().Velocity = 0.2f * new Vector2((float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f);
@@ -84,11 +101,11 @@ namespace Game1.Factories
             return t;
         }
 
-        public static void MyScaleModifier(Entity entity, double value) {
+        public void MyScaleModifier(Entity entity, double value) {
             entity.GetComponent<ScaleComp>().ScaleModifier *= 0.5 + entity.GetComponent<PositionComp>().Position.X; 
         }
 
-        public static void MyScaleModifier2(Entity entity, double value)
+        public void MyScaleModifier2(Entity entity, double value)
         {
             entity.GetComponent<ScaleComp>().ScaleModifier *= value;
         }

@@ -46,7 +46,7 @@ namespace TTengine.Core
         {
             Instance = this;
 
-            // XNA related init
+            // XNA related init that needs to be in constructor (or at least before Initialize())
             GraphicsMgr = new GraphicsDeviceManager(this);
             IsFixedTimeStep = false;
             Content.RootDirectory = "Content";
@@ -59,7 +59,6 @@ namespace TTengine.Core
 
         protected override void Initialize()
         {
-            new factory 
             ChannelMgr = new ChannelManager(this);
 
             // the TTMusicEngine

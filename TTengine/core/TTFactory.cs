@@ -9,27 +9,14 @@ using TTengine.Comps;
 namespace TTengine.Core
 {
     /// <summary>
-    /// The Singleton Factory to create new Entities, and other things - 
-    /// typically subclass this with your own factory, dedicated to the game.
+    /// The Singleton TTengine Factory to create new Entities (may be half-baked, 
+    /// to further customize), and perhaps other things
     /// </summary>
-    public class TTFactory
+    public sealed class TTFactory
     {
-        private static TTFactory _instance = null;
         private static TTGame _game = null;
 
-        public virtual TTFactory Instance
-        {
-            get
-            {
-                if (_instance == null)
-                    _instance = new TTFactory();
-                return _instance;
-            }
-        }
-
-        // creates the instance, linked to a TTGame
-        protected TTFactory()
-        {
+        static TTFactory() {
             _game = TTGame.Instance;
         }
 
