@@ -98,7 +98,8 @@ namespace TTengine.Comps
         public Vector2 ToPixels(Vector2 pos)
         {
             //return (pos * Screen.screenHeight - Center) * Zoom + Center; // TODO check? only for internal?
-            return pos * TTGame.Instance.ActiveScreen.screenHeight;
+            // TODO optimize screenletcomp access
+            return pos * TTGame.Instance.ActiveScreen.GetComponent<ScreenletComp>().screenHeight;
         }
 
     }

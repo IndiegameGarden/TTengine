@@ -67,7 +67,7 @@ namespace TTengine.Systems
 
         protected override void ProcessEntities(System.Collections.Generic.IDictionary<int, Entity> entities)
         {
-            activeSpriteBatch = TTGame.Instance.ActiveScreen.SpriteBatch;
+            activeSpriteBatch = TTGame.Instance.ActiveScreen.GetComponent<ScreenletComp>().SpriteBatch;
             base.ProcessEntities(entities);
         }
 

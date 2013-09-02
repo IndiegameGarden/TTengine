@@ -36,7 +36,7 @@ namespace TTengine.Core
         /// <summary>The Artemis entity world</summary>
         public EntityWorld ActiveWorld;
 
-        public ScreenletComp ActiveScreen;
+        public Entity ActiveScreen;
 
         public ChannelManager ChannelMgr ;
 
@@ -97,7 +97,7 @@ namespace TTengine.Core
 
         protected override void Draw(GameTime gameTime)
         {
-            this.GraphicsDevice.Clear(ActiveScreen.BackgroundColor);
+            this.GraphicsDevice.Clear(ActiveScreen.GetComponent<ScreenletComp>().BackgroundColor);
 
             // loop all active channels and draw them.
             foreach (Channel c in ChannelMgr.Channels)
@@ -105,14 +105,15 @@ namespace TTengine.Core
                 if (!c.IsActive)
                     continue;
                 ActiveScreen = c.Screen;
+                var sc = ActiveScreen.GetComponent<ScreenletComp>();
                 ActiveWorld = c.World;
 
                 spriteBatchesActive.Clear();
 
-                this.GraphicsDevice.SetRenderTarget(ActiveScreen.RenderTarget);
-                UseSharedSpriteBatch(ActiveScreen.SpriteBatch);
+                this.GraphicsDevice.SetRenderTarget(sc.RenderTarget);
+                UseSharedSpriteBatch(sc.SpriteBatch);
                 ActiveWorld.Draw();
-                ActiveScreen.SpriteBatch.End();
+                sc.SpriteBatch.End();
 
                 // close all remaining open effect-related spriteBatches
                 foreach (SpriteBatch sb in spriteBatchesActive)

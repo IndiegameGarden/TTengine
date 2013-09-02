@@ -13,18 +13,18 @@ namespace TTengine.Core
     public class Channel
     {
         public bool IsActive = false;
-        public ScreenletComp Screen;
+        public Entity Screen;
         public EntityWorld World;
 
         internal Channel(TTGame game)
         {
             World = new EntityWorld();
             World.InitializeAll(true);
-            // TODO other screen sizes
-            Screen = new ScreenletComp(true, game.GraphicsMgr.PreferredBackBufferWidth, game.GraphicsMgr.PreferredBackBufferHeight);
-            Entity screenletEntity = World.CreateEntity();
-            screenletEntity.AddComponent(Screen);
-            screenletEntity.AddComponent(new DrawComp());
+            // TODO other screen sizes - move creation to TTfactory
+            var ScreenComp = new ScreenletComp(true, game.GraphicsMgr.PreferredBackBufferWidth, game.GraphicsMgr.PreferredBackBufferHeight);
+            Screen = World.CreateEntity();
+            Screen.AddComponent(ScreenComp);
+            Screen.AddComponent(new DrawComp());
         }
 
     }

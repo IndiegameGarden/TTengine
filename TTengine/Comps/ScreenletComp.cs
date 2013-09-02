@@ -103,6 +103,7 @@ namespace TTengine.Core
 
         protected void OnConstruction()
         {
+            // TODO spritebatch can be supplied from outside? optimize TTGame.Instance.GraphicsDevice access?
             SpriteBatch = new TTSpriteBatch(TTGame.Instance.GraphicsDevice);
         }
 
