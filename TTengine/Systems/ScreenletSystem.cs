@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework.Graphics;
 using TTengine.Core;
 using TTengine.Comps;
 
@@ -24,8 +25,14 @@ namespace TTengine.Systems
             // TODO 
             //render // the buffer to screen
             //spritebatch needed.
-            screen.SpriteBatch.BeginParameterized();
-            screen.SpriteBatch.Draw(screen.RenderTarget, screen.ScreenRectangle, drawComp.DrawColor);
+            // FIXME what approach?
+            //screen.SpriteBatch.BeginParameterized();
+            //screen.SpriteBatch.Draw(screen.RenderTarget, screen.ScreenRectangle, drawComp.DrawColor);
+            //screen.SpriteBatch.End();
+
+            // FIXME must be at very end, after all sprite draws etc are done
+            screen.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
+            screen.SpriteBatch.Draw(screen.RenderTarget, screen.ScreenRectangle, drawComp.DrawColor); 
             screen.SpriteBatch.End();
 
         }

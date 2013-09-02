@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using TTengine.Core;
 using TTengine.Comps;
+using TTengine.Systems;
 using TTengine.Util;
 using Artemis;
 //using TTengine.Modifiers; // TODO
@@ -39,10 +40,11 @@ namespace TTengine.Core
 
         public ChannelManager ChannelMgr ;
 
+        List<TTSpriteBatch> spriteBatchesActive = new List<TTSpriteBatch>();
+
         public TTGame()
         {
             Instance = this;
-            ChannelMgr = new ChannelManager(this);
 
             // XNA related init
             GraphicsMgr = new GraphicsDeviceManager(this);
@@ -57,6 +59,9 @@ namespace TTengine.Core
 
         protected override void Initialize()
         {
+            new factory 
+            ChannelMgr = new ChannelManager(this);
+
             // the TTMusicEngine
             if (IsMusicEngine)
             {
@@ -67,7 +72,8 @@ namespace TTengine.Core
             }
 
             // default channel
-            ChannelMgr.CreateChannel(true);
+            var ch = ChannelMgr.CreateChannel();
+            ChannelMgr.ZapTo(ch);
 
             base.Initialize();
         }
@@ -101,15 +107,48 @@ namespace TTengine.Core
                     continue;
                 ActiveScreen = c.Screen;
                 ActiveWorld = c.World;
+
+                spriteBatchesActive.Clear();
+
                 this.GraphicsDevice.SetRenderTarget(ActiveScreen.RenderTarget);
-                ActiveScreen.SpriteBatch.BeginParameterized();
+                UseSharedSpriteBatch(ActiveScreen.SpriteBatch);
                 ActiveWorld.Draw();
                 ActiveScreen.SpriteBatch.End();
+
+                // close all remaining open effect-related spriteBatches
+                foreach (SpriteBatch sb in spriteBatchesActive)
+                    sb.End();
+                spriteBatchesActive.Clear();
+
+                // render
+                List<ScreenletSystem> l = ActiveWorld.SystemManager.GetSystems<ScreenletSystem>();
+                foreach (ScreenletSystem s in l)
+                {
+                    s.Process();
+                }
+
                 this.GraphicsDevice.SetRenderTarget(null);
             }
 
             base.Draw(gameTime);
         }
+
+        /// <summary>
+        /// TODO something for a Mgr class?
+        /// let the caller indicate that it wants to draw using the given shared SpriteBatch, which
+        /// is not linked to any shader Effect. The SpriteBatch.Begin() method will be called if 
+        /// needed here and also SpriteBatch.End() will be called by TTengine later after use.
+        /// </summary>
+        /// <param name="spb">spritebatch to request use of</param>
+        internal void UseSharedSpriteBatch(TTSpriteBatch spb)
+        {
+            if (!spriteBatchesActive.Contains(spb))
+            {
+                spb.BeginParameterized();
+                spriteBatchesActive.Add(spb);
+            }
+        }
+
 
     }
 }

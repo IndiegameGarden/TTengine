@@ -24,14 +24,11 @@ namespace TTengine.Core
         /// <summary>
         /// Create a new Channel, registers it within the current TTGame.
         /// </summary>
-        /// <param name="isSetAsActiveChannel">if true, sets the new channel also as the active one (by ZapTo)</param>
         /// <returns></returns>
-        public Channel CreateChannel(bool isSetAsActiveChannel)
+        public Channel CreateChannel()
         {
             Channel c = new Channel(_game);
             _game.ChannelMgr.Add(c);
-            if (isSetAsActiveChannel)
-                ZapTo(c);
             return c;
         }
 

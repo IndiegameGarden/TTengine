@@ -12,7 +12,7 @@ namespace TTengine.Core
     /// </summary>
     public class Channel
     {
-        public bool IsActive = true;
+        public bool IsActive = false;
         public ScreenletComp Screen;
         public EntityWorld World;
 

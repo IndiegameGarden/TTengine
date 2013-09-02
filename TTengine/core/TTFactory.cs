@@ -17,7 +17,7 @@ namespace TTengine.Core
         private static TTFactory _instance = null;
         private static TTGame _game = null;
 
-        public static TTFactory Instance
+        public virtual TTFactory Instance
         {
             get
             {
