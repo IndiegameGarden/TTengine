@@ -25,7 +25,7 @@ namespace Game1
     /// </summary>
     public class Game1 : TTGame
     {
-        public Factory Factory;
+        public GameFactory Factory;
 
         public Game1()
         {
@@ -37,7 +37,7 @@ namespace Game1
 
         protected override void Initialize()
         {
-            Factory = Factory.Instance;
+            Factory = GameFactory.Instance;
             base.Initialize();
         }
 

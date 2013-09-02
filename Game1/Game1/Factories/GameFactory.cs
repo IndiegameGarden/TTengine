@@ -15,23 +15,23 @@ namespace Game1.Factories
     /// <summary>
     /// Factory to create new game-specific entities
     /// </summary>
-    public class Factory
+    public class GameFactory
     {
-        private static Factory _instance = null;
+        private static GameFactory _instance = null;
         private Game1 _game;
 
-        private Factory(Game1 game)
+        private GameFactory(Game1 game)
         {
             _game = game;
         }
 
-        public Factory Instance
+        public static GameFactory Instance
         {
             get
             {
                 if (_instance == null)
-                    _instance = new Factory(TTGame.Instance as Game1);
-                return _instance as Factory;
+                    _instance = new GameFactory(TTGame.Instance as Game1);
+                return _instance as GameFactory;
             }
         }
 
