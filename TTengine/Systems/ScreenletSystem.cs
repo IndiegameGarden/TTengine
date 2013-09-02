@@ -21,7 +21,7 @@ namespace TTengine.Systems
         {
             if (!screen.IsActive) return;
             // FIXME code here !?
-            TTGame.Instance.GraphicsDevice.SetRenderTarget(null);
+            
             // TODO 
             //render // the buffer to screen
             //spritebatch needed.
@@ -30,10 +30,15 @@ namespace TTengine.Systems
             //screen.SpriteBatch.Draw(screen.RenderTarget, screen.ScreenRectangle, drawComp.DrawColor);
             //screen.SpriteBatch.End();
 
-            // FIXME must be at very end, after all sprite draws etc are done
-            screen.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
-            screen.SpriteBatch.Draw(screen.RenderTarget, screen.ScreenRectangle, drawComp.DrawColor); 
-            screen.SpriteBatch.End();
+            // in this final round, end the drawing to this screenlet:
+            TTSpriteBatch sb = screen.SpriteBatch;
+            sb.End();
+
+            // then render the screenbuffer onto the actual screen.
+            TTGame.Instance.GraphicsDevice.SetRenderTarget(null);
+            sb.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
+            sb.Draw(screen.RenderTarget, screen.ScreenRectangle, drawComp.DrawColor);
+            sb.End();
 
         }
 
