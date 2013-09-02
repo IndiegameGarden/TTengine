@@ -95,7 +95,7 @@ namespace TTengine.Core
 
         protected override void Draw(GameTime gameTime)
         {
-            this.GraphicsDevice.Clear(ActiveScreen.GetComponent<ScreenComp>().BackgroundColor);
+            //this.GraphicsDevice.Clear(ActiveScreen.GetComponent<ScreenComp>().BackgroundColor);
 
             // loop all active channels and draw them.
             foreach (Channel c in ChannelMgr.Channels)

@@ -7,7 +7,7 @@ namespace TTengine.Core
 {
     /// <summary>
     /// Manages the Channels of a TTGame. A Channel shows content in an EntityWorld
-    /// and can be anything like a title screen, a level, a cutscene screen, a highscore screen, or an end screen.
+    /// and can be anything like a title screenComp, a level, a cutscene screenComp, a highscore screenComp, or an end screenComp.
     /// </summary>
     public class ChannelManager
     {

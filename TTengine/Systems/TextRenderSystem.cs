@@ -55,7 +55,7 @@ namespace TTengine.Systems
     #endregion
 
     /// <summary>The system for rendering sprites</summary>
-    [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = 0)]
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = 1)]
     public class TextRenderSystem : EntityComponentProcessingSystem<TextComp, PositionComp, DrawComp>
     {
         protected TTSpriteBatch activeSpriteBatch;

@@ -80,7 +80,7 @@ namespace TTengine.Core
         }
 
         /// <summary>
-        /// Creates a Screenlet, which is an Entity that contains a screen (RenderBuffer) to 
+        /// Creates a Screenlet, which is an Entity that contains a screenComp (RenderBuffer) to 
         /// which graphics can be rendered.
         /// </summary>
         /// <returns></returns>

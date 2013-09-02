@@ -24,10 +24,10 @@ namespace TTengine.Core
 
         internal Channel(TTGame game)
         {
-            World = new EntityWorld();
-            World.InitializeAll(true);
-            // TODO other screen sizes - move creation to TTfactory
-            var Screen = TTFactory.CreateScreenlet(World, game.GraphicsMgr.PreferredBackBufferWidth, game.GraphicsMgr.PreferredBackBufferHeight);
+            this.World = new EntityWorld();
+            this.World.InitializeAll(true);
+            // TODO other screenComp sizes - move creation to TTfactory
+            this.Screen = TTFactory.CreateScreenlet(World, game.GraphicsMgr.PreferredBackBufferWidth, game.GraphicsMgr.PreferredBackBufferHeight);
         }
 
     }

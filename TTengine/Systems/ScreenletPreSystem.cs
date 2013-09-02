@@ -17,16 +17,29 @@ namespace TTengine.Systems
     public class ScreenletPreSystem : EntityComponentProcessingSystem<ScreenComp, DrawComp>
     {
 
-        public override void Process(Entity entity, ScreenComp screen, DrawComp drawComp)
+        private Entity _activeScreenlet;
+        private GraphicsDevice _gfxDevice;
+
+        protected override void Begin()
         {
-            // check if present screen is the active one in this Draw() round
-            if (!screen.IsActive) 
+            base.Begin();
+            _activeScreenlet = TTGame.Instance.ActiveScreen;
+            _gfxDevice = TTGame.Instance.GraphicsDevice;
+        }
+
+        public override void Process(Entity screenlet, ScreenComp screenComp, DrawComp drawComp)
+        {
+            // check if present screenComp is the active one in this Draw() round
+            if (!screenlet.IsActive) 
                 return;
-            if (TTGame.Instance.ActiveScreen != entity)
+            if (_activeScreenlet != screenlet)
                 return;
 
+            _gfxDevice.SetRenderTarget(screenComp.RenderTarget);
+            _gfxDevice.Clear(screenComp.BackgroundColor);
+
             // in this initial round, start the drawing to this screenlet's spritebatch:
-            TTSpriteBatch sb = screen.SpriteBatch;
+            TTSpriteBatch sb = screenComp.SpriteBatch;
             sb.BeginParameterized();
 
         }

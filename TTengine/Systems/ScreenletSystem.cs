@@ -25,7 +25,7 @@ namespace TTengine.Systems
 
         public override void Process(Entity entity, ScreenComp screen, DrawComp drawComp)
         {
-            // check if present screen is the active one in this Draw() round
+            // check if present screenComp is the active one in this Draw() round
             if (!screen.IsActive)
                 return;
             if (TTGame.Instance.ActiveScreen != entity)
@@ -35,7 +35,7 @@ namespace TTengine.Systems
             TTSpriteBatch sb = screen.SpriteBatch;
             sb.End();
 
-            // then render the screenbuffer onto the actual screen.
+            // then render the screenbuffer onto the actual screenComp.
             TTGame.Instance.GraphicsDevice.SetRenderTarget(null);
             sb.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
             sb.Draw(screen.RenderTarget, screen.ScreenRectangle, drawComp.DrawColor);

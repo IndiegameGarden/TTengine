@@ -55,20 +55,15 @@ namespace TTengine.Systems
     #endregion
 
     /// <summary>The system for rendering sprites</summary>
-    [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = 0)]
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = 1)]
     public class SpriteRenderSystem : EntityComponentProcessingSystem<SpriteComp, PositionComp, DrawComp>
     {
         protected TTSpriteBatch activeSpriteBatch;
 
-        /// <summary>Override to implement code that gets executed when systems are initialized.</summary>
-        public override void LoadContent()
+        protected override void Begin()
         {
-        }
-
-        protected override void ProcessEntities(System.Collections.Generic.IDictionary<int, Entity> entities)
-        {
+            base.Begin();
             activeSpriteBatch = TTGame.Instance.ActiveScreen.GetComponent<ScreenComp>().SpriteBatch;
-            base.ProcessEntities(entities);
         }
 
         /// <summary>Processes the specified entity.</summary>

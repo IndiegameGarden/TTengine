@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Content;
 namespace TTengine.Core
 {
     /// <summary>
-    /// Component to turn an Entity into a 'Screenlet', which acts as a screen
+    /// Component to turn an Entity into a 'Screenlet', which acts as a screenComp
     /// (RenderBuffer) where other entities can draw themselves to.
     /// <seealso cref="ScreenletSystem"/>
     /// </summary>
