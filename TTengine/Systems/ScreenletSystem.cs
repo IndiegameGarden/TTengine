@@ -14,10 +14,10 @@ using Artemis.System;
 namespace TTengine.Systems
 {
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = 1)]
-    public class ScreenletSystem : EntityComponentProcessingSystem<ScreenletComp, DrawComp>
+    public class ScreenletSystem : EntityComponentProcessingSystem<ScreenComp, DrawComp>
     {
 
-        public override void Process(Entity entity, ScreenletComp screen, DrawComp drawComp)
+        public override void Process(Entity entity, ScreenComp screen, DrawComp drawComp)
         {
             if (!screen.IsActive) return;
             // FIXME code here !?

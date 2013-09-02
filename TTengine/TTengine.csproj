@@ -106,7 +106,7 @@
     <Compile Include="Comps\ModifierComp.cs" />
     <Compile Include="Comps\PositionComp.cs" />
     <Compile Include="Comps\ScaleComp.cs" />
-    <Compile Include="Comps\ScreenletComp.cs" />
+    <Compile Include="Comps\ScreenComp.cs" />
     <Compile Include="Comps\ShaderComp.cs" />
     <Compile Include="Comps\ShapeComp.cs" />
     <Compile Include="Comps\DrawComp.cs" />

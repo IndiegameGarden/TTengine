@@ -99,7 +99,7 @@ namespace TTengine.Comps
         {
             //return (pos * Screen.screenHeight - Center) * Zoom + Center; // TODO check? only for internal?
             // TODO optimize screenletcomp access
-            return pos * TTGame.Instance.ActiveScreen.GetComponent<ScreenletComp>().screenHeight;
+            return pos * TTGame.Instance.ActiveScreen.GetComponent<ScreenComp>().screenHeight;
         }
 
     }

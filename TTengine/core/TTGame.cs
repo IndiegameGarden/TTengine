@@ -97,7 +97,7 @@ namespace TTengine.Core
 
         protected override void Draw(GameTime gameTime)
         {
-            this.GraphicsDevice.Clear(ActiveScreen.GetComponent<ScreenletComp>().BackgroundColor);
+            this.GraphicsDevice.Clear(ActiveScreen.GetComponent<ScreenComp>().BackgroundColor);
 
             // loop all active channels and draw them.
             foreach (Channel c in ChannelMgr.Channels)
@@ -105,7 +105,7 @@ namespace TTengine.Core
                 if (!c.IsActive)
                     continue;
                 ActiveScreen = c.Screen;
-                var sc = ActiveScreen.GetComponent<ScreenletComp>();
+                var sc = ActiveScreen.GetComponent<ScreenComp>();
                 ActiveWorld = c.World;
 
                 spriteBatchesActive.Clear();

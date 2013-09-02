@@ -21,7 +21,7 @@ namespace TTengine.Core
             World = new EntityWorld();
             World.InitializeAll(true);
             // TODO other screen sizes - move creation to TTfactory
-            var ScreenComp = new ScreenletComp(true, game.GraphicsMgr.PreferredBackBufferWidth, game.GraphicsMgr.PreferredBackBufferHeight);
+            var ScreenComp = new ScreenComp(true, game.GraphicsMgr.PreferredBackBufferWidth, game.GraphicsMgr.PreferredBackBufferHeight);
             Screen = World.CreateEntity();
             Screen.AddComponent(ScreenComp);
             Screen.AddComponent(new DrawComp());

@@ -13,7 +13,7 @@ namespace TTengine.Core
      * a Gamelet that contains a screenletEntity buffer to which child Gamelets will render graphics.
      * FIXME comments
      */
-    public class ScreenletComp: Comp
+    public class ScreenComp: Comp
     {
         public Color BackgroundColor = Color.Black;
 
@@ -78,7 +78,7 @@ namespace TTengine.Core
         /// <summary>
         /// create a Screenlet of given dimensions with optionally a RenderTarget 
         /// </summary>
-        public ScreenletComp(bool hasRenderBuffer, int x, int y)
+        public ScreenComp(bool hasRenderBuffer, int x, int y)
         {
             screenWidth = x;
             screenHeight = y;
@@ -91,7 +91,7 @@ namespace TTengine.Core
         /// <summary>
         /// create a Screenlet of full-screenletEntity dimensions with optionally a RenderTarget 
         /// </summary>
-        public ScreenletComp(bool hasRenderBuffer)
+        public ScreenComp(bool hasRenderBuffer)
         {
             screenWidth = TTGame.Instance.GraphicsDevice.Viewport.Width;
             screenHeight = TTGame.Instance.GraphicsDevice.Viewport.Height;

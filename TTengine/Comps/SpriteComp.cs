@@ -65,7 +65,7 @@ namespace TTengine.Comps
         #region Properties
 
         // TODO can it be removed somehow - drawcomp has this ref.
-        public ScreenletComp Screen = TTGame.Instance.ActiveScreen.GetComponent<ScreenletComp>();
+        public ScreenComp Screen = TTGame.Instance.ActiveScreen.GetComponent<ScreenComp>();
 
         /// <summary>
         /// width of sprite in normalized coordinates

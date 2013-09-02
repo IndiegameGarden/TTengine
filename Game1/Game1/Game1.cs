@@ -45,7 +45,7 @@ namespace Game1
         {
             base.LoadContent();
 
-            ActiveScreen.GetComponent<ScreenletComp>().BackgroundColor = Color.White;
+            ActiveScreen.GetComponent<ScreenComp>().BackgroundColor = Color.White;
 
             // add several sprites             
             for (float x = 0.1f; x < 1.6f; x += 0.20f)
