@@ -13,23 +13,24 @@ using Artemis.System;
 
 namespace TTengine.Systems
 {
-    [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = 1)]
+    /// <summary>
+    /// System that handles rendering on Screenlets and from Screenlet to the main display.
+    /// Called last in the Draw() cycle. The ScreenletPreSystem is executed before any
+    /// drawing on the screens take place.
+    /// <seealso cref="ScreenletPreSystem"/>
+    /// </summary>
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = 2)]
     public class ScreenletSystem : EntityComponentProcessingSystem<ScreenComp, DrawComp>
     {
 
         public override void Process(Entity entity, ScreenComp screen, DrawComp drawComp)
         {
-            if (!screen.IsActive) return;
-            // FIXME code here !?
+            // check if present screen is the active one in this Draw() round
+            if (!screen.IsActive)
+                return;
+            if (TTGame.Instance.ActiveScreen != entity)
+                return;
             
-            // TODO 
-            //render // the buffer to screen
-            //spritebatch needed.
-            // FIXME what approach?
-            //screen.SpriteBatch.BeginParameterized();
-            //screen.SpriteBatch.Draw(screen.RenderTarget, screen.ScreenRectangle, drawComp.DrawColor);
-            //screen.SpriteBatch.End();
-
             // in this final round, end the drawing to this screenlet:
             TTSpriteBatch sb = screen.SpriteBatch;
             sb.End();

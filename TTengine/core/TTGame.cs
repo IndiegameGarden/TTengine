@@ -40,8 +40,6 @@ namespace TTengine.Core
 
         public ChannelManager ChannelMgr ;
 
-        List<TTSpriteBatch> spriteBatchesActive = new List<TTSpriteBatch>();
-
         public TTGame()
         {
             Instance = this;
@@ -105,50 +103,13 @@ namespace TTengine.Core
                 if (!c.IsActive)
                     continue;
                 ActiveScreen = c.Screen;
-                var sc = ActiveScreen.GetComponent<ScreenComp>();
                 ActiveWorld = c.World;
-
-                spriteBatchesActive.Clear();
-
-                this.GraphicsDevice.SetRenderTarget(sc.RenderTarget);
-                UseSharedSpriteBatch(sc.SpriteBatch);
-                ActiveWorld.Draw();
-                sc.SpriteBatch.End();
-
-                // close all remaining open effect-related spriteBatches
-                foreach (SpriteBatch sb in spriteBatchesActive)
-                    sb.End();
-                spriteBatchesActive.Clear();
-
-                // render
-                List<ScreenletSystem> l = ActiveWorld.SystemManager.GetSystems<ScreenletSystem>();
-                foreach (ScreenletSystem s in l)
-                {
-                    s.Process();
-                }
-
-                this.GraphicsDevice.SetRenderTarget(null);
+                if (c.IsVisible)
+                    ActiveWorld.Draw();
             }
 
             base.Draw(gameTime);
         }
-
-        /// <summary>
-        /// TODO something for a Mgr class?
-        /// let the caller indicate that it wants to draw using the given shared SpriteBatch, which
-        /// is not linked to any shader Effect. The SpriteBatch.Begin() method will be called if 
-        /// needed here and also SpriteBatch.End() will be called by TTengine later after use.
-        /// </summary>
-        /// <param name="spb">spritebatch to request use of</param>
-        internal void UseSharedSpriteBatch(TTSpriteBatch spb)
-        {
-            if (!spriteBatchesActive.Contains(spb))
-            {
-                spb.BeginParameterized();
-                spriteBatchesActive.Add(spb);
-            }
-        }
-
 
     }
 }

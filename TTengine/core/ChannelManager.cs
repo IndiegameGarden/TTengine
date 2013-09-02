@@ -45,8 +45,12 @@ namespace TTengine.Core
         public void ZapTo(Channel c)
         {
             foreach (Channel c2 in Channels)
+            {
                 c2.IsActive = false;
+                c2.IsVisible = false;
+            }
             c.IsActive = true;
+            c.IsVisible = true;
             // TODO: the soft fades etc
             _game.ActiveScreen = c.Screen;
             _game.ActiveWorld = c.World;

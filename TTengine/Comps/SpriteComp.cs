@@ -150,7 +150,7 @@ namespace TTengine.Comps
 
             // phase 1: check which items collide with me and add to list
             List<Gamelet> collItems = new List<Gamelet>();
-            foreach (Gamelet s in Screen.collisionObjects)
+            foreach (Gamelet s in screenlet.collisionObjects)
             {
                 if (s.Active  && s != Parent &&
                     CollidesWith(s) && s.Sprite.CollidesWith(Parent)) // a collision is detected

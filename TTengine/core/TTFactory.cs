@@ -79,6 +79,20 @@ namespace TTengine.Core
             return e;
         }
 
+        /// <summary>
+        /// Creates a Screenlet, which is an Entity that contains a screen (RenderBuffer) to 
+        /// which graphics can be rendered.
+        /// </summary>
+        /// <returns></returns>
+        public static Entity CreateScreenlet(EntityWorld world, int width, int height)
+        {
+            var sc = new ScreenComp(true, width, height);
+            var screenlet = world.CreateEntity();
+            screenlet.AddComponent(sc);
+            screenlet.AddComponent(new DrawComp());
+            return screenlet;
+        }
+
     }
 }
 

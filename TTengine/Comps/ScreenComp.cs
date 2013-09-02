@@ -9,10 +9,11 @@ using Microsoft.Xna.Framework.Content;
 
 namespace TTengine.Core
 {
-    /**
-     * a Gamelet that contains a screenletEntity buffer to which child Gamelets will render graphics.
-     * FIXME comments
-     */
+    /// <summary>
+    /// Component to turn an Entity into a 'Screenlet', which acts as a screen
+    /// (RenderBuffer) where other entities can draw themselves to.
+    /// <seealso cref="ScreenletSystem"/>
+    /// </summary>
     public class ScreenComp: Comp
     {
         public Color BackgroundColor = Color.Black;
@@ -49,7 +50,7 @@ namespace TTengine.Core
         /// Height of visible screenletEntity in pixels
         public int HeightPixels { get { return screenHeight; } }
 
-        /// Screen aspectratio 
+        /// screenlet aspectratio 
         public float AspectRatio { get { return aspectRatio;  } }
 
         /// returns a single Rectangle instance with screenletEntity size/shape
