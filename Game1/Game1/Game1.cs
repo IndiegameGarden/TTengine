@@ -51,7 +51,7 @@ namespace Game1
             var e = FrameRateCounter.Create(Color.Black);
 
             // add several sprites             
-            for (float x = 0.1f; x < 1.6f; x += 0.20f)
+            for (float x = 0.1f; x < 1.6f; x += 0.1f)
             {
                 for (float y = 0.1f; y < 1f; y += 0.1f)
                 {

@@ -44,7 +44,7 @@ namespace Game1.Factories
         /// <returns></returns>
         public Entity CreateBall(double radius)
         {
-            Entity e = TTFactory.CreateSpritelet("ball");
+            Entity e = TTFactory.CreateSpritelet("paul-hardman_circle-four");
             e.AddComponent(new ScaleComp(radius));
             return e;
         }
@@ -55,7 +55,7 @@ namespace Game1.Factories
         /// <returns></returns>
         public Entity CreateHyperActiveBall(Vector2 pos)
         {
-            var ball = CreateBall(0.8f + 0.6f * (float)rnd.NextDouble());
+            var ball = CreateBall(0.08f + 0.07f * (float)rnd.NextDouble());
 
             // position and velocity set
             ball.GetComponent<PositionComp>().Position = pos;
@@ -64,7 +64,7 @@ namespace Game1.Factories
             //ball.Timing.StartTime = 10f * (float)rnd.NextDouble();
 
             // duration of entity
-            ball.AddComponent(new ExpiresComp(1000f + 5f * (float)rnd.NextDouble()));
+            ball.AddComponent(new ExpiresComp(4 + 500 * rnd.NextDouble()));
 
             // blink                    
             //ball.AddComponent(new BlinkComp(0.3+5*rnd.NextDouble(),0.4+0.4*rnd.NextDouble()));
@@ -86,6 +86,9 @@ namespace Game1.Factories
             s.Amplitude = 0.25;
             s.Offset = 1;
             s.AttachTo(ball);            
+
+            // set different time offset initially, per ball (for the modifiers)
+            ball.GetComponent<ModifierComp>().SimTime = 10 * rnd.NextDouble();
 
             ball.Refresh();
             return ball;
