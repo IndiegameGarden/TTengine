@@ -61,23 +61,20 @@ namespace TTengine.Systems
         protected TTSpriteBatch activeSpriteBatch;
 
         /// <summary>Override to implement code that gets executed when systems are initialized.</summary>
-        public override void LoadContent()
+        protected override void Begin()
         {
-        }
-
-        protected override void ProcessEntities(System.Collections.Generic.IDictionary<int, Entity> entities)
-        {
+            base.Begin();
             activeSpriteBatch = TTGame.Instance.ActiveScreen.GetComponent<ScreenComp>().SpriteBatch;
-            base.ProcessEntities(entities);
         }
 
         /// <summary>Processes the specified entity.</summary>
         /// <param name="entity">The entity.</param>
         public override void Process(Entity entity, TextComp textComp, PositionComp posComp, DrawComp drawComp)
         {
+            textComp.UpdateComp(this);
             if (drawComp.IsVisible)
             {
-                // update drawpos TODO - should one system do this, now it's two?
+                // update drawpos FIXME - should one system do this, now it's two?
                 drawComp.DrawPosition = drawComp.ToPixels(posComp.Position + posComp.PositionModifier);
 
                 // draw sprite

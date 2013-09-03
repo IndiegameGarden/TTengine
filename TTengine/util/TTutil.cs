@@ -13,7 +13,7 @@ namespace TTengine.Util
     public class TTutil
     {
         /// <summary>
-        /// Rounds the components of Vector2 in-place
+        /// Rounds the components of a Vector2 in-place
         /// </summary>
         /// <param name="input">Vector2 to round</param>
         public static void Round(ref Vector2 input)
@@ -22,6 +22,11 @@ namespace TTengine.Util
             input.Y = (float)Math.Round(input.Y);
         }
 
+        /// <summary>
+        /// Count the number of lines in a string
+        /// </summary>
+        /// <param name="s">The string</param>
+        /// <returns>The linecount, or 0 if empty string</returns>
         public static int LineCount(string s)
         {
             if (s.Length == 0)

@@ -47,6 +47,9 @@ namespace Game1
 
             ActiveScreen.GetComponent<ScreenComp>().BackgroundColor = Color.White;
 
+            // add framerate counter
+            var e = FrameRateCounter.Create(Color.Black);
+
             // add several sprites             
             for (float x = 0.1f; x < 1.6f; x += 0.20f)
             {

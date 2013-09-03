@@ -30,7 +30,7 @@ namespace TTengine.Core
         }
 
         /// <summary>
-        /// Create a Gamelet, which is an Entity with position and velocity but no shape/drawability (yet).
+        /// Create a Gamelet, which is an Entity with position and velocity, but no shape/drawability (yet).
         /// </summary>
         /// <returns></returns>
         public static Entity CreateGamelet()
@@ -43,7 +43,19 @@ namespace TTengine.Core
         }
 
         /// <summary>
-        /// Create a Spritelet, which is a collidable, moveable sprite in TTengine
+        /// Create a Drawlet, which is a moveable, drawable Entity
+        /// </summary>
+        /// <returns></returns>
+        public static Entity CreateDrawlet()
+        {
+            Entity e = CreateGamelet();
+            e.AddComponent(new DrawComp());
+            e.Refresh();
+            return e;
+        }
+
+        /// <summary>
+        /// Create a Spritelet, which is a collidable, moveable sprite 
         /// </summary>
         /// <param name="graphicsFile">The content graphics file with or without extension. If
         /// extension given eg "ball.png", the uncompiled file will be loaded at runtime. If no extension
@@ -51,14 +63,11 @@ namespace TTengine.Core
         /// <returns></returns>
         public static Entity CreateSpritelet(string graphicsFile)
         {
-            Entity e = CreateEntity();
-            e.AddComponent(new PositionComp());
-            e.AddComponent(new VelocityComp());
+            Entity e = CreateDrawlet();
             var spriteComp = new SpriteComp(graphicsFile);
             e.AddComponent(spriteComp);
             float radius = spriteComp.Width/2.0f;
             e.AddComponent(new ShapeComp(radius));
-            e.AddComponent(new DrawComp());
             e.Refresh();
             return e;
         }
@@ -70,9 +79,8 @@ namespace TTengine.Core
         /// <returns></returns>
         public static Entity CreateTextlet(string text)
         {
-            Entity e = CreateGamelet();
+            Entity e = CreateDrawlet();
             e.AddComponent(new ScaleComp());
-            e.AddComponent(new DrawComp());
             TextComp tc = new TextComp(text);
             tc.Font = _game.Content.Load<SpriteFont>("TTDebugFont"); // FIXME allow other fonts
             e.AddComponent(tc);

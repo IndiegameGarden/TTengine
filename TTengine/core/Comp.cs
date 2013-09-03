@@ -24,7 +24,7 @@ namespace TTengine.Core
         /// <param name="sys"></param>
         internal void UpdateComp(EntitySystem sys)
         {
-            // TODO optimize with the fixed ticks-to-seconds scale factor?
+            // TODO FIXME optimize with the fixed ticks-to-seconds scale factor? - get readymade from another location/class/ttgame?
             Dt = TimeSpan.FromTicks(sys.EntityWorld.Delta).TotalSeconds;
             SimTime += Dt;                
         }

@@ -4,37 +4,51 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 ﻿using TTengine.Core;
+﻿using TTengine.Comps;
+﻿using TTengine.Modifiers;
+using Artemis;
 
 namespace TTengine.Util
 {
-    /**
-     * shows a framerate counter on screenletEntity (FPS) calculated
-     * from timing of draw/upd calls.
-     */
-    public class FrameRateCounter
+    /// <summary>
+    /// shows a framerate counter on screen (shows FPS) calculated
+    /// from timing of draw/upd calls.
+    /// </summary>
+    public class FrameRateCounter: IScript
     {
-        /*
-        SpriteFont spriteFont;
+        TextComp textComp;
         int frameRate = 0;
         int frameCounter = 0;
         int frameCounterTotal = 0;
         TimeSpan elapsedTime = TimeSpan.Zero;
 
-        public FrameRateCounter(): this(0.5f, 0.01f)
+        /// <summary>
+        /// Create a new FrameRateCounter script that modifies the text in the
+        /// TextComp of the Entity, to show the FPS count.
+        /// </summary>
+        /// <param name="comp">The TextComp to modify</param>
+        public FrameRateCounter(TextComp comp)
         {
-            //
+            this.textComp = comp;
         }
 
-        public FrameRateCounter(float x, float y)
-        {         
-            DrawC.LayerDepth = 0.0f;
-            Motion.Position = new Vector2(x, y);
-            spriteFont = TTengineMaster.ActiveGame.Content.Load<SpriteFont>(@"TTFrameRateCounter");
+        /// <summary>
+        /// Creates a new FrameRateCounter. TODO: screen position set.
+        /// </summary>
+        /// <returns></returns>
+        public static Entity Create(Color textColor)
+        {
+            var e = TTFactory.CreateTextlet("##");
+            e.GetComponent<PositionComp>().Position = new Vector2(0.03f, 0.01f);
+            e.GetComponent<DrawComp>().DrawColor = textColor;
+            var m = new ScriptComp(new FrameRateCounter(e.GetComponent<TextComp>()));
+            e.AddComponent(m);
+            e.Refresh();
+            return e;
         }
 
-        protected void OnUpdate(ref UpdateParams ctx)
-        {
-            elapsedTime += TimeSpan.FromSeconds(ctx.Dt);
+        public void OnUpdate(ScriptContext ctx){
+            elapsedTime += TimeSpan.FromSeconds(ctx.ScriptComp.Dt);
 
             if (elapsedTime > TimeSpan.FromSeconds(1))
             {
@@ -43,21 +57,17 @@ namespace TTengine.Util
                 frameCounter = 0;
             }
         }
-
-        public void OnDraw(ref DrawParams ctx)
+        
+        public void OnDraw(ScriptContext ctx)
         {
             frameCounter++;
             frameCounterTotal++;
             int frameRateAvg = 0;
-            if (SimTime > 0f)
-                frameRateAvg = (int)(frameCounterTotal / SimTime);
+            if (ctx.ScriptComp.SimTime > 0)
+                frameRateAvg = (int)(frameCounterTotal / ctx.ScriptComp.SimTime);
             string fps = string.Format("{0} fps [{1}]", frameRate, frameRateAvg );
-            Vector2 pos = Motion.PositionAbsZoomedPixels;
-            DrawC.MySpriteBatch.DrawString(spriteFont, fps, pos,
-                        Color.Black, 0f, Vector2.Zero, 1f, SpriteEffects.None, DrawC.LayerDepth - 0.00001f);
-            DrawC.MySpriteBatch.DrawString(spriteFont, fps, pos,
-                        DrawC.DrawColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, DrawC.LayerDepth);
+            textComp.Text = fps;
         }
-         */
+
     }
 }

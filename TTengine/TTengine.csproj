@@ -107,6 +107,7 @@
     <Compile Include="Comps\PositionComp.cs" />
     <Compile Include="Comps\ScaleComp.cs" />
     <Compile Include="Comps\ScreenComp.cs" />
+    <Compile Include="Comps\ScriptComp.cs" />
     <Compile Include="Comps\ShaderComp.cs" />
     <Compile Include="Comps\ShapeComp.cs" />
     <Compile Include="Comps\DrawComp.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="Systems\BTAISystem.cs" />
     <Compile Include="Systems\BlinkSystem.cs" />
     <Compile Include="Systems\CollisionSystem.cs" />
+    <Compile Include="Systems\ScriptSystems.cs" />
     <Compile Include="Systems\ScreenletPreSystem.cs" />
     <Compile Include="Systems\ScreenletSystem.cs" />
     <Compile Include="Systems\TextRenderSystem.cs" />
@@ -150,7 +152,6 @@
     <Compile Include="TreeSharp\Switch.cs" />
     <Compile Include="TreeSharp\TreeExample.cs" />
     <Compile Include="TreeSharp\Wait.cs" />
-    <Compile Include="Util\DebugMessage.cs" />
     <Compile Include="Util\MsgBox.cs" />
     <Compile Include="Util\FrameRateCounter.cs" />
     <Compile Include="Util\RandomMath.cs" />
