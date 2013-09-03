@@ -102,7 +102,7 @@ namespace Game1.Factories
         }
 
         public Entity CreateMovingTextlet(Vector2 pos, string text) {
-            var t = TTFactory.CreateTextlet("TTengine! @#$1234");
+            var t = TTFactory.CreateTextlet(text);
             t.GetComponent<PositionComp>().Position = pos;
             t.GetComponent<DrawComp>().DrawColor = Color.Black;
             t.GetComponent<VelocityComp>().Velocity = 0.2f * new Vector2((float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f);

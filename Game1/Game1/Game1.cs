@@ -26,6 +26,7 @@ namespace Game1
     public class Game1 : TTGame
     {
         public GameFactory Factory;
+        Channel titleChannel, gameChannel;
 
         public Game1()
         {
@@ -41,28 +42,57 @@ namespace Game1
             base.Initialize();
         }
 
+        protected override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+            KeyboardState kb = Keyboard.GetState();
+            if (kb.IsKeyDown(Keys.Space))
+            {
+                ChannelMgr.ZapTo(titleChannel);
+            }
+            else
+            {
+                ChannelMgr.ZapTo(gameChannel);
+            }
+        }
+
         protected override void LoadContent()
         {
             base.LoadContent();
 
+            // title channel
+            titleChannel = ChannelMgr.CreateChannel();
+            ChannelMgr.ZapTo(titleChannel); // TODO function to create on it without seeing it.
+            ActiveScreen.GetComponent<ScreenComp>().BackgroundColor = Color.Black;
+
+            // add framerate counter
+            FrameRateCounter.Create(Color.White);
+
+            var t = Factory.CreateMovingTextlet(new Vector2(0.5f, 0.5f), "Title Screen");
+            t.GetComponent<DrawComp>().DrawColor = Color.LightGoldenrodYellow;
+            t.GetComponent<ScaleComp>().Scale = 4;
+
+
+            // game channel
+            gameChannel = ChannelMgr.CreateChannel();
+            ChannelMgr.ZapTo(gameChannel); 
             ActiveScreen.GetComponent<ScreenComp>().BackgroundColor = Color.White;
 
             // add framerate counter
-            var e = FrameRateCounter.Create(Color.Black);
+            FrameRateCounter.Create(Color.Black);
 
             // add several sprites             
             for (float x = 0.1f; x < 1.6f; x += 0.1f)
             {
                 for (float y = 0.1f; y < 1f; y += 0.1f)
                 {
-                    var b = Factory.CreateHyperActiveBall(new Vector2(x,y));
-                    var t = Factory.CreateMovingTextlet(new Vector2(x,y),"This is the\nTTengine test. !@#$1234");
+                    Factory.CreateHyperActiveBall(new Vector2(x,y));
+                    Factory.CreateMovingTextlet(new Vector2(x,y),"This is the\nTTengine test. !@#$1234");
                     //break;
                 }
                 //break;
             }
-
-        }
+        }       
 
     }
 }
