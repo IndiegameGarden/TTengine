@@ -1,8 +1,13 @@
 
-TTengine is a 2D game engine for C# XNA 4.0.
+TranceTrance Engine (TTengine) is a 2D game engine for C# XNA 4.0.
 
-Distributed under a FreeBSD license mostly. For license conditions see LICENSE.txt 
-and the copyright/license notices in individual source files.
+It uses an Entity-Component System design based on the Artemis C# framework, which
+source is included. Behaviour-Tree based AI is based on the TreeSharp framework,
+also with source included. Sound and music is supported through the music engine
+package, which uses the FMOD sound library for audio rendering.
+
+For license conditions see LICENSE.txt 
+and copyright/license notices in individual source files and packages.
 
 Branches
 version-1.x  Versions 1.x, used in TTR

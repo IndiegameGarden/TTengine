@@ -4,7 +4,7 @@ Consult http://www.fmod.org/ for license conditions.
 
 ---------------------------
 
-(License for other files:)
+(License for other files where License is not indicated in source file header:)
 
 Copyright (c) 2010-2013, TranceTrance.com and its domain owner
 All rights reserved.
