@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Artemis;
+using Artemis.Interface;
 using TTengine.Core;
 using TTengine.Comps;
 
@@ -28,7 +29,7 @@ namespace TTengine.Modifiers
     {
         public delegate void ModifyEntityDelegate(Entity entity, double value);
         public delegate void ModifyModifierDelegate(Modifier mod, double value);
-        public delegate void ModifyCompDelegate(Comp comp, double value);
+        public delegate void ModifyCompDelegate(IComponent comp, double value);
 
         /// <summary>Can be used to check the type of Modifier</summary>
         public ModifierType Type;
@@ -44,7 +45,7 @@ namespace TTengine.Modifiers
         // internal storage of object to modify
         // Entity not needed to store: this is passed as context at runtime.
         private Modifier modifierToModify;
-        private Comp compToModify;
+        private IComponent compToModify;
 
         /// <summary>
         /// Create a new Entity Modifier that can only modify things within a single Entity.
@@ -63,7 +64,7 @@ namespace TTengine.Modifiers
             this.modifierToModify = modifierToModify;
         }
 
-        public Modifier(ModifyCompDelegate code, Comp compToModify)
+        public Modifier(ModifyCompDelegate code, IComponent compToModify)
         {
             this.Type = ModifierType.COMP_MODIFIER;
             this.ModifyCompCode = code;

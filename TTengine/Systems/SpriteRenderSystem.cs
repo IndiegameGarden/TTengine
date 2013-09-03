@@ -74,10 +74,11 @@ namespace TTengine.Systems
             {
                 // update drawpos
                 drawComp.DrawPosition = drawComp.ToPixels(posComp.Position + posComp.PositionModifier);
+                spriteComp.DrawCenter = drawComp.ToPixels(spriteComp.Center); // TODO check
 
                 // draw sprite
                 activeSpriteBatch.Draw(spriteComp.Texture, drawComp.DrawPosition, null, drawComp.DrawColor,
-                    0f, spriteComp.DrawCenter, drawComp.DrawScale, SpriteEffects.None, drawComp.LayerDepth);
+                    drawComp.DrawRotation, spriteComp.DrawCenter, drawComp.DrawScale, SpriteEffects.None, drawComp.LayerDepth);
             }
         }
 

@@ -81,6 +81,9 @@ namespace TTengine.Comps
         /// <summary>Scale to use in Draw() calls</summary>
         public float DrawScale = 1.0f;
 
+        /// <summary>Rotation to use in Draw() calls</summary>
+        public float DrawRotation = 0f;
+
         /// <summary>
         /// position in pixels for drawing, directly usable in Draw() calls
         /// </summary>

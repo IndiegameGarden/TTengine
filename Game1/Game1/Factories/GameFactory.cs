@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Artemis;
+using Artemis.Interface;
 using TreeSharp;
 using TTengine.Core;
 using TTengine.Comps;
@@ -81,11 +82,16 @@ namespace Game1.Factories
                 //);
             m.AttachTo(ball); 
             
+            // another adapting scale with sine rhythm
             var s = new SineModifier(MyScaleModifier2);
             s.Frequency = 0.5;
             s.Amplitude = 0.25;
             s.Offset = 1;
             s.AttachTo(ball);            
+
+            // modifier to adapt rotation
+            var r = new Modifier(MyRotateModifier, ball.GetComponent<DrawComp>());
+            r.AttachTo(ball);
 
             // set different time offset initially, per ball (for the modifiers)
             ball.GetComponent<ModifierComp>().SimTime = 10 * rnd.NextDouble();
@@ -111,6 +117,11 @@ namespace Game1.Factories
         public void MyScaleModifier2(Entity entity, double value)
         {
             entity.GetComponent<ScaleComp>().ScaleModifier *= value;
+        }
+
+        public void MyRotateModifier(IComponent drawComp, double value)
+        {
+            ((DrawComp)drawComp).DrawRotation = (float) value;
         }
     }
 }
