@@ -58,24 +58,51 @@ namespace TTengine.Systems
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = 1)]
     public class SpriteRenderSystem : EntityComponentProcessingSystem<SpriteComp, PositionComp, DrawComp>
     {
-        
+
+        protected ScreenComp activeScreen = null;
+
+        protected override void Begin()
+        {
+            base.Begin();
+            activeScreen = TTGame.Instance.DrawScreen;
+        }
+
         /// <summary>Processes the specified entity.</summary>
         /// <param name="entity">The entity.</param>
         public override void Process(Entity entity, SpriteComp spriteComp, PositionComp posComp, DrawComp drawComp)
         {
             if (drawComp.IsVisible)
             {
-                // update drawpos
-                drawComp.DrawPosition = drawComp.ToPixels(posComp.Position + posComp.PositionModifier);
-                spriteComp.DrawCenter = drawComp.ToPixels(spriteComp.Center); // TODO check
+                ScreenComp screen = drawComp.Screen;
 
-                TTSpriteBatch sb = spriteComp.Screen.SpriteBatch;
+                // if no specific screen...
+                if (screen == null)
+                    screen = activeScreen;
+                // update drawpos
+                drawComp.DrawPosition = ToPixels(screen, posComp.Position + posComp.PositionModifier);
+                spriteComp.DrawCenter = ToPixels(screen, spriteComp.Center); // TODO check
+
+                TTSpriteBatch sb = screen.SpriteBatch;
 
                 // draw sprite
                 sb.Draw(spriteComp.Texture, drawComp.DrawPosition, null, drawComp.DrawColor,
                     drawComp.DrawRotation, spriteComp.DrawCenter, drawComp.DrawScale, SpriteEffects.None, drawComp.LayerDepth);
             }
         }
+
+        /// <summary>
+        /// translate a float relative coordinate to pixel coordinates
+        /// </summary>
+        /// <param name="pos">relative coordinate to translate</param>
+        /// <returns>translated to pixels coordinate</returns>
+        protected Vector2 ToPixels(ScreenComp screen, Vector2 pos)
+        {
+            //return (pos * screenlet.screenHeight - Center) * Zoom + Center; // TODO check? only for internal?
+            // TODO optimize screenletcomp access
+            return pos * screen.screenHeight;
+        }
+
+
 
     }
 }

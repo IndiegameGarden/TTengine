@@ -17,9 +17,8 @@ namespace TTengine.Comps
     /// </summary>
     public class DrawComp: IComponent
     {
-        public DrawComp(ScreenComp screenComp)
+        public DrawComp()
         {
-            this.Screen = screenComp;
         }
 
         #region Internal vars
@@ -38,6 +37,10 @@ namespace TTengine.Comps
 
         #endregion
 
+        /// <summary>
+        /// Screen to draw this Entity exclusively to, or null in case drawn to any screen that
+        /// is asked by the TTGame. By default null.
+        /// </summary>
         public ScreenComp Screen;
 
         /// <summary>Flag whether the Entity is visible (i.e. is being drawn or not)</summary>
@@ -93,19 +96,6 @@ namespace TTengine.Comps
         public Vector2 DrawPosition
         {
             get; set;
-        }
-
-        /// <summary>
-        /// FIXME move away to a component?
-        /// translate a float screenletEntity coordinate to pixel coordinates, in the context of this Gamelet
-        /// </summary>
-        /// <param name="pos">relative coordinate to translate</param>
-        /// <returns>translated to pixels coordinate</returns>
-        public Vector2 ToPixels(Vector2 pos)
-        {
-            //return (pos * screenlet.screenHeight - Center) * Zoom + Center; // TODO check? only for internal?
-            // TODO optimize screenletcomp access
-            return pos * this.Screen.screenHeight;
         }
 
     }

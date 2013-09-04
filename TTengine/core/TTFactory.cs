@@ -50,7 +50,7 @@ namespace TTengine.Core
         public static Entity CreateDrawlet()
         {
             Entity e = CreateGamelet();
-            e.AddComponent(new DrawComp(TTGame.Instance.BuildScreen.GetComponent<ScreenComp>()));
+            e.AddComponent(new DrawComp());
             e.Refresh();
             return e;
         }
@@ -96,7 +96,7 @@ namespace TTengine.Core
             var sc = new ScreenComp(true, width, height);
             var screenlet = world.CreateEntity();
             screenlet.AddComponent(sc);
-            screenlet.AddComponent(new DrawComp(sc));
+            screenlet.AddComponent(new DrawComp());
             return screenlet;
         }
 

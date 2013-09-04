@@ -67,11 +67,6 @@ namespace TTengine.Comps
         #region Properties
 
         /// <summary>
-        /// reference to the screen to which the sprite will be drawn
-        /// </summary>
-        public ScreenComp Screen;
-
-        /// <summary>
         /// width of sprite in pixels
         /// </summary>
         public float Width { get { return width; } private set { width = value; } }
@@ -115,8 +110,8 @@ namespace TTengine.Comps
         {
             if (texture != null)
             {
-                Height = ToNormalizedNS(texture.Height);
-                Width = ToNormalizedNS(texture.Width);
+                Height = texture.Height;
+                Width = texture.Width;
             }
             if (fileName != null && texture == null)
                 LoadTexture(fileName);
@@ -129,55 +124,6 @@ namespace TTengine.Comps
         protected void LoadTexture(string textureFilename)
         {
             Texture = TTGame.Instance.Content.Load<Texture2D>(textureFilename);
-        }
-
-        /*
-        public override void OnDraw(ref DrawParams ctx)
-        {
-            if (texture != null && Parent.IsVisible && Parent.Active )
-            {                
-                Parent.DrawC.MySpriteBatch.Draw(texture, Parent.DrawC.DrawPosition, null, Parent.DrawC.DrawColor,
-                       Parent.Motion.RotateAbs, DrawCenter, Parent.DrawC.DrawScale, SpriteEffects.None, Parent.DrawC.LayerDepth);
-            }
-        }
-         * */
-
-        /*
-        /// run collision detection of this against all other relevant Spritelets
-        internal void HandleCollisions(UpdateParams ctx)
-        {
-            if (!Parent.Active || !Parent.IsVisible) return;
-
-            // phase 1: check which items collide with me and add to list
-            List<Gamelet> collItems = new List<Gamelet>();
-            foreach (Gamelet s in screenlet.collisionObjects)
-            {
-                if (s.Active  && s != Parent &&
-                    CollidesWith(s) && s.Sprite.CollidesWith(Parent)) // a collision is detected
-                {
-                    collItems.Add(s);
-                }
-            }
-
-            // phase 2: process the colliding items, to see if they are newly colliding or not
-            foreach (Gamelet s in collItems)
-            {
-                if (!lastCollisionsList.Contains(s)) // if was not previously colliding, in previous round...
-                {
-                    // ... notify the collision methods
-                    Parent.OnCollision(s);
-                    Parent.OnCollideEventNotification(s);
-                }
-            }
-
-            // phase 3: store list of colliding items for next round
-            lastCollisionsList = collItems;
-        }
-         */
-
-        internal float ToNormalizedNS(float coord)
-        {
-            return coord * this.Screen.scalingToNormalized;
         }
 
         /// <summary>

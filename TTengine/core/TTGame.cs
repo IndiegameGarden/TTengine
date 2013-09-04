@@ -38,6 +38,8 @@ namespace TTengine.Core
 
         public Entity BuildScreen;
 
+        public ScreenComp DrawScreen;
+
         public ChannelManager ChannelMgr ;
 
         public TTGame()
@@ -98,6 +100,7 @@ namespace TTengine.Core
             {
                 if (!c.IsActive || !c.IsVisible)
                     continue;
+                DrawScreen = c.Screen.GetComponent<ScreenComp>();
                 c.World.Draw();
             }
             base.Draw(gameTime);
