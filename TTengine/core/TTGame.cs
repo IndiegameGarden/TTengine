@@ -33,9 +33,6 @@ namespace TTengine.Core
 
         public MusicEngine MusicEngine;
 
-        /// <summary>The Artemis entity world</summary>
-        public EntityWorld ActiveWorld;
-
         /// <summary>The Artemis entity world that is currently used for building/creating new Entities in</summary>
         public EntityWorld BuildWorld;
 
@@ -90,8 +87,7 @@ namespace TTengine.Core
                 if (!c.IsActive)
                     continue;
                 ActiveScreen = c.Screen;
-                ActiveWorld = c.World;
-                ActiveWorld.Update();
+                c.World.Update();
             }
             base.Update(gameTime);
         }
@@ -106,9 +102,8 @@ namespace TTengine.Core
                 if (!c.IsActive)
                     continue;
                 ActiveScreen = c.Screen;
-                ActiveWorld = c.World;
                 if (c.IsVisible)
-                    ActiveWorld.Draw();
+                    c.World.Draw();
             }
 
             base.Draw(gameTime);

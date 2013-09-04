@@ -63,7 +63,6 @@ namespace TTengine.Core
             // TODO: the soft fades etc
             this.SelectedChannel = c;
             _game.ActiveScreen = c.Screen;
-            _game.ActiveWorld = c.World;
         }
 
         /// <summary>
