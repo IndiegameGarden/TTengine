@@ -36,6 +36,9 @@ namespace TTengine.Core
         /// <summary>The Artemis entity world</summary>
         public EntityWorld ActiveWorld;
 
+        /// <summary>The Artemis entity world that is currently used for building/creating new Entities in</summary>
+        public EntityWorld BuildWorld;
+
         public Entity ActiveScreen;
 
         public ChannelManager ChannelMgr ;

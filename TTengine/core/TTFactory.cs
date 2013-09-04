@@ -21,12 +21,13 @@ namespace TTengine.Core
         }
 
         /// <summary>
-        /// Create simplest Entity without components
+        /// Create simplest Entity without components within the EntityWorld currently selected
+        /// for Entity construction
         /// </summary>
         /// <returns></returns>
         public static Entity CreateEntity()
         {
-            return _game.ActiveWorld.CreateEntity();
+            return _game.BuildWorld.CreateEntity();
         }
 
         /// <summary>

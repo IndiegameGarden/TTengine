@@ -11,6 +11,8 @@ namespace TTengine.Core
     /// </summary>
     public class ChannelManager
     {
+        public Channel SelectedChannel;
+
         protected TTGame _game = null;
 
         internal ChannelManager(TTGame game)
@@ -22,26 +24,33 @@ namespace TTengine.Core
 
 
         /// <summary>
-        /// Create a new Channel, registers it within the current TTGame.
+        /// Create a new Channel, registers it within the current TTGame, and
+        /// selects it as the default TTGame.BuildWorld.
         /// </summary>
         /// <returns></returns>
         public Channel CreateChannel()
         {
             Channel c = new Channel(_game);
-            _game.ChannelMgr.Add(c);
+            this.Add(c);
+            _game.BuildWorld = c.World;
+            if (SelectedChannel == null)
+                SelectedChannel = c;
             return c;
         }
 
-        public void Add(Channel c)
+        // TODO: check when needed to access from outside.
+        protected void Add(Channel c)
         {
             if (!Channels.Contains(c))
                 Channels.Add(c);
         }
 
         /// <summary>
-        /// 'zaps' to a Channel i.e. makes it the active one, de-activating any others.
+        /// 'zaps' to a Channel i.e. makes it the active one for rendering, de-activating any others.
+        /// This does not change the TTGame.BuildWorld, which is the world in which new Entities
+        /// are created.
         /// </summary>
-        /// <param name="c"></param>
+        /// <param name="c">Channel to zap to</param>
         public void ZapTo(Channel c)
         {
             foreach (Channel c2 in Channels)
@@ -52,9 +61,20 @@ namespace TTengine.Core
             c.IsActive = true;
             c.IsVisible = true;
             // TODO: the soft fades etc
+            this.SelectedChannel = c;
             _game.ActiveScreen = c.Screen;
             _game.ActiveWorld = c.World;
         }
 
+        /// <summary>
+        /// selects the Channel as the current default channel to build in, to create new
+        /// Entities in. Any Factories will then use the Channel's World as the world to
+        /// build in.
+        /// </summary>
+        /// <param name="c"></param>
+        public void BuildIn(Channel c)
+        {
+            _game.BuildWorld = c.World;
+        }
     }
 }
