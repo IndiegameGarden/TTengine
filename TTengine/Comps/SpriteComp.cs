@@ -31,7 +31,7 @@ namespace TTengine.Comps
         /// <param name="screenComp">reference to the ScreenComp to which this sprite will be drawn,
         /// to learn information about screen size.</param>
         /// <exception cref="InvalidOperationException">when invalid image file is attempted to load</exception>
-        public SpriteComp(string fileName, ScreenComp screenComp)
+        public SpriteComp(string fileName)
         {
             if (fileName.Contains("."))
             {
@@ -44,7 +44,7 @@ namespace TTengine.Comps
         /// <summary>
         /// create new spritelet with given Texture2D texture, or null if no texture yet
         /// </summary>
-        public SpriteComp(Texture2D texture, ScreenComp screenComp)
+        public SpriteComp(Texture2D texture)
         {
             this.texture = texture;
             InitTextures();
@@ -72,23 +72,23 @@ namespace TTengine.Comps
         public ScreenComp Screen;
 
         /// <summary>
-        /// width of sprite in normalized coordinates
+        /// width of sprite in pixels
         /// </summary>
-        public float Width { get { return width; } set { width = value; } }
+        public float Width { get { return width; } private set { width = value; } }
 
         /// <summary>
-        /// height of sprite in normalized coordinates
+        /// height of sprite in pixels
         /// </summary>
-        public float Height { get { return height; } set { height = value; } }
+        public float Height { get { return height; } private set { height = value; } }
 
         /// <summary>
-        /// Center of sprite expressed in relative width/height coordinates, where 1.0 is full width or full height.
-        /// By default the center of the sprite is chosen in the middle.
+        /// Center of sprite expressed in relative width/height coordinates, where 1.0 is full width or full height
+        /// of the sprite. By default the center of the sprite is chosen in the middle.
         /// </summary>
         public Vector2 Center = new Vector2(0.5f, 0.5f); 
 
         /// <summary>
-        /// calculates a center coordinate for direct use in Draw() calls, expressed in pixels
+        /// based on Center this is a center coordinate for direct use in Draw() calls, expressed in pixels
         /// </summary>
         public Vector2 DrawCenter = Vector2.Zero;
 
@@ -100,11 +100,7 @@ namespace TTengine.Comps
             set
             {
                 texture = value;
-                if (texture != null)
-                {
-                    Height = ToNormalizedNS(texture.Height);
-                    Width = ToNormalizedNS(texture.Width);
-                }
+                InitTextures();
             }
             get
             {

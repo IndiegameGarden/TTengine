@@ -56,7 +56,7 @@ namespace TTengine.Core
         }
 
         /// <summary>
-        /// Create a Spritelet, which is a collidable, moveable sprite 
+        /// Create a Spritelet, which is a moveable sprite 
         /// </summary>
         /// <param name="graphicsFile">The content graphics file with or without extension. If
         /// extension given eg "ball.png", the uncompiled file will be loaded at runtime. If no extension
@@ -65,10 +65,8 @@ namespace TTengine.Core
         public static Entity CreateSpritelet(string graphicsFile)
         {
             Entity e = CreateDrawlet();
-            var spriteComp = new SpriteComp(graphicsFile,TTGame.Instance.BuildScreen.GetComponent<ScreenComp>());
+            var spriteComp = new SpriteComp(graphicsFile);
             e.AddComponent(spriteComp);
-            float radius = spriteComp.Width/2.0f;
-            e.AddComponent(new ShapeComp(radius));
             e.Refresh();
             return e;
         }
