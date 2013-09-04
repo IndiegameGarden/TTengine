@@ -36,7 +36,7 @@ namespace TTengine.Core
         /// <summary>The Artemis entity world that is currently used for building/creating new Entities in</summary>
         public EntityWorld BuildWorld;
 
-        public Entity ActiveScreen;
+        public Entity BuildScreen;
 
         public ChannelManager ChannelMgr ;
 
@@ -86,7 +86,6 @@ namespace TTengine.Core
             {
                 if (!c.IsActive)
                     continue;
-                ActiveScreen = c.Screen;
                 c.World.Update();
             }
             base.Update(gameTime);
@@ -94,18 +93,13 @@ namespace TTengine.Core
 
         protected override void Draw(GameTime gameTime)
         {
-            //this.GraphicsDevice.Clear(ActiveScreen.GetComponent<ScreenComp>().BackgroundColor);
-
             // loop all active channels and draw them.
             foreach (Channel c in ChannelMgr.Channels)
             {
-                if (!c.IsActive)
+                if (!c.IsActive || !c.IsVisible)
                     continue;
-                ActiveScreen = c.Screen;
-                if (c.IsVisible)
-                    c.World.Draw();
+                c.World.Draw();
             }
-
             base.Draw(gameTime);
         }
 

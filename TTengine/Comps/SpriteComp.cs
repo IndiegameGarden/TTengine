@@ -28,8 +28,10 @@ namespace TTengine.Comps
         /// </summary>
         /// <param name="fileName">name of XNA content file (from content project) without file extension e.g. "test", or
         /// name of bitmap file to load including extension e.g. "test.png"</param>
+        /// <param name="screenComp">reference to the ScreenComp to which this sprite will be drawn,
+        /// to learn information about screen size.</param>
         /// <exception cref="InvalidOperationException">when invalid image file is attempted to load</exception>
-        public SpriteComp(string fileName)
+        public SpriteComp(string fileName, ScreenComp screenComp)
         {
             if (fileName.Contains("."))
             {
@@ -42,7 +44,7 @@ namespace TTengine.Comps
         /// <summary>
         /// create new spritelet with given Texture2D texture, or null if no texture yet
         /// </summary>
-        public SpriteComp(Texture2D texture)
+        public SpriteComp(Texture2D texture, ScreenComp screenComp)
         {
             this.texture = texture;
             InitTextures();
@@ -64,8 +66,10 @@ namespace TTengine.Comps
 
         #region Properties
 
-        // TODO can it be removed somehow - drawcomp has this ref.
-        public ScreenComp Screen = TTGame.Instance.ActiveScreen.GetComponent<ScreenComp>();
+        /// <summary>
+        /// reference to the screen to which the sprite will be drawn
+        /// </summary>
+        public ScreenComp Screen;
 
         /// <summary>
         /// width of sprite in normalized coordinates
@@ -177,7 +181,7 @@ namespace TTengine.Comps
 
         internal float ToNormalizedNS(float coord)
         {
-            return coord * Screen.scalingToNormalized;
+            return coord * this.Screen.scalingToNormalized;
         }
 
         /// <summary>

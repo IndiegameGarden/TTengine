@@ -28,14 +28,12 @@ namespace TTengine.Systems
             // check if present screenComp is the active one in this Draw() round
             if (!screen.IsActive)
                 return;
-            if (TTGame.Instance.ActiveScreen != entity)
-                return;
             
             // in this final round, end the drawing to this screenlet:
             TTSpriteBatch sb = screen.SpriteBatch;
             sb.End();
 
-            // then render the screenbuffer onto the actual screenComp.
+            // then render the screenbuffer onto the actual screen.
             TTGame.Instance.GraphicsDevice.SetRenderTarget(null);
             sb.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
             sb.Draw(screen.RenderTarget, screen.ScreenRectangle, drawComp.DrawColor);

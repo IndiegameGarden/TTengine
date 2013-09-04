@@ -17,8 +17,9 @@ namespace TTengine.Comps
     /// </summary>
     public class DrawComp: IComponent
     {
-        public DrawComp()
-        {            
+        public DrawComp(ScreenComp screenComp)
+        {
+            this.Screen = screenComp;
         }
 
         #region Internal vars
@@ -36,6 +37,8 @@ namespace TTengine.Comps
         //private uint phIndex = 0;
 
         #endregion
+
+        public ScreenComp Screen;
 
         /// <summary>Flag whether the Entity is visible (i.e. is being drawn or not)</summary>
         public bool IsVisible = true;
@@ -102,7 +105,7 @@ namespace TTengine.Comps
         {
             //return (pos * screenlet.screenHeight - Center) * Zoom + Center; // TODO check? only for internal?
             // TODO optimize screenletcomp access
-            return pos * TTGame.Instance.ActiveScreen.GetComponent<ScreenComp>().screenHeight;
+            return pos * this.Screen.screenHeight;
         }
 
     }

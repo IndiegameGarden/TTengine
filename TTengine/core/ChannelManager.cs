@@ -32,7 +32,7 @@ namespace TTengine.Core
         {
             Channel c = new Channel(_game);
             this.Add(c);
-            _game.BuildWorld = c.World;
+            BuildIn(c);
             if (SelectedChannel == null)
                 SelectedChannel = c;
             return c;
@@ -62,7 +62,6 @@ namespace TTengine.Core
             c.IsVisible = true;
             // TODO: the soft fades etc
             this.SelectedChannel = c;
-            _game.ActiveScreen = c.Screen;
         }
 
         /// <summary>
@@ -74,6 +73,7 @@ namespace TTengine.Core
         public void BuildIn(Channel c)
         {
             _game.BuildWorld = c.World;
+            _game.BuildScreen = c.Screen;
         }
     }
 }

@@ -58,14 +58,7 @@ namespace TTengine.Systems
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = 1)]
     public class SpriteRenderSystem : EntityComponentProcessingSystem<SpriteComp, PositionComp, DrawComp>
     {
-        protected TTSpriteBatch activeSpriteBatch;
-
-        protected override void Begin()
-        {
-            base.Begin();
-            activeSpriteBatch = TTGame.Instance.ActiveScreen.GetComponent<ScreenComp>().SpriteBatch;
-        }
-
+        
         /// <summary>Processes the specified entity.</summary>
         /// <param name="entity">The entity.</param>
         public override void Process(Entity entity, SpriteComp spriteComp, PositionComp posComp, DrawComp drawComp)
@@ -76,8 +69,10 @@ namespace TTengine.Systems
                 drawComp.DrawPosition = drawComp.ToPixels(posComp.Position + posComp.PositionModifier);
                 spriteComp.DrawCenter = drawComp.ToPixels(spriteComp.Center); // TODO check
 
+                TTSpriteBatch sb = spriteComp.Screen.SpriteBatch;
+
                 // draw sprite
-                activeSpriteBatch.Draw(spriteComp.Texture, drawComp.DrawPosition, null, drawComp.DrawColor,
+                sb.Draw(spriteComp.Texture, drawComp.DrawPosition, null, drawComp.DrawColor,
                     drawComp.DrawRotation, spriteComp.DrawCenter, drawComp.DrawScale, SpriteEffects.None, drawComp.LayerDepth);
             }
         }

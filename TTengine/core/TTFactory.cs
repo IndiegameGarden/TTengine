@@ -50,7 +50,7 @@ namespace TTengine.Core
         public static Entity CreateDrawlet()
         {
             Entity e = CreateGamelet();
-            e.AddComponent(new DrawComp());
+            e.AddComponent(new DrawComp(TTGame.Instance.BuildScreen.GetComponent<ScreenComp>()));
             e.Refresh();
             return e;
         }
@@ -65,7 +65,7 @@ namespace TTengine.Core
         public static Entity CreateSpritelet(string graphicsFile)
         {
             Entity e = CreateDrawlet();
-            var spriteComp = new SpriteComp(graphicsFile);
+            var spriteComp = new SpriteComp(graphicsFile,TTGame.Instance.BuildScreen.GetComponent<ScreenComp>());
             e.AddComponent(spriteComp);
             float radius = spriteComp.Width/2.0f;
             e.AddComponent(new ShapeComp(radius));
@@ -98,7 +98,7 @@ namespace TTengine.Core
             var sc = new ScreenComp(true, width, height);
             var screenlet = world.CreateEntity();
             screenlet.AddComponent(sc);
-            screenlet.AddComponent(new DrawComp());
+            screenlet.AddComponent(new DrawComp(sc));
             return screenlet;
         }
 

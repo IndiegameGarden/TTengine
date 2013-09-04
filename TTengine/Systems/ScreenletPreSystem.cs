@@ -17,13 +17,11 @@ namespace TTengine.Systems
     public class ScreenletPreSystem : EntityComponentProcessingSystem<ScreenComp, DrawComp>
     {
 
-        private Entity _activeScreenlet;
         private GraphicsDevice _gfxDevice;
 
         protected override void Begin()
         {
             base.Begin();
-            _activeScreenlet = TTGame.Instance.ActiveScreen;
             _gfxDevice = TTGame.Instance.GraphicsDevice;
         }
 
@@ -31,8 +29,6 @@ namespace TTengine.Systems
         {
             // check if present screenComp is the active one in this Draw() round
             if (!screenlet.IsActive) 
-                return;
-            if (_activeScreenlet != screenlet)
                 return;
 
             _gfxDevice.SetRenderTarget(screenComp.RenderTarget);
