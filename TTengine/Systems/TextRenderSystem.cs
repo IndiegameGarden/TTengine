@@ -60,18 +60,19 @@ namespace TTengine.Systems
     {
 
         protected ScreenComp activeScreen = null;
+        double dt = 0;
 
         protected override void Begin()
         {
-            base.Begin();
             activeScreen = TTGame.Instance.DrawScreen;
+            dt = TimeSpan.FromTicks(EntityWorld.Delta).TotalSeconds;
         }
 
         /// <summary>Processes the specified entity.</summary>
         /// <param name="entity">The entity.</param>
         public override void Process(Entity entity, TextComp textComp, PositionComp posComp, DrawComp drawComp)
         {
-            textComp.UpdateComp(this);
+            textComp.UpdateComp(dt);
             if (drawComp.IsVisible)
             {
                 // use set screen, or default if not given.
@@ -79,8 +80,10 @@ namespace TTengine.Systems
                 if (screen == null)
                     screen = activeScreen;
 
-                // update drawpos FIXME - should one system do this, now it's two?
-                drawComp.DrawPosition = ToPixels(screen, posComp.Position + posComp.PositionModifier);
+                // update drawpos FIXME - should one system do this, now it's two? or make a helper method.
+                var p = posComp.Position + posComp.PositionModifier;
+                drawComp.DrawPosition = screen.ToPixels(p);
+                drawComp.LayerDepth = p.Z; // Z position is translated to a layer depth
 
                 // draw sprite
                 TTSpriteBatch sb = screen.SpriteBatch;
@@ -89,19 +92,6 @@ namespace TTengine.Systems
 
             }
         }
-
-        /// <summary>
-        /// translate a float relative coordinate to pixel coordinates
-        /// </summary>
-        /// <param name="pos">relative coordinate to translate</param>
-        /// <returns>translated to pixels coordinate</returns>
-        protected Vector2 ToPixels(ScreenComp screen, Vector2 pos)
-        {
-            //return (pos * screenlet.screenHeight - Center) * Zoom + Center; // TODO check? only for internal?
-            // TODO optimize screenletcomp access
-            return pos * screen.screenHeight;
-        }
-
 
     }
 }

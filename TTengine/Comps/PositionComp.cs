@@ -56,28 +56,45 @@ namespace TTengine.Comps
     {
         /// <summary>Initializes a new instance of the <see cref="PositionComp" /> class.</summary>
         public PositionComp()
-            : this(Vector2.Zero)
+            : this(Vector3.Zero)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="PositionComp" /> class.</summary>
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
-        public PositionComp(float x, float y)
-            : this(new Vector2(x, y))
+        public PositionComp(float x, float y, float z)
+            : this(new Vector3(x, y, z))
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="PositionComp" /> class.</summary>
         /// <param name="position">The position.</param>
-        public PositionComp(Vector2 position)
+        public PositionComp(Vector3 position)
         {
             this.Position = position;
         }
 
         /// <summary>Gets or sets the position.</summary>
         /// <value>The position.</value>
-        public Vector2 Position
+        public Vector3 Position
+        {
+            get
+            {
+                return new Vector3(this.X, this.Y, this.Z);
+            }
+
+            set
+            {
+                this.X = value.X;
+                this.Y = value.Y;
+                this.Z = value.Z;
+            }
+        }
+
+        /// <summary>Gets or sets the X and Y of the position.</summary>
+        /// <value>The position.</value>
+        public Vector2 Position2D
         {
             get
             {
@@ -91,20 +108,24 @@ namespace TTengine.Comps
             }
         }
 
-        public Vector2 PositionModifier = Vector2.Zero;
+        public Vector3 PositionModifier = Vector3.Zero;
 
-        /// <summary>Gets or sets the x.</summary>
+        /// <summary>Gets or sets the x coordinate.</summary>
         /// <value>The X.</value>
         public float X { get; set; }
 
-        /// <summary>Gets or sets the y.</summary>
+        /// <summary>Gets or sets the y coordinate.</summary>
         /// <value>The Y.</value>
         public float Y { get; set; }
 
+        /// <summary>Gets or sets the z coordinate.</summary>
+        /// <value>The Z.</value>
+        public float Z { get; set; }
+
         /// <summary>The clean up.</summary>
-        public /*override*/ void CleanUp()
+        public void CleanUp()
         {
-            this.Position = Vector2.Zero;
+            this.Position = Vector3.Zero;
         }
     }
 }

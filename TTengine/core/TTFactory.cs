@@ -83,6 +83,7 @@ namespace TTengine.Core
             TextComp tc = new TextComp(text);
             tc.Font = _game.Content.Load<SpriteFont>("TTDebugFont"); // FIXME allow other fonts
             e.AddComponent(tc);
+            e.Refresh();
             return e;
         }
 
@@ -94,12 +95,25 @@ namespace TTengine.Core
         public static Entity CreateScreenlet(EntityWorld world, int width, int height)
         {
             var sc = new ScreenComp(true, width, height);
-            var screenlet = world.CreateEntity();
-            screenlet.AddComponent(sc);
-            screenlet.AddComponent(new DrawComp());
-            return screenlet;
+            var e = world.CreateEntity();
+            e.AddComponent(sc);
+            e.AddComponent(new DrawComp());
+            e.Refresh();
+            return e;
+        }
+
+        /// <summary>
+        /// Creates a Scriptlet, which is an Entity that only contains a script
+        /// </summary>
+        /// <param name="script"></param>
+        /// <returns></returns>
+        public static Entity CreateScriptlet(IScript script)
+        {
+            var e = CreateEntity();
+            e.AddComponent(new ScriptComp(script));
+            e.Refresh();
+            return e;
         }
 
     }
 }
-

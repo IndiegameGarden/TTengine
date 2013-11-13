@@ -80,7 +80,7 @@ namespace TTengine.Comps
         /// Center of sprite expressed in relative width/height coordinates, where 1.0 is full width or full height
         /// of the sprite. By default the center of the sprite is chosen in the middle.
         /// </summary>
-        public Vector2 Center = new Vector2(0.5f, 0.5f); 
+        public Vector3 Center = new Vector3(0.5f, 0.5f, 0f); 
 
         /// <summary>
         /// based on Center this is a center coordinate for direct use in Draw() calls, expressed in pixels
@@ -112,6 +112,7 @@ namespace TTengine.Comps
             {
                 Height = texture.Height;
                 Width = texture.Width;
+                DrawCenter = new Vector2(Center.X * Width, Center.Y * Height); // FIXME adapt all the time (if center changes)??
             }
             if (fileName != null && texture == null)
                 LoadTexture(fileName);

@@ -11,24 +11,14 @@ namespace TTengine.Modifiers
     /// A Modifier that generates a (tunable) sine wave signal.
     /// Use Frequency, Amplitude and Offset to tune it.
     /// </summary>
-    public class SineModifier: Modifier
+    public class SineModifier<T>: Modifier<T>
     {
         public double Frequency = 1;
         public double Amplitude = 1;
         public double Offset = 0;
 
-        // TODO can we stop constructor proliferation!? solution: pass single objectToModify. Set code via a method.
-
-        public SineModifier(ModifyEntityDelegate code) :
-            base(code)
-        { }
-
-        public SineModifier(ModifyModifierDelegate code, Modifier modifierToModify):
-            base(code,modifierToModify)
-        { }
-
-        public SineModifier(ModifyCompDelegate code, Comp compToModify) :
-            base(code, compToModify)
+        public SineModifier(ModifierDelegate code, T objectToModify):
+            base(code,objectToModify)
         { }
 
         protected override double GetValue(double time)

@@ -10,92 +10,56 @@ using TTengine.Comps;
 namespace TTengine.Modifiers
 {
     /// <summary>
-    /// The available types of modifiers in Modifier. Call the proper constructor to create
-    /// one of these types.
+    /// A 'quick script' that can be configured with a custom code block, intended to modify
+    /// a certain parameter of another object of type T. 
     /// </summary>
-    public enum ModifierType
+    public class Modifier<T>: IScript
     {
-        ENTITY_MODIFIER, 
-        MODIFIER_MODIFIER,
-        COMP_MODIFIER
-    }
-
-    /// <summary>
-    /// An object that can be configured with custom code, intended to modify
-    /// a certain parameter of another object or IComponent. It can also modify
-    /// the composition of an entity.
-    /// </summary>
-    public class Modifier
-    {
-        public delegate void ModifyEntityDelegate(Entity entity, double value);
-        public delegate void ModifyModifierDelegate(Modifier mod, double value);
-        public delegate void ModifyCompDelegate(IComponent comp, double value);
-
-        /// <summary>Can be used to check the type of Modifier</summary>
-        public ModifierType Type;
+        /// <summary>Modifier delegate, i.e. the code (method) signature of the custom code block</summary>
+        public delegate void ModifierDelegate(T mod, double value);
 
         /// <summary>Whether this Modifier is currently active. Only active modifiers do something.</summary>
         public bool IsActive = true;
 
         // class stores code for one of different types of modifier. FIXME split in different classes
-        protected ModifyEntityDelegate  ModifyEntityCode { get; private set; }
-        protected ModifyModifierDelegate ModifyModifierCode { get; private set; }
-        protected ModifyCompDelegate    ModifyCompCode { get; private set; }
+        //protected ModifyEntityDelegate  ModifyEntityCode { get; private set; }
+        protected ModifierDelegate ModifierCode { get; private set; }
+        //protected ModifyCompDelegate    ModifyCompCode { get; private set; }
 
         // internal storage of object to modify
         // Entity not needed to store: this is passed as context at runtime.
-        private Modifier modifierToModify;
-        private IComponent compToModify;
+        private T objectToModify;
+        //private IComponent compToModify;
 
         /// <summary>
-        /// Create a new Entity Modifier that can only modify things within a single Entity.
+        /// Create a new Modifier that can modify an object of specified type T
         /// </summary>
-        /// <param name="code">Code (method or delegate block) to execute, must have 'void method(Entity e)' signature</param>
-        public Modifier(ModifyEntityDelegate code)
+        /// <param name="code">Code (method or delegate block) to execute, must have 'void method(T obj, double value)' signature</param>
+        public Modifier(ModifierDelegate code, T objectToModify)
         {
-            this.Type = ModifierType.ENTITY_MODIFIER;
-            this.ModifyEntityCode = code;
-        }
-
-        public Modifier(ModifyModifierDelegate code, Modifier modifierToModify)
-        {
-            this.Type = ModifierType.MODIFIER_MODIFIER;
-            this.ModifyModifierCode = code;
-            this.modifierToModify = modifierToModify;
-        }
-
-        public Modifier(ModifyCompDelegate code, IComponent compToModify)
-        {
-            this.Type = ModifierType.COMP_MODIFIER;
-            this.ModifyCompCode = code;
-            this.compToModify = compToModify;
+            //this.Type = ModifierType.MODIFIER_MODIFIER;
+            this.ModifierCode = code;
+            this.objectToModify = objectToModify;
         }
 
         public void AttachTo(Entity e)
         {
-            if (!e.HasComponent<ModifierComp>())
-                e.AddComponent(new ModifierComp());
-            e.GetComponent<ModifierComp>().Add(this);
+            if (!e.HasComponent<ScriptComp>())
+                e.AddComponent(new ScriptComp());
+            e.GetComponent<ScriptComp>().Add(this);
         }
 
-        public void Execute(Entity contextEntity, double time)
+        public void OnUpdate(ScriptContext ctx)
         {
             if (IsActive)
             {
-                double value = GetValue(time);
-                switch (Type)
-                {
-                    case ModifierType.ENTITY_MODIFIER:
-                        ModifyEntityCode(contextEntity, value);
-                        break;
-                    case ModifierType.MODIFIER_MODIFIER:
-                        ModifyModifierCode(modifierToModify, value);
-                        break;
-                    case ModifierType.COMP_MODIFIER:
-                        ModifyCompCode(compToModify, value);
-                        break;
-                }
+                double value = GetValue(ctx.ScriptComp.SimTime);
+                ModifierCode(objectToModify, value);
             }
+        }
+
+        public void OnDraw(ScriptContext ctx)
+        {
         }
 
         /// <summary>
@@ -105,7 +69,7 @@ namespace TTengine.Modifiers
         /// of 'signals' e.g. sine wave, square wave, triangle wave, random, etc.
         /// </summary>
         /// <param name="time">Time in seconds</param>
-        /// <returns></returns>
+        /// <returns>value as function of time (specified by subclass of Modifier)</returns>
         protected virtual double GetValue(double time)
         {
             return time;

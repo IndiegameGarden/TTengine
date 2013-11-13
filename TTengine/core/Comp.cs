@@ -8,7 +8,7 @@ using Artemis.System;
 
 namespace TTengine.Core
 {
-    /// <summary>optional base class for components</summary>
+    /// <summary>optional base class for components that implement IComponent</summary>
     public class Comp: IComponent
     {
         /// <summary>Indicate to the processing system whether this component is currently active, or not</summary>
@@ -21,12 +21,13 @@ namespace TTengine.Core
         public double Dt = 0;
 
         /// <summary>Called by TTengine Systems, to conveniently update any of the Comp members that need updating each cycle.</summary>
-        /// <param name="sys"></param>
-        internal void UpdateComp(EntitySystem sys)
+        /// <param name="dt">Time delta in seconds for current Update round</param>
+        public void UpdateComp(double dt)
         {
-            // TODO FIXME optimize with the fixed ticks-to-seconds scale factor? - get readymade from another location/class/ttgame?
-            Dt = TimeSpan.FromTicks(sys.EntityWorld.Delta).TotalSeconds;
-            SimTime += Dt;                
+            if (!IsActive)
+                return;
+            Dt = dt;
+            SimTime += dt;                
         }
     }
 }

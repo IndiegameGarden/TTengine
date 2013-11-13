@@ -20,18 +20,27 @@ namespace TTengine.Comps
     }
 
     /// <summary>
-    /// The Comp that enables scripting for your Entity
+    /// The Comp that enables scripting for your Entity with one or more ordered scripts.
     /// </summary>
     public class ScriptComp: Comp
     {
         /// <summary>
-        /// The script that is called every update/draw cycle
+        /// The scripts that are called every update/draw cycle
         /// </summary>
-        public IScript Script;
+        public List<IScript> Scripts = new List<IScript>();
+
+        public ScriptComp()
+        {        
+        }
 
         public ScriptComp(IScript script)
         {
-            this.Script = script;
+            Add(script);
+        }
+
+        public void Add(IScript script)
+        {
+            this.Scripts.Add(script);
         }
 
     }

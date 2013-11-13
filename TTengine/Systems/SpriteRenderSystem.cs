@@ -63,7 +63,6 @@ namespace TTengine.Systems
 
         protected override void Begin()
         {
-            base.Begin();
             activeScreen = TTGame.Instance.DrawScreen;
         }
 
@@ -79,8 +78,10 @@ namespace TTengine.Systems
                 if (screen == null)
                     screen = activeScreen;
                 // update drawpos
-                drawComp.DrawPosition = ToPixels(screen, posComp.Position + posComp.PositionModifier);
-                spriteComp.DrawCenter = ToPixels(screen, spriteComp.Center); // TODO check
+                var p = posComp.Position + posComp.PositionModifier;
+                drawComp.DrawPosition = screen.ToPixels(p);
+                drawComp.LayerDepth = p.Z; // Z position is translated to a layer depth
+                //spriteComp.DrawCenter = screen.ToPixels(spriteComp.Center); // TODO check
 
                 TTSpriteBatch sb = screen.SpriteBatch;
 
@@ -89,20 +90,6 @@ namespace TTengine.Systems
                     drawComp.DrawRotation, spriteComp.DrawCenter, drawComp.DrawScale, SpriteEffects.None, drawComp.LayerDepth);
             }
         }
-
-        /// <summary>
-        /// translate a float relative coordinate to pixel coordinates
-        /// </summary>
-        /// <param name="pos">relative coordinate to translate</param>
-        /// <returns>translated to pixels coordinate</returns>
-        protected Vector2 ToPixels(ScreenComp screen, Vector2 pos)
-        {
-            //return (pos * screenlet.screenHeight - Center) * Zoom + Center; // TODO check? only for internal?
-            // TODO optimize screenletcomp access
-            return pos * screen.screenHeight;
-        }
-
-
 
     }
 }

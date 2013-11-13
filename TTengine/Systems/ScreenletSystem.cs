@@ -19,7 +19,7 @@ namespace TTengine.Systems
     /// drawing on the screens take place.
     /// <seealso cref="ScreenletPreSystem"/>
     /// </summary>
-    [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = 2)]
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = 3)]
     public class ScreenletSystem : EntityComponentProcessingSystem<ScreenComp, DrawComp>
     {
 

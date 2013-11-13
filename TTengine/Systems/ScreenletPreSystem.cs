@@ -21,7 +21,6 @@ namespace TTengine.Systems
 
         protected override void Begin()
         {
-            base.Begin();
             _gfxDevice = TTGame.Instance.GraphicsDevice;
         }
 

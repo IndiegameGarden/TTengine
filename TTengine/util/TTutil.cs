@@ -42,5 +42,14 @@ namespace TTengine.Util
             return result;
         }
 
+        /// <summary>
+        /// Invert color
+        /// </summary>
+        /// <param name="c">color to invert</param>
+        /// <returns>Inverted color, "1-c"</returns>
+        public static Color InvertColor(Color c)
+        {
+            return new Color(new Vector3(1f, 1f, 1f) - c.ToVector3());
+        }
     }
 }

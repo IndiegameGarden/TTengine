@@ -53,7 +53,7 @@ namespace TTengine.Core
 #if DEBUG
             GraphicsMgr.SynchronizeWithVerticalRetrace = false;
 #else
-            Graphics.SynchronizeWithVerticalRetrace = true;
+            GraphicsMgr.SynchronizeWithVerticalRetrace = true;
 #endif
         }
 

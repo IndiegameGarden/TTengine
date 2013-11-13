@@ -9,6 +9,7 @@ namespace TTengine.Comps
     /// <summary>
     /// Component for simple physics-based motion 
     /// (velocity, scale, rotation, zoom, etc.)
+    /// FIXME not used yet
     /// </summary>
     public class TargetMotionComp : Comp
     {
@@ -16,21 +17,7 @@ namespace TTengine.Comps
         {
         }
 
-        public Vector2 Position = Vector2.Zero;
-
-        public Vector2 PositionAbs = Vector2.Zero;
-
-        /// <summary>
-        /// 2D acceleration vector in normalized coordinates
-        /// </summary>
-        public Vector2 Acceleration = Vector2.Zero;
-
-        /// <summary>
-        /// 2D velocity vector in normalized coordinates
-        /// </summary>
-        public Vector2 Velocity = Vector2.Zero;
-        
-        public Vector2 TargetPos
+        public Vector2 Target
         {
             get
             {
@@ -46,16 +33,10 @@ namespace TTengine.Comps
         /// <summary>
         /// velocity of moving towards target TargetPos. Setting modifies Velocity.
         /// </summary>
-        public float TargetPosSpeed
+        public double TargetVelocity
         {
-            get
-            {
-                return Velocity.Length();
-            }
-            set
-            {
-                Velocity = new Vector2(value, 0f);
-            }
+            get;
+            set;
         }
 
         protected Vector2 targetPos = Vector2.Zero;

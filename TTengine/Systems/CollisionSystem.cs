@@ -66,7 +66,7 @@ namespace TTengine.Systems
         /// <param name="entities">The entities.</param>
         protected override void ProcessEntities(IDictionary<int, Entity> entities)
         {
-            Bag<Entity> allObj = this.EntityWorld.GroupManager.GetEntities("TTCOLLIDABLES");
+            Bag<Entity> allObj = this.EntityWorld.GroupManager.GetEntities(ShapeComp.CollisionGroupName); 
             if (allObj != null )
             {
                 for (int i1 = 0; allObj.Count > i1; ++i1)
@@ -95,7 +95,9 @@ namespace TTengine.Systems
             var p2 = entity2.GetComponent<PositionComp>();
             var s1 = entity1.GetComponent<ShapeComp>();
             var s2 = entity1.GetComponent<ShapeComp>();
-            float dist = Vector2.Distance(p1.Position, p2.Position);
+            p1.Z = 0f;
+            p2.Z = 0f;
+            float dist = Vector3.Distance(p1.Position, p2.Position);
             return (dist < (s1.Radius + s2.Radius));
             
         }

@@ -18,28 +18,39 @@ namespace TTengine.Systems
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 2)]
     public class BTAISystem : EntityComponentProcessingSystem<BTAIComp>
     {
-        private BTAIContext updParams = new BTAIContext();
+        private BTAIContext ctx = new BTAIContext();
 
-        protected override void ProcessEntities(IDictionary<int, Entity> entities)
+        protected override void Begin()
         {
             // once per update-cycle, set timing in updParams
-            updParams.Dt = TimeSpan.FromTicks(this.EntityWorld.Delta).TotalSeconds;
-            updParams.SimTime += updParams.Dt;
-            base.ProcessEntities(entities);
+            ctx.Dt = TimeSpan.FromTicks(this.EntityWorld.Delta).TotalSeconds;
+            ctx.SimTime += ctx.Dt;
         }
 
         public override void Process(Entity entity, BTAIComp btComp)
         {
-            updParams.Entity = entity;
-            updParams.Comp = btComp;
+            ctx.Entity = entity;
+            ctx.BTComp = btComp;
 
             if (btComp.rootNode.LastStatus == null)
-                btComp.rootNode.Start(updParams);
-            if (btComp.rootNode.LastStatus == RunStatus.Success)
-                btComp.rootNode.Start(updParams);
-            // TODO rename UpdateParams/updParams?
-            btComp.rootNode.Tick(updParams);
+                btComp.rootNode.Start(ctx);
+            else if (btComp.rootNode.LastStatus == RunStatus.Success)
+                btComp.rootNode.Start(ctx);
+            btComp.rootNode.Tick(ctx);
 
+            // after every BTAI Tree execution, check which comps are enabled/disabled as a result
+            foreach (var c in btComp.CompsToDisable)
+            {
+                if (!btComp.CompsToEnable.Contains(c))
+                    c.IsActive = false;
+            }
+            // 'enable' request always higher priority than a 'disable' request.
+            foreach (var c in btComp.CompsToEnable)
+            {
+                c.IsActive = true;
+            }
+            btComp.CompsToEnable.Clear();
+            btComp.CompsToDisable.Clear();
         }
 
     }
