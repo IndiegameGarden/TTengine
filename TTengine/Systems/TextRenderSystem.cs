@@ -81,7 +81,7 @@ namespace TTengine.Systems
                     screen = activeScreen;
 
                 // update drawpos FIXME - should one system do this, now it's two? or make a helper method.
-                var p = posComp.Position + posComp.PositionModifier;
+                var p = posComp.PositionAbs;
                 drawComp.DrawPosition = screen.ToPixels(p);
                 drawComp.LayerDepth = p.Z; // Z position is translated to a layer depth
 

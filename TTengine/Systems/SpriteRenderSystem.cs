@@ -78,7 +78,7 @@ namespace TTengine.Systems
                 if (screen == null)
                     screen = activeScreen;
                 // update drawpos
-                var p = posComp.Position + posComp.PositionModifier;
+                var p = posComp.PositionAbs;
                 drawComp.DrawPosition = screen.ToPixels(p);
                 drawComp.LayerDepth = p.Z; // Z position is translated to a layer depth
                 //spriteComp.DrawCenter = screen.ToPixels(spriteComp.Center); // TODO check

@@ -50,7 +50,12 @@ namespace TTengineTest
             base.Update(gameTime);
 
             KeyboardState kb = Keyboard.GetState();
-            if ( (kb.IsKeyDown(Keys.Space) && !kbOld.IsKeyDown(Keys.Space)) ||
+            if (kb.IsKeyDown(Keys.Escape) && !kbOld.IsKeyDown(Keys.Escape))
+            {
+                Exit();
+            }
+            
+            if ((kb.IsKeyDown(Keys.Space) && !kbOld.IsKeyDown(Keys.Space)) ||
                 (kb.IsKeyDown(Keys.Right) && !kbOld.IsKeyDown(Keys.Right)) )
             {
                 if (channel < channels.Count-1)
