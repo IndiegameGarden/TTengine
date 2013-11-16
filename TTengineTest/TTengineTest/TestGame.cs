@@ -35,7 +35,7 @@ namespace TTengineTest
         {
             GraphicsMgr.IsFullScreen = false;
             GraphicsMgr.PreferredBackBufferWidth = 1024; 
-            GraphicsMgr.PreferredBackBufferHeight = 768;
+            GraphicsMgr.PreferredBackBufferHeight = 700;
             IsMusicEngine = false;
         }
 
@@ -92,7 +92,7 @@ namespace TTengineTest
             var col = TTutil.InvertColor(t.BackgroundColor);
             FrameRateCounter.Create(col);
 
-            Factory.CreateTextlet(new Vector2(2f, 750f), t.GetType().Name, col);
+            Factory.CreateTextlet(new Vector2(2f, GraphicsMgr.PreferredBackBufferHeight-20f), t.GetType().Name, col);
 
         }
 
@@ -101,9 +101,9 @@ namespace TTengineTest
             base.LoadContent();
 
             // Here all the tests are listed
+            DoTest(new TestRelativeMotion());
             DoTest(new TestLinearMotion());
             DoTest(new TestRotation());
-            DoTest(new TestRelativeMotion());
 
             ChannelMgr.ZapTo(channels[0]);
 

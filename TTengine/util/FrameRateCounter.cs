@@ -39,7 +39,7 @@ namespace TTengine.Util
         public static Entity Create(Color textColor)
         {
             var e = TTFactory.CreateTextlet("##");
-            e.GetComponent<PositionComp>().Position = new Vector3(0.03f, 0.01f, 0f);
+            e.GetComponent<PositionComp>().Position = new Vector3(2f, 2f, 0f);
             e.GetComponent<DrawComp>().DrawColor = textColor;
             var m = new ScriptComp(new FrameRateCounter(e.GetComponent<TextComp>()));
             e.AddComponent(m);
