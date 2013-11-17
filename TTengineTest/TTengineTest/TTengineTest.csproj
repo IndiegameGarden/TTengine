@@ -81,6 +81,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Tests\TestContentLoad.cs" />
+    <Compile Include="Tests\TestAudioBasics.cs" />
     <Compile Include="Tests\TestRelativeMotion.cs" />
     <Compile Include="Tests\TestRotation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
