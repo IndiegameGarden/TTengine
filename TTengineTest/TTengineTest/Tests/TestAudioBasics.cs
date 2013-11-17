@@ -22,7 +22,7 @@ namespace TTengineTest
 
         public override void Create()
         {
-            //TTGame.Instance.AudioScript = MTest_Repeat();
+            TTFactory.CreateAudiolet(Test_Repeat());
         }
 
         /**

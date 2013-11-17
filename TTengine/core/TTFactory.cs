@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Artemis;
 using TTengine.Comps;
+using TTMusicEngine.Soundevents;
 
 namespace TTengine.Core
 {
@@ -103,7 +104,7 @@ namespace TTengine.Core
         }
 
         /// <summary>
-        /// Creates a Scriptlet, which is an Entity that only contains a script
+        /// Creates a Scriptlet, which is an Entity that only contains a custom code script
         /// </summary>
         /// <param name="script"></param>
         /// <returns></returns>
@@ -115,5 +116,17 @@ namespace TTengine.Core
             return e;
         }
 
+        /// <summary>
+        /// Create an Audiolet, which is an Entity that only contains an audio script
+        /// </summary>
+        /// <param name="soundScript"></param>
+        /// <returns></returns>
+        public static Entity CreateAudiolet(SoundEvent soundScript)
+        {
+            var e = CreateEntity();
+            e.AddComponent(new AudioComp(soundScript));
+            e.Refresh();
+            return e;
+        }
     }
 }

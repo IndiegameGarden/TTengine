@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behaviors\RandomWanderBehavior.cs" />
+    <Compile Include="Comps\AudioComp.cs" />
     <Compile Include="Comps\BlinkComp.cs" />
     <Compile Include="Comps\BTAIComp.cs" />
     <Compile Include="Comps\ExpiresComp.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Systems\BTAISystem.cs" />
     <Compile Include="Systems\BlinkSystem.cs" />
     <Compile Include="Systems\CollisionSystem.cs" />
+    <Compile Include="Systems\AudioSystem.cs" />
     <Compile Include="Systems\RotateSystem.cs" />
     <Compile Include="Systems\ScriptSystems.cs" />
     <Compile Include="Systems\ScreenletPreSystem.cs" />
