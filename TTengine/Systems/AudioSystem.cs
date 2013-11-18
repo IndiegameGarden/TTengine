@@ -18,10 +18,12 @@ namespace TTengine.Systems
     {
         double dt = 0;
         RenderParams rp = new RenderParams();
+        MusicEngine musicEngine;
 
         protected override void Begin()
         {
             dt = TimeSpan.FromTicks(EntityWorld.Delta).TotalSeconds;
+            musicEngine = TTGame.Instance.MusicEngine;
         }
 
         public override void Process(Entity entity, AudioComp ac)
@@ -30,7 +32,7 @@ namespace TTengine.Systems
             ac.UpdateComp(dt);
             rp.Time = ac.SimTime;
             rp.Ampl = ac.Ampl;
-            TTGame.Instance.MusicEngine.Render(ac.AudioScript, rp);
+            musicEngine.Render(ac.AudioScript, rp);
         }
 
     }
