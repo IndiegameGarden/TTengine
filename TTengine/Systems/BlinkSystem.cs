@@ -12,7 +12,7 @@ using Artemis;
 namespace TTengine.Systems
 {
     // TODO consider a soft (faded) blink as well.
-    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 3)]
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = SystemsSchedule.BlinkSystem)]
     public class BlinkSystem : EntityComponentProcessingSystem<BlinkComp>
     {
         double dt = 0;

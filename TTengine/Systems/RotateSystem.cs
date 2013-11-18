@@ -50,7 +50,7 @@ namespace TTengine.Systems
     #endregion
 
     /// <summary>The movement system.</summary>
-    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 1)] // FIXME all layers numbers in a central scheduler class
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = SystemsSchedule.RotateSystem)]
     public class RotateSystem : EntityComponentProcessingSystem<RotateComp, DrawComp>
     {
         double dt = 0;

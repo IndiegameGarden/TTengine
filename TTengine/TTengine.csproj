@@ -106,8 +106,8 @@
     <Compile Include="Systems\AudioSystem.cs" />
     <Compile Include="Systems\RotateSystem.cs" />
     <Compile Include="Systems\ScriptSystems.cs" />
-    <Compile Include="Systems\ScreenletPreSystem.cs" />
     <Compile Include="Systems\ScreenletSystem.cs" />
+    <Compile Include="Systems\SystemsSchedule.cs" />
     <Compile Include="Systems\TextRenderSystem.cs" />
     <Compile Include="Systems\ExpirationSystem.cs" />
     <Compile Include="Systems\MovementSystem.cs" />

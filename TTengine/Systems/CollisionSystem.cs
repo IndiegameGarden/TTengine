@@ -53,7 +53,7 @@ namespace TTengine.Systems
     #endregion
 
     /// <summary>The collision system.</summary>
-    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 1)]
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = SystemsSchedule.CollisionSystem)]
     internal class CollisionSystem : EntitySystem
     {
         /// <summary>Initializes a new instance of the <see cref="CollisionSystem" /> class.</summary>

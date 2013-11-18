@@ -13,7 +13,7 @@ using Artemis.System;
 
 namespace TTengine.Systems
 {
-    [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = 1)]
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = SystemsSchedule.AudioSystem)]
     public class AudioSystem : EntityComponentProcessingSystem<AudioComp>
     {
         double dt = 0;

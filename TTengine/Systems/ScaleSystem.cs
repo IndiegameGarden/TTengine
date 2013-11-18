@@ -12,7 +12,7 @@ using Artemis.System;
 
 namespace TTengine.Systems
 {
-    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 1)]
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = SystemsSchedule.ScaleSystem)]
     public class ScaleSystem : EntityComponentProcessingSystem<ScaleComp>
     {
 

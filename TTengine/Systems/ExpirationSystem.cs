@@ -50,7 +50,7 @@ namespace TTengine.Systems
     #endregion
 
     /// <summary>The expiration system.</summary>
-    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 3)]
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = SystemsSchedule.ExpirationSystem)]
     public class ExpirationSystem : EntityComponentProcessingSystem<ExpiresComp>
     {
 

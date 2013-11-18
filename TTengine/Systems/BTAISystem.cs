@@ -15,7 +15,7 @@ namespace TTengine.Systems
     /// <summary>
     /// A Behavior Tree (BT) based AI system for Entities
     /// </summary>
-    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 2)]
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = SystemsSchedule.BTAISystem)]
     public class BTAISystem : EntityComponentProcessingSystem<BTAIComp>
     {
         private BTAIContext ctx = new BTAIContext();
