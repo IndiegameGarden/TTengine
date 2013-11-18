@@ -27,9 +27,7 @@ namespace TTengine.Comps
         /// or a separately loaded bitmap at runtime
         /// </summary>
         /// <param name="fileName">name of XNA content file (from content project) without file extension e.g. "test", or
-        /// name of bitmap file to load including extension e.g. "test.png"</param>
-        /// <param name="screenComp">reference to the ScreenComp to which this sprite will be drawn,
-        /// to learn information about screen size.</param>
+        /// name of bitmap file to load at run-time (non-XNA-compiled) including extension e.g. "test.png"</param>
         /// <exception cref="InvalidOperationException">when invalid image file is attempted to load</exception>
         public SpriteComp(string fileName)
         {
