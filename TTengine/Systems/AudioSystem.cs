@@ -13,17 +13,27 @@ using Artemis.System;
 
 namespace TTengine.Systems
 {
-    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 1)]
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = 1)]
     public class AudioSystem : EntityComponentProcessingSystem<AudioComp>
     {
         double dt = 0;
         RenderParams rp = new RenderParams();
-        MusicEngine musicEngine;
+        MusicEngine musicEngine = null;
+
+        protected override bool CheckProcessing()
+        {
+            // disable this system if the MusicEngine is not enabled.
+            if (!TTGame.Instance.IsMusicEngine)
+                IsEnabled = false;
+            
+            return base.CheckProcessing();
+        }
 
         protected override void Begin()
         {
-            dt = TimeSpan.FromTicks(EntityWorld.Delta).TotalSeconds;
             musicEngine = TTGame.Instance.MusicEngine;
+            dt = TimeSpan.FromTicks(EntityWorld.Delta).TotalSeconds;
+            musicEngine.Update(); // to be called once every frame
         }
 
         public override void Process(Entity entity, AudioComp ac)

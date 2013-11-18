@@ -84,9 +84,6 @@ namespace TTengine.Core
 
         protected override void Update(GameTime gameTime)
         {
-            if (IsMusicEngine)
-                MusicEngine.Update();
-
             foreach (Channel c in ChannelMgr.Channels)
             {
                 if (!c.IsActive)
