@@ -36,7 +36,7 @@ namespace TTengineTest
             GraphicsMgr.IsFullScreen = false;
             GraphicsMgr.PreferredBackBufferWidth = 1024; 
             GraphicsMgr.PreferredBackBufferHeight = 700;
-            IsMusicEngine = false;
+            IsAudio = true;
         }
 
         protected override void Initialize()

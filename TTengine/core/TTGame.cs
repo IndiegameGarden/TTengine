@@ -24,14 +24,14 @@ namespace TTengine.Core
     public abstract class TTGame: Game
     {
         /// <summary>If set true, starts the TTMusicEngine</summary>
-        public bool IsMusicEngine = false;
+        public bool IsAudio = false;
 
         /// <summary>The currently running (single) instance of TTGame</summary>
         public static TTGame Instance = null;
 
         public GraphicsDeviceManager GraphicsMgr;
 
-        public MusicEngine MusicEngine;
+        public MusicEngine AudioEngine;
 
         /// <summary>The Artemis entity world that is currently used for building/creating new Entities in</summary>
         public EntityWorld BuildWorld;
@@ -62,12 +62,12 @@ namespace TTengine.Core
             ChannelMgr = new ChannelManager(this);
 
             // the TTMusicEngine
-            if (IsMusicEngine)
+            if (IsAudio)
             {
-                MusicEngine = MusicEngine.GetInstance();
-                MusicEngine.AudioPath = "Content";
-                if (!MusicEngine.Initialize())
-                    throw new Exception(MusicEngine.StatusMsg);
+                AudioEngine = MusicEngine.GetInstance();
+                AudioEngine.AudioPath = "Content";
+                if (!AudioEngine.Initialize())
+                    throw new Exception(AudioEngine.StatusMsg);
             }
 
             // default channel

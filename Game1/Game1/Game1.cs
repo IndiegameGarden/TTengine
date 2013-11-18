@@ -34,7 +34,7 @@ namespace Game1
             GraphicsMgr.IsFullScreen = false;
             GraphicsMgr.PreferredBackBufferWidth = 1024; 
             GraphicsMgr.PreferredBackBufferHeight = 768;
-            IsMusicEngine = false;
+            IsAudio = false;
         }
 
         protected override void Initialize()

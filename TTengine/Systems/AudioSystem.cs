@@ -18,12 +18,12 @@ namespace TTengine.Systems
     {
         double dt = 0;
         RenderParams rp = new RenderParams();
-        MusicEngine musicEngine = null;
+        MusicEngine audioEngine = null;
 
         protected override bool CheckProcessing()
         {
             // disable this system if the MusicEngine is not enabled.
-            if (!TTGame.Instance.IsMusicEngine)
+            if (!TTGame.Instance.IsAudio)
                 IsEnabled = false;
             
             return base.CheckProcessing();
@@ -31,9 +31,9 @@ namespace TTengine.Systems
 
         protected override void Begin()
         {
-            musicEngine = TTGame.Instance.MusicEngine;
+            audioEngine = TTGame.Instance.AudioEngine;
             dt = TimeSpan.FromTicks(EntityWorld.Delta).TotalSeconds;
-            musicEngine.Update(); // to be called once every frame
+            audioEngine.Update(); // to be called once every frame
         }
 
         public override void Process(Entity entity, AudioComp ac)
@@ -42,7 +42,7 @@ namespace TTengine.Systems
             ac.UpdateComp(dt);
             rp.Time = ac.SimTime;
             rp.Ampl = ac.Ampl;
-            musicEngine.Render(ac.AudioScript, rp);
+            audioEngine.Render(ac.AudioScript, rp);
         }
 
     }
