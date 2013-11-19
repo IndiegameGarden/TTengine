@@ -86,6 +86,7 @@
     <Compile Include="Comps\ShaderComp.cs" />
     <Compile Include="Comps\ShapeComp.cs" />
     <Compile Include="Comps\DrawComp.cs" />
+    <Compile Include="Comps\SpriteFieldComp.cs" />
     <Compile Include="Comps\TextComp.cs" />
     <Compile Include="Comps\VelocityComp.cs" />
     <Compile Include="Core\Channel.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="Systems\BlinkSystem.cs" />
     <Compile Include="Systems\CollisionSystem.cs" />
     <Compile Include="Systems\AudioSystem.cs" />
+    <Compile Include="Systems\SpriteFieldSystem.cs" />
     <Compile Include="Systems\RotateSystem.cs" />
     <Compile Include="Systems\ScriptSystems.cs" />
     <Compile Include="Systems\ScreenletSystem.cs" />

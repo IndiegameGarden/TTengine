@@ -56,7 +56,7 @@ namespace TTengine.Comps
         protected string fileName = null;
         protected float width = 0f;
         protected float height = 0f;
-        private Texture2D texture = null;
+        protected Texture2D texture = null;
         public static BlendState blendAlpha = null, blendColor = null;
 
         #endregion
@@ -157,7 +157,7 @@ namespace TTengine.Comps
         /// <param name="contentDir"></param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException">when invalid image file is found</exception>
-        private static Texture2D LoadTextureStreamAtRuntime(GraphicsDevice graphics, string fileName, string contentDir)
+        protected static Texture2D LoadTextureStreamAtRuntime(GraphicsDevice graphics, string fileName, string contentDir)
         {
             Texture2D tex = null;
             //RenderTarget2D result = null;

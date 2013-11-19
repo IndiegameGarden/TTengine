@@ -72,6 +72,17 @@ namespace TTengine.Core
             return e;
         }
 
+        public static Entity CreateSpriteField(string fieldBitmapFile, string spriteBitmapFile)
+        {
+            Entity e = CreateDrawlet();
+            var spriteFieldComp = new SpriteFieldComp(fieldBitmapFile);
+            var spriteComp = new SpriteComp(spriteBitmapFile);
+            e.AddComponent(spriteComp);
+            e.AddComponent(spriteFieldComp);
+            e.Refresh();
+            return e;
+        }
+
         /// <summary>
         /// Creates a Textlet, which is a moveable piece of text. (TODO: font)
         /// </summary>
