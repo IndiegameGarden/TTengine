@@ -72,6 +72,15 @@ namespace TTengine.Core
             return e;
         }
 
+        public static Entity CreateAnimatedSpritelet(string atlasBitmapFile)
+        {
+            Entity e = CreateDrawlet();
+            var spriteComp = new AnimatedSpriteComp(atlasBitmapFile,189,189);
+            e.AddComponent(spriteComp);
+            e.Refresh();
+            return e;
+        }
+
         public static Entity CreateSpriteField(string fieldBitmapFile, string spriteBitmapFile)
         {
             Entity e = CreateDrawlet();

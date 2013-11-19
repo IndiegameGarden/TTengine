@@ -27,6 +27,7 @@ namespace TTengine.Systems
             AudioSystem     = 1,
             ScriptSystemDraw = 2,
             SpriteRenderSystem = 2,
+            AnimatedSpriteSystem = 2,
             TextRenderSystem = 2,
             ScreenletSystem = 3;
 

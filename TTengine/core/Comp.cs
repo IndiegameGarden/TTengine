@@ -12,6 +12,7 @@ namespace TTengine.Core
     public abstract class Comp: IComponent
     {
         /// <summary>Indicate to the processing system whether this component is currently active, or not</summary>
+        //FIXME: remote field, replace by other mechanism
         public bool IsActive = true;
 
         /// <summary>Amount of time this instance has spent in simulation, since its creation, in seconds</summary>
