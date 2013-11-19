@@ -15,6 +15,7 @@ namespace TTengine.Modifiers
     {
         public double Frequency = 1;
         public double Amplitude = 1;
+        public double Phase = 0;
         public double Offset = 0;
 
         public SineModifier(ModifierDelegate code, T objectToModify):
@@ -23,7 +24,7 @@ namespace TTengine.Modifiers
 
         protected override double GetValue(double time)
         {
-            return Amplitude * Math.Sin(MathHelper.TwoPi * Frequency * time) + Offset;
+            return Amplitude * Math.Sin(MathHelper.TwoPi * Frequency * time + Phase) + Offset;
         }
     }
 }

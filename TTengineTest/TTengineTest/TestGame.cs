@@ -102,7 +102,7 @@ namespace TTengineTest
 
             // Here all the tests are listed
             DoTest(new TestAnimatedSprite());
-            //DoTest(new TestScaling());
+            DoTest(new TestScaling());
             DoTest(new TestSpriteField());
             DoTest(new TestAudioBasics());
             DoTest(new TestContentLoad());
