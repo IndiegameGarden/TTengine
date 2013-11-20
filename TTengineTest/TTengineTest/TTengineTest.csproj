@@ -83,7 +83,6 @@
   <ItemGroup>
     <Compile Include="Tests\TestScaling.cs" />
     <Compile Include="Tests\TestAnimatedSprite.cs" />
-    <Compile Include="Tests\TestScaling.cs" />
     <Compile Include="Tests\TestSpriteField.cs" />
     <Compile Include="Tests\TestContentLoad.cs" />
     <Compile Include="Tests\TestAudioBasics.cs" />
