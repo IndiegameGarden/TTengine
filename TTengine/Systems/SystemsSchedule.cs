@@ -12,11 +12,11 @@ namespace TTengine.Systems
     {
         // Systems in UPDATE loop
         public const int
-            MovementSystem  = 1,
-            RotateSystem    = 1,
-            ScaleSystem     = 1,
-            ScriptSystemUpdate = 1,
-            BTAISystem      = 2,
+            ScriptSystemUpdate  = 1,
+            BTAISystem          = 1,
+            MovementSystem  = 2,
+            RotateSystem    = 2,
+            ScaleSystem     = 2,
             BlinkSystem     = 3,
             ExpirationSystem = 3,
             CollisionSystem = 4;

@@ -20,8 +20,19 @@ namespace TTengineTest
         public override void Create()
         {
             // create animated sprite from 4x4 sprite atlas bitmap
-            var s = TTFactory.CreateAnimatedSpritelet("SmileyWalk",4,4);
-            s.GetComponent<PositionComp>().Position2D = new Vector2(500f, 300f);
+            var s1 = TTFactory.CreateAnimatedSpritelet("SmileyWalk",4,4,AnimationType.NORMAL);
+            s1.GetComponent<PositionComp>().Position2D = new Vector2(200f, 300f);
+
+            var s2 = TTFactory.CreateAnimatedSpritelet("SmileyWalk", 4, 4, AnimationType.REVERSE);
+            s2.GetComponent<PositionComp>().Position2D = new Vector2(400f, 300f);
+
+            var s3 = TTFactory.CreateAnimatedSpritelet("SmileyWalk", 4, 4, AnimationType.PINGPONG);
+            s3.GetComponent<PositionComp>().Position2D = new Vector2(600f, 300f);
+
+            var s4 = TTFactory.CreateAnimatedSpritelet("SmileyWalk", 4, 4, AnimationType.PINGPONG);
+            s4.GetComponent<PositionComp>().Position2D = new Vector2(200f, 400f);
+            s4.GetComponent<AnimatedSpriteComp>().MinFrame = 4;
+            s4.GetComponent<AnimatedSpriteComp>().MaxFrame = 12;
         }
 
     }

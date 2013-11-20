@@ -85,9 +85,36 @@ namespace TTengine.Systems
             //spriteComp.DrawCenter = screen.ToPixels(spriteComp.Center); // TODO check
 
             // update frame counter - one per frame
-            spriteComp.CurrentFrame++;
-            if (spriteComp.CurrentFrame == spriteComp.TotalFrames)
-                spriteComp.CurrentFrame = 0;
+            switch (spriteComp.AnimType)
+            {
+                case AnimationType.NORMAL:
+                    spriteComp.CurrentFrame++;
+                    if (spriteComp.CurrentFrame > spriteComp.MaxFrame || spriteComp.CurrentFrame == spriteComp.TotalFrames)
+                        spriteComp.CurrentFrame = spriteComp.MinFrame;
+                    break;
+
+                case AnimationType.REVERSE:
+                    spriteComp.CurrentFrame--;
+                    if (spriteComp.CurrentFrame < spriteComp.MinFrame ||  spriteComp.CurrentFrame < 0)
+                        spriteComp.CurrentFrame = spriteComp.MaxFrame;
+                    break;
+                
+                case AnimationType.PINGPONG:
+                    spriteComp.CurrentFrame += spriteComp.pingpongDelta;
+                    if (spriteComp.CurrentFrame > spriteComp.MaxFrame || spriteComp.CurrentFrame == spriteComp.TotalFrames)
+                    {
+                        spriteComp.CurrentFrame -= 2;
+                        spriteComp.pingpongDelta = -spriteComp.pingpongDelta;
+                    }
+                    else if (spriteComp.CurrentFrame < spriteComp.MinFrame || spriteComp.CurrentFrame < 0)
+                    {
+                        spriteComp.CurrentFrame += 2;
+                        spriteComp.pingpongDelta = -spriteComp.pingpongDelta;
+                    }
+                    break;
+            }
+            
+
 
             // draw sprite from sprite atlas
             TTSpriteBatch sb = screen.SpriteBatch;

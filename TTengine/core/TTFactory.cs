@@ -81,8 +81,22 @@ namespace TTengine.Core
         /// <returns></returns>
         public static Entity CreateAnimatedSpritelet(string atlasBitmapFile, int NspritesX, int NspritesY)
         {
+            return CreateAnimatedSpritelet(atlasBitmapFile, NspritesX, NspritesY, AnimationType.NORMAL);
+        }
+
+            /// <summary>
+        /// Create an animated sprite entity
+        /// </summary>
+        /// <param name="atlasBitmapFile">Filename of the sprite atlas bitmap</param>
+        /// <param name="NspritesX">Number of sprites in horizontal direction (X) in the atlas</param>
+        /// <param name="NspritesY">Number of sprites in vertical direction (Y) in the atlas</param>
+        /// <param name="animType">Animation type chosen from AnimationType class</param>
+        /// <returns></returns>
+        public static Entity CreateAnimatedSpritelet(string atlasBitmapFile, int NspritesX, int NspritesY, AnimationType animType)
+        {
             Entity e = CreateDrawlet();
             var spriteComp = new AnimatedSpriteComp(atlasBitmapFile,NspritesX,NspritesY);
+            spriteComp.AnimType = animType;
             e.AddComponent(spriteComp);
             e.Refresh();
             return e;

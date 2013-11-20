@@ -18,10 +18,8 @@ namespace TTengine.Systems
 
         public override void Process(Entity entity, ScaleComp sc)
         {
-            if (!sc.IsActive) return;
-
             // scaling logic towards target
-            if (sc.IsActive && sc.ScaleSpeed > 0)
+            if (sc.ScaleSpeed > 0)
             {
                 if (sc.Scale < sc.ScaleTarget)
                 {
