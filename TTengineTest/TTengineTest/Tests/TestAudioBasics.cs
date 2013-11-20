@@ -32,7 +32,7 @@ namespace TTengineTest
         {
             SoundEvent soundScript = new SoundEvent("Test_Repeat");
             // try a once event
-            SampleSoundEvent evDing = new SampleSoundEvent("ding.wav");
+            SampleSoundEvent evDing = new SampleSoundEvent("ambient-echoing-ding.wav");
             evDing.Repeat = 1;
             soundScript.AddEvent(1, evDing);
 
