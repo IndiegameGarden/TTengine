@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 
 using TTengine.Core;
+using TTengine.Comps;
 
 namespace TTengineTest
 {
@@ -18,7 +19,9 @@ namespace TTengineTest
 
         public override void Create()
         {
-            TTFactory.CreateAnimatedSpritelet("SmileyWalk");
+            // create animated sprite from 4x4 sprite atlas bitmap
+            var s = TTFactory.CreateAnimatedSpritelet("SmileyWalk",4,4);
+            s.GetComponent<PositionComp>().Position2D = new Vector2(500f, 300f);
         }
 
     }

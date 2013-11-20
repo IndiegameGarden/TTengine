@@ -31,15 +31,20 @@ namespace TTengine.Comps
         {
             this.Nx = Nx;
             this.Ny = Ny;
+            px = Texture.Width / Nx;
+            py = Texture.Height / Ny;
+            totalFrames = Nx * Ny;
         }
 
         protected override void InitTextures()
         {
             base.InitTextures();
             CurrentFrame = 0;
-            px = Texture.Width / Nx;
-            py = Texture.Height / Ny;
-            totalFrames = Nx * Ny;
+            if (Nx > 0 && Ny > 0)
+            {
+                px = Texture.Width / Nx;
+                py = Texture.Height / Ny;
+            }
         }
     }
 }

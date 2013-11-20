@@ -34,9 +34,10 @@ namespace TTengineTest
                     // FIXME try a ref to sc.Scale passing. Simpler.
                     var m = new SineModifier<ScaleComp>(delegate (ScaleComp sc, double value)  { sc.Scale = value; }, 
                                                         b.GetComponent<ScaleComp>());
-                    m.Amplitude = RandomMath.RandomBetween(0.1f, 0.8f);
-                    m.Frequency = RandomMath.RandomBetween(0.2f, 1.5f);
+                    m.Amplitude = RandomMath.RandomBetween(0.05f, 0.4f);
+                    m.Frequency = RandomMath.RandomBetween(0.04f, 0.3f);
                     m.Phase = RandomMath.RandomBetween(0f, MathHelper.TwoPi);
+                    m.Offset = RandomMath.RandomBetween(0.45f, 0.8f);
                     m.AttachTo(b); // attach modifier to the ball.
                 }
             }
