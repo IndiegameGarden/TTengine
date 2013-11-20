@@ -54,27 +54,24 @@ namespace TTengine.Systems
     public class ExpirationSystem : EntityComponentProcessingSystem<ExpiresComp>
     {
 
-        protected double deltaTimeStep = 0;
+        protected double dt = 0;
 
-        protected override void ProcessEntities(IDictionary<int, Entity> entities)
+        protected override void Begin()
         {
+            base.Begin();
             // retrieve the delta time step once, before looping over all entities.
-            deltaTimeStep = TimeSpan.FromTicks(this.EntityWorld.Delta).TotalSeconds;
-            base.ProcessEntities(entities);
+            dt = TimeSpan.FromTicks(this.EntityWorld.Delta).TotalSeconds;
         }
 
         /// <summary>Processes the specified entity.</summary>
         /// <param name="entity">The entity.</param>
         public override void Process(Entity entity, ExpiresComp expiresComponent)
         {
-            if (expiresComponent != null && expiresComponent.IsActive)
-            {
-                expiresComponent.ReduceLifeTime(deltaTimeStep);
+            expiresComponent.ReduceLifeTime(dt);
 
-                if (expiresComponent.IsExpired)
-                {
-                    entity.Delete();
-                }
+            if (expiresComponent.IsExpired)
+            {
+                entity.Delete();
             }
         }
     }

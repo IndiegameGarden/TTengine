@@ -25,11 +25,10 @@ namespace TTengine.Systems
 
         public override void Process(Entity entity, ScriptComp sc)
         {
-            if (!sc.IsActive) return;
             sc.UpdateComp(dt);
             ctx.ScriptComp = sc;
             ctx.Entity = entity;
-            foreach(var script in sc.Scripts)
+            foreach(IScript script in sc.Scripts)
                 script.OnUpdate(ctx);
         }
 
@@ -42,7 +41,6 @@ namespace TTengine.Systems
 
         public override void Process(Entity entity, ScriptComp sc)
         {
-            if (!sc.IsActive) return;
             ctx.ScriptComp = sc;
             ctx.Entity = entity;
             foreach (var script in sc.Scripts)

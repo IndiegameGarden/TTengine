@@ -58,10 +58,6 @@ namespace TTengine.Systems
 
         public override void Process(Entity entity, ScreenComp screen, DrawComp drawComp)
         {
-            // check if present screenComp is the active one in this Draw() round
-            if (!screen.IsActive)
-                return;
-            
             // in this final round, end the drawing to this screenlet:
             TTSpriteBatch sb = screen.SpriteBatch;
             sb.End();

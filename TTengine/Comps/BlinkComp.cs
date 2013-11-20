@@ -14,7 +14,6 @@ namespace TTengine.Comps
         {
             this.TimePeriod = timePeriod;
             this.DutyCycle = dutyCycle;
-            IsActive = true;
         }
 
         /// <summary>

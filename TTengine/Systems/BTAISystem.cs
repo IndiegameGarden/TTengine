@@ -42,12 +42,12 @@ namespace TTengine.Systems
             foreach (var c in btComp.CompsToDisable)
             {
                 if (!btComp.CompsToEnable.Contains(c))
-                    c.IsActive = false;
+                    throw new NotImplementedException();
             }
             // 'enable' request always higher priority than a 'disable' request.
             foreach (var c in btComp.CompsToEnable)
             {
-                c.IsActive = true;
+                throw new NotImplementedException();
             }
             btComp.CompsToEnable.Clear();
             btComp.CompsToDisable.Clear();

@@ -38,7 +38,6 @@ namespace TTengine.Systems
 
         public override void Process(Entity entity, AudioComp ac)
         {
-            if (!ac.IsActive) return;
             ac.UpdateComp(dt);
             rp.Time = ac.SimTime;
             rp.Ampl = ac.Ampl;
