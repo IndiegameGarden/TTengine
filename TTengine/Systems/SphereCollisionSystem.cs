@@ -54,11 +54,11 @@ namespace TTengine.Systems
 
     /// <summary>The collision system.</summary>
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = SystemsSchedule.CollisionSystem)]
-    internal class CollisionSystem : EntitySystem
+    public class SphereCollisionSystem : EntitySystem
     {
-        /// <summary>Initializes a new instance of the <see cref="CollisionSystem" /> class.</summary>
-        public CollisionSystem()
-            : base(Aspect.All(typeof(PositionComp),typeof(ShapeComp)))
+        /// <summary>Initializes a new instance of the <see cref="SphereCollisionSystem" /> class.</summary>
+        public SphereCollisionSystem()
+            : base(Aspect.All(typeof(PositionComp),typeof(SphereShapeComp)))
         {
         }
 
@@ -66,7 +66,7 @@ namespace TTengine.Systems
         /// <param name="entities">The entities.</param>
         protected override void ProcessEntities(IDictionary<int, Entity> entities)
         {
-            Bag<Entity> allObj = this.EntityWorld.GroupManager.GetEntities(ShapeComp.CollisionGroupName); 
+            Bag<Entity> allObj = this.EntityWorld.GroupManager.GetEntities(SphereShapeComp.CollisionGroupName); 
             if (allObj != null )
             {
                 for (int i1 = 0; allObj.Count > i1; ++i1)
@@ -93,8 +93,8 @@ namespace TTengine.Systems
         {
             var p1 = entity1.GetComponent<PositionComp>();
             var p2 = entity2.GetComponent<PositionComp>();
-            var s1 = entity1.GetComponent<ShapeComp>();
-            var s2 = entity1.GetComponent<ShapeComp>();
+            var s1 = entity1.GetComponent<SphereShapeComp>();
+            var s2 = entity1.GetComponent<SphereShapeComp>();
             p1.Z = 0f;
             p2.Z = 0f;
             float dist = Vector3.Distance(p1.Position, p2.Position);

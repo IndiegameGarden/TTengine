@@ -5,15 +5,14 @@ namespace TTengine.Comps
 {
     /// <summary>
     /// Entities that possess a Sphere shape, or a spherical (3D) collission region
-    /// FIXME rename to SphereShapeComp
     /// </summary>
-    public class ShapeComp: IComponent
+    public class SphereShapeComp: IComponent
     {
         public const string CollisionGroupName = "TTsphere";
     
         public float Radius { get; set; }
 
-        public ShapeComp(float radius)
+        public SphereShapeComp(float radius)
         {
             this.Radius=radius;
         }
