@@ -15,7 +15,7 @@ namespace TTengine.Comps
     /// Component that allows drawing of the gamelet, including basic drawing parameters
     /// like drawing position, layer depth, drawing color, etc
     /// </summary>
-    public class DrawComp: IComponent // FIXME Comp or IComp check for all solution
+    public class DrawComp: IComponent
     {
         public DrawComp()
         {

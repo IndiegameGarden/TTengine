@@ -11,7 +11,7 @@ namespace TTengine.Comps
     /// (velocity, scale, rotation, zoom, etc.)
     /// FIXME not used yet
     /// </summary>
-    public class TargetMotionComp : Comp
+    public class TargetMotionComp : IComponent
     {
         public TargetMotionComp()
         {

@@ -64,7 +64,6 @@ namespace TTengine.Systems
         /// <param name="entity">The entity.</param>
         public override void Process(Entity entity, RotateComp rotComp, DrawComp drawComp)
         {
-            rotComp.UpdateComp(dt);
             drawComp.DrawRotation = (float)rotComp.Rotate;
         }
     }

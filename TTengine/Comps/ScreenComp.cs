@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
+using Artemis.Interface;
 
 namespace TTengine.Core
 {
@@ -14,7 +15,7 @@ namespace TTengine.Core
     /// (RenderBuffer) where other entities can draw themselves to.
     /// <seealso cref="ScreenletSystem"/>
     /// </summary>
-    public class ScreenComp: Comp
+    public class ScreenComp: IComponent
     {
         /// <summary>create a Screenlet of given dimensions with optionally a RenderTarget</summary>
         public ScreenComp(bool hasRenderBuffer, int x, int y)

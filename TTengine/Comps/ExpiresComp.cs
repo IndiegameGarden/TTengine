@@ -40,7 +40,7 @@ namespace TTengine.Comps
     using TTengine.Core;
 
     /// <summary>The expires.</summary>
-    public class ExpiresComp : Comp
+    public class ExpiresComp : IComponent
     {
         /// <summary>Initializes a new instance of the <see cref="ExpiresComp" /> class.</summary>
         public ExpiresComp() 

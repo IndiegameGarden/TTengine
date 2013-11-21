@@ -8,7 +8,7 @@ using TTengine.Core;
 
 namespace TTengine.Comps
 {
-    public class TextComp: Comp
+    public class TextComp: IComponent
     {
         public SpriteFont Font;
 

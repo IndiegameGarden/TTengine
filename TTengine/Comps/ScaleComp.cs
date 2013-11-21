@@ -8,7 +8,7 @@ namespace TTengine.Comps
     /// <summary>
     /// Component for scale modification
     /// </summary>
-    public class ScaleComp : Comp
+    public class ScaleComp : IComponent
     {
         public ScaleComp():
             this(1)

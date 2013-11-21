@@ -1,12 +1,13 @@
 ﻿using System;
 using TTengine.Core;
+using Artemis.Interface;
 
 namespace TTengine.Comps
 {
     /// <summary>
     /// Enables rotation of entities
     /// </summary>
-    public class RotateComp: Comp
+    public class RotateComp: IComponent
     {
         public RotateComp()
         {

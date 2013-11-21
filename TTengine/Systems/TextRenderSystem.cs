@@ -72,25 +72,24 @@ namespace TTengine.Systems
         /// <param name="entity">The entity.</param>
         public override void Process(Entity entity, TextComp textComp, PositionComp posComp, DrawComp drawComp)
         {
-            textComp.UpdateComp(dt);
-            if (drawComp.IsVisible)
-            {
-                // use set screen, or default if not given.
-                ScreenComp screen = drawComp.Screen;
-                if (screen == null)
-                    screen = activeScreen;
+            if (!drawComp.IsVisible)
+                return;
+            
+            // use set screen, or default if not given.
+            ScreenComp screen = drawComp.Screen;
+            if (screen == null)
+                screen = activeScreen;
 
-                // update drawpos FIXME - should one system do this, now it's two? or make a helper method.
-                var p = posComp.PositionAbs;
-                drawComp.DrawPosition = screen.ToPixels(p);
-                drawComp.LayerDepth = p.Z; // Z position is translated to a layer depth
+            // update drawpos FIXME - should one system do this, now it's two? or make a helper method.
+            var p = posComp.PositionAbs;
+            drawComp.DrawPosition = screen.ToPixels(p);
+            drawComp.LayerDepth = p.Z; // Z position is translated to a layer depth
 
-                // draw sprite
-                TTSpriteBatch sb = screen.SpriteBatch;
-                sb.DrawString(textComp.Font, textComp.Text, drawComp.DrawPosition, drawComp.DrawColor, 0f, 
-                    Vector2.Zero, drawComp.DrawScale, SpriteEffects.None, drawComp.LayerDepth);
+            // draw sprite
+            TTSpriteBatch sb = screen.SpriteBatch;
+            sb.DrawString(textComp.Font, textComp.Text, drawComp.DrawPosition, drawComp.DrawColor, 0f, 
+                Vector2.Zero, drawComp.DrawScale, SpriteEffects.None, drawComp.LayerDepth);
 
-            }
         }
 
     }
