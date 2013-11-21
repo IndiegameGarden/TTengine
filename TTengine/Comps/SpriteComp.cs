@@ -78,12 +78,31 @@ namespace TTengine.Comps
         /// Center of sprite expressed in relative width/height coordinates, where 1.0 is full width or full height
         /// of the sprite. By default the center of the sprite is chosen in the middle.
         /// </summary>
-        public Vector3 Center = new Vector3(0.5f, 0.5f, 0f); 
+        public Vector3 Center
+        {
+            get
+            {
+                return center;
+            }
+            set
+            {
+                center = value;
+                drawCenter = new Vector2(center.X * Width, center.Y * Height); // update center
+            }
+        }
+        private Vector3 center = new Vector3(0.5f, 0.5f, 0f); 
 
         /// <summary>
-        /// based on Center this is a center coordinate for direct use in Draw() calls, expressed in pixels
+        /// center coordinate as used in Draw() calls, expressed in pixels; updated when Center or Texture changes
         /// </summary>
-        public Vector2 DrawCenter = Vector2.Zero;
+        public Vector2 DrawCenter
+        {
+            get
+            {
+                return drawCenter;
+            }
+        }
+        internal Vector2 drawCenter = Vector2.Zero;
 
         /**
          * get/set the Texture of this sprite
@@ -99,34 +118,36 @@ namespace TTengine.Comps
             {
                 return texture;
             }
-
         }
 
         #endregion
 
+        /// <summary>
+        /// Called upon texture change, to (re)initialize texture-related members 
+        /// </summary>
         protected virtual void InitTextures()
         {
             if (texture != null)
             {
                 Height = texture.Height;
                 Width = texture.Width;
-                DrawCenter = new Vector2(Center.X * Width, Center.Y * Height); // FIXME adapt all the time (if center changes)??
+                drawCenter = new Vector2(Center.X * Width, Center.Y * Height);
             }
             if (fileName != null && texture == null)
                 LoadTexture(fileName);
         }
 
 
-        /**
-         * load  a (first-time, or new) texture for this shape)
-         */
+        /// <summary>
+        /// Load a (first-time, or new) texture for this shape
+        /// </summary>
         protected void LoadTexture(string textureFilename)
         {
             Texture = TTGame.Instance.Content.Load<Texture2D>(textureFilename);
         }
 
         /// <summary>
-        /// load a bitmap direct from graphics file (ie bypass the XNA Content preprocessing framework).
+        /// Load a bitmap direct from graphics file (ie bypass the XNA Content preprocessing framework).
         /// Method may be different whether it's at Initialize time or during game.
         /// </summary>
         /// <param name="fn"></param>

@@ -82,7 +82,6 @@ namespace TTengine.Systems
             var p = posComp.PositionAbs;
             drawComp.DrawPosition = screen.ToPixels(p);
             drawComp.LayerDepth = p.Z; // Z position is translated to a layer depth
-            //spriteComp.DrawCenter = screen.ToPixels(spriteComp.Center); // TODO check
 
             // update frame counter - one per frame
             switch (spriteComp.AnimType)
@@ -113,8 +112,6 @@ namespace TTengine.Systems
                     }
                     break;
             }
-            
-
 
             // draw sprite from sprite atlas
             TTSpriteBatch sb = screen.SpriteBatch;
@@ -124,7 +121,7 @@ namespace TTengine.Systems
             Rectangle sourceRectangle = new Rectangle(spriteComp.px * column, spriteComp.py * row, spriteComp.px, spriteComp.py);
 
             sb.Draw(spriteComp.Texture, dp, sourceRectangle, drawComp.DrawColor,
-                drawComp.DrawRotation, spriteComp.DrawCenter, drawComp.DrawScale, SpriteEffects.None, drawComp.LayerDepth);
+                drawComp.DrawRotation, spriteComp.drawCenter, drawComp.DrawScale, SpriteEffects.None, drawComp.LayerDepth);
 
         }
 

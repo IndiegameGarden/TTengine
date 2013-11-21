@@ -82,7 +82,6 @@ namespace TTengine.Systems
             var p = posComp.PositionAbs;
             drawComp.DrawPosition = screen.ToPixels(p);
             drawComp.LayerDepth = p.Z; // Z position is translated to a layer depth
-            //spriteComp.DrawCenter = screen.ToPixels(spriteComp.Center); // TODO check
 
             TTSpriteBatch sb = screen.SpriteBatch;
 
@@ -103,7 +102,7 @@ namespace TTengine.Systems
                     Vector2 pos = dp + new Vector2(x * dx, y * dy);
                     Color col = fieldComp.fieldData[(x0+x) + (y0+y)*Nx ];
                     sb.Draw(spriteComp.Texture, pos, null, col,
-                        drawComp.DrawRotation, spriteComp.DrawCenter, drawComp.DrawScale, SpriteEffects.None, drawComp.LayerDepth);
+                        drawComp.DrawRotation, spriteComp.drawCenter, drawComp.DrawScale, SpriteEffects.None, drawComp.LayerDepth);
                 }
             }
 

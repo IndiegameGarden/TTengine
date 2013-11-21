@@ -70,25 +70,25 @@ namespace TTengine.Systems
         /// <param name="entity">The entity.</param>
         public override void Process(Entity entity, SpriteComp spriteComp, PositionComp posComp, DrawComp drawComp)
         {
-            if (drawComp.IsVisible)
-            {
-                ScreenComp screen = drawComp.Screen;
+            if (!drawComp.IsVisible)
+                return;
+            ScreenComp screen = drawComp.Screen;
 
-                // if no specific screen...
-                if (screen == null)
-                    screen = activeScreen;
-                // update drawpos
-                var p = posComp.PositionAbs;
-                drawComp.DrawPosition = screen.ToPixels(p);
-                drawComp.LayerDepth = p.Z; // Z position is translated to a layer depth
-                //spriteComp.DrawCenter = screen.ToPixels(spriteComp.Center); // TODO check
+            // if no specific screen...
+            if (screen == null)
+                screen = activeScreen;
+            
+            // update drawpos
+            var p = posComp.PositionAbs;
+            drawComp.DrawPosition = screen.ToPixels(p);
+            drawComp.LayerDepth = p.Z; // Z position is translated to a layer depth
 
-                TTSpriteBatch sb = screen.SpriteBatch;
+            TTSpriteBatch sb = screen.SpriteBatch;
 
-                // draw sprite
-                sb.Draw(spriteComp.Texture, drawComp.DrawPosition, null, drawComp.DrawColor,
-                    drawComp.DrawRotation, spriteComp.DrawCenter, drawComp.DrawScale, SpriteEffects.None, drawComp.LayerDepth);
-            }
+            // draw sprite
+            sb.Draw(spriteComp.Texture, drawComp.DrawPosition, null, drawComp.DrawColor,
+                drawComp.DrawRotation, spriteComp.drawCenter, drawComp.DrawScale, SpriteEffects.None, drawComp.LayerDepth);
+
         }
 
     }
