@@ -39,6 +39,25 @@ namespace TTengineTest
             IsAudio = true;
         }
 
+        protected override void LoadContent()
+        {
+            base.LoadContent();
+
+            // Here all the tests are listed
+            DoTest(new TestTargetMotion());
+            DoTest(new TestAnimatedSprite());
+            DoTest(new TestScaling());
+            DoTest(new TestSpriteField());
+            DoTest(new TestAudioBasics());
+            DoTest(new TestContentLoad());
+            DoTest(new TestRelativeMotion());
+            DoTest(new TestLinearMotion());
+            DoTest(new TestRotation());
+
+            ChannelMgr.ZapTo(channels[0]);
+
+        }
+
         protected override void Initialize()
         {
             Factory = TestFactory.Instance;
@@ -95,24 +114,6 @@ namespace TTengineTest
             Factory.CreateTextlet(new Vector2(2f, GraphicsMgr.PreferredBackBufferHeight-20f), t.GetType().Name, col);
 
         }
-
-        protected override void LoadContent()
-        {
-            base.LoadContent();
-
-            // Here all the tests are listed
-            DoTest(new TestAnimatedSprite());
-            DoTest(new TestScaling());
-            DoTest(new TestSpriteField());
-            DoTest(new TestAudioBasics());
-            DoTest(new TestContentLoad());
-            DoTest(new TestRelativeMotion());
-            DoTest(new TestLinearMotion());
-            DoTest(new TestRotation());
-
-            ChannelMgr.ZapTo(channels[0]);
-
-        }       
 
     }
 
