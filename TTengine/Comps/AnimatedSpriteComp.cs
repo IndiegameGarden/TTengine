@@ -36,7 +36,10 @@ namespace TTengine.Comps
             }
         }
 
-        internal int totalFrames = 0, px, py, Nx, Ny, pingpongDelta=1 ;
+        /// <summary>The number of screen draws that a single animation frame stays on (normally 1=fastest)</summary>
+        public int SlowdownFactor { get; set; }
+
+        internal int totalFrames = 0, px, py, Nx, Ny, pingpongDelta=1, frameSkipCounter = 1 ;
 
         /// <summary>
         /// Create new, loading from atlas bitmap file
@@ -51,10 +54,11 @@ namespace TTengine.Comps
             this.Ny = Ny;
             this.MinFrame = 0;
             this.CurrentFrame = 0;
+            this.SlowdownFactor = 1;
             px = Texture.Width / Nx;
             py = Texture.Height / Ny;
             totalFrames = Nx * Ny;
-            this.MaxFrame = totalFrames;
+            this.MaxFrame = totalFrames-1;
         }
 
         protected override void InitTextures()

@@ -83,34 +83,40 @@ namespace TTengine.Systems
             drawComp.DrawPosition = screen.ToPixels(p);
             drawComp.LayerDepth = p.Z; // Z position is translated to a layer depth
 
-            // update frame counter - one per frame
-            switch (spriteComp.AnimType)
+            spriteComp.frameSkipCounter--;
+            if (spriteComp.frameSkipCounter == 0)
             {
-                case AnimationType.NORMAL:
-                    spriteComp.CurrentFrame++;
-                    if (spriteComp.CurrentFrame > spriteComp.MaxFrame || spriteComp.CurrentFrame == spriteComp.TotalFrames)
-                        spriteComp.CurrentFrame = spriteComp.MinFrame;
-                    break;
+                spriteComp.frameSkipCounter = spriteComp.SlowdownFactor;
 
-                case AnimationType.REVERSE:
-                    spriteComp.CurrentFrame--;
-                    if (spriteComp.CurrentFrame < spriteComp.MinFrame ||  spriteComp.CurrentFrame < 0)
-                        spriteComp.CurrentFrame = spriteComp.MaxFrame;
-                    break;
-                
-                case AnimationType.PINGPONG:
-                    spriteComp.CurrentFrame += spriteComp.pingpongDelta;
-                    if (spriteComp.CurrentFrame > spriteComp.MaxFrame || spriteComp.CurrentFrame == spriteComp.TotalFrames)
-                    {
-                        spriteComp.CurrentFrame -= 2;
-                        spriteComp.pingpongDelta = -spriteComp.pingpongDelta;
-                    }
-                    else if (spriteComp.CurrentFrame < spriteComp.MinFrame || spriteComp.CurrentFrame < 0)
-                    {
-                        spriteComp.CurrentFrame += 2;
-                        spriteComp.pingpongDelta = -spriteComp.pingpongDelta;
-                    }
-                    break;
+                // update frame counter - one per frame
+                switch (spriteComp.AnimType)
+                {
+                    case AnimationType.NORMAL:
+                        spriteComp.CurrentFrame++;
+                        if (spriteComp.CurrentFrame > spriteComp.MaxFrame || spriteComp.CurrentFrame == spriteComp.TotalFrames)
+                            spriteComp.CurrentFrame = spriteComp.MinFrame;
+                        break;
+
+                    case AnimationType.REVERSE:
+                        spriteComp.CurrentFrame--;
+                        if (spriteComp.CurrentFrame < spriteComp.MinFrame || spriteComp.CurrentFrame < 0)
+                            spriteComp.CurrentFrame = spriteComp.MaxFrame;
+                        break;
+
+                    case AnimationType.PINGPONG:
+                        spriteComp.CurrentFrame += spriteComp.pingpongDelta;
+                        if (spriteComp.CurrentFrame > spriteComp.MaxFrame || spriteComp.CurrentFrame == spriteComp.TotalFrames)
+                        {
+                            spriteComp.CurrentFrame -= 2;
+                            spriteComp.pingpongDelta = -spriteComp.pingpongDelta;
+                        }
+                        else if (spriteComp.CurrentFrame < spriteComp.MinFrame || spriteComp.CurrentFrame < 0)
+                        {
+                            spriteComp.CurrentFrame += 2;
+                            spriteComp.pingpongDelta = -spriteComp.pingpongDelta;
+                        }
+                        break;
+                }
             }
 
             // draw sprite from sprite atlas
