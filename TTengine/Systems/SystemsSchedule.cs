@@ -15,6 +15,7 @@ namespace TTengine.Systems
             ScriptSystemUpdate  = 1,
             BTAISystem          = 1,
             MovementSystem  = 2,
+            TargetMotionSystem = 2,
             RotateSystem    = 2,
             ScaleSystem     = 2,
             BlinkSystem     = 3,

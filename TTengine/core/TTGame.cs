@@ -48,7 +48,7 @@ namespace TTengine.Core
 
             // XNA related init that needs to be in constructor (or at least before Initialize())
             GraphicsMgr = new GraphicsDeviceManager(this);
-            IsFixedTimeStep = false;
+            IsFixedTimeStep = true;
             Content.RootDirectory = "Content";
 #if DEBUG
             GraphicsMgr.SynchronizeWithVerticalRetrace = false;

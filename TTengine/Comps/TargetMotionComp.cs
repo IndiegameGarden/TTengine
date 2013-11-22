@@ -17,7 +17,7 @@ namespace TTengine.Comps
         {
         }
 
-        public Vector2 Target
+        public Vector3 Target
         {
             get
             {
@@ -39,85 +39,8 @@ namespace TTengine.Comps
             set;
         }
 
-        protected Vector2 targetPos = Vector2.Zero;
-        protected bool isTargetSet = false;
-
-        /*
-        protected override void OnUpdate(ref UpdateParams ctx)
-        {
-            // FIXME ? reset back the Modifiers, each Update round
-            // *before* any children are simulated.
-            if (Active)
-            {
-                PositionModifier = Vector2.Zero;
-                ScaleModifier = 1.0f;
-                RotateModifier = 0.0f;
-            }
-
-            // simple physics simulation (fixed timestep assumption)
-            // with optional target to move to with given velocity
-            if (isTargetSet)
-            {
-                // motion towards target
-                //Velocity = (TargetPos - Position) * 0.01f;
-                // FIXME allow to choose linear vs 'smoothed' motion mode???
-                MoveToTarget(ref ctx, false);
-            }
-            else
-            {
-                Position += Vector2.Multiply(Velocity, ctx.Dt);
-                Velocity += Vector2.Multiply(Acceleration, ctx.Dt);
-            }
-
-            // handle scaling over time
-            ScaleToTarget(ScaleTarget, ScaleSpeed, ScaleSpeed * 0.01f); // FIXME ref ctx or empty? no 0.01 , scalespeed consider
-
-            // handle dynamic zooming
-            ZoomToTarget(ref ctx);
-
-            // rotation
-            RotateToTarget();
-
-        }
-         */
-
-        /*
-        protected void MoveToTarget(ref UpdateParams ctx, bool isLinearMotionMode)
-        {
-            float vel = Velocity.Length();
-            if (vel > 0f)
-            {
-                Vector2 vdif = TargetPos - Position;
-                if (vdif.Length() > 0)
-                {
-                    Vector2 vmove = vdif;
-                    if (isLinearMotionMode)
-                    {
-                        vmove.Normalize();
-                        vmove *= vel * ctx.Dt;
-                    }
-                    else
-                    {
-                        vmove *= vel * ctx.Dt;
-                    }
-                    if (vmove.LengthSquared() > vdif.LengthSquared())
-                    {
-                        // target reached
-                        isTargetSet = false;
-                        Position = TargetPos;
-                        Velocity = Vector2.Zero;
-                    }
-                    else
-                    {
-                        Position += vmove;
-                    }
-                }
-            }
-
-            // adapt velocity normally with acceleration, for next round
-            Velocity += Vector2.Multiply(Acceleration, ctx.Dt);
-        }
-        */
+        internal Vector3 targetPos = Vector3.Zero;
+        internal bool isTargetSet = false;
 
     }
 }
