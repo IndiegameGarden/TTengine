@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Artemis;
 using TTengine.Comps;
@@ -107,6 +108,7 @@ namespace TTengine.Core
             Entity e = CreateDrawlet();
             var spriteFieldComp = new SpriteFieldComp(fieldBitmapFile);
             var spriteComp = new SpriteComp(spriteBitmapFile);
+            spriteFieldComp.FieldSpacing = new Vector2(spriteComp.Width, spriteComp.Height);
             e.AddComponent(spriteComp);
             e.AddComponent(spriteFieldComp);
             e.Refresh();

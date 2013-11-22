@@ -44,10 +44,10 @@ namespace TTengineTest
             base.LoadContent();
 
             // Here all the tests are listed
-            DoTest(new TestTargetMotion());
-            DoTest(new TestAnimatedSprite());
-            DoTest(new TestScaling());
             DoTest(new TestSpriteField());
+            DoTest(new TestAnimatedSprite());
+            DoTest(new TestTargetMotion());
+            DoTest(new TestScaling());
             DoTest(new TestAudioBasics());
             DoTest(new TestContentLoad());
             DoTest(new TestRelativeMotion());

@@ -80,7 +80,7 @@ namespace TTengine.Systems
 
             // update drawpos
             var p = posComp.PositionAbs;
-            drawComp.DrawPosition = screen.ToPixels(p);
+            drawComp.DrawPosition = screen.ToPixels(p); //FIXME remove function.
             drawComp.LayerDepth = p.Z; // Z position is translated to a layer depth
 
             TTSpriteBatch sb = screen.SpriteBatch;
@@ -89,20 +89,28 @@ namespace TTengine.Systems
             int x0 = (int)Math.Round(fieldComp.FieldPos.X);
             int y0 = (int)Math.Round(fieldComp.FieldPos.Y);
             int Nx = fieldComp.NumberSpritesX;
+            int Twidth = fieldComp.Texture.Width;
             int Ny = fieldComp.NumberSpritesY;
             float dx = fieldComp.FieldSpacing.X;
             float dy = fieldComp.FieldSpacing.Y;
             var dp = drawComp.DrawPosition;
 
             // draw sprites loops
+            var tex = spriteComp.Texture;
+            float rot = drawComp.DrawRotation;
+            Vector2 ctr = spriteComp.DrawCenter;
+            float sc = drawComp.DrawScale;
+            float laydepth = drawComp.LayerDepth;
+
             for (int x = 0; x < Nx; x++)
             {
                 for (int y = 0; y < Ny; y++)
                 {
                     Vector2 pos = dp + new Vector2(x * dx, y * dy);
-                    Color col = fieldComp.fieldData[(x0+x) + (y0+y)*Nx ];
-                    sb.Draw(spriteComp.Texture, pos, null, col,
-                        drawComp.DrawRotation, spriteComp.drawCenter, drawComp.DrawScale, SpriteEffects.None, drawComp.LayerDepth);
+                    Color col = fieldComp.fieldData[(x0+x) + (y0+y)*Twidth ];
+                    sb.Draw(tex, pos, null, col,
+                        rot, ctr, sc, SpriteEffects.None, laydepth);
+                    laydepth += float.Epsilon;
                 }
             }
 
