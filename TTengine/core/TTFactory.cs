@@ -16,10 +16,27 @@ namespace TTengine.Core
     /// </summary>
     public sealed class TTFactory
     {
+        /// <summary>The Artemis entity world that is currently used for building/creating new Entities in</summary>
+        public static EntityWorld BuildWorld;
+
+        /// <summary>The Screenlet (screen Entity) that newly built Entities by default render to.
+        /// Value null is used to denote any Screenlet to which the BuildWorld renders.</summary>
+        public static Entity BuildScreenlet;
+
         private static TTGame _game = null;
 
         static TTFactory() {
             _game = TTGame.Instance;
+        }
+
+        public static void BuildTo(EntityWorld world)
+        {
+            BuildWorld = world;
+        }
+
+        public static void RenderTo(Entity screenlet)
+        {
+            BuildScreenlet = screenlet;
         }
 
         /// <summary>
@@ -29,7 +46,7 @@ namespace TTengine.Core
         /// <returns></returns>
         public static Entity CreateEntity()
         {
-            return _game.BuildWorld.CreateEntity();
+            return BuildWorld.CreateEntity();
         }
 
         /// <summary>
@@ -52,7 +69,7 @@ namespace TTengine.Core
         public static Entity CreateDrawlet()
         {
             Entity e = CreateGamelet();
-            e.AddComponent(new DrawComp(TTGame.Instance.BuildScreen));
+            e.AddComponent(new DrawComp(BuildScreenlet));
             e.Refresh();
             return e;
         }
@@ -136,12 +153,12 @@ namespace TTengine.Core
         /// which graphics can be rendered.
         /// </summary>
         /// <returns></returns>
-        public static Entity CreateScreenlet(EntityWorld world, int width, int height)
+        public static Entity CreateScreenlet(int width, int height)
         {
             var sc = new ScreenComp(true, width, height);
-            var e = world.CreateEntity();
+            var e = CreateEntity();
             e.AddComponent(sc);
-            e.AddComponent(new DrawComp(TTGame.Instance.BuildScreen));
+            e.AddComponent(new DrawComp(BuildScreenlet));
             e.Refresh();
             return e;
         }

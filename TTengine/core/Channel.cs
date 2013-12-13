@@ -19,15 +19,19 @@ namespace TTengine.Core
         /// <summary>If true, the World of this channel is actively rendered (Drawn) to the Screenlet</summary>
         public bool IsVisible = false;
 
+        /// <summary></summary>
         public Entity Screen;
+
+        /// <summary></summary>
         public EntityWorld World;
 
         internal Channel(TTGame game)
         {
             this.World = new EntityWorld();
             this.World.InitializeAll(true);
-            // TODO other screenComp sizes - move creation to TTfactory
-            this.Screen = TTFactory.CreateScreenlet(World, game.GraphicsMgr.PreferredBackBufferWidth, game.GraphicsMgr.PreferredBackBufferHeight);
+            // TODO other screenComp sizes?
+            TTFactory.BuildWorld = this.World;
+            this.Screen = TTFactory.CreateScreenlet(game.GraphicsMgr.PreferredBackBufferWidth, game.GraphicsMgr.PreferredBackBufferHeight);
         }
 
     }

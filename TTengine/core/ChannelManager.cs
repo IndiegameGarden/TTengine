@@ -11,9 +11,24 @@ namespace TTengine.Core
     /// </summary>
     public class ChannelManager
     {
-        public Channel SelectedChannel;
+        /// <summary>
+        /// The currently selected channel. It may be modified via the ZapTo method 
+        /// or writing this property.
+        /// </summary>
+        public Channel SelectedChannel
+        {
+            get
+            {
+                return _selectedChannel;
+            }
+            set
+            {
+                ZapTo(value);
+            }
+        }
 
         protected TTGame _game = null;
+        protected Channel _selectedChannel = null;
 
         internal ChannelManager(TTGame game)
         {
@@ -33,8 +48,8 @@ namespace TTengine.Core
             Channel c = new Channel(_game);
             this.Add(c);
             BuildIn(c);
-            if (SelectedChannel == null)
-                SelectedChannel = c;
+            if (_selectedChannel == null)
+                _selectedChannel = c;
             return c;
         }
 
@@ -61,19 +76,19 @@ namespace TTengine.Core
             c.IsActive = true;
             c.IsVisible = true;
             // TODO: the soft fades etc
-            this.SelectedChannel = c;
+            this._selectedChannel = c;
         }
 
         /// <summary>
         /// selects the Channel as the current default channel to build in, to create new
-        /// Entities in. Any Factories will then use the Channel's World as the world to
-        /// build in.
+        /// Entities in. TTFactory and any factories based on it, will then use the Channel's World as the world to
+        /// build in; and the Channel's Screenlet as the default screen to render to.
         /// </summary>
-        /// <param name="c"></param>
+        /// <param name="c">Channel to build to and render to</param>
         public void BuildIn(Channel c)
         {
-            _game.BuildWorld = c.World;
-            _game.BuildScreen = c.Screen;
+            TTFactory.BuildWorld = c.World;
+            TTFactory.BuildScreenlet = c.Screen;
         }
     }
 }

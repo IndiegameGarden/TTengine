@@ -33,11 +33,6 @@ namespace TTengine.Core
 
         public MusicEngine AudioEngine;
 
-        /// <summary>The Artemis entity world that is currently used for building/creating new Entities in</summary>
-        public EntityWorld BuildWorld;
-
-        public Entity BuildScreen;
-
         public ScreenComp DrawScreen;
 
         public ChannelManager ChannelMgr ;
