@@ -25,7 +25,7 @@ namespace TTengine.Comps
         /// Screen to draw this Entity exclusively to, or null in case drawn to any screen that
         /// is asked by the TTGame. By default null.
         /// </summary>
-        public ScreenComp Screen;
+        public ScreenComp DrawScreen;
 
         /// <summary>Flag whether the Entity is visible (i.e. is being drawn or not)</summary>
         public bool IsVisible = true;

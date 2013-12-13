@@ -74,7 +74,7 @@ namespace TTengine.Systems
                 return;
 
             // check which screen to render to
-            ScreenComp screen = drawComp.Screen;
+            ScreenComp screen = drawComp.DrawScreen;
             if (screen == null)
                 screen = activeScreen;
 

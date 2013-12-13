@@ -72,7 +72,7 @@ namespace TTengine.Systems
         {
             if (!drawComp.IsVisible)
                 return;
-            ScreenComp screen = drawComp.Screen;
+            ScreenComp screen = drawComp.DrawScreen;
 
             // if no specific screen...
             if (screen == null)
