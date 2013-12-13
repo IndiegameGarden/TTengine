@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using TTengine.Core;
-
+using Artemis;
 using Artemis.Interface;
+
 
 namespace TTengine.Comps
 {
@@ -17,8 +15,9 @@ namespace TTengine.Comps
     /// </summary>
     public class DrawComp: IComponent
     {
-        public DrawComp()
+        public DrawComp(Entity drawScreen)
         {
+            this.DrawScreen = drawScreen.GetComponent<ScreenComp>();
         }
 
         /// <summary>
