@@ -77,6 +77,7 @@ namespace TTengine.Core
             c.IsVisible = true;
             // TODO: the soft fades etc
             this._selectedChannel = c;
+            BuildIn(c);
         }
 
         /// <summary>

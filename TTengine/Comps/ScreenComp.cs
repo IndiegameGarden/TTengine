@@ -61,29 +61,14 @@ namespace TTengine.Core
             }
         }
 
-        /// <summary>Width of visible screenletEntity in relative coordinates</summary>
-        public float Width { get { return aspectRatio; } }
-
-        /// <summary>Height of visible screenletEntity in relative coordinates</summary>
-        public float Height { get { return 1.0f; } }
-
         /// <summary>Width of visible screenletEntity in pixels</summary>
-        public int WidthPixels { get { return screenWidth; } }
+        public int Width { get { return screenWidth; } }
 
         /// <summary>Height of visible screenletEntity in pixels</summary>
-        public int HeightPixels { get { return screenHeight; } }
+        public int Height { get { return screenHeight; } }
 
-        /// <summary>screenlet aspectratio</summary> 
+        /// <summary>Screenlet aspectratio</summary> 
         public float AspectRatio { get { return aspectRatio;  } }
-
-        /// <summary>returns a single Rectangle instance with screenletEntity size/shape</summary>
-        public Rectangle ScreenRectangle
-        {
-            get
-            {
-                return screenRect;
-            }
-        }
 
         /// <summary>The default spritebatch associated to this screen, for drawing to it</summary>
         public TTSpriteBatch SpriteBatch = null;
@@ -93,7 +78,6 @@ namespace TTengine.Core
         private int screenWidth = 0;
         private int screenHeight = 0;
         private float aspectRatio;
-        private Rectangle screenRect;
         private RenderTarget2D renderTarget;
         #endregion
 
@@ -135,8 +119,7 @@ namespace TTengine.Core
                 screenWidth = TTGame.Instance.GraphicsDevice.Viewport.Width;
                 screenHeight = TTGame.Instance.GraphicsDevice.Viewport.Height;
             }
-            //scalingToNormalized = 1.0f / (float)screenHeight;
-            screenRect = new Rectangle(0, 0, screenWidth, screenHeight);
+
             aspectRatio = (float)screenWidth / (float)screenHeight;
             Center = new Vector3(((float)screenWidth)/2.0f, ((float)screenHeight)/2.0f, 0f);
             Zoom = 1f;

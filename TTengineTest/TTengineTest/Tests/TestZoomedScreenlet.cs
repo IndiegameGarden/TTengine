@@ -20,7 +20,7 @@ namespace TTengineTest
 
         public override void Create()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TTengine.Core;
 using TTengine.Comps;
@@ -56,6 +57,13 @@ namespace TTengine.Systems
     public class ScreenletSystem : EntityComponentProcessingSystem<ScreenComp, DrawComp>
     {
 
+        private GraphicsDevice _gfxDevice;
+
+        protected override void Begin()
+        {
+            _gfxDevice = TTGame.Instance.GraphicsDevice;
+        }
+
         public override void Process(Entity entity, ScreenComp screen, DrawComp drawComp)
         {
             // in this final round, end the drawing to this screenlet:
@@ -63,9 +71,9 @@ namespace TTengine.Systems
             sb.End();
 
             // then render the screenbuffer onto the actual screen.
-            TTGame.Instance.GraphicsDevice.SetRenderTarget(null);
+            _gfxDevice.SetRenderTarget(null);
             sb.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
-            sb.Draw(screen.RenderTarget, screen.ScreenRectangle, drawComp.DrawColor);
+            sb.Draw(screen.RenderTarget, drawComp.DrawPosition, drawComp.DrawColor);
             sb.End();
 
         }
