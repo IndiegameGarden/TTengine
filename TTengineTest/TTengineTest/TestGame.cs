@@ -43,8 +43,9 @@ namespace TTengineTest
         {
             base.LoadContent();
 
-            // Here all the tests are listed
-            DoTest(new TestSpriteField());
+            // Here all the tests are created
+            DoTest(new TestScreenlets());
+            DoTest(new TestZoomedScreenlet()); 
             DoTest(new TestAnimatedSprite());
             DoTest(new TestTargetMotion());
             DoTest(new TestScaling());

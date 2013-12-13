@@ -81,6 +81,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Tests\TestZoomedScreenlet.cs" />
+    <Compile Include="Tests\TestScreenlets.cs" />
+    <Compile Include="Tests\TestTemplate.cs" />
     <Compile Include="Tests\TestTargetMotion.cs" />
     <Compile Include="Tests\TestScaling.cs" />
     <Compile Include="Tests\TestAnimatedSprite.cs" />
