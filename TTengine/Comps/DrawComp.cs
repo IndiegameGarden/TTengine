@@ -21,22 +21,6 @@ namespace TTengine.Comps
         {
         }
 
-        #region Internal vars
-        
-        protected Vector2 drawPosition = Vector2.Zero;
-        protected float drawScale = 1f;
-        protected bool isDrawPositionCalculated = false;
-        internal Color drawColor = Color.White;
-        //internal TTSpriteBatch mySpriteBatch = null;
-        private const int NBUF = 10; // TODO tune?
-        private Vector2[] posHistory = new Vector2[NBUF];
-        private double[] drawScaleHistory = new double[NBUF];
-        private double[] posHistoryTime = new double[NBUF];
-        //private bool isFirstUpdatePosition = true;
-        //private uint phIndex = 0;
-
-        #endregion
-
         /// <summary>
         /// Screen to draw this Entity exclusively to, or null in case drawn to any screen that
         /// is asked by the TTGame. By default null.
@@ -97,6 +81,12 @@ namespace TTengine.Comps
         {
             get; set;
         }
+
+        #region Internal vars
+
+        internal Color drawColor = Color.White;
+
+        #endregion
 
     }
 }
