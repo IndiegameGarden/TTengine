@@ -20,7 +20,7 @@ namespace TTengine.Core
         public bool IsVisible = false;
 
         /// <summary></summary>
-        public Entity Screen;
+        public Entity Screenlet;
 
         /// <summary></summary>
         public EntityWorld World;
@@ -31,7 +31,7 @@ namespace TTengine.Core
             this.World.InitializeAll(true);
             // TODO other screenComp sizes?
             TTFactory.BuildWorld = this.World;
-            this.Screen = TTFactory.CreateScreenlet(); 
+            this.Screenlet = TTFactory.CreateScreenlet(); 
         }
 
     }

@@ -95,7 +95,7 @@ namespace TTengine.Core
             {
                 if (!c.IsActive || !c.IsVisible)
                     continue;
-                DrawScreen = c.Screen.GetComponent<ScreenComp>();
+                DrawScreen = c.Screenlet.GetComponent<ScreenComp>();
                 c.World.Draw();
             }
             base.Draw(gameTime);

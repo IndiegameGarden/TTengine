@@ -64,7 +64,7 @@ namespace Game1
             // title channel
             titleChannel = ChannelMgr.CreateChannel();
             ChannelMgr.ZapTo(titleChannel); // TODO function to create on it without seeing it.
-            titleChannel.Screen.GetComponent<ScreenComp>().BackgroundColor = Color.Black;
+            titleChannel.Screenlet.GetComponent<ScreenComp>().BackgroundColor = Color.Black;
 
             // add framerate counter
             FrameRateCounter.Create(Color.White);
@@ -77,7 +77,7 @@ namespace Game1
             // game channel
             gameChannel = ChannelMgr.CreateChannel();
             ChannelMgr.ZapTo(gameChannel); 
-            gameChannel.Screen.GetComponent<ScreenComp>().BackgroundColor = Color.White;
+            gameChannel.Screenlet.GetComponent<ScreenComp>().BackgroundColor = Color.White;
 
             // add framerate counter
             FrameRateCounter.Create(Color.Black);

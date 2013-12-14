@@ -102,7 +102,7 @@ namespace TTengineTest
         private void DoTest(Test t)
         {
             var c = ChannelMgr.CreateChannel();
-            c.Screen.GetComponent<ScreenComp>().BackgroundColor = t.BackgroundColor;
+            c.Screenlet.GetComponent<ScreenComp>().BackgroundColor = t.BackgroundColor;
 
             channels.Add(c);
             t.Initialize(Factory);

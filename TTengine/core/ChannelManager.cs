@@ -89,7 +89,7 @@ namespace TTengine.Core
         public void BuildIn(Channel c)
         {
             TTFactory.BuildWorld = c.World;
-            TTFactory.BuildScreenlet = c.Screen;
+            TTFactory.BuildScreenlet = c.Screenlet;
         }
     }
 }
