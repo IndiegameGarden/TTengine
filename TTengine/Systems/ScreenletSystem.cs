@@ -36,9 +36,6 @@ namespace TTengine.Systems
             if (!screenlet.IsActive)
                 return;
 
-            _gfxDevice.SetRenderTarget(screenComp.RenderTarget);
-            _gfxDevice.Clear(screenComp.BackgroundColor);
-
             // in this initial round, start the drawing to this screenlet's spritebatch:
             TTSpriteBatch sb = screenComp.SpriteBatch;
             sb.BeginParameterized();
@@ -64,16 +61,18 @@ namespace TTengine.Systems
             _gfxDevice = TTGame.Instance.GraphicsDevice;
         }
 
-        public override void Process(Entity entity, ScreenComp screen, DrawComp drawComp)
+        public override void Process(Entity entity, ScreenComp screenComp, DrawComp drawComp)
         {
             // in this final round, end the drawing to this screenlet:
-            TTSpriteBatch sb = screen.SpriteBatch;
+            TTSpriteBatch sb = screenComp.SpriteBatch;
+            _gfxDevice.SetRenderTarget(screenComp.RenderTarget);
+            _gfxDevice.Clear(screenComp.BackgroundColor);
             sb.End();
 
             // then render the screenbuffer onto the actual screen.
             _gfxDevice.SetRenderTarget(null);
             sb.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
-            sb.Draw(screen.RenderTarget, drawComp.DrawPosition, drawComp.DrawColor);
+            sb.Draw(screenComp.RenderTarget, drawComp.DrawPosition, drawComp.DrawColor);
             sb.End();
 
         }
