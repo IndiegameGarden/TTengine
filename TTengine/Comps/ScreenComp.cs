@@ -32,6 +32,7 @@ namespace TTengine.Core
         public ScreenComp(bool hasRenderBuffer): 
             this(hasRenderBuffer,TTGame.Instance.GraphicsDevice.Viewport.Width, TTGame.Instance.GraphicsDevice.Viewport.Height)
         {
+            // see this() constructor
         }
 
         public Color BackgroundColor = Color.Black;

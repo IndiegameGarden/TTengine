@@ -69,12 +69,14 @@ namespace TTengine.Systems
             _gfxDevice.Clear(screenComp.BackgroundColor);
             sb.End();
 
-            // then render the screenbuffer onto the actual screen.
-            _gfxDevice.SetRenderTarget(null);
-            sb.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
-            sb.Draw(screenComp.RenderTarget, drawComp.DrawPosition, drawComp.DrawColor);
-            sb.End();
-
+            if (screenComp.RenderTarget != null)
+            {
+                // in case a RenderTarget is defined: render the screenbuffer onto the actual screen
+                _gfxDevice.SetRenderTarget(null);
+                sb.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
+                sb.Draw(screenComp.RenderTarget, drawComp.DrawPosition, drawComp.DrawColor);
+                sb.End();
+            }
         }
 
     }

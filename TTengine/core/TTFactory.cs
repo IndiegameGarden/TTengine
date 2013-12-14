@@ -149,7 +149,21 @@ namespace TTengine.Core
         }
 
         /// <summary>
-        /// Creates a Screenlet, which is an Entity that contains a screenComp (RenderBuffer) to 
+        /// Creates a Screenlet that renders to default viewport
+        /// </summary>
+        /// <returns></returns>
+        public static Entity CreateScreenlet()
+        {
+            var sc = new ScreenComp(false);
+            var e = CreateEntity();
+            e.AddComponent(sc);
+            e.AddComponent(new DrawComp(BuildScreenlet));
+            e.Refresh();
+            return e;
+        }
+
+        /// <summary>
+        /// Creates a Screenlet that contains a screenComp (RenderBuffer) to 
         /// which graphics can be rendered.
         /// </summary>
         /// <returns></returns>

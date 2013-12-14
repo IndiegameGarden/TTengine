@@ -31,7 +31,7 @@ namespace TTengine.Core
             this.World.InitializeAll(true);
             // TODO other screenComp sizes?
             TTFactory.BuildWorld = this.World;
-            this.Screen = TTFactory.CreateScreenlet(game.GraphicsMgr.PreferredBackBufferWidth, game.GraphicsMgr.PreferredBackBufferHeight);
+            this.Screen = TTFactory.CreateScreenlet(); 
         }
 
     }
