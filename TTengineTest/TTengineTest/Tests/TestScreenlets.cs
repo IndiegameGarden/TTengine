@@ -15,11 +15,11 @@ namespace TTengineTest
         public TestScreenlets()
             : base()        
         {
-            BackgroundColor = Color.White;
+            BackgroundColor = Color.DarkSlateGray;
         }
 
         public override void Create()
-        {
+        {           
             TTFactory.RenderTo(null); // select the default render screen (from channel)
             var scr1 = TTFactory.CreateScreenlet( 320, 320 );
             scr1.GetComponent<DrawComp>().DrawPosition = new Vector2(50f, 50f);
@@ -27,8 +27,9 @@ namespace TTengineTest
             TTFactory.RenderTo(scr1);
             var t = new TestRelativeMotion();
             t.Initialize(TestFactory.Instance);
-            t.Create();
+            t.Create();           
 
+            /*
             TTFactory.RenderTo(null); // reset back to default render screen (from channel)
             var scr2 = TTFactory.CreateScreenlet(320, 320);
             scr2.GetComponent<DrawComp>().DrawPosition = new Vector2(420f, 20f);
@@ -36,6 +37,8 @@ namespace TTengineTest
             var t2 = new TestAnimatedSprite();
             t2.Initialize(TestFactory.Instance);
             t2.Create();
+            */
+            //scr2.GetComponent<ScreenComp>().Visible = false;
 
             TTFactory.RenderTo(null); 
         }

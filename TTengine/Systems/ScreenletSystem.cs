@@ -38,6 +38,8 @@ namespace TTengine.Systems
 
             // in this initial round, start the drawing to this screenlet's spritebatch:
             TTSpriteBatch sb = screenComp.SpriteBatch;
+            _gfxDevice.SetRenderTarget(screenComp.RenderTarget);
+            _gfxDevice.Clear(screenComp.BackgroundColor);
             sb.BeginParameterized();
 
         }
@@ -67,14 +69,14 @@ namespace TTengine.Systems
             TTSpriteBatch sb = screenComp.SpriteBatch;
             _gfxDevice.SetRenderTarget(screenComp.RenderTarget);
             _gfxDevice.Clear(screenComp.BackgroundColor);
-            sb.End();
+            sb.End(); // for deferred spritebatches, this draws everything now to the set RenderTarget
 
-            if (screenComp.RenderTarget != null)
+            if (screenComp.RenderTarget != null && screenComp.Visible)
             {
                 // in case a RenderTarget is defined: render the screenbuffer onto the actual screen
-                _gfxDevice.SetRenderTarget(null);
-                sb.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
+                sb.Begin(SpriteSortMode.Deferred, BlendState.Opaque);
                 sb.Draw(screenComp.RenderTarget, drawComp.DrawPosition, drawComp.DrawColor);
+                _gfxDevice.SetRenderTarget(null);
                 sb.End();
             }
         }
