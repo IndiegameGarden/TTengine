@@ -29,7 +29,6 @@ namespace TTengineTest
             t.Initialize(TestFactory.Instance);
             t.Create();           
 
-            /*
             TTFactory.RenderTo(null); // reset back to default render screen (from channel)
             var scr2 = TTFactory.CreateScreenlet(320, 320);
             scr2.GetComponent<DrawComp>().DrawPosition = new Vector2(420f, 20f);
@@ -37,7 +36,6 @@ namespace TTengineTest
             var t2 = new TestAnimatedSprite();
             t2.Initialize(TestFactory.Instance);
             t2.Create();
-            */
             //scr2.GetComponent<ScreenComp>().Visible = false;
 
             TTFactory.RenderTo(null); 

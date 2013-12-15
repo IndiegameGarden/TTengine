@@ -68,13 +68,14 @@ namespace TTengine.Systems
             // in this final round, end the drawing to this screenlet:
             TTSpriteBatch sb = screenComp.SpriteBatch;
             _gfxDevice.SetRenderTarget(screenComp.RenderTarget);
-            _gfxDevice.Clear(screenComp.BackgroundColor);
+            //_gfxDevice.Clear(screenComp.BackgroundColor);
             sb.End(); // for deferred spritebatches, this draws everything now to the set RenderTarget
 
             if (screenComp.RenderTarget != null && screenComp.Visible)
             {
                 // in case a RenderTarget is defined: render the screenbuffer onto the actual screen
-                sb.Begin(SpriteSortMode.Deferred, BlendState.Opaque);
+                _gfxDevice.SetRenderTarget(null);
+                sb.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
                 sb.Draw(screenComp.RenderTarget, drawComp.DrawPosition, drawComp.DrawColor);
                 _gfxDevice.SetRenderTarget(null);
                 sb.End();
@@ -82,4 +83,38 @@ namespace TTengine.Systems
         }
 
     }
+
+
+    /// <summary>
+    /// System that handles rendering on Screenlets and from Screenlet to the main display.
+    /// Called last in the Draw() cycle. The ScreenletPreSystem is executed before any
+    /// drawing on the screens take place.
+    /// <seealso cref="ScreenletPreSystem"/>
+    /// </summary>
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = SystemsSchedule.ScreenletPostSystem)]
+    public class ScreenletPostSystem : EntityComponentProcessingSystem<ScreenComp, DrawComp>
+    {
+        private GraphicsDevice _gfxDevice;
+
+        protected override void Begin()
+        {
+            _gfxDevice = TTGame.Instance.GraphicsDevice;
+        }
+
+        public override void Process(Entity entity, ScreenComp screenComp, DrawComp drawComp)
+        {
+            if (screenComp.RenderTarget != null && screenComp.Visible)
+            {
+                // in case a RenderTarget is defined: render the screenbuffer onto the actual screen
+                TTSpriteBatch sb = screenComp.SpriteBatch;
+                _gfxDevice.SetRenderTarget(null);
+                sb.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
+                sb.Draw(screenComp.RenderTarget, drawComp.DrawPosition, drawComp.DrawColor);
+                _gfxDevice.SetRenderTarget(null);
+                sb.End();
+            }
+        }
+
+    }
+
 }
