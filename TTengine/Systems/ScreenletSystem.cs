@@ -38,8 +38,8 @@ namespace TTengine.Systems
 
             // in this initial round, start the drawing to this screenlet's spritebatch:
             TTSpriteBatch sb = screenComp.SpriteBatch;
-            _gfxDevice.SetRenderTarget(screenComp.RenderTarget);
-            _gfxDevice.Clear(screenComp.BackgroundColor);
+            //_gfxDevice.SetRenderTarget(screenComp.RenderTarget);
+            //_gfxDevice.Clear(screenComp.BackgroundColor);
             sb.BeginParameterized();
 
         }
@@ -47,9 +47,7 @@ namespace TTengine.Systems
     }
 
     /// <summary>
-    /// System that handles rendering on Screenlets and from Screenlet to the main display.
-    /// Called last in the Draw() cycle. The ScreenletPreSystem is executed before any
-    /// drawing on the screens take place.
+    /// Called after all Draw() calls to close open spritebatches.
     /// <seealso cref="ScreenletPreSystem"/>
     /// </summary>
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = SystemsSchedule.ScreenletSystem)]
@@ -77,9 +75,7 @@ namespace TTengine.Systems
 
 
     /// <summary>
-    /// System that handles rendering on Screenlets and from Screenlet to the main display.
-    /// Called last in the Draw() cycle. The ScreenletPreSystem is executed before any
-    /// drawing on the screens take place.
+    /// ScreenletPostSystem is to render all Screenlet buffers to the main display/backbuffer.
     /// <seealso cref="ScreenletPreSystem"/>
     /// </summary>
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = SystemsSchedule.ScreenletPostSystem)]
@@ -98,7 +94,7 @@ namespace TTengine.Systems
             {
                 // in case a RenderTarget is defined: render the screenbuffer onto the actual screen
                 TTSpriteBatch sb = screenComp.SpriteBatch;
-                _gfxDevice.SetRenderTarget(null);
+                //_gfxDevice.SetRenderTarget(null);
                 sb.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
                 sb.Draw(screenComp.RenderTarget, drawComp.DrawPosition, drawComp.DrawColor);
                 _gfxDevice.SetRenderTarget(null);
