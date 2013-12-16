@@ -75,7 +75,7 @@ namespace TTengine.Systems
 
             ScreenComp screen = drawComp.DrawScreen;
 
-            // if no specific screen...
+            // if no specific screen... take default one
             if (screen == null)
                 screen = activeScreen;
             // update drawpos

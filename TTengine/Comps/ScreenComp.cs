@@ -20,11 +20,9 @@ namespace TTengine.Core
         /// <summary>create a Screenlet of given dimensions with optionally a RenderTarget</summary>
         public ScreenComp(bool hasRenderBuffer, int x, int y)
         {
-            screenWidth = x;
-            screenHeight = y;
-            OnConstruction();
+            SpriteBatch = new TTSpriteBatch(TTGame.Instance.GraphicsDevice);
             if (hasRenderBuffer)
-                InitRenderTarget();
+                renderTarget = new RenderTarget2D(TTGame.Instance.GraphicsDevice, x, y);
             InitScreenDimensions();
         }
 
@@ -48,7 +46,8 @@ namespace TTengine.Core
         /// <summary>The center coordinate, in either pixel or custom coordinates, for applying Zoom</summary>
         public Vector3 ZoomCenter;
 
-        /// <summary>TODO</summary>
+        /// <summary>Get or set a RenderTarget for the Screenlet. If null, the screen renders to the default backbuffer.
+        /// If set, the Zoom/ZoomCenter/Center properties are all re-calculated.</summary>
         public RenderTarget2D RenderTarget
         {
             get
@@ -92,20 +91,6 @@ namespace TTengine.Core
             var v = (pos - ZoomCenter) * Zoom + Center;
             return new Vector2(v.X, v.Y);
             //return pos * screen.screenHeight;
-        }
-
-        protected void OnConstruction()
-        {
-            // TODO spritebatch can be supplied from outside? optimize TTGame.Instance.GraphicsDevice access?
-            SpriteBatch = new TTSpriteBatch(TTGame.Instance.GraphicsDevice);
-        }
-
-        protected void InitRenderTarget()
-        {
-            if (screenWidth > 0 && screenHeight > 0)  // init based on constructor parameters
-                renderTarget = new RenderTarget2D(TTGame.Instance.GraphicsDevice, screenWidth, screenHeight);
-            else
-                renderTarget = null;            
         }
 
         protected void InitScreenDimensions()

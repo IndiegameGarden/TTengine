@@ -28,7 +28,7 @@ namespace TTengine.Comps
 
         /// <summary>
         /// Screen to draw this Entity exclusively to, or null in case drawn to any screen that
-        /// is asked by the TTGame. By default null.
+        /// is asked by the TTGame Channels. By default null.
         /// </summary>
         public ScreenComp DrawScreen = null;
 
@@ -87,11 +87,8 @@ namespace TTengine.Comps
             get; set;
         }
 
-        #region Internal vars
-
+        // internal vars
         internal Color drawColor = Color.White;
-
-        #endregion
 
     }
 }
