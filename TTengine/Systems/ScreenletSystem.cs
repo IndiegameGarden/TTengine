@@ -32,16 +32,9 @@ namespace TTengine.Systems
 
         public override void Process(Entity screenlet, ScreenComp screenComp, DrawComp drawComp)
         {
-            // check if present screenComp is the active one in this Draw() round
-            if (!screenlet.IsActive)
-                return;
-
             // in this initial round, start the drawing to this screenlet's spritebatch:
             TTSpriteBatch sb = screenComp.SpriteBatch;
-            //_gfxDevice.SetRenderTarget(screenComp.RenderTarget);
-            //_gfxDevice.Clear(screenComp.BackgroundColor);
             sb.BeginParameterized();
-
         }
 
     }
@@ -63,12 +56,14 @@ namespace TTengine.Systems
 
         public override void Process(Entity entity, ScreenComp screenComp, DrawComp drawComp)
         {
-            // in this final round, end the drawing to this screenlet:
-            TTSpriteBatch sb = screenComp.SpriteBatch;
-            _gfxDevice.SetRenderTarget(screenComp.RenderTarget);
-            _gfxDevice.Clear(screenComp.BackgroundColor);
-            sb.End(); // for deferred spritebatches, this draws everything now to the set RenderTarget
-
+            // in this middle round, end the drawing to screenlets with RenderTargets
+            if (screenComp.RenderTarget != null)
+            {
+                TTSpriteBatch sb = screenComp.SpriteBatch;
+                _gfxDevice.SetRenderTarget(screenComp.RenderTarget);
+                _gfxDevice.Clear(screenComp.BackgroundColor);
+                sb.End(); // for deferred spritebatches, this draws everything now to the just-set RenderTarget
+            }
         }
 
     }
@@ -82,22 +77,32 @@ namespace TTengine.Systems
     public class ScreenletPostSystem : EntityComponentProcessingSystem<ScreenComp, DrawComp>
     {
         private GraphicsDevice _gfxDevice;
+        private ScreenComp _defaultDrawScreen;
 
         protected override void Begin()
         {
             _gfxDevice = TTGame.Instance.GraphicsDevice;
+            _defaultDrawScreen = TTGame.Instance.DrawScreen;
         }
 
         public override void Process(Entity entity, ScreenComp screenComp, DrawComp drawComp)
         {
-            if (screenComp.RenderTarget != null && screenComp.Visible)
+            if (screenComp.RenderTarget != null)
             {
-                // in case a RenderTarget is defined: render the screenbuffer onto the actual screen
+                if (screenComp.Visible)
+                {
+                    // in case a RenderTarget is defined: render the screenbuffer onto the actual screen
+                    TTSpriteBatch sb = _defaultDrawScreen.SpriteBatch;
+                    sb.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
+                    sb.Draw(screenComp.RenderTarget, drawComp.DrawPosition, drawComp.DrawColor);
+                    _gfxDevice.SetRenderTarget(null);
+                    sb.End();
+                }
+            }
+            else
+            {
+                // end spritebatch of 'regular' Screenlets that draw to BackBuffer
                 TTSpriteBatch sb = screenComp.SpriteBatch;
-                //_gfxDevice.SetRenderTarget(null);
-                sb.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
-                sb.Draw(screenComp.RenderTarget, drawComp.DrawPosition, drawComp.DrawColor);
-                _gfxDevice.SetRenderTarget(null);
                 sb.End();
             }
         }
