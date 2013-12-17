@@ -26,23 +26,26 @@ namespace TTengineTest
             t0.Create();           
           
             var scr1 = TTFactory.CreateScreenlet( 320, 320 );
-            scr1.GetComponent<DrawComp>().DrawPosition = new Vector2(50f, 50f);
+            scr1.GetComponent<DrawComp>().DrawPosition = new Vector2(150f, 50f);
             // content for 1st screen: call upon another unit test
+            /*
             TTFactory.RenderTo(scr1);
             var t = new TestRelativeMotion();
             t.Initialize(TestFactory.Instance);
             t.Create();
             //scr1.GetComponent<ScreenComp>().Visible = false;
+            */
 
+            /*
             TTFactory.RenderTo(null); // reset back to default render screen (from channel)
             var scr2 = TTFactory.CreateScreenlet(320, 320);
-            scr2.GetComponent<DrawComp>().DrawPosition = new Vector2(420f, 20f);
+            scr2.GetComponent<DrawComp>().DrawPosition = new Vector2(520f, 20f);
             TTFactory.RenderTo(scr2);
             var t2 = new TestAnimatedSprite();
             t2.Initialize(TestFactory.Instance);
             t2.Create();
             //scr2.GetComponent<ScreenComp>().Visible = false;
-
+            */
             TTFactory.RenderTo(null); 
         }
 

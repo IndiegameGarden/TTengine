@@ -16,7 +16,7 @@ namespace TTengine.Systems
 {
     /// <summary>
     /// System that clears Screenlets and opens its spritebatches to begin the draw cycle.
-    /// Called first in the Draw() cycle. The ScreenletSystem is executed later.
+    /// Called first in the Draw() cycle.
     /// <seealso cref="ScreenletSystem"/>
     /// </summary>
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = SystemsSchedule.ScreenletPreSystem)]
@@ -57,13 +57,14 @@ namespace TTengine.Systems
         public override void Process(Entity entity, ScreenComp screenComp, DrawComp drawComp)
         {
             // in this middle round, end the drawing to screenlets with RenderTargets
-            if (screenComp.RenderTarget != null)
-            {
+            //if (screenComp.RenderTarget != null)
+            //{
                 TTSpriteBatch sb = screenComp.SpriteBatch;
                 _gfxDevice.SetRenderTarget(screenComp.RenderTarget);
-                _gfxDevice.Clear(screenComp.BackgroundColor);
+                //_gfxDevice.Clear(screenComp.BackgroundColor);
                 sb.End(); // for deferred spritebatches, this draws everything now to the just-set RenderTarget
-            }
+                _gfxDevice.SetRenderTarget(null);
+            //}
         }
 
     }
@@ -92,8 +93,8 @@ namespace TTengine.Systems
                 if (screenComp.Visible)
                 {
                     // in case a RenderTarget is defined: render the screenbuffer onto the actual screen
-                    TTSpriteBatch sb = _defaultDrawScreen.SpriteBatch;
-                    sb.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
+                    TTSpriteBatch sb = screenComp.SpriteBatch; // _defaultDrawScreen.SpriteBatch;
+                    sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
                     sb.Draw(screenComp.RenderTarget, drawComp.DrawPosition, drawComp.DrawColor);
                     _gfxDevice.SetRenderTarget(null);
                     sb.End();
@@ -102,8 +103,8 @@ namespace TTengine.Systems
             else
             {
                 // end spritebatch of 'regular' Screenlets that draw to BackBuffer
-                TTSpriteBatch sb = screenComp.SpriteBatch;
-                sb.End();
+                //TTSpriteBatch sb = screenComp.SpriteBatch;
+                //sb.End();
             }
         }
 
