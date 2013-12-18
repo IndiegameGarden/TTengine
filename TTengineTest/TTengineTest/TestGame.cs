@@ -107,7 +107,7 @@ namespace TTengineTest
             test.Create();
 
             // add framerate counter
-            var col = TTutil.InvertColor(test.BackgroundColor);
+            var col = TTUtil.InvertColor(test.BackgroundColor);
             FrameRateCounter.Create(col);
 
             // add test info as text

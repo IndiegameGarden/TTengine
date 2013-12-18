@@ -10,7 +10,7 @@ namespace TTengine.Util
     /**
      * general utility methods that are handy in creating your games
      */
-    public class TTutil
+    public class TTUtil
     {
         /// <summary>
         /// Rounds the components of a Vector2 in-place
