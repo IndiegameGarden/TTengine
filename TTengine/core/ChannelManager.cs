@@ -12,8 +12,7 @@ namespace TTengine.Core
     public class ChannelManager
     {
         /// <summary>
-        /// The currently selected channel. It may be modified via the ZapTo method 
-        /// or writing this property.
+        /// The currently selected channel. 
         /// </summary>
         public Channel SelectedChannel
         {
@@ -21,11 +20,12 @@ namespace TTengine.Core
             {
                 return _selectedChannel;
             }
-            set
-            {
-                ZapTo(value);
-            }
         }
+
+        /// <summary>
+        /// Currently available channels in the manager
+        /// </summary>
+        public List<Channel> Channels = new List<Channel>();
 
         protected TTGame _game = null;
         protected Channel _selectedChannel = null;
@@ -35,38 +35,24 @@ namespace TTengine.Core
             _game = game;
         }
 
-        public List<Channel> Channels = new List<Channel>();
-
-
         /// <summary>
-        /// Create a new Channel, registers it within the current TTGame, and
-        /// selects it as the default TTGame.BuildWorld.
+        /// Create a new Channel, registers it within the current TTGame
         /// </summary>
         /// <returns></returns>
         public Channel CreateChannel()
         {
-            Channel c = new Channel(_game);
-            this.Add(c);
-            BuildIn(c);
+            var c = new Channel();
+            this.Channels.Add(c);
             if (_selectedChannel == null)
                 _selectedChannel = c;
             return c;
         }
 
-        // TODO: check when needed to access from outside.
-        protected void Add(Channel c)
-        {
-            if (!Channels.Contains(c))
-                Channels.Add(c);
-        }
-
         /// <summary>
         /// 'zaps' to a Channel i.e. makes it the active one for rendering, de-activating any others.
-        /// This does not change the TTGame.BuildWorld, which is the world in which new Entities
-        /// are created.
         /// </summary>
         /// <param name="c">Channel to zap to</param>
-        public void ZapTo(Channel c)
+        internal void ZapTo(Channel c)
         {
             foreach (Channel c2 in Channels)
             {
@@ -75,9 +61,7 @@ namespace TTengine.Core
             }
             c.IsActive = true;
             c.IsVisible = true;
-            // TODO: the soft fades etc
-            this._selectedChannel = c;
-            BuildIn(c);
+            this._selectedChannel = c;        
         }
 
         /// <summary>
@@ -86,10 +70,13 @@ namespace TTengine.Core
         /// build in; and the Channel's Screenlet as the default screen to render to.
         /// </summary>
         /// <param name="c">Channel to build to and render to</param>
+        /// 
+        /*
         public void BuildIn(Channel c)
         {
             TTFactory.BuildWorld = c.World;
             TTFactory.BuildScreenlet = c.Screenlet;
         }
+        */
     }
 }

@@ -65,9 +65,9 @@ namespace TTengine.Core
                     throw new Exception(AudioEngine.StatusMsg);
             }
 
-            // default channel
+            // always make a default channel
             var ch = ChannelMgr.CreateChannel();
-            ChannelMgr.ZapTo(ch);
+            ch.ZapTo();
 
             base.Initialize();
         }
@@ -83,6 +83,7 @@ namespace TTengine.Core
             {
                 if (!c.IsActive)
                     continue;
+                // FIXME: do not update worlds twice that are included in multiple channels.
                 c.World.Update();
             }
             base.Update(gameTime);
@@ -95,10 +96,7 @@ namespace TTengine.Core
             {
                 if (!c.IsActive || !c.IsVisible)
                     continue;
-                DrawScreen = c.Screenlet.GetComponent<ScreenComp>();
-                GraphicsDevice.SetRenderTarget(DrawScreen.RenderTarget);
-                GraphicsDevice.Clear(DrawScreen.BackgroundColor);
-                c.World.Draw();
+                c.Draw();
             }
             base.Draw(gameTime);
         }

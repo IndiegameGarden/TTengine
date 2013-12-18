@@ -49,11 +49,11 @@ namespace Game1
             KeyboardState kb = Keyboard.GetState();
             if (kb.IsKeyDown(Keys.Space))
             {
-                ChannelMgr.ZapTo(titleChannel);
+                titleChannel.ZapTo();
             }
             else
             {
-                ChannelMgr.ZapTo(gameChannel);
+                gameChannel.ZapTo();
             }
         }
 
@@ -63,7 +63,7 @@ namespace Game1
 
             // title channel
             titleChannel = ChannelMgr.CreateChannel();
-            ChannelMgr.ZapTo(titleChannel); // TODO function to create on it without seeing it.
+            titleChannel.ZapTo(); // TODO function to create on it without seeing it.
             titleChannel.Screenlet.GetComponent<ScreenComp>().BackgroundColor = Color.Black;
 
             // add framerate counter
@@ -76,7 +76,7 @@ namespace Game1
 
             // game channel
             gameChannel = ChannelMgr.CreateChannel();
-            ChannelMgr.ZapTo(gameChannel); 
+            gameChannel.ZapTo(); 
             gameChannel.Screenlet.GetComponent<ScreenComp>().BackgroundColor = Color.White;
 
             // add framerate counter

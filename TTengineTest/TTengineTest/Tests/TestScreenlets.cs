@@ -20,21 +20,15 @@ namespace TTengineTest
 
         public override void Create()
         {           
-            TTFactory.RenderTo(null); // select the default render screen (from channel)
+            // put some content in the main channel
             var t0 = new TestRelativeMotion();
-            t0.Initialize(TestFactory.Instance);
-            t0.Create();           
-          
-            var scr1 = TTFactory.CreateScreenlet( 320, 320 );
-            scr1.GetComponent<DrawComp>().DrawPosition = new Vector2(150f, 50f);
+            t0.Create();
+
+            // create an additional child channel that renders onto the main channel
             // content for 1st screen: call upon another unit test
-            /*
-            TTFactory.RenderTo(scr1);
-            var t = new TestRelativeMotion();
-            t.Initialize(TestFactory.Instance);
-            t.Create();
-            //scr1.GetComponent<ScreenComp>().Visible = false;
-            */
+            var ch1 = TTFactory.CreateChannel(320, 320);
+            var t1 = new TestRelativeMotion();
+            t1.Create();
 
             /*
             TTFactory.RenderTo(null); // reset back to default render screen (from channel)
@@ -46,7 +40,11 @@ namespace TTengineTest
             t2.Create();
             //scr2.GetComponent<ScreenComp>().Visible = false;
             */
-            TTFactory.RenderTo(null); 
+            TTFactory.RenderTo(null);
+
+            var scr1 = TTFactory.CreateSpritelet(ch1);
+            scr1.GetComponent<DrawComp>().DrawPosition = new Vector2(150f, 50f);
+
         }
 
     }

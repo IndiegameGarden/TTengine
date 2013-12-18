@@ -17,8 +17,9 @@ namespace TTengine.Core
     /// </summary>
     public class ScreenComp: IComponent
     {
-        /// <summary>create a Screenlet of given dimensions with optionally a RenderTarget</summary>
-        public ScreenComp(bool hasRenderBuffer, int x, int y)
+        /// <summary>create a Screenlet of given dimensions with optionally a RenderTarget.
+        /// If (0,0) given, uses default Viewport size </summary>
+        protected ScreenComp(bool hasRenderBuffer, int x, int y)
         {
             SpriteBatch = new TTSpriteBatch(TTGame.Instance.GraphicsDevice);
             if (hasRenderBuffer)
@@ -26,9 +27,20 @@ namespace TTengine.Core
             InitScreenDimensions();
         }
 
-        /// <summary>create a Screenlet of full-screenletEntity dimensions with optionally a RenderTarget</summary>
-        public ScreenComp(bool hasRenderBuffer): 
-            this(hasRenderBuffer,TTGame.Instance.GraphicsDevice.Viewport.Width, TTGame.Instance.GraphicsDevice.Viewport.Height)
+        /// <summary>
+        /// with RenderTarget
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public ScreenComp(int x, int y):
+            this(true,x,y)
+        {
+            // see this() constructor
+        }
+
+        /// <summary>no RenderTarget</summary>
+        public ScreenComp(): 
+            this(false,0,0)
         {
             // see this() constructor
         }
@@ -53,11 +65,6 @@ namespace TTengine.Core
             get
             {
                 return renderTarget;
-            }
-            set
-            {
-                renderTarget = value;
-                InitScreenDimensions();
             }
         }
 

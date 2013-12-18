@@ -29,7 +29,7 @@ namespace TTengineTest
         public TestFactory Factory;
         KeyboardState kbOld = Keyboard.GetState();
         int channel = 0;
-        List<Channel> channels = new List<Channel>();
+        List<Channel> testChannels = new List<Channel>();
 
         public TestGame()
         {
@@ -55,7 +55,8 @@ namespace TTengineTest
             DoTest(new TestLinearMotion());
             DoTest(new TestRotation());
 
-            ChannelMgr.ZapTo(channels[0]);
+            // pick the initial one
+            testChannels[channel].ZapTo();
 
         }
 
@@ -78,10 +79,10 @@ namespace TTengineTest
             if ((kb.IsKeyDown(Keys.Space) && !kbOld.IsKeyDown(Keys.Space)) ||
                 (kb.IsKeyDown(Keys.Right) && !kbOld.IsKeyDown(Keys.Right)) )
             {
-                if (channel < channels.Count-1)
+                if (channel < testChannels.Count-1)
                 {
                     channel++;
-                    ChannelMgr.ZapTo(channels[channel]);
+                    testChannels[channel].ZapTo();
                 }
             }
             else if (kb.IsKeyDown(Keys.Left) && !kbOld.IsKeyDown(Keys.Left))
@@ -89,7 +90,7 @@ namespace TTengineTest
                 if (channel > 0)
                 {
                     channel--;
-                    ChannelMgr.ZapTo(channels[channel]);
+                    testChannels[channel].ZapTo();
                 }
             }
             else if (kb.IsKeyDown(Keys.Escape) && !kbOld.IsKeyDown(Keys.Escape))
@@ -99,20 +100,18 @@ namespace TTengineTest
             kbOld = kb;
         }
 
-        private void DoTest(Test t)
+        private void DoTest(Test test)
         {
-            var c = ChannelMgr.CreateChannel();
-            c.Screenlet.GetComponent<ScreenComp>().BackgroundColor = t.BackgroundColor;
-
-            channels.Add(c);
-            t.Initialize(Factory);
-            t.Create();
+            var c = TTFactory.CreateChannel(test.BackgroundColor);
+            testChannels.Add(c);
+            test.Create();
 
             // add framerate counter
-            var col = TTutil.InvertColor(t.BackgroundColor);
+            var col = TTutil.InvertColor(test.BackgroundColor);
             FrameRateCounter.Create(col);
 
-            Factory.CreateTextlet(new Vector2(2f, GraphicsMgr.PreferredBackBufferHeight-20f), t.GetType().Name, col);
+            // add test info as text
+            TestFactory.Instance.CreateTextlet(new Vector2(2f, GraphicsMgr.PreferredBackBufferHeight-20f), test.GetType().Name, col);
 
         }
 

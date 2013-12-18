@@ -91,6 +91,21 @@ namespace TTengine.Core
         }
 
         /// <summary>
+        /// Create a Spritelet with texture based on the contents of a (child) Channel
+        /// </summary>
+        /// <param name="subChannel"></param>
+        /// <returns></returns>
+        public static Entity CreateSpritelet(Channel subChannel)
+        {
+            Entity e = CreateDrawlet();
+            var rs = subChannel.Screenlet.GetComponent<ScreenComp>().RenderTarget;
+            var spriteComp = new SpriteComp(rs);
+            e.AddComponent(spriteComp);
+            e.Refresh();
+            return e;
+        }
+
+        /// <summary>
         /// Create an animated sprite entity
         /// </summary>
         /// <param name="atlasBitmapFile">Filename of the sprite atlas bitmap</param>
@@ -154,7 +169,22 @@ namespace TTengine.Core
         /// <returns></returns>
         public static Entity CreateScreenlet()
         {
-            var sc = new ScreenComp(false);
+            var sc = new ScreenComp();
+            var e = CreateEntity();
+            e.AddComponent(sc);
+            e.AddComponent(new DrawComp(BuildScreenlet));
+            e.Refresh();
+            return e;
+        }
+
+        /// <summary>
+        /// Creates a Screenlet that may contain a screenComp (RenderBuffer) to 
+        /// which graphics can be rendered. Use (0,0) for default backbuffer
+        /// </summary>
+        /// <returns></returns>
+        public static Entity CreateScreenlet(int width, int height)
+        {
+            var sc = new ScreenComp(width, height);
             var e = CreateEntity();
             e.AddComponent(sc);
             e.AddComponent(new DrawComp(BuildScreenlet));
@@ -167,14 +197,20 @@ namespace TTengine.Core
         /// which graphics can be rendered.
         /// </summary>
         /// <returns></returns>
-        public static Entity CreateScreenlet(int width, int height)
+        public static Channel CreateChannel(int width, int height)
         {
-            var sc = new ScreenComp(true, width, height);
-            var e = CreateEntity();
-            e.AddComponent(sc);
-            e.AddComponent(new DrawComp(BuildScreenlet));
-            e.Refresh();
-            return e;
+            var ch = new Channel(width,height);
+            TTGame.Instance.ChannelMgr.SelectedChannel.ChildChannels.Add(ch);
+            TTFactory.RenderTo(ch.Screenlet);
+            return ch;
+        }
+
+        public static Channel CreateChannel(Color backgroundColor)
+        {
+            var ch = new Channel();
+            ch.Screenlet.GetComponent<ScreenComp>().BackgroundColor = backgroundColor;
+            TTFactory.RenderTo(ch.Screenlet);
+            return ch;
         }
 
         /// <summary>
