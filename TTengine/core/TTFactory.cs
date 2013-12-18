@@ -19,8 +19,8 @@ namespace TTengine.Core
         /// <summary>The Artemis entity world that is currently used for building/creating new Entities in</summary>
         public static EntityWorld BuildWorld;
 
-        /// <summary>The Screenlet (screen Entity) that newly built Entities by default render to.
-        /// Value null is used to denote any Screenlet to which the BuildWorld renders.</summary>
+        /// <summary>The Screenlet (screen Entity) that newly built Entities by default will render to.
+        /// Value null is used to denote "render to any Screenlet to which the BuildWorld renders".</summary>
         public static Entity BuildScreenlet;
 
         private static TTGame _game = null;
@@ -34,7 +34,13 @@ namespace TTengine.Core
             BuildWorld = world;
         }
 
-        public static void RenderTo(Entity screenlet)
+        public static void BuildTo(Channel channel)
+        {
+            BuildWorld = channel.World;
+            BuildScreenlet = channel.Screenlet;
+        }
+
+        public static void BuildToScreenlet(Entity screenlet)
         {
             BuildScreenlet = screenlet;
         }
@@ -193,23 +199,29 @@ namespace TTengine.Core
         }
 
         /// <summary>
-        /// Creates a Screenlet that contains a screenComp (RenderBuffer) to 
-        /// which graphics can be rendered.
+        /// Creates a Channel that is a child of the current SelectedChannel, that
+        /// renders to a RenderTarget of specified width/height
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Created channel.</returns>
         public static Channel CreateChannel(int width, int height)
         {
             var ch = new Channel(width,height);
             TTGame.Instance.ChannelMgr.SelectedChannel.ChildChannels.Add(ch);
-            TTFactory.RenderTo(ch.Screenlet);
+            TTFactory.BuildTo(ch);
             return ch;
         }
 
+        /// <summary>
+        /// Creates a root Channel that renders to the default backbuffer, having
+        /// a specified background Color.
+        /// </summary>
+        /// <param name="backgroundColor">The default background Color for the Channel</param>
+        /// <returns>Created channel.</returns>
         public static Channel CreateChannel(Color backgroundColor)
         {
             var ch = new Channel();
             ch.Screenlet.GetComponent<ScreenComp>().BackgroundColor = backgroundColor;
-            TTFactory.RenderTo(ch.Screenlet);
+            TTFactory.BuildTo(ch);
             return ch;
         }
 
