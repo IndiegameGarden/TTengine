@@ -42,6 +42,7 @@ namespace TTengine.Core
             this.ChildChannels = new List<Channel>();
             this.World = new EntityWorld();
             this.World.InitializeAll(true);
+            TTFactory.BuildWorld = this.World;
             this.Screenlet = TTFactory.CreateScreenlet();
         }
 

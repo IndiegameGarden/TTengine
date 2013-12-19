@@ -41,11 +41,11 @@ namespace TTengine.Core
         /// <returns></returns>
         public Channel CreateChannel()
         {
-            var c = new Channel();
-            this.Channels.Add(c);
+            var ch = new Channel();
+            this.Channels.Add(ch);
             if (_selectedChannel == null)
-                _selectedChannel = c;
-            return c;
+                _selectedChannel = ch;
+            return ch;
         }
 
         /// <summary>

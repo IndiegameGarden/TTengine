@@ -26,22 +26,24 @@ namespace TTengineTest
 
             // create an additional child channel that renders onto the main channel
             // content for 1st screen: call upon another unit test
-            var ch1 = TTFactory.CreateChannel(320, 320);
-            var t1 = new TestRelativeMotion();
-            t1.Create();
+            //var ch1 = TTFactory.CreateChannel(320, 320);
+            //var t1 = new TestRelativeMotion();
+            //t1.Create();
 
+            /*
             // second child channel
             var ch2 = TTFactory.CreateChannel(400, 320);
             var t2 = new TestAnimatedSprite();
             t2.Create();
+            */
 
             // main channel: shows the child channels as sprites
-            TTFactory.BuildTo(TTGame.Instance.ChannelMgr.SelectedChannel);
-            var scr1 = TTFactory.CreateSpritelet(ch1);
-            scr1.GetComponent<DrawComp>().DrawPosition = new Vector2(150f, 50f);
+            //TTFactory.BuildTo(TTGame.Instance.ChannelMgr.SelectedChannel);
+            //var scr1 = TTFactory.CreateSpritelet(ch1);
+            //scr1.GetComponent<DrawComp>().DrawPosition = new Vector2(150f, 50f);
 
-            var scr2 = TTFactory.CreateSpritelet(ch2);
-            scr1.GetComponent<DrawComp>().DrawPosition = new Vector2(540f, 50f);
+            //var scr2 = TTFactory.CreateSpritelet(ch2);
+            //scr2.GetComponent<DrawComp>().DrawPosition = new Vector2(540f, 50f);
         }
 
     }
