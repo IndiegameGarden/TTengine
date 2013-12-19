@@ -18,12 +18,12 @@ namespace TTengine.Comps
         /// <summary>
         /// Create new DrawComp
         /// </summary>
-        /// <param name="drawScreenlet">Screenlet that the Entity will be drawn to, or null to uses the channel's
-        /// default Screenlet.</param>
-        public DrawComp(Entity drawScreenlet)
+        /// <param name="drawScreen">ScreenComp that the Entity will be drawn to, or null to uses the channel's
+        /// default.</param>
+        public DrawComp(ScreenComp drawScreen)
         {
-            if(drawScreenlet != null)
-                this.DrawScreen = drawScreenlet.GetComponent<ScreenComp>();
+            if(drawScreen != null)
+                this.DrawScreen = drawScreen;
         }
 
         /// <summary>

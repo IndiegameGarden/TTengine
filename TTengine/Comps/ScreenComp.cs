@@ -11,13 +11,12 @@ using Artemis.Interface;
 namespace TTengine.Core
 {
     /// <summary>
-    /// Component to turn an Entity into a 'Screenlet', which acts as a screenComp
-    /// (RenderBuffer) where other entities can draw themselves to.
+    /// Screen to which graphics are rendered, optionally containing a separate RendereBuffer
     /// <seealso cref="ScreenletSystem"/>
     /// </summary>
     public class ScreenComp: IComponent
     {
-        /// <summary>create a Screenlet of given dimensions with optionally a RenderTarget.
+        /// <summary>create a ScreenComp of given dimensions with optionally a RenderTarget.
         /// If (0,0) given, uses default Viewport size </summary>
         protected ScreenComp(bool hasRenderBuffer, int x, int y)
         {
@@ -28,7 +27,7 @@ namespace TTengine.Core
         }
 
         /// <summary>
-        /// with RenderTarget
+        /// Create with RenderTarget
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
@@ -38,7 +37,7 @@ namespace TTengine.Core
             // see this() constructor
         }
 
-        /// <summary>no RenderTarget</summary>
+        /// <summary>Create without RenderTarget</summary>
         public ScreenComp(): 
             this(false,0,0)
         {
@@ -58,8 +57,8 @@ namespace TTengine.Core
         /// <summary>The center coordinate, in either pixel or custom coordinates, for applying Zoom</summary>
         public Vector3 ZoomCenter;
 
-        /// <summary>Get or set a RenderTarget for the Screenlet. If null, the screen renders to the default backbuffer.
-        /// If set, the Zoom/ZoomCenter/Center properties are all re-calculated.</summary>
+        /// <summary>Get the RenderTarget. If null, the screen renders to the default backbuffer.
+        /// </summary>
         public RenderTarget2D RenderTarget
         {
             get
@@ -68,13 +67,13 @@ namespace TTengine.Core
             }
         }
 
-        /// <summary>Width of visible screenletEntity in pixels</summary>
+        /// <summary>Width of screen in pixels</summary>
         public int Width { get { return screenWidth; } }
 
-        /// <summary>Height of visible screenletEntity in pixels</summary>
+        /// <summary>Height of screen in pixels</summary>
         public int Height { get { return screenHeight; } }
 
-        /// <summary>Screenlet aspectratio</summary> 
+        /// <summary>Screen aspectratio</summary> 
         public float AspectRatio { get { return aspectRatio;  } }
 
         /// <summary>The default spritebatch associated to this screen, for drawing to it</summary>

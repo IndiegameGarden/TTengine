@@ -8,7 +8,7 @@ using TTengine.Comps;
 namespace TTengine.Core
 {
     /// <summary>
-    /// A convenience wrapper around an EntityWorld and a Screenlet to which the world renders.
+    /// A convenience wrapper around an EntityWorld and a default ScreenComp to which the world renders.
     /// <seealso cref="ChannelManager"/>
     /// </summary>
     public class Channel
@@ -16,11 +16,11 @@ namespace TTengine.Core
         /// <summary>If true, the World of this channel is actively simulated (Updated)</summary>
         public bool IsActive = false;
 
-        /// <summary>If true, the World of this channel is actively rendered (Drawn) to the Screenlet</summary>
+        /// <summary>If true, the World of this channel is actively rendered (Drawn)</summary>
         public bool IsVisible = false;
 
-        /// <summary>The Screenlet that this channel renders to</summary>
-        public Entity Screenlet;
+        /// <summary>The screen that this channel renders to by default</summary>
+        public ScreenComp Screen;
 
         /// <summary>The EntityWorld that is being rendered in this channel</summary>
         public EntityWorld World;
@@ -34,7 +34,10 @@ namespace TTengine.Core
             this.ChildChannels = new List<Channel>();
             this.World = new EntityWorld();
             this.World.InitializeAll(true);
-            this.Screenlet = TTFactory.CreateScreenlet(width, height);
+            this.Screen = new ScreenComp(width, height);
+            var e = this.World.CreateEntity();
+            e.AddComponent(this.Screen);
+            e.Refresh();
         }
 
         internal Channel()
@@ -42,8 +45,10 @@ namespace TTengine.Core
             this.ChildChannels = new List<Channel>();
             this.World = new EntityWorld();
             this.World.InitializeAll(true);
-            TTFactory.BuildWorld = this.World;
-            this.Screenlet = TTFactory.CreateScreenlet();
+            this.Screen = new ScreenComp();
+            var e = this.World.CreateEntity();
+            e.AddComponent(this.Screen);
+            e.Refresh();
         }
 
         /// <summary>
@@ -61,7 +66,16 @@ namespace TTengine.Core
             throw new NotImplementedException();
         }
 
-        /// <summary>Renders the channel to the associated screenlet</summary>
+        /// <summary>
+        /// Register this channel as a new channel to the manager
+        /// </summary>
+        internal void Register()
+        {
+            TTGame.Instance.ChannelMgr.Channels.Add(this);
+            TTFactory.BuildTo(this);
+        }
+
+        /// <summary>Renders the channel to the associated screen(s)</summary>
         internal void Draw()
         {
             // child channels need to be drawn first, as they will be rendered as textures
@@ -70,10 +84,9 @@ namespace TTengine.Core
             {
                 c.Draw();
             }
-            var drawScreen = Screenlet.GetComponent<ScreenComp>();
-            TTGame.Instance.GraphicsDevice.SetRenderTarget(drawScreen.RenderTarget);
-            TTGame.Instance.GraphicsDevice.Clear(drawScreen.BackgroundColor);
-            TTGame.Instance.DrawScreen = drawScreen;
+            TTGame.Instance.GraphicsDevice.SetRenderTarget(Screen.RenderTarget);
+            TTGame.Instance.GraphicsDevice.Clear(Screen.BackgroundColor);
+            TTGame.Instance.DrawScreen = Screen;
             this.World.Draw();
         }
     }

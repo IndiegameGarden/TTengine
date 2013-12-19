@@ -36,19 +36,6 @@ namespace TTengine.Core
         }
 
         /// <summary>
-        /// Create a new Channel, registers it within the current TTGame
-        /// </summary>
-        /// <returns></returns>
-        public Channel CreateChannel()
-        {
-            var ch = new Channel();
-            this.Channels.Add(ch);
-            if (_selectedChannel == null)
-                _selectedChannel = ch;
-            return ch;
-        }
-
-        /// <summary>
         /// 'zaps' to a Channel i.e. makes it the active one for rendering, de-activating any others.
         /// </summary>
         /// <param name="c">Channel to zap to</param>
@@ -64,19 +51,5 @@ namespace TTengine.Core
             this._selectedChannel = c;        
         }
 
-        /// <summary>
-        /// selects the Channel as the current default channel to build in, to create new
-        /// Entities in. TTFactory and any factories based on it, will then use the Channel's World as the world to
-        /// build in; and the Channel's Screenlet as the default screen to render to.
-        /// </summary>
-        /// <param name="c">Channel to build to and render to</param>
-        /// 
-        /*
-        public void BuildIn(Channel c)
-        {
-            TTFactory.BuildWorld = c.World;
-            TTFactory.BuildScreenlet = c.Screenlet;
-        }
-        */
     }
 }

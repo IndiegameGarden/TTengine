@@ -19,9 +19,9 @@ namespace TTengine.Core
         /// <summary>The Artemis entity world that is currently used for building/creating new Entities in</summary>
         public static EntityWorld BuildWorld;
 
-        /// <summary>The Screenlet (screen Entity) that newly built Entities by default will render to.
-        /// Value null is used to denote "render to any Screenlet to which the BuildWorld renders".</summary>
-        public static Entity BuildScreenlet;
+        /// <summary>The screen that newly built Entities by default will render to.
+        /// Value null is used to denote "default".</summary>
+        public static ScreenComp BuildScreen;
 
         private static TTGame _game = null;
 
@@ -37,12 +37,12 @@ namespace TTengine.Core
         public static void BuildTo(Channel channel)
         {
             BuildWorld = channel.World;
-            BuildScreenlet = channel.Screenlet;
+            BuildScreen = channel.Screen;
         }
 
-        public static void BuildToScreenlet(Entity screenlet)
+        public static void BuildTo(ScreenComp screen)
         {
-            BuildScreenlet = screenlet;
+            BuildScreen = screen;
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace TTengine.Core
         public static Entity CreateDrawlet()
         {
             Entity e = CreateGamelet();
-            e.AddComponent(new DrawComp(BuildScreenlet));
+            e.AddComponent(new DrawComp(BuildScreen));
             e.Refresh();
             return e;
         }
@@ -104,7 +104,7 @@ namespace TTengine.Core
         public static Entity CreateSpritelet(Channel subChannel)
         {
             Entity e = CreateDrawlet();
-            var rs = subChannel.Screenlet.GetComponent<ScreenComp>().RenderTarget;
+            var rs = subChannel.Screen.RenderTarget;
             var spriteComp = new SpriteComp(rs);
             e.AddComponent(spriteComp);
             e.Refresh();
@@ -178,14 +178,14 @@ namespace TTengine.Core
             var sc = new ScreenComp();
             var e = CreateEntity();
             e.AddComponent(sc);
-            e.AddComponent(new DrawComp(BuildScreenlet));
+            e.AddComponent(new DrawComp(BuildScreen));
             e.Refresh();
             return e;
         }
 
         /// <summary>
         /// Creates a Screenlet that may contain a screenComp (RenderBuffer) to 
-        /// which graphics can be rendered. Use (0,0) for default backbuffer
+        /// which graphics can be rendered. 
         /// </summary>
         /// <returns></returns>
         public static Entity CreateScreenlet(int width, int height)
@@ -193,7 +193,7 @@ namespace TTengine.Core
             var sc = new ScreenComp(width, height);
             var e = CreateEntity();
             e.AddComponent(sc);
-            e.AddComponent(new DrawComp(BuildScreenlet));
+            e.AddComponent(new DrawComp(BuildScreen));
             e.Refresh();
             return e;
         }
@@ -206,8 +206,7 @@ namespace TTengine.Core
         public static Channel CreateChannel(int width, int height)
         {
             var ch = new Channel(width,height);
-            TTGame.Instance.ChannelMgr.SelectedChannel.ChildChannels.Add(ch);
-            TTFactory.BuildTo(ch);
+            ch.Register();
             return ch;
         }
 
@@ -220,8 +219,8 @@ namespace TTengine.Core
         public static Channel CreateChannel(Color backgroundColor)
         {
             var ch = new Channel();
-            ch.Screenlet.GetComponent<ScreenComp>().BackgroundColor = backgroundColor;
-            TTFactory.BuildTo(ch);
+            ch.Screen.BackgroundColor = backgroundColor;
+            ch.Register();
             return ch;
         }
 

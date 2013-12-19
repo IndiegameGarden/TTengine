@@ -66,7 +66,7 @@ namespace TTengine.Core
             }
 
             // always make a default channel
-            var ch = ChannelMgr.CreateChannel();
+            var ch = TTFactory.CreateChannel(Color.Black);
             ch.ZapTo();
 
             base.Initialize();
@@ -103,7 +103,7 @@ namespace TTengine.Core
             // loop all active channels and draw them.
             foreach (Channel c in ChannelMgr.Channels)
             {
-                if (!c.IsActive || !c.IsVisible)
+                if (!c.IsVisible)
                     continue;
                 c.Draw();
             }
