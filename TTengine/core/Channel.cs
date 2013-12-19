@@ -67,11 +67,20 @@ namespace TTengine.Core
         }
 
         /// <summary>
-        /// Register this channel as a new channel to the manager
+        /// Register this channel as a new root channel to the manager
         /// </summary>
-        internal void Register()
+        internal void RegisterRoot()
         {
             TTGame.Instance.ChannelMgr.Channels.Add(this);
+            TTFactory.BuildTo(this);
+        }
+
+        /// <summary>
+        /// Register this channel as a new child channel 
+        /// </summary>
+        internal void RegisterChild()
+        {
+            TTGame.Instance.ChannelMgr.SelectedChannel.ChildChannels.Add(this);
             TTFactory.BuildTo(this);
         }
 

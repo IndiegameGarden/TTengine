@@ -206,7 +206,7 @@ namespace TTengine.Core
         public static Channel CreateChannel(int width, int height)
         {
             var ch = new Channel(width,height);
-            ch.Register();
+            ch.RegisterChild();
             return ch;
         }
 
@@ -220,7 +220,7 @@ namespace TTengine.Core
         {
             var ch = new Channel();
             ch.Screen.BackgroundColor = backgroundColor;
-            ch.Register();
+            ch.RegisterRoot();
             return ch;
         }
 

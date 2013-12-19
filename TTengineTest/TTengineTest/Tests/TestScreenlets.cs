@@ -19,14 +19,16 @@ namespace TTengineTest
         }
 
         public override void Create()
-        {           
+        {
+            var mainChannel = TTGame.Instance.ChannelMgr.SelectedChannel;
+
             // put some content in the main channel
             var t0 = new TestRelativeMotion();
             t0.Create();
 
             // create an additional child channel that renders onto the main channel
             // content for 1st screen: call upon another unit test
-            //var ch1 = TTFactory.CreateChannel(320, 320);
+            var ch1 = TTFactory.CreateChannel(320, 320);
             //var t1 = new TestRelativeMotion();
             //t1.Create();
 
@@ -38,7 +40,7 @@ namespace TTengineTest
             */
 
             // main channel: shows the child channels as sprites
-            //TTFactory.BuildTo(TTGame.Instance.ChannelMgr.SelectedChannel);
+            TTFactory.BuildTo(mainChannel);
             //var scr1 = TTFactory.CreateSpritelet(ch1);
             //scr1.GetComponent<DrawComp>().DrawPosition = new Vector2(150f, 50f);
 
