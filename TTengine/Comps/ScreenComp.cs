@@ -17,7 +17,7 @@ namespace TTengine.Core
     public class ScreenComp: IComponent
     {
         /// <summary>create a ScreenComp of given dimensions with optionally a RenderTarget.
-        /// If (0,0) given, uses default Viewport size </summary>
+        /// If (0,0) given, uses default backbuffer size </summary>
         protected ScreenComp(bool hasRenderBuffer, int x, int y)
         {
             SpriteBatch = new TTSpriteBatch(TTGame.Instance.GraphicsDevice);

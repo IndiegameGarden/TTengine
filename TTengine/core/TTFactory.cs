@@ -176,7 +176,7 @@ namespace TTengine.Core
         }
 
         /// <summary>
-        /// Creates a Screenlet that renders to default viewport
+        /// Creates a Screenlet that renders to default backbuffer
         /// </summary>
         /// <returns></returns>
         public static Entity CreateScreenlet()

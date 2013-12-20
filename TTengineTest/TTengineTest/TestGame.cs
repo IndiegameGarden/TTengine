@@ -46,7 +46,6 @@ namespace TTengineTest
 
             // Here all the tests are created
             DoTest(new TestScreenlets());
-            /*
             DoTest(new TestZoomedScreenlet()); 
             DoTest(new TestAnimatedSprite());
             DoTest(new TestTargetMotion());
@@ -56,10 +55,9 @@ namespace TTengineTest
             DoTest(new TestRelativeMotion());
             DoTest(new TestLinearMotion());
             DoTest(new TestRotation());
-            */
 
             // pick the initial one
-            //testChannels[channel].ZapTo();
+            testChannels[channel].ZapTo();
 
         }
 
