@@ -100,7 +100,8 @@ namespace TTengine.Core
             if (Screen.IsVisible)
             {
                 TTGame.Instance.GraphicsDevice.SetRenderTarget(Screen.RenderTarget);
-                TTGame.Instance.GraphicsDevice.Clear(Screen.BackgroundColor);
+                if (Screen.RenderTarget != null)
+                    TTGame.Instance.GraphicsDevice.Clear(Screen.BackgroundColor);
                 TTGame.Instance.DrawScreen = Screen;
                 this.World.Draw();
             }

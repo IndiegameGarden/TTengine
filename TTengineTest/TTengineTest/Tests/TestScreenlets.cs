@@ -20,8 +20,8 @@ namespace TTengineTest
 
         public override void Create()
         {
-            //var ch = TTFactory.BuildChannel;
-            //TTFactory.BuildTo(ch);
+            var ch = TTFactory.BuildChannel;
+            TTFactory.BuildTo(ch);
 
             // put some content in the main channel
             var t0 = new TestRelativeMotion();
@@ -43,7 +43,7 @@ namespace TTengineTest
             */
 
             // main channel: shows the child channels as sprites
-            //TTFactory.BuildTo(mainChannel);
+            TTFactory.BuildTo(ch);
             //var scr1 = TTFactory.CreateSpritelet(ch1);
             //scr1.GetComponent<DrawComp>().DrawPosition = new Vector2(150f, 50f);
 
