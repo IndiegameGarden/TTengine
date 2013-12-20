@@ -63,6 +63,7 @@ namespace Game1
 
             // title channel
             titleChannel = TTFactory.CreateChannel(Color.Black);
+            ChannelMgr.AddChannel(titleChannel);
             titleChannel.ZapTo(); 
 
             // add framerate counter
@@ -75,6 +76,7 @@ namespace Game1
 
             // game channel
             gameChannel = TTFactory.CreateChannel(Color.White);
+            ChannelMgr.AddChannel(gameChannel);
             gameChannel.ZapTo(); 
 
             // add framerate counter

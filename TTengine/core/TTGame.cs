@@ -65,10 +65,6 @@ namespace TTengine.Core
                     throw new Exception(AudioEngine.StatusMsg);
             }
 
-            // always make a default channel
-            var ch = TTFactory.CreateChannel(Color.Black);
-            ch.ZapTo();
-
             base.Initialize();
         }
 
@@ -79,34 +75,15 @@ namespace TTengine.Core
 
         protected override void Update(GameTime gameTime)
         {
-            // use HashSet to only update each unique active world once
-            HashSet<EntityWorld> worldsToUpdate = new HashSet<EntityWorld>();
-            foreach (Channel c in ChannelMgr.Channels)
-            {
-                if (!c.IsActive)
-                    continue;
-                worldsToUpdate.Add(c.World);
-                foreach (Channel c2 in c.ChildChannels)
-                    worldsToUpdate.Add(c2.World);
-            }
+            ChannelMgr.Root.Update();
 
-            // do the actual world updates
-            foreach (EntityWorld c in worldsToUpdate)
-            {
-                c.Update();
-            }
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            // loop all active channels and draw them.
-            foreach (Channel c in ChannelMgr.Channels)
-            {
-                if (!c.IsVisible)
-                    continue;
-                c.Draw();
-            }
+            ChannelMgr.Root.Draw();
+
             base.Draw(gameTime);
         }
 

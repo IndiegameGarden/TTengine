@@ -42,9 +42,11 @@ namespace TTengineTest
         protected override void LoadContent()
         {
             base.LoadContent();
+            TTGame.Instance.ChannelMgr.Root.Screen.IsVisible = false; // TODO avoid hack
 
             // Here all the tests are created
             DoTest(new TestScreenlets());
+            /*
             DoTest(new TestZoomedScreenlet()); 
             DoTest(new TestAnimatedSprite());
             DoTest(new TestTargetMotion());
@@ -54,9 +56,10 @@ namespace TTengineTest
             DoTest(new TestRelativeMotion());
             DoTest(new TestLinearMotion());
             DoTest(new TestRotation());
+            */
 
             // pick the initial one
-            testChannels[channel].ZapTo();
+            //testChannels[channel].ZapTo();
 
         }
 
@@ -102,8 +105,9 @@ namespace TTengineTest
 
         private void DoTest(Test test)
         {
-            var c = TTFactory.CreateChannel(test.BackgroundColor);
-            testChannels.Add(c);
+            var ch = TTFactory.CreateChannel(test.BackgroundColor);
+            TTGame.Instance.ChannelMgr.AddChannel(ch);
+            testChannels.Add(ch);
             test.Create();
 
             // add framerate counter

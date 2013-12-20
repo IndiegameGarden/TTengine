@@ -23,6 +23,11 @@ namespace TTengine.Core
         /// Value null is used to denote "default".</summary>
         public static ScreenComp BuildScreen;
 
+        /// <summary>
+        /// The Channel to which TTFactory builds new entities
+        /// </summary>
+        public static Channel BuildChannel;
+
         private static TTGame _game = null;
 
         static TTFactory() {
@@ -37,7 +42,8 @@ namespace TTengine.Core
         public static void BuildTo(Channel channel)
         {
             BuildWorld = channel.World;
-            BuildScreen = channel.Screen;
+            BuildScreen = null; // channel.Screen;
+            BuildChannel = channel;
         }
 
         public static void BuildTo(ScreenComp screen)
@@ -206,7 +212,6 @@ namespace TTengine.Core
         public static Channel CreateChannel(int width, int height)
         {
             var ch = new Channel(width,height);
-            ch.RegisterChild();
             return ch;
         }
 
@@ -220,7 +225,6 @@ namespace TTengine.Core
         {
             var ch = new Channel();
             ch.Screen.BackgroundColor = backgroundColor;
-            ch.RegisterRoot();
             return ch;
         }
 

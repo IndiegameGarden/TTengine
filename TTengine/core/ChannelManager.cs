@@ -12,27 +12,27 @@ namespace TTengine.Core
     public class ChannelManager
     {
         /// <summary>
-        /// The currently selected channel. 
+        /// The root channel
         /// </summary>
-        public Channel SelectedChannel
-        {
-            get
-            {
-                return _selectedChannel;
-            }
-        }
-
-        /// <summary>
-        /// Currently available channels in the manager
-        /// </summary>
-        public List<Channel> Channels = new List<Channel>();
+        public Channel Root = null;
 
         protected TTGame _game = null;
-        protected Channel _selectedChannel = null;
 
         internal ChannelManager(TTGame game)
         {
             _game = game;
+            Root = new Channel();
+            TTFactory.BuildTo(Root);
+        }
+
+        /// <summary>
+        /// Adds new Channel and selects it as default for building in TTFactory
+        /// </summary>
+        /// <param name="ch"></param>
+        public void AddChannel(Channel ch)
+        {
+            Root.AddChild(ch);
+            TTFactory.BuildTo(ch);
         }
 
         /// <summary>
@@ -41,14 +41,19 @@ namespace TTengine.Core
         /// <param name="c">Channel to zap to</param>
         internal void ZapTo(Channel c)
         {
-            foreach (Channel c2 in Channels)
+            foreach (Channel c2 in Root.Children)
             {
-                c2.IsActive = false;
-                c2.IsVisible = false;
+                if (c == c2)
+                {
+                    c.IsActive = true;
+                    c.IsVisible = true;
+                }
+                else
+                {
+                    c2.IsActive = false;
+                    c2.IsVisible = false;
+                }
             }
-            c.IsActive = true;
-            c.IsVisible = true;
-            this._selectedChannel = c;        
         }
 
     }

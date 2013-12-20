@@ -46,7 +46,7 @@ namespace TTengine.Core
 
         public Color BackgroundColor = Color.Black;
 
-        public bool Visible = true;
+        public bool IsVisible = true;
 
         /// <summary>The center pixel coordinate of the screen</summary>
         public Vector3 Center { get; private set; }
@@ -108,8 +108,8 @@ namespace TTengine.Core
             }
             else
             {
-                screenWidth = TTGame.Instance.GraphicsDevice.Viewport.Width;
-                screenHeight = TTGame.Instance.GraphicsDevice.Viewport.Height;
+                screenWidth = TTGame.Instance.GraphicsDevice.PresentationParameters.BackBufferWidth;
+                screenHeight = TTGame.Instance.GraphicsDevice.PresentationParameters.BackBufferHeight;
             }
 
             aspectRatio = (float)screenWidth / (float)screenHeight;

@@ -14,10 +14,10 @@ namespace TTengine.Core
     public class Channel
     {
         /// <summary>If true, the World of this channel is actively simulated (Updated)</summary>
-        public bool IsActive = false;
+        public bool IsActive = true;
 
         /// <summary>If true, the World of this channel is actively rendered (Drawn)</summary>
-        public bool IsVisible = false;
+        public bool IsVisible = true;
 
         /// <summary>The screen that this channel renders to by default</summary>
         public ScreenComp Screen;
@@ -26,12 +26,12 @@ namespace TTengine.Core
         public EntityWorld World;
 
         /// <summary>List of child Channels, which are channels rendered within this Channel e.g. sub-screens.</summary>
-        public List<Channel> ChildChannels;
+        public List<Channel> Children;
 
         /// <summary>Create a Channel with a new empty World and output to default screen</summary>
         internal Channel(int width, int height)
         {
-            this.ChildChannels = new List<Channel>();
+            this.Children = new List<Channel>();
             this.World = new EntityWorld();
             this.World.InitializeAll(true);
             this.Screen = new ScreenComp(width, height);
@@ -42,13 +42,19 @@ namespace TTengine.Core
 
         internal Channel()
         {
-            this.ChildChannels = new List<Channel>();
+            this.Children = new List<Channel>();
             this.World = new EntityWorld();
             this.World.InitializeAll(true);
             this.Screen = new ScreenComp();
             var e = this.World.CreateEntity();
             e.AddComponent(this.Screen);
             e.Refresh();
+        }
+
+        public void AddChild(Channel ch)
+        {
+            Children.Add(ch);
+            TTFactory.BuildTo(ch);
         }
 
         /// <summary>
@@ -66,37 +72,39 @@ namespace TTengine.Core
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Register this channel as a new root channel to the manager
-        /// </summary>
-        internal void RegisterRoot()
+        internal void Update()
         {
-            TTGame.Instance.ChannelMgr.Channels.Add(this);
-            TTFactory.BuildTo(this);
-        }
+            if (!IsActive)
+                return;
 
-        /// <summary>
-        /// Register this channel as a new child channel 
-        /// </summary>
-        internal void RegisterChild()
-        {
-            TTGame.Instance.ChannelMgr.SelectedChannel.ChildChannels.Add(this);
-            TTFactory.BuildTo(this);
+            foreach (Channel c in Children)
+            {
+                c.Update();
+            }            
+            this.World.Update();
         }
 
         /// <summary>Renders the channel to the associated screen(s)</summary>
         internal void Draw()
         {
+            if (!IsVisible)
+                return;
+
             // child channels need to be drawn first, as they will be rendered as textures
             // into the current active channel.
-            foreach (Channel c in ChildChannels)
+            foreach (Channel c in Children)
             {
                 c.Draw();
             }
-            TTGame.Instance.GraphicsDevice.SetRenderTarget(Screen.RenderTarget);
-            TTGame.Instance.GraphicsDevice.Clear(Screen.BackgroundColor);
-            TTGame.Instance.DrawScreen = Screen;
-            this.World.Draw();
+
+            if (Screen.IsVisible)
+            {
+                TTGame.Instance.GraphicsDevice.SetRenderTarget(Screen.RenderTarget);
+                TTGame.Instance.GraphicsDevice.Clear(Screen.BackgroundColor);
+                TTGame.Instance.DrawScreen = Screen;
+                this.World.Draw();
+            }
+
         }
     }
 }
