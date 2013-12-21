@@ -58,10 +58,33 @@ namespace TTengine.Core
         }
 
         /// <summary>
-        /// Zap (instantly switch) to this Channel
+        /// Zap (instantly switch) to current Channel, assuming it is a 
+        /// child of Root Channel.
         /// </summary>
-        public void ZapTo() {
-            TTGame.Instance.ChannelMgr.ZapTo(this);
+        public void ZapTo()
+        {
+            TTGame.Instance.ChannelMgr.Root.ZapTo(this);
+        }
+
+        /// <summary>
+        /// Zap (instantly switch) to a child Channel, disabling any other childs.
+        /// Also rendering for this Channel is disabled to allow child to show.
+        /// </summary>
+        public void ZapTo(Channel toZapTo) {
+            foreach (Channel c2 in Children)
+            {
+                if (toZapTo == c2)
+                {
+                    c2.IsActive = true;
+                    c2.IsVisible = true;
+                }
+                else
+                {
+                    c2.IsActive = false;
+                    c2.IsVisible = false;
+                }
+            }
+            this.Screen.IsVisible = false;
         }
 
         /// <summary>

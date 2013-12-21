@@ -35,26 +35,5 @@ namespace TTengine.Core
             TTFactory.BuildTo(ch);
         }
 
-        /// <summary>
-        /// 'zaps' to a Channel i.e. makes it the active one for rendering, de-activating any others.
-        /// </summary>
-        /// <param name="c">Channel to zap to</param>
-        internal void ZapTo(Channel c)
-        {
-            foreach (Channel c2 in Root.Children)
-            {
-                if (c == c2)
-                {
-                    c.IsActive = true;
-                    c.IsVisible = true;
-                }
-                else
-                {
-                    c2.IsActive = false;
-                    c2.IsVisible = false;
-                }
-            }
-        }
-
     }
 }

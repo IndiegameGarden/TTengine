@@ -42,7 +42,6 @@ namespace TTengineTest
         protected override void LoadContent()
         {
             base.LoadContent();
-            TTGame.Instance.ChannelMgr.Root.Screen.IsVisible = false; // TODO avoid hack
 
             // Here all the tests are created
             DoTest(new TestScreenlets());
