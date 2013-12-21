@@ -261,7 +261,7 @@ namespace TTengine.Comps
                 spriteBatch.Draw(file, file.Bounds, Color.White);
                 spriteBatch.End();
 
-                //Release the GPU back to drawing to the screenletEntity
+                //Release the GPU back to drawing to the screenlet Entity
                 graphics.SetRenderTarget(null);
             }
 

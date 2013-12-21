@@ -11,7 +11,9 @@ using Artemis.Interface;
 namespace TTengine.Core
 {
     /// <summary>
-    /// Screen to which graphics are rendered, optionally containing a separate RendereBuffer
+    /// Screen to which graphics are rendered together with a TTSpriteBatch, 
+    /// optionally containing a separate RenderBuffer.
+    /// Attaching a ScreenComp to an Entity makes it a Screenlet.
     /// <seealso cref="ScreenletSystem"/>
     /// </summary>
     public class ScreenComp: IComponent

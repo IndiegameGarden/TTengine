@@ -15,7 +15,7 @@ using Artemis.System;
 namespace TTengine.Systems
 {
     /// <summary>
-    /// System that clears Screenlets and opens its spritebatches to begin the draw cycle.
+    /// System that opens Screenlets' spritebatches to begin the draw cycle.
     /// Called first in the Draw() cycle.
     /// <seealso cref="ScreenletSystem"/>
     /// </summary>

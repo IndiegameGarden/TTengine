@@ -8,11 +8,12 @@ using Artemis.Interface;
 
 namespace TTengineTest
 {
-    /// <summary>Tests basic Screenlet functions (multiple virtual screens)</summary>
-    class TestScreenlets : Test
+    /// <summary>Tests basic Channel Spritelets. These are channels (virtual screens) rendered
+    /// as texture onto a sprite.</summary>
+    class TestChannelSpritelets : Test
     {
 
-        public TestScreenlets()
+        public TestChannelSpritelets()
             : base()        
         {
             BackgroundColor = Color.DarkSlateGray;
