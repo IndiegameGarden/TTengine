@@ -50,6 +50,7 @@ namespace TTengineTest
         public Entity CreateBall(double radius)
         {
             Entity e = TTFactory.CreateSpritelet(this.BallSprite);
+            e.GetComponent<SpriteComp>().CenterToMiddle();
             e.AddComponent(new ScaleComp(radius));
             return e;
         }

@@ -98,7 +98,7 @@ namespace TTengine.Systems
             // draw sprites loops
             var tex = spriteComp.Texture;
             float rot = drawComp.DrawRotation;
-            Vector2 ctr = spriteComp.DrawCenter;
+            Vector2 ctr = spriteComp.Center;
             float sc = drawComp.DrawScale;
             float laydepth = drawComp.LayerDepth;
 

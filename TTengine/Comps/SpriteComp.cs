@@ -75,10 +75,9 @@ namespace TTengine.Comps
         public float Height { get { return height; } private set { height = value; } }
 
         /// <summary>
-        /// Center of sprite expressed in relative width/height coordinates, where 1.0 is full width or full height
-        /// of the sprite. By default the center of the sprite is chosen in the middle.
+        /// Center of sprite expressed in pixels.
         /// </summary>
-        public Vector3 Center
+        public Vector2 Center
         {
             get
             {
@@ -87,22 +86,18 @@ namespace TTengine.Comps
             set
             {
                 center = value;
-                drawCenter = new Vector2(center.X * Width, center.Y * Height); // update center
             }
         }
-        private Vector3 center = new Vector3(0.5f, 0.5f, 0f); 
+        private Vector2 center = Vector2.Zero;
 
         /// <summary>
-        /// center coordinate as used in Draw() calls, expressed in pixels; updated when Center or Texture changes
+        /// Set the Center property to exactly the middle of the current sprite
+        /// (by default it is topleft (0,0) )
         /// </summary>
-        public Vector2 DrawCenter
+        public void CenterToMiddle()
         {
-            get
-            {
-                return drawCenter;
-            }
+            center = new Vector2(Width / 2.0f, Height / 2.0f);
         }
-        internal Vector2 drawCenter = Vector2.Zero;
 
         /**
          * get/set the Texture of this sprite
@@ -130,8 +125,7 @@ namespace TTengine.Comps
             if (texture != null)
             {
                 Height = texture.Height;
-                Width = texture.Width;
-                drawCenter = new Vector2(Center.X * Width, Center.Y * Height);
+                Width = texture.Width;                
             }
             if (fileName != null && texture == null)
                 LoadTexture(fileName);

@@ -11,11 +11,11 @@ namespace TTengine.Core
     /// </summary>
     public class TTSpriteBatch : SpriteBatch
     {
-        SpriteSortMode  spriteSortMode      = SpriteSortMode.BackToFront;
-        BlendState      blendState          = BlendState.AlphaBlend;
-        SamplerState    samplerState        = null;
-        DepthStencilState   depthStencilState   = null;
-        RasterizerState     rasterizerState     = null;
+        public SpriteSortMode   spriteSortMode  = SpriteSortMode.BackToFront;
+        public BlendState       blendState      = BlendState.AlphaBlend;
+        public SamplerState     samplerState    = null;
+        public DepthStencilState depthStencilState = null;
+        public RasterizerState  rasterizerState = null;
 
         public TTSpriteBatch(GraphicsDevice gfx):
             base(gfx)

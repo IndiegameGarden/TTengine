@@ -87,7 +87,7 @@ namespace TTengine.Systems
 
             // draw sprite
             sb.Draw(spriteComp.Texture, drawComp.DrawPosition, null, drawComp.DrawColor,
-                drawComp.DrawRotation, spriteComp.drawCenter, drawComp.DrawScale, SpriteEffects.None, drawComp.LayerDepth);
+                drawComp.DrawRotation, spriteComp.Center, drawComp.DrawScale, SpriteEffects.None, drawComp.LayerDepth);
 
         }
 

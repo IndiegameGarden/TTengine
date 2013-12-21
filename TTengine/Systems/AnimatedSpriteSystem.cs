@@ -127,7 +127,7 @@ namespace TTengine.Systems
             Rectangle sourceRectangle = new Rectangle(spriteComp.px * column, spriteComp.py * row, spriteComp.px, spriteComp.py);
 
             sb.Draw(spriteComp.Texture, dp, sourceRectangle, drawComp.DrawColor,
-                drawComp.DrawRotation, spriteComp.drawCenter, drawComp.DrawScale, SpriteEffects.None, drawComp.LayerDepth);
+                drawComp.DrawRotation, spriteComp.Center, drawComp.DrawScale, SpriteEffects.None, drawComp.LayerDepth);
 
         }
 
