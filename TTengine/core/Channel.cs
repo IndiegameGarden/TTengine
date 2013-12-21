@@ -29,23 +29,23 @@ namespace TTengine.Core
         public List<Channel> Children;
 
         /// <summary>Create a Channel with a new empty World and output to default screen</summary>
-        internal Channel(int width, int height)
+        internal Channel(bool hasRenderBuffer, int width, int height)
         {
             this.Children = new List<Channel>();
             this.World = new EntityWorld();
             this.World.InitializeAll(true);
-            this.Screen = new ScreenComp(width, height);
+            this.Screen = new ScreenComp(hasRenderBuffer, width, height);
             var e = this.World.CreateEntity();
             e.AddComponent(this.Screen);
             e.Refresh();
         }
 
-        internal Channel()
+        internal Channel(bool hasRenderBuffer)
         {
             this.Children = new List<Channel>();
             this.World = new EntityWorld();
             this.World.InitializeAll(true);
-            this.Screen = new ScreenComp();
+            this.Screen = new ScreenComp(hasRenderBuffer);
             var e = this.World.CreateEntity();
             e.AddComponent(this.Screen);
             e.Refresh();

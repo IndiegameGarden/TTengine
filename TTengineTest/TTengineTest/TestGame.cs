@@ -102,7 +102,7 @@ namespace TTengineTest
 
         private void DoTest(Test test)
         {
-            var ch = TTFactory.CreateChannel(test.BackgroundColor);
+            var ch = TTFactory.CreateChannel(test.BackgroundColor,false);
             TTGame.Instance.ChannelMgr.AddChannel(ch);
             testChannels.Add(ch);
             test.Create();

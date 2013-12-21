@@ -179,9 +179,9 @@ namespace TTengine.Core
         /// Creates a Screenlet that renders to default backbuffer
         /// </summary>
         /// <returns></returns>
-        public static Entity CreateScreenlet()
+        public static Entity CreateScreenlet(bool hasRenderBuffer)
         {
-            var sc = new ScreenComp();
+            var sc = new ScreenComp(hasRenderBuffer);
             var e = CreateEntity();
             e.AddComponent(sc);
             e.AddComponent(new DrawComp(BuildScreen));
@@ -194,9 +194,9 @@ namespace TTengine.Core
         /// which graphics can be rendered. 
         /// </summary>
         /// <returns></returns>
-        public static Entity CreateScreenlet(int width, int height)
+        public static Entity CreateScreenlet(int width, int height, bool hasRenderBuffer)
         {
-            var sc = new ScreenComp(width, height);
+            var sc = new ScreenComp(hasRenderBuffer, width, height);
             var e = CreateEntity();
             e.AddComponent(sc);
             e.AddComponent(new DrawComp(BuildScreen));
@@ -211,9 +211,9 @@ namespace TTengine.Core
         /// <param name="height">RenderTarget height</param>
         /// <param name="backgroundColor">The default background Color for the Channel</param>
         /// <returns>Created channel.</returns>
-        public static Channel CreateChannel(int width, int height, Color backgroundColor)
+        public static Channel CreateChannel(int width, int height, Color backgroundColor, bool hasRenderBuffer)
         {
-            var ch = new Channel(width,height);
+            var ch = new Channel(hasRenderBuffer,width, height);
             ch.Screen.BackgroundColor = backgroundColor;
             return ch;
         }
@@ -223,9 +223,9 @@ namespace TTengine.Core
         /// </summary>
         /// <param name="backgroundColor">The default background Color for the Channel</param>
         /// <returns>Created channel.</returns>
-        public static Channel CreateChannel(Color backgroundColor)
+        public static Channel CreateChannel(Color backgroundColor, bool hasRenderBuffer)
         {
-            var ch = new Channel();
+            var ch = new Channel(hasRenderBuffer);
             ch.Screen.BackgroundColor = backgroundColor;
             return ch;
         }

@@ -62,7 +62,7 @@ namespace Game1
             base.LoadContent();
 
             // title channel
-            titleChannel = TTFactory.CreateChannel(Color.Black);
+            titleChannel = TTFactory.CreateChannel(Color.Black,false);
             ChannelMgr.AddChannel(titleChannel);
             titleChannel.ZapTo(); 
 
@@ -75,7 +75,7 @@ namespace Game1
 
 
             // game channel
-            gameChannel = TTFactory.CreateChannel(Color.White);
+            gameChannel = TTFactory.CreateChannel(Color.White, false);
             ChannelMgr.AddChannel(gameChannel);
             gameChannel.ZapTo(); 
 

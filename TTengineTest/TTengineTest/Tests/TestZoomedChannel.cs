@@ -21,30 +21,26 @@ namespace TTengineTest
 
         public override void Create()
         {
-            var ch = TTFactory.BuildChannel;
-            ch.Screen.SpriteBatch.samplerState = SamplerState.PointClamp;
+            var ch = TTFactory.BuildChannel; // parent channel
 
-            // child channel
-            //var t1 = new TestRotation();
-            var ch1 = TTFactory.CreateChannel(640, 480, Color.Black);
+            // dedicated channel for rendering the level
+            var ch1 = TTFactory.CreateChannel(Color.Black,true); 
+            ch1.Screen.SpriteBatch.samplerState = SamplerState.PointClamp; // nice 'n blocky
+            ch.AddChild(ch1);
             TTFactory.BuildTo(ch1);
             var s = TTFactory.CreateSpritelet("Quest14-Level1.png");
-            ch.AddChild(ch1);
+            s.GetComponent<SpriteComp>().Center = new Vector2(532f, 227f);
+            s.AddComponent(new ScaleComp(14.0));
+            s.GetComponent<PositionComp>().Position = ch.Screen.Center;
+            s.Refresh();
 
-            // main channel: shows the child channel sprite
+            // -- main channel: shows the child channel using a sprite
             TTFactory.BuildTo(ch);
+            // some non-blocky graphics in front of level; using default Spritebatch
+            //var t1 = new TestRotation();
+            //t1.Create();                    
             var scr1 = TTFactory.CreateSpritelet(ch1);
-            // select a place in the level bitmap.
-            scr1.GetComponent<SpriteComp>().Center = new Vector2(532f, 227f);
-            scr1.AddComponent(new ScaleComp(1.0));
-            scr1.GetComponent<PositionComp>().Position = ch.Screen.Center;
-            scr1.GetComponent<PositionComp>().Z = 1f; // background
-            scr1.GetComponent<ScaleComp>().ScaleTarget = 14.0;
-            scr1.GetComponent<ScaleComp>().ScaleSpeed = 0.01;
-            scr1.Refresh();
 
-            var t1 = new TestRotation();
-            t1.Create();
         }
 
     }

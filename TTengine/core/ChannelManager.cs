@@ -21,7 +21,7 @@ namespace TTengine.Core
         internal ChannelManager(TTGame game)
         {
             _game = game;
-            Root = new Channel();
+            Root = new Channel(false);
             TTFactory.BuildTo(Root);
         }
 
