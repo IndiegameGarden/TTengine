@@ -29,16 +29,16 @@ namespace TTengineTest
 
             // create an additional child channel that renders onto the main channel
             // content for 1st screen: call upon another unit test
-            var ch1 = TTFactory.CreateChannel(320, 320);
+            var t1 = new TestAnimatedSprite(); 
+            var ch1 = TTFactory.CreateChannel(320, 320, t1.BackgroundColor);
             TTFactory.BuildTo(ch1);
-            var t1 = new TestAnimatedSprite();
             t1.Create();
             ch.AddChild(ch1);
 
             // second child channel
-            var ch2 = TTFactory.CreateChannel(400, 320);
-            TTFactory.BuildTo(ch2);
-            var t2 = new TestRelativeMotion();
+            var t2 = new TestRelativeMotion(); 
+            var ch2 = TTFactory.CreateChannel(400, 320, t2.BackgroundColor);
+            TTFactory.BuildTo(ch2);            
             t2.Create();
             ch.AddChild(ch2);
 

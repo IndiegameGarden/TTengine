@@ -82,8 +82,6 @@ namespace TTengine.Core
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.SetRenderTarget(null);
-            GraphicsDevice.Clear(ChannelMgr.Root.Screen.BackgroundColor);
             ChannelMgr.Root.Draw();
 
             base.Draw(gameTime);

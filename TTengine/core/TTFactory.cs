@@ -205,19 +205,21 @@ namespace TTengine.Core
         }
 
         /// <summary>
-        /// Creates a Channel that is a child of the current SelectedChannel, that
-        /// renders to a RenderTarget of specified width/height
+        /// Creates a Channel that renders to a RenderTarget of specified width/height
         /// </summary>
+        /// <param name="width">RenderTarget width</param>
+        /// <param name="height">RenderTarget height</param>
+        /// <param name="backgroundColor">The default background Color for the Channel</param>
         /// <returns>Created channel.</returns>
-        public static Channel CreateChannel(int width, int height)
+        public static Channel CreateChannel(int width, int height, Color backgroundColor)
         {
             var ch = new Channel(width,height);
+            ch.Screen.BackgroundColor = backgroundColor;
             return ch;
         }
 
         /// <summary>
-        /// Creates a root Channel that renders to the default backbuffer, having
-        /// a specified background Color.
+        /// Creates a root Channel that renders to the default backbuffer
         /// </summary>
         /// <param name="backgroundColor">The default background Color for the Channel</param>
         /// <returns>Created channel.</returns>
