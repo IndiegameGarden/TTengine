@@ -30,7 +30,8 @@ namespace TTengineTest
             TTFactory.BuildTo(ch1);
             var s = TTFactory.CreateSpritelet("Quest14-Level1.png");
             s.GetComponent<SpriteComp>().Center = new Vector2(532f, 227f);
-            s.AddComponent(new ScaleComp(14.0));
+            s.AddComponent(new ScaleComp(1.0));
+            var mod = new VectorModifier<double>(s.GetComponent<ScaleComp>().Scale);
             s.GetComponent<PositionComp>().Position = ch.Screen.Center;
             s.Refresh();
 
