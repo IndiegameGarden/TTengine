@@ -28,6 +28,7 @@ namespace TTengine.Comps
         /// The scripts that are called every update/draw cycle
         /// </summary>
         public List<IScript> Scripts = new List<IScript>();
+        public List<IUpdate> Updateables = new List<IUpdate>();
 
         public ScriptComp()
         {        
@@ -41,6 +42,11 @@ namespace TTengine.Comps
         public void Add(IScript script)
         {
             this.Scripts.Add(script);
+        }
+
+        public void Add(IUpdate obj)
+        {
+            this.Updateables.Add(obj);
         }
 
     }

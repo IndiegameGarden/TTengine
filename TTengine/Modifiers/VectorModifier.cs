@@ -6,7 +6,7 @@ using TTengine.Comps;
 
 namespace TTengine.Modifiers
 {
-    public class VectorModifier<T> where T : IEquatable<T>
+    public class VectorModifier<T> where T : IEquatable<T> , IUpdate
     {
         public VectorModifier(T vectorToModify) 
         {
@@ -21,7 +21,7 @@ namespace TTengine.Modifiers
         public double Speed = 0;
         protected T vectorToModify;
 
-        public void OnUpdate(ScriptContext ctx)
+        public void OnUpdate(double dt, double simTime)
         {
             if (!IsActive)
                 return;
@@ -34,7 +34,7 @@ namespace TTengine.Modifiers
                 {
                     Vector3 vm = v; // copy; vm is movement vector to apply
                     vm.Normalize();
-                    vm *= (float)(Speed * ctx.ScriptComp.Dt);
+                    vm *= (float)(Speed * dt);
                     if (vm.LengthSquared() > v.LengthSquared())
                     {
                         // target reached
@@ -48,10 +48,6 @@ namespace TTengine.Modifiers
                 }
                 ((Vector3)vectorToModify) = Vector3.Zero;
             }
-        }
-
-        public void OnDraw(ScriptContext ctx)
-        {
         }
 
     }

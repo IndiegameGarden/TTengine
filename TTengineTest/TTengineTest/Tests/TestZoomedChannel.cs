@@ -32,6 +32,7 @@ namespace TTengineTest
             s.GetComponent<SpriteComp>().Center = new Vector2(532f, 227f);
             s.AddComponent(new ScaleComp(1.0));
             var mod = new VectorModifier<double>(s.GetComponent<ScaleComp>().Scale);
+            mod.attachto(s);
             s.GetComponent<PositionComp>().Position = ch.Screen.Center;
             s.Refresh();
 

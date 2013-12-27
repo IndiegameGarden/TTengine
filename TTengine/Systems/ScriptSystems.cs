@@ -30,6 +30,8 @@ namespace TTengine.Systems
             ctx.Entity = entity;
             foreach(IScript script in sc.Scripts)
                 script.OnUpdate(ctx);
+            foreach (IUpdate upd in sc.Updateables)
+                upd.OnUpdate(sc.SimTime);
         }
 
     }

@@ -13,7 +13,7 @@ namespace TTengine.Modifiers
     /// A 'quick script' that can be configured with a custom code block, intended to modify
     /// a certain parameter of another object of type T. 
     /// </summary>
-    public class Modifier<T>: IScript
+    public class Modifier<T>: IUpdate
     {
         /// <summary>Modifier delegate, i.e. the code (method) signature of the custom code block</summary>
         public delegate void ModifierDelegate(T mod, double value);
@@ -49,17 +49,13 @@ namespace TTengine.Modifiers
             e.GetComponent<ScriptComp>().Add(this);
         }
 
-        public void OnUpdate(ScriptContext ctx)
+        public void OnUpdate(double simTime)
         {
             if (IsActive)
             {
-                double value = GetValue(ctx.ScriptComp.SimTime);
+                double value = GetValue(simTime);
                 ModifierCode(objectToModify, value);
             }
-        }
-
-        public void OnDraw(ScriptContext ctx)
-        {
         }
 
         /// <summary>

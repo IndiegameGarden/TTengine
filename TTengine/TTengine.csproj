@@ -94,6 +94,7 @@
     <Compile Include="Core\ChannelManager.cs" />
     <Compile Include="Core\Comp.cs" />
     <Compile Include="Comps\TargetMotionComp.cs" />
+    <Compile Include="Core\IUpdate.cs" />
     <Compile Include="Modifiers\VectorModifier.cs" />
     <Compile Include="Modifiers\Modifier.cs" />
     <Compile Include="Comps\SpriteComp.cs" />
