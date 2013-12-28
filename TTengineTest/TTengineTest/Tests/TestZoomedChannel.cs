@@ -31,8 +31,11 @@ namespace TTengineTest
             var s = TTFactory.CreateSpritelet("Quest14-Level1.png");
             s.GetComponent<SpriteComp>().Center = new Vector2(532f, 227f);
             s.AddComponent(new ScaleComp(1.0));
-            // FIXME var mod = new VectorModifier<double>(s.GetComponent<ScaleComp>().Scale);
-            //mod.attachto(s);
+            var mod = new TargetModifier<ScaleComp>(delegate(ScaleComp sc, Vector3 val) { sc.Scale = val.X; }, s.GetComponent<ScaleComp>());
+            mod.Value.X = 1.0f;
+            mod.Target.X = 15.0f;
+            mod.Speed = 2;
+            mod.AttachTo(s);
             s.GetComponent<PositionComp>().Position = ch.Screen.Center;
             s.Refresh();
 
