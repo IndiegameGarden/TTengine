@@ -31,7 +31,7 @@ namespace TTengine.Systems
             foreach(IScript script in sc.Scripts)
                 script.OnUpdate(ctx);
             foreach (IUpdate upd in sc.Updateables)
-                upd.OnUpdate(sc.SimTime);
+                upd.OnUpdate(dt,sc.SimTime);
         }
 
     }

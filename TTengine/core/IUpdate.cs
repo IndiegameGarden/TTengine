@@ -2,8 +2,8 @@
 
 namespace TTengine.Core
 {
-    interface IUpdate
+    public interface IUpdate
     {
-        public void OnUpdate(double dt, double simTime);
+        void OnUpdate(double dt, double simTime);
     }
 }

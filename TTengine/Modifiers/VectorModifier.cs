@@ -46,7 +46,7 @@ namespace TTengine.Modifiers
                         Value += vm;
                     }
                 }
-                ((Vector3)vectorToModify) = Vector3.Zero;
+                //FIXME ((Vector3)vectorToModify) = Vector3.Zero;
             }
         }
 

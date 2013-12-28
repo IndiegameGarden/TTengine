@@ -49,7 +49,7 @@ namespace TTengine.Modifiers
             e.GetComponent<ScriptComp>().Add(this);
         }
 
-        public void OnUpdate(double simTime)
+        public void OnUpdate(double dt, double simTime)
         {
             if (IsActive)
             {
