@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 using Artemis;
 using Artemis.Interface;
 using TTengine.Core;
@@ -21,15 +20,11 @@ namespace TTengine.Modifiers
         /// <summary>Whether this Modifier is currently active. Only active modifiers do something.</summary>
         public bool IsActive = true;
 
-        // class stores code for one of different types of modifier. FIXME split in different classes
-        //protected ModifyEntityDelegate  ModifyEntityCode { get; private set; }
         protected ModifierDelegate ModifierCode { get; private set; }
-        //protected ModifyCompDelegate    ModifyCompCode { get; private set; }
 
         // internal storage of object to modify
         // Entity not needed to store: this is passed as context at runtime.
         private T objectToModify;
-        //private IComponent compToModify;
 
         /// <summary>
         /// Create a new Modifier that can modify an object of specified type T
@@ -37,7 +32,6 @@ namespace TTengine.Modifiers
         /// <param name="code">Code (method or delegate block) to execute, must have 'void method(T obj, double value)' signature</param>
         public Modifier(ModifierDelegate code, T objectToModify)
         {
-            //this.Type = ModifierType.MODIFIER_MODIFIER;
             this.ModifierCode = code;
             this.objectToModify = objectToModify;
         }

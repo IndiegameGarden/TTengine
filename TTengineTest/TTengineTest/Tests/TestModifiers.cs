@@ -42,24 +42,32 @@ namespace TTengineTest
             var ball2 = Factory.CreateMovingBall(new Vector2(695f, 450f), velo);
             ball2.GetComponent<ScaleComp>().Scale = 0.5;
 
-            // modifier with anonymous delegate code block 
+            // modifier with anonymous delegate code block - for rotation
             var m = new Modifier<DrawComp>(delegate(DrawComp c, double val) { c.DrawRotation = (float)val; },
                                             ball2.GetComponent<DrawComp>());
             m.AttachTo(ball2);
 
+            // TargetModifier to set its position
+            var tm = new TargetModifier<PositionComp>(delegate(PositionComp pc, Vector3 pos) { pc.Position = pos; }, 
+                                ball2.GetComponent<PositionComp>());
+            tm.Target = new Vector3(0f, 0f, 0.2f);
+            tm.Value = ball2.GetComponent<PositionComp>().Position;
+            tm.Speed = 40;
+            tm.AttachTo(ball2);
+
         }
 
-        public void MyScaleModifier(Entity entity, double value)
+        void MyScaleModifier(Entity entity, double value)
         {
             entity.GetComponent<ScaleComp>().ScaleModifier *= 0.5 + entity.GetComponent<PositionComp>().Position.X;
         }
 
-        public void MyScaleModifier2(ScaleComp sc, double value)
+        void MyScaleModifier2(ScaleComp sc, double value)
         {
             sc.ScaleModifier *= (0.4 + value * 0.3);
         }
 
-        public void MyRotateModifier(DrawComp drawComp, double value)
+        void MyRotateModifier(DrawComp drawComp, double value)
         {
             drawComp.DrawRotation = (float)value;
         }
