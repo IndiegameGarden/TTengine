@@ -1,6 +1,6 @@
 
-TTengine is a 2D game engine for C# XNA 4.0.
-For more information and a tutorial go to http://www.trancetrance.com/
+TTengine (TranceTrance engine) is an Experimental 2D game engine 
+for C# on top of XNA 4.0 or MonoGame 3.x
 
-Distributed under a FreeBSD license. For license conditions see LICENSE.txt 
-and the copyright notice in source files.
+For license conditions see LICENSE.txt 
+and the copyright notices in source files.
