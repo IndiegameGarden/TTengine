@@ -1,4 +1,4 @@
-Copyright (c) 2010-2011, TranceTrance.com and its domain owner
+Copyright (c) 2010-2014, IndiegameGarden.com and its domain owner
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, 
