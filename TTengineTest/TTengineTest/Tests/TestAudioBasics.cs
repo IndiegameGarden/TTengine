@@ -22,7 +22,20 @@ namespace TTengineTest
 
         public override void Create()
         {
-            TTFactory.CreateAudiolet(Test_Repeat());
+            TTFactory.CreateAudiolet(Test_Sample());
+            //TTFactory.CreateAudiolet(Test_Repeat());
+        }
+
+        /// <summary>
+        /// simple sample play test
+        /// </summary>
+        /// <returns></returns>
+        public SoundEvent Test_Sample()
+        {
+            SoundEvent soundScript = new SoundEvent("Test_Sample");
+            SoundEvent evDing = new SampleSoundEvent("ambient-echoing-ding.wav");
+            soundScript.AddEvent(0, evDing);
+            return soundScript;
         }
 
         /**
