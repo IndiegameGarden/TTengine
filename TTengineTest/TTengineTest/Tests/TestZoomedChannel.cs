@@ -34,7 +34,7 @@ namespace TTengineTest
             var mod = new TargetModifier<ScaleComp>(delegate(ScaleComp sc, Vector3 val) { sc.Scale = val.X; }, s.GetComponent<ScaleComp>());
             mod.Value.X = 1.0f;
             mod.Target.X = 15.0f;
-            mod.Speed = 2;
+            mod.Speed = 3;
             mod.AttachTo(s);
             s.GetComponent<PositionComp>().Position = ch.Screen.Center;
             s.Refresh();

@@ -25,7 +25,7 @@ namespace TTengineTest
 
             // parent ball
             var velo = new Vector2(3f,0.3f);
-            var ball = Factory.CreateMovingBall(new Vector2(95f, 250f), velo );
+            var ball = Factory.CreateMovingBall(new Vector2(35f, 250f), velo );
             ball.GetComponent<ScaleComp>().Scale = 0.15f;
 
             // child ball 1
