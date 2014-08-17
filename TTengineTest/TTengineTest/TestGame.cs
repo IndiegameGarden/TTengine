@@ -32,9 +32,6 @@ namespace TTengineTest
 
         public TestGame()
         {
-            GraphicsMgr.IsFullScreen = false;
-            GraphicsMgr.PreferredBackBufferWidth = 1024; 
-            GraphicsMgr.PreferredBackBufferHeight = 700;
             IsAudio = true;
         }
 

@@ -31,9 +31,6 @@ namespace Game1
 
         public Game1()
         {
-            GraphicsMgr.IsFullScreen = false;
-            GraphicsMgr.PreferredBackBufferWidth = 1024; 
-            GraphicsMgr.PreferredBackBufferHeight = 768;
             IsAudio = false;
         }
 

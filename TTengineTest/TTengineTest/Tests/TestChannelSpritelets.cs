@@ -16,7 +16,7 @@ namespace TTengineTest
         public TestChannelSpritelets()
             : base()        
         {
-            //BackgroundColor = Color.White;
+            BackgroundColor = Color.White;
         }
 
         public override void Create()

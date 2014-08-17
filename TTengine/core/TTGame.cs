@@ -49,6 +49,12 @@ namespace TTengine.Core
 #else
             GraphicsMgr.SynchronizeWithVerticalRetrace = true;
 #endif
+            int myWindowWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            int myWindowHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            GraphicsMgr.PreferredBackBufferWidth = myWindowWidth;
+            GraphicsMgr.PreferredBackBufferHeight = myWindowHeight;
+            GraphicsMgr.IsFullScreen = false;
+            Window.IsBorderless = true;
         }
 
         protected override void Initialize()
