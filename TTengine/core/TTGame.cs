@@ -80,7 +80,7 @@ namespace TTengine.Core
 
         protected override void Update(GameTime gameTime)
         {
-            ChannelMgr.Root.Update();
+            ChannelMgr.Root.Update(gameTime.ElapsedGameTime.Ticks);
 
             base.Update(gameTime);
         }

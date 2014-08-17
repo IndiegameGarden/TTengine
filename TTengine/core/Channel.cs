@@ -54,7 +54,7 @@ namespace TTengine.Core
         public void AddChild(Channel ch)
         {
             Children.Add(ch);
-            TTFactory.BuildTo(ch);
+            TTFactory.BuildTo(ch); // TODO questionable BuildTo
         }
 
         /// <summary>
@@ -95,16 +95,16 @@ namespace TTengine.Core
             throw new NotImplementedException();
         }
 
-        internal void Update()
+        internal void Update(long deltaTicks)
         {
             if (!IsActive)
                 return;
 
             foreach (Channel c in Children)
             {
-                c.Update();
+                c.Update(deltaTicks);
             }            
-            this.World.Update();
+            this.World.Update(deltaTicks);
         }
 
         /// <summary>Renders the channel to the associated screen(s)</summary>
