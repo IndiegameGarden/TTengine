@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("TTMusicEngine")]
 [assembly: AssemblyProduct("TTMusicEngine")]
-[assembly: AssemblyDescription("Multi-track C# XNA music playing engine with realtime fx")]
+[assembly: AssemblyDescription("Multi-track C# music engine with realtime FX")]
 [assembly: AssemblyCompany("IndiegameGarden.com")]
 [assembly: AssemblyCopyright("Copyright © IndiegameGarden.com 2010-2014")]
 [assembly: AssemblyTrademark("")]

@@ -67,7 +67,7 @@ namespace TTengineTest
             ball.GetComponent<PositionComp>().Position2D = pos;
             ball.GetComponent<PositionComp>().Z = 0.5f + 0.1f * ((float)rnd.NextDouble()); // random Z position
             ball.GetComponent<VelocityComp>().Velocity2D = velo;
-            ball.Refresh();
+            ball.Refresh(); // TODO check all .Refresh() calls to see which ones are needed and which not.
             return ball;
 
         }

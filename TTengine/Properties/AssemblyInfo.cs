@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("TTengine")]
 [assembly: AssemblyProduct("TTengine")]
-[assembly: AssemblyDescription("2D game engine for C# XNA 4.0")]
+[assembly: AssemblyDescription("2D game engine for C# / MonoGame")]
 [assembly: AssemblyCompany("IndiegameGarden.com")]
 [assembly: AssemblyCopyright("Copyright © IndiegameGarden.com 2010-2014")]
 [assembly: AssemblyTrademark("")]

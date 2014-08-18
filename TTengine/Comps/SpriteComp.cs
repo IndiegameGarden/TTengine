@@ -54,9 +54,10 @@ namespace TTengine.Comps
         #region Class-internal properties
 
         protected string fileName = null;
-        protected float width = 0f;
-        protected float height = 0f;
+        protected int width = 0;
+        protected int height = 0;
         protected Texture2D texture = null;
+        protected Color[] textureData = null;
         public static BlendState blendAlpha = null, blendColor = null;
 
         #endregion
@@ -67,12 +68,12 @@ namespace TTengine.Comps
         /// <summary>
         /// width of sprite in pixels
         /// </summary>
-        public float Width { get { return width; } private set { width = value; } }
+        public float Width { get { return width; } private set { width = (int) value; } }
 
         /// <summary>
         /// height of sprite in pixels
         /// </summary>
-        public float Height { get { return height; } private set { height = value; } }
+        public float Height { get { return height; } private set { height = (int) value; } }
 
         /// <summary>
         /// Center of sprite expressed in pixels.
@@ -118,6 +119,67 @@ namespace TTengine.Comps
         #endregion
 
         /// <summary>
+        /// Get the pixel color at specified position of the bitmap
+        /// </summary>
+        /// <param name="pos">Position in bitmap pixel coordinates to sample</param>
+        /// <returns>The Color at position pos (or nearest pixel). If pos is out of sprite bounds, 
+        ///          returns Color.Transparent</returns>
+        public Color GetPixel(Vector2 pos)
+        {
+            if (pos.X < 0f || pos.X > (width - 1) ||
+                pos.Y < 0f || pos.Y > (height - 1))
+            {
+                return Color.Transparent;
+            }
+            int x = (int)Math.Round(pos.X);
+            int y = (int)Math.Round(pos.Y);
+            return textureData[x + y * width];
+        }
+
+        public Color GetPixel(int x, int y)
+        {
+            if (x < 0 || x > (width - 1) || y < 0 || y > (height - 1))
+            {
+                return Color.Transparent;
+            }
+            return textureData[x + y * width];
+        }
+
+        /// <summary>
+        /// Set the pixel at specified position to a new color. If pos given outside bounds of
+        /// bitmap, the new color value is ignored.
+        /// </summary>
+        /// <param name="pos">Position in bitmap pixel coordinates</param>
+        /// <param name="color">Color to set</param>
+        public void SetPixel(Vector2 pos, Color color)
+        {
+            if (pos.X < 0f || pos.X > (width - 1) ||
+                pos.Y < 0f || pos.Y > (height - 1))
+            {
+                return;
+            }
+            Color[] data = new Color[1];
+            data[0] = color;
+            int x = (int)Math.Round(pos.X);
+            int y = (int)Math.Round(pos.Y);
+            textureData[x + y * width] = color;
+            Texture.SetData<Color>(0, new Rectangle(x, y, 1, 1), data, 0, 1);
+        }
+
+        public void SetPixel(int x, int y, Color color)
+        {
+            if (x < 0 || x > (width - 1) || y < 0 || y > (height - 1))
+            {
+                return;
+            }
+            Color[] data = new Color[1];
+            data[0] = color;
+            textureData[x + y * width] = color;
+            Texture.SetData<Color>(0, new Rectangle(x, y, 1, 1), data, 0, 1);
+        }
+
+
+        /// <summary>
         /// Called upon texture change, to (re)initialize texture-related members 
         /// </summary>
         protected virtual void InitTextures()
@@ -125,7 +187,9 @@ namespace TTengine.Comps
             if (texture != null)
             {
                 Height = texture.Height;
-                Width = texture.Width;                
+                Width = texture.Width;
+                textureData = new Color[width * height];
+                Texture.GetData(textureData);
             }
             if (fileName != null && texture == null)
                 LoadTexture(fileName);
