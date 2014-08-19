@@ -87,7 +87,7 @@
     <Compile Include="Tests\TestModifiers.cs" />
     <Compile Include="Tests\TestZoomedChannel.cs" />
     <Compile Include="Tests\TestChannelSpritelets.cs" />
-    <Compile Include="Tests\TestTemplate.cs" />
+    <Compile Include="Tests\Template.cs" />
     <Compile Include="Tests\TestTargetMotion.cs" />
     <Compile Include="Tests\TestScaling.cs" />
     <Compile Include="Tests\TestAnimatedSprite.cs" />
