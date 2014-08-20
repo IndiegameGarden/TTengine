@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Artemis;
 using Artemis.Interface;
 
 namespace TTengine.Comps
@@ -8,9 +10,12 @@ namespace TTengine.Comps
     /// </summary>
     public class SphereShapeComp: IComponent
     {
-        public const string CollisionGroupName = "TTsphere";
-    
         public float Radius { get; set; }
+
+        /// <summary>
+        /// List of Entities that is currently colliding with this Entity(shape)
+        /// </summary>
+        public List<Entity> Colliders = new List<Entity>();
 
         public SphereShapeComp(float radius)
         {

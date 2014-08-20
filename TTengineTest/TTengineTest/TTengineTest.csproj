@@ -83,6 +83,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Tests\TestSphereCollision.cs" />
     <Compile Include="Tests\TestBTAI.cs" />
     <Compile Include="Tests\TestSpritePixelGetSet.cs" />
     <Compile Include="Tests\TestModifiers.cs" />

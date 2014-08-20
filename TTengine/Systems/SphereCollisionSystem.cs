@@ -52,34 +52,47 @@ namespace TTengine.Systems
 
     #endregion
 
-    /// <summary>The collision system.</summary>
+    /// <summary>A collision system for sphere/circular shapes.</summary>
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = SystemsSchedule.CollisionSystem)]
     public class SphereCollisionSystem : EntitySystem
     {
+        private List<Entity> allObj = new List<Entity>();
+
         /// <summary>Initializes a new instance of the <see cref="SphereCollisionSystem" /> class.</summary>
         public SphereCollisionSystem()
             : base(Aspect.All(typeof(PositionComp),typeof(SphereShapeComp)))
         {
         }
 
+        public override void OnDisabled(Entity entity)
+        {
+            base.OnDisabled(entity);
+            allObj.Remove(entity);
+        }
+
+        public override void OnEnabled(Entity entity)
+        {
+            base.OnEnabled(entity);
+            allObj.Add(entity);
+        }
+
         /// <summary>Processes the entities.</summary>
         /// <param name="entities">The entities.</param>
         protected override void ProcessEntities(IDictionary<int, Entity> entities)
         {
-            Bag<Entity> allObj = this.EntityWorld.GroupManager.GetEntities(SphereShapeComp.CollisionGroupName); 
-            if (allObj != null )
+            int cnt = allObj.Count;
+            foreach (Entity e in entities.Values)
             {
-                for (int i1 = 0; allObj.Count > i1; ++i1)
+                e.GetComponent<SphereShapeComp>().Colliders.Clear();
+            }
+            for (int i1 = 0; i1 < cnt; i1++ )
+            {
+                for (int i2 = i1+1; i2 < cnt; i2++ )
                 {
-                    Entity e1 = allObj.Get(i1);
-                    for (int i2 = i1+1; allObj.Count > i2; ++i2)
+                    if (this.CollisionExists(allObj[i1], allObj[i2]))
                     {
-                        Entity e2 = allObj.Get(i2);
-
-                        if (this.CollisionExists(e1, e2))
-                        {
-
-                        }
+                        allObj[i1].GetComponent<SphereShapeComp>().Colliders.Add(allObj[i2]);
+                        allObj[i2].GetComponent<SphereShapeComp>().Colliders.Add(allObj[i1]);
                     }
                 }
             }
@@ -94,11 +107,9 @@ namespace TTengine.Systems
             var p1 = entity1.GetComponent<PositionComp>();
             var p2 = entity2.GetComponent<PositionComp>();
             var s1 = entity1.GetComponent<SphereShapeComp>();
-            var s2 = entity1.GetComponent<SphereShapeComp>();
-            p1.Z = 0f;
-            p2.Z = 0f;
+            var s2 = entity2.GetComponent<SphereShapeComp>();
             float dist = Vector3.Distance(p1.Position, p2.Position);
-            return (dist < (s1.Radius + s2.Radius));
+            return (dist <= (s1.Radius + s2.Radius));
             
         }
     }
