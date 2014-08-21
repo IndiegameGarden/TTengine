@@ -63,15 +63,21 @@ namespace TTengine.Comps
     public class ScriptComp: Comp
     {
         /// <summary>
-        /// The scripts and updateables that are called every update/draw cycle
+        /// The scripts that are called every update/draw cycle
         /// </summary>
         public List<IScript> Scripts = new List<IScript>();
-        public List<IUpdate> Updateables = new List<IUpdate>();
 
+        /// <summary>
+        /// Create new ScriptComp without any scripts yet
+        /// </summary>
         public ScriptComp()
         {        
         }
 
+        /// <summary>
+        /// Create new ScriptComp with a single script already added
+        /// </summary>
+        /// <param name="script">script to Add</param>
         public ScriptComp(IScript script)
         {
             Add(script);
@@ -82,11 +88,12 @@ namespace TTengine.Comps
             this.Scripts.Add(script);
         }
 
-        public void Add(IUpdate obj)
-        {
-            this.Updateables.Add(obj);
-        }
-
+        /// <summary>
+        /// Add new script based on a function. This makes script creation quick - no need to create
+        /// a class for this, just a single method.
+        /// </summary>
+        /// <param name="scriptFunction">method/function (delegate) to add as script</param>
+        /// <returns>The IScript object created from the function/delegate</returns>
         public IScript Add(ScriptDelegate scriptFunction)
         {
             var script = new Script(scriptFunction, this);

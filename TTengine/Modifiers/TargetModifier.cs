@@ -13,7 +13,7 @@ namespace TTengine.Modifiers
     /// modify the variables/properties of any object.
     /// </summary>
     /// <typeparam name="T">The type of object to be modified in the custom code block</typeparam>
-    public class TargetModifier<T> : IUpdate
+    public class TargetModifier<T> : IScript
     {
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace TTengine.Modifiers
             e.GetComponent<ScriptComp>().Add(this);
         }
 
-        public void OnUpdate(double dt, double simTime)
+        public void OnUpdate(ScriptContext ctx)
         {
             if (!IsActive)
                 return;
@@ -65,7 +65,7 @@ namespace TTengine.Modifiers
                 {
                     Vector3 vm = v; // copy; vm is movement vector to apply
                     vm.Normalize();
-                    vm *= (float)(Speed * dt);
+                    vm *= (float)(Speed * ctx.ScriptComp.Dt);
                     if (vm.LengthSquared() > v.LengthSquared())
                     {
                         // target reached
@@ -81,5 +81,9 @@ namespace TTengine.Modifiers
             }
         }
 
+        public void OnDraw(ScriptContext ctx)
+        {
+            // nothing
+        }
     }
 }

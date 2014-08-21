@@ -30,8 +30,6 @@ namespace TTengine.Systems
             ctx.Entity = entity;
             foreach(IScript script in sc.Scripts)
                 script.OnUpdate(ctx);
-            foreach (IUpdate upd in sc.Updateables)
-                upd.OnUpdate(dt,sc.SimTime);
         }
 
     }
@@ -39,7 +37,7 @@ namespace TTengine.Systems
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = SystemsSchedule.ScriptSystemDraw)]
     public class ScriptSystemDraw : EntityComponentProcessingSystem<ScriptComp>
     {
-        static ScriptContext ctx = new ScriptContext();
+        ScriptContext ctx = new ScriptContext();
 
         public override void Process(Entity entity, ScriptComp sc)
         {
