@@ -255,5 +255,21 @@ namespace TTengine.Core
             e.Refresh();
             return e;
         }
+
+        /// <summary>
+        /// Add a script to an Entity, based on a function (delegate)
+        /// </summary>
+        /// <param name="e">The Entity to add script to</param>
+        /// <param name="scriptFunction">Script to run</param>
+        /// <returns>IScript object created from the function</returns>
+        public static IScript AddScript(Entity e, ScriptDelegate scriptFunction)
+        {
+            if (!e.HasComponent<ScriptComp>())
+                e.AddComponent(new ScriptComp());
+            var sc = e.GetComponent<ScriptComp>();
+            return sc.Add(scriptFunction);
+            
+        }
+
     }
 }

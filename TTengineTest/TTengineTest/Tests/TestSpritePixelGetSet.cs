@@ -12,7 +12,7 @@ namespace TTengineTest
     /// <summary>
     /// Get pixel values and set pixels of a sprite bitmap
     /// </summary>
-    class TestSpritePixelGetSet : Test, IScript
+    class TestSpritePixelGetSet : Test
     {
 
         public TestSpritePixelGetSet()
@@ -26,13 +26,13 @@ namespace TTengineTest
             Factory.BallSprite = "amazing1.png";
             TTFactory.BuildChannel.Screen.SpriteBatch.samplerState = SamplerState.PointClamp; // set 'blocky' screen mode
 
-            // parent sprite
+            // sprite
             var velo = new Vector2(5f, 3f);
             var spr = Factory.CreateMovingBall(new Vector2(335f, 350f), velo);
             spr.GetComponent<ScaleComp>().Scale = 10f;
 
-            // attach me as script to entity
-            spr.AddComponent(new ScriptComp(this));
+            // add script to sprite
+            TTFactory.AddScript(spr, ChangePixelsRandomlyScript);
 
         }
 
@@ -40,7 +40,7 @@ namespace TTengineTest
         /// pixel modification code is here, called every update cycle
         /// </summary>
         /// <param name="context"></param>
-        public void OnUpdate(ScriptContext context)
+        void ChangePixelsRandomlyScript(ScriptContext context)
         {
             // pick a random pixel
             var sc = context.Entity.GetComponent<SpriteComp>();
@@ -53,11 +53,6 @@ namespace TTengineTest
                                     (int)c.G + RandomMath.RandomIntBetween(0, 2),
                                     (int)c.B + RandomMath.RandomIntBetween(98, 212), c.A);
             sc.SetPixel(x, y, cNew);
-        }
-
-        public void OnDraw(ScriptContext context)
-        {
-            // nothing
         }
 
     }

@@ -7,16 +7,54 @@ using Artemis;
 
 namespace TTengine.Comps
 {
+    /// <summary>
+    /// Method signature (Delegate) for scripts
+    /// </summary>
+    /// <param name="ctx">script context supplied during script execution</param>
+    public delegate void ScriptDelegate(ScriptContext ctx);
+
+    /// <summary>
+    /// The context object passed to scripts when run
+    /// </summary>
     public class ScriptContext
     {
         public ScriptComp ScriptComp;
         public Entity Entity;
     }
 
+    /// <summary>
+    /// Interface that a script object must implement
+    /// </summary>
     public interface IScript
     {
         void OnUpdate(ScriptContext context);
         void OnDraw(ScriptContext context);
+    }
+
+    /// <summary>
+    /// Basic script object that can run code from a Delegate
+    /// </summary>
+    public class Script: IScript
+    {
+        protected ScriptDelegate scriptFunction ;
+        protected ScriptComp sc;
+
+        public Script(ScriptDelegate scriptFunction, ScriptComp sc)
+        {
+            this.scriptFunction = scriptFunction;
+            this.sc = sc;
+        }
+
+        public void OnUpdate(ScriptContext ctx)
+        {
+            scriptFunction(ctx);
+        }
+
+        public void OnDraw(ScriptContext ctx)
+        {
+            // nothing
+        }
+
     }
 
     /// <summary>
@@ -25,7 +63,7 @@ namespace TTengine.Comps
     public class ScriptComp: Comp
     {
         /// <summary>
-        /// The scripts that are called every update/draw cycle
+        /// The scripts and updateables that are called every update/draw cycle
         /// </summary>
         public List<IScript> Scripts = new List<IScript>();
         public List<IUpdate> Updateables = new List<IUpdate>();
@@ -49,5 +87,11 @@ namespace TTengine.Comps
             this.Updateables.Add(obj);
         }
 
+        public IScript Add(ScriptDelegate scriptFunction)
+        {
+            var script = new Script(scriptFunction, this);
+            this.Add(script);
+            return script;
+        }
     }
 }
