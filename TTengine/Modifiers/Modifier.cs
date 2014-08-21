@@ -8,19 +8,20 @@ using TTengine.Comps;
 
 namespace TTengine.Modifiers
 {
+    /// <summary>Modifier delegate, i.e. the code (method) signature of the custom code block</summary>
+    public delegate void ModifierDelegate<T>(T mod, double value);
+
     /// <summary>
     /// A 'quick script' that can be configured with a custom code block, intended to modify
     /// a certain parameter of another object of type T. 
     /// </summary>
     public class Modifier<T>: IScript
     {
-        /// <summary>Modifier delegate, i.e. the code (method) signature of the custom code block</summary>
-        public delegate void ModifierDelegate(T mod, double value);
 
         /// <summary>Whether this Modifier is currently active. Only active modifiers do something.</summary>
         public bool IsActive = true;
 
-        protected ModifierDelegate ModifierCode { get; private set; }
+        protected ModifierDelegate<T> ModifierCode { get; private set; }
 
         // internal storage of object to modify
         // Entity not needed to store: this is passed as context at runtime.
@@ -30,7 +31,7 @@ namespace TTengine.Modifiers
         /// Create a new Modifier that can modify an object of specified type T
         /// </summary>
         /// <param name="code">Code (method or delegate block) to execute, must have 'void method(T obj, double value)' signature</param>
-        public Modifier(ModifierDelegate code, T objectToModify)
+        public Modifier(ModifierDelegate<T> code, T objectToModify)
         {
             this.ModifierCode = code;
             this.objectToModify = objectToModify;

@@ -18,7 +18,7 @@ namespace TTengine.Modifiers
         public double Phase = 0;
         public double Offset = 0;
 
-        public SineModifier(ModifierDelegate code, T objectToModify):
+        public SineModifier(ModifierDelegate<T> code, T objectToModify):
             base(code,objectToModify)
         { }
 

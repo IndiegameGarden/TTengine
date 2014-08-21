@@ -35,6 +35,7 @@ namespace TTengineTest
             s.AttachTo(ball);
 
             // modifier to adapt rotation
+            //TTFactory.AddModifier<DrawComp>(ball, MyRotateModifier);
             var r = new Modifier<DrawComp>(MyRotateModifier, ball.GetComponent<DrawComp>());
             r.AttachTo(ball);
 

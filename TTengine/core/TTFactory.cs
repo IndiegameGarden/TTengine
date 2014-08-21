@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Artemis;
 using TTengine.Comps;
+using TTengine.Modifiers;
 using TTMusicEngine.Soundevents;
 
 namespace TTengine.Core
@@ -267,9 +266,16 @@ namespace TTengine.Core
             if (!e.HasComponent<ScriptComp>())
                 e.AddComponent(new ScriptComp());
             var sc = e.GetComponent<ScriptComp>();
-            return sc.Add(scriptFunction);
-            
+            return sc.Add(scriptFunction);            
         }
+
+        /*
+        public static void AddModifier<T>(Entity e, ModifierDelegate<T> modFunction)
+        {
+            var m = new Modifier<T>(modFunction, e.GetComponent<T>());
+            m.AttachTo(e);
+        }
+         */
 
     }
 }
