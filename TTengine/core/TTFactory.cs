@@ -255,27 +255,76 @@ namespace TTengine.Core
             return e;
         }
 
-        /// <summary>
-        /// Add a script to an Entity, based on a function (delegate)
-        /// </summary>
-        /// <param name="e">The Entity to add script to</param>
-        /// <param name="scriptFunction">Script to run</param>
-        /// <returns>IScript object created from the function</returns>
-        public static IScript AddScript(Entity e, ScriptDelegate scriptFunction)
+        public static void AddScript(Entity e, IScript script)
         {
             if (!e.HasComponent<ScriptComp>())
                 e.AddComponent(new ScriptComp());
             var sc = e.GetComponent<ScriptComp>();
-            return sc.Add(scriptFunction);            
+            sc.Add(script);
         }
 
-        /*
-        public static void AddModifier<T>(Entity e, ModifierDelegate<T> modFunction)
+        /// <summary>
+        /// Add a script to an Entity, based on a function (delegate)
+        /// </summary>
+        /// <param name="e">The Entity to add script to</param>
+        /// <param name="scriptCode">Script to run</param>
+        /// <returns>IScript object created from the function</returns>
+        public static BasicScript AddScript(Entity e, ScriptDelegate scriptCode)
         {
-            var m = new Modifier<T>(modFunction, e.GetComponent<T>());
-            m.AttachTo(e);
+            if (!e.HasComponent<ScriptComp>())
+                e.AddComponent(new ScriptComp());
+            var sc = e.GetComponent<ScriptComp>();
+            var script = new BasicScript(scriptCode);
+            sc.Add(script);
+            return script;
         }
-         */
+
+        /// <summary>
+        /// Add a Modifier script to an Entity, based on a code block (delegate) and a Function
+        /// </summary>
+        /// <param name="e">Entity to add modifier script to</param>
+        /// <param name="scriptCode">Code block (delegate) that is the script</param>
+        /// <param name="func">Function whose value will be passed in ScriptContext.FunctionValue to script</param>
+        /// <returns></returns>
+        public static ModifierScript AddModifier(Entity e, ScriptDelegate scriptCode, Function func)
+        {
+            if (!e.HasComponent<ScriptComp>())
+                e.AddComponent(new ScriptComp());
+            var sc = e.GetComponent<ScriptComp>();
+            var script = new ModifierScript(scriptCode, func);
+            sc.Add(script);
+            return script;
+        }
+
+        /// <summary>
+        /// Add a Modifier script to an Entity, based on a code block (delegate) and an empty (=unity) Function
+        /// </summary>
+        /// <param name="e">Entity to add modifier script to</param>
+        /// <param name="scriptCode">Code block (delegate) that is the script</param>
+        /// <returns></returns>
+        public static ModifierScript AddModifier(Entity e, ScriptDelegate scriptCode)
+        {
+            return AddModifier(e, scriptCode, null);
+        }
+
+        /// <summary>
+        /// Basic script object that can run code from a Delegate
+        /// </summary>
+        public class BasicScript : IScript
+        {
+            protected ScriptDelegate scriptCode;
+
+            public BasicScript(ScriptDelegate scriptCode)
+            {
+                this.scriptCode = scriptCode;
+            }
+
+            public void OnUpdate(ScriptContext ctx)
+            {
+                scriptCode(ctx);
+            }
+
+        }
 
     }
 }

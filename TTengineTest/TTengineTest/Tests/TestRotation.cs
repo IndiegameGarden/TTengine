@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.Xna.Framework;
-
 using TTengine.Core;
 using TTengine.Comps;
 using TTengine.Modifiers;
@@ -34,19 +31,16 @@ namespace TTengineTest
                     var ball = Factory.CreateMovingBall(new Vector2(x, y), velo );
                     ball.GetComponent<ScaleComp>().Scale = 0.15;
                     ball.AddComponent(new RotateComp());
-                    ball.Refresh();
 
                     // modifier to adapt rotation
-                    var r = new Modifier<RotateComp>(MyRotateModifier, ball.GetComponent<RotateComp>());
-                    r.AttachTo(ball);
-
+                    TTFactory.AddScript(ball, MyRotateBallScript);
                 }
             }
         }
 
-        public void MyRotateModifier(RotateComp rotComp, double value)
+        void MyRotateBallScript(ScriptContext ctx)
         {
-            rotComp.Rotate = (float)value;
+            ctx.Entity.GetComponent<RotateComp>().Rotate = ctx.SimTime;
         }
 
     }

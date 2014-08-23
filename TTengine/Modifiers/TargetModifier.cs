@@ -65,7 +65,7 @@ namespace TTengine.Modifiers
                 {
                     Vector3 vm = v; // copy; vm is movement vector to apply
                     vm.Normalize();
-                    vm *= (float)(Speed * ctx.ScriptComp.Dt);
+                    vm *= (float)(Speed * ctx.Dt);
                     if (vm.LengthSquared() > v.LengthSquared())
                     {
                         // target reached
@@ -81,9 +81,5 @@ namespace TTengine.Modifiers
             }
         }
 
-        public void OnDraw(ScriptContext ctx)
-        {
-            // nothing
-        }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-
 using TTengine.Core;
 using TTengine.Comps;
 using TTengine.Modifiers;
@@ -35,19 +34,21 @@ namespace TTengineTest
                 ball.GetComponent<VelocityComp>().Velocity2D = RandomMath.RandomDirection() * 30f;
                 ball.AddComponent(new SphereShapeComp(radius * 250f));
 
-                Modifier<Entity> m = new Modifier<Entity>(BallColorModifier, ball);
-                m.AttachTo(ball);
+                TTFactory.AddScript(ball, BallColorSetScript);
             }
         }
 
-        void BallColorModifier(Entity entity, double value)
+        /// <summary>
+        /// script that sets color of sprite, depending on number of colliding objects
+        /// </summary>
+        /// <param name="ctx"></param>
+        void BallColorSetScript(ScriptContext ctx)
         {
-            var sc = entity.GetComponent<SphereShapeComp>();
-            var dc = entity.GetComponent<DrawComp>();
+            var sc = ctx.Entity.GetComponent<SphereShapeComp>();
+            var dc = ctx.Entity.GetComponent<DrawComp>();
             float c = Math.Max(1f - sc.Colliders.Count * 0.2f, 0f);
             dc.DrawColor = new Color(c,c,c);
         }
-
 
     }
 }

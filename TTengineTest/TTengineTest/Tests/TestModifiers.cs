@@ -28,27 +28,25 @@ namespace TTengineTest
             var ball = Factory.CreateMovingBall(new Vector2(95f, 250f), velo);
 
             // Modifier: adapting scale with sine rhythm
-            var s = new SineModifier<ScaleComp>(MyScaleModifier2, ball.GetComponent<ScaleComp>());
+            var s = new SineFunction();
             s.Frequency = 0.5;
             s.Amplitude = 0.25;
             s.Offset = 1;
-            s.AttachTo(ball);
+            TTFactory.AddModifier(ball, MyScaleModifierScript, s);
 
-            // modifier to adapt rotation
-            //TTFactory.AddModifier<DrawComp>(ball, MyRotateModifier);
-            var r = new Modifier<DrawComp>(MyRotateModifier, ball.GetComponent<DrawComp>());
-            r.AttachTo(ball);
+            // modifier script to adapt rotation
+            TTFactory.AddModifier(ball, MyRotateModifierScript);
 
             // ball 2
             var ball2 = Factory.CreateMovingBall(new Vector2(695f, 450f), velo);
             ball2.GetComponent<ScaleComp>().Scale = 0.5;
 
-            // modifier with anonymous delegate code block - for rotation
-            var m = new Modifier<DrawComp>(delegate(DrawComp c, double val) { c.DrawRotation = (float)val; },
-                                            ball2.GetComponent<DrawComp>());
-            m.AttachTo(ball2);
+            // script with anonymous delegate code block - for rotation
+            TTFactory.AddScript(ball2, delegate(ScriptContext ctx) { 
+                    ctx.Entity.GetComponent<DrawComp>().DrawRotation = (float)ctx.SimTime; 
+                });
 
-            // TargetModifier to set its position
+            // TargetModifier to set its position towards a target
             var tm = new TargetModifier<PositionComp>(delegate(PositionComp pc, Vector3 pos) { pc.Position = pos; }, 
                                 ball2.GetComponent<PositionComp>());
             tm.Target = new Vector3(0f, 0f, 0.2f);
@@ -58,19 +56,14 @@ namespace TTengineTest
 
         }
 
-        void MyScaleModifier(Entity entity, double value)
+        void MyScaleModifierScript(ScriptContext ctx)
         {
-            entity.GetComponent<ScaleComp>().ScaleModifier *= 0.5 + entity.GetComponent<PositionComp>().Position.X;
+            ctx.Entity.GetComponent<ScaleComp>().ScaleModifier *= (0.4 + ctx.FunctionValue * 0.3);            
         }
 
-        void MyScaleModifier2(ScaleComp sc, double value)
+        void MyRotateModifierScript(ScriptContext ctx)
         {
-            sc.ScaleModifier *= (0.4 + value * 0.3);
-        }
-
-        void MyRotateModifier(DrawComp drawComp, double value)
-        {
-            drawComp.DrawRotation = (float)value;
+            ctx.Entity.GetComponent<DrawComp>().DrawRotation = (float)ctx.FunctionValue;
         }
 
     }

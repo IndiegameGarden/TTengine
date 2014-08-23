@@ -21,6 +21,7 @@ namespace TTengine.Systems
         protected override void Begin()
         {
             dt = TimeSpan.FromTicks(EntityWorld.Delta).TotalSeconds;
+            ctx.Dt = dt;
         }
 
         public override void Process(Entity entity, ScriptComp sc)
@@ -28,6 +29,7 @@ namespace TTengine.Systems
             sc.UpdateComp(dt);
             ctx.ScriptComp = sc;
             ctx.Entity = entity;
+            ctx.SimTime = sc.SimTime;
             foreach(IScript script in sc.Scripts)
                 script.OnUpdate(ctx);
         }
@@ -43,8 +45,9 @@ namespace TTengine.Systems
         {
             ctx.ScriptComp = sc;
             ctx.Entity = entity;
-            foreach (var script in sc.Scripts)
-                script.OnDraw(ctx);
+            //foreach (var script in sc.Scripts) // FIXME
+            //    script.OnDraw(ctx);
+
         }
 
     }

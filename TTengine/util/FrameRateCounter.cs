@@ -48,7 +48,7 @@ namespace TTengine.Util
         }
 
         public void OnUpdate(ScriptContext ctx){
-            elapsedTime += TimeSpan.FromSeconds(ctx.ScriptComp.Dt);
+            elapsedTime += TimeSpan.FromSeconds(ctx.Dt);
 
             if (elapsedTime > TimeSpan.FromSeconds(1))
             {
@@ -63,8 +63,8 @@ namespace TTengine.Util
             frameCounter++;
             frameCounterTotal++;
             int frameRateAvg = 0;
-            if (ctx.ScriptComp.SimTime > 0)
-                frameRateAvg = (int)(frameCounterTotal / ctx.ScriptComp.SimTime);
+            if (ctx.SimTime > 0)
+                frameRateAvg = (int)(frameCounterTotal / ctx.SimTime);
             string fps = string.Format("{0} fps [{1}]", frameRate, frameRateAvg );
             textComp.Text = fps;
         }

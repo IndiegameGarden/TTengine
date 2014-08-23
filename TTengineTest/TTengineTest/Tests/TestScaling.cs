@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.Xna.Framework;
-
 using TTengine.Core;
 using TTengine.Comps;
 using TTengine.Modifiers;
@@ -31,17 +28,15 @@ namespace TTengineTest
                     b.AddComponent(new ScaleComp());
 
                     // to each ball, we add a sinusoid based modification of the Scale parameter.
-                    // FIXME try a ref to sc.Scale passing. Simpler.
-                    var m = new SineModifier<ScaleComp>(delegate (ScaleComp sc, double value)  { sc.Scale = value; }, 
-                                                        b.GetComponent<ScaleComp>());
+                    var m = new SineFunction();
                     m.Amplitude = RandomMath.RandomBetween(0.05f, 0.4f);
                     m.Frequency = RandomMath.RandomBetween(0.04f, 0.3f);
                     m.Phase = RandomMath.RandomBetween(0f, MathHelper.TwoPi);
                     m.Offset = RandomMath.RandomBetween(0.45f, 0.8f);
-                    m.AttachTo(b); // attach modifier to the ball.
+                    TTFactory.AddModifier(b, delegate(ScriptContext ctx)
+                        {ctx.Entity.GetComponent<ScaleComp>().Scale = ctx.FunctionValue;} , m);
                 }
             }
-
         }
 
     }

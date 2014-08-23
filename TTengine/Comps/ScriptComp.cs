@@ -18,8 +18,27 @@ namespace TTengine.Comps
     /// </summary>
     public class ScriptContext
     {
+        /// <summary>Amount of time active in simulation of the parent ScriptComp, in seconds.
+        /// Value may be changed by others (e.g. script, modifier).</summary>
+        public double SimTime = 0;
+
+        /// <summary>Delta time of the last Update() simulation step performed</summary>
+        public double Dt = 0;
+
+        /// <summary>
+        /// The parent ScriptCompt that holds the called script
+        /// </summary>
         public ScriptComp ScriptComp;
+
+        /// <summary>
+        /// The Entity that the script is attached to
+        /// </summary>
         public Entity Entity;
+
+        /// <summary>
+        /// A function value (if any) passed to the script
+        /// </summary>
+        public double FunctionValue = Double.NaN;
     }
 
     /// <summary>
@@ -28,33 +47,6 @@ namespace TTengine.Comps
     public interface IScript
     {
         void OnUpdate(ScriptContext context);
-        void OnDraw(ScriptContext context);
-    }
-
-    /// <summary>
-    /// Basic script object that can run code from a Delegate
-    /// </summary>
-    public class Script: IScript
-    {
-        protected ScriptDelegate scriptFunction ;
-        protected ScriptComp sc;
-
-        public Script(ScriptDelegate scriptFunction, ScriptComp sc)
-        {
-            this.scriptFunction = scriptFunction;
-            this.sc = sc;
-        }
-
-        public void OnUpdate(ScriptContext ctx)
-        {
-            scriptFunction(ctx);
-        }
-
-        public void OnDraw(ScriptContext ctx)
-        {
-            // nothing
-        }
-
     }
 
     /// <summary>
@@ -88,17 +80,5 @@ namespace TTengine.Comps
             this.Scripts.Add(script);
         }
 
-        /// <summary>
-        /// Add new script based on a function. This makes script creation quick - no need to create
-        /// a class for this, just a single method.
-        /// </summary>
-        /// <param name="scriptFunction">method/function (delegate) to add as script</param>
-        /// <returns>The IScript object created from the function/delegate</returns>
-        public IScript Add(ScriptDelegate scriptFunction)
-        {
-            var script = new Script(scriptFunction, this);
-            this.Add(script);
-            return script;
-        }
     }
 }

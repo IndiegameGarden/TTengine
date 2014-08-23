@@ -40,12 +40,12 @@ namespace TTengineTest
             base.LoadContent();
 
             // Here all the tests are created
+            DoTest(new TestModifiers());
             DoTest(new TestSphereCollision());
             DoTest(new TestBTAI());
             DoTest(new TestSpritePixelGetSet());
             DoTest(new TestChannelSpritelets());
             DoTest(new TestZoomedChannel());
-            DoTest(new TestModifiers());
             DoTest(new TestAnimatedSprite());
             DoTest(new TestTargetMotion());
             DoTest(new TestScaling());
