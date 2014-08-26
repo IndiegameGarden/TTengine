@@ -286,7 +286,7 @@ namespace TTengine.Core
         /// <param name="scriptCode">Code block (delegate) that is the script</param>
         /// <param name="func">Function whose value will be passed in ScriptContext.FunctionValue to script</param>
         /// <returns></returns>
-        public static ModifierScript AddModifier(Entity e, ScriptDelegate scriptCode, Function func)
+        public static ModifierScript AddModifier(Entity e, ModifierDelegate scriptCode, Function func)
         {
             if (!e.HasComponent<ScriptComp>())
                 e.AddComponent(new ScriptComp());
@@ -302,7 +302,7 @@ namespace TTengine.Core
         /// <param name="e">Entity to add modifier script to</param>
         /// <param name="scriptCode">Code block (delegate) that is the script</param>
         /// <returns></returns>
-        public static ModifierScript AddModifier(Entity e, ScriptDelegate scriptCode)
+        public static ModifierScript AddModifier(Entity e, ModifierDelegate scriptCode)
         {
             return AddModifier(e, scriptCode, null);
         }

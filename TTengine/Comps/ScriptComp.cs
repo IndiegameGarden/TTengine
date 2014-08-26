@@ -26,19 +26,9 @@ namespace TTengine.Comps
         public double Dt = 0;
 
         /// <summary>
-        /// The parent ScriptCompt that holds the called script
-        /// </summary>
-        public ScriptComp ScriptComp;
-
-        /// <summary>
         /// The Entity that the script is attached to
         /// </summary>
         public Entity Entity;
-
-        /// <summary>
-        /// A function value (if any) passed to the script
-        /// </summary>
-        public double FunctionValue = Double.NaN;
     }
 
     /// <summary>

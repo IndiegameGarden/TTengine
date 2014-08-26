@@ -56,14 +56,14 @@ namespace TTengineTest
 
         }
 
-        void MyScaleModifierScript(ScriptContext ctx)
+        void MyScaleModifierScript(ScriptContext ctx, double value)
         {
-            ctx.Entity.GetComponent<ScaleComp>().ScaleModifier *= (0.4 + ctx.FunctionValue * 0.3);            
+            ctx.Entity.GetComponent<ScaleComp>().ScaleModifier *= (0.4 + value * 0.3);            
         }
 
-        void MyRotateModifierScript(ScriptContext ctx)
+        void MyRotateModifierScript(ScriptContext ctx, double value)
         {
-            ctx.Entity.GetComponent<DrawComp>().DrawRotation = (float)ctx.FunctionValue;
+            ctx.Entity.GetComponent<DrawComp>().DrawRotation = (float)value;
         }
 
     }

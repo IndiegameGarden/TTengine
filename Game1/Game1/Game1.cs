@@ -44,6 +44,9 @@ namespace Game1
         {
             base.Update(gameTime);
             KeyboardState kb = Keyboard.GetState();
+            if (kb.IsKeyDown(Keys.Escape))
+                Exit();
+
             if (kb.IsKeyDown(Keys.Space))
             {
                 titleChannel.ZapTo();
@@ -84,7 +87,7 @@ namespace Game1
             {
                 for (float y = 0.1f; y < 1f; y += 0.24f)
                 {
-                    var pos = new Vector2(x * GraphicsMgr.PreferredBackBufferWidth, y * GraphicsMgr.PreferredBackBufferHeight);
+                    var pos = new Vector2(x * gameChannel.Screen.Width, y * gameChannel.Screen.Height);
                     Factory.CreateHyperActiveBall(pos);
                     Factory.CreateMovingTextlet(pos,"This is the\nTTengine test. !@#$1234");
                     //break;
@@ -144,6 +147,7 @@ namespace Game1
             ball.GetComponent<PositionComp>().Position2D = pos;
             ball.GetComponent<VelocityComp>().Velocity = 0.2f * new Vector3((float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f, 0f );
 
+            /*
             // duration of entity
             ball.AddComponent(new ExpiresComp(4 + 500 * rnd.NextDouble()));
 
@@ -154,22 +158,21 @@ namespace Game1
             ball.AddComponent(ai);
 
             // Modifier to adapt scale
-            var m = new Modifier<Entity>(MyScaleModifier, ball);
-            m.AttachTo(ball);
+            TTFactory.AddModifier(ball, ScaleModifierScript);
 
             // another adapting scale with sine rhythm
-            var s = new SineModifier<ScaleComp>(MyScaleModifier2, ball.GetComponent<ScaleComp>());
+            var s = new SineFunction();
             s.Frequency = 0.5;
             s.Amplitude = 0.25;
             s.Offset = 1;
-            s.AttachTo(ball);
+            TTFactory.AddModifier(ball, ScaleModifierScript, s);
 
             // modifier to adapt rotation
-            var r = new Modifier<DrawComp>(MyRotateModifier, ball.GetComponent<DrawComp>());
-            r.AttachTo(ball);
+            TTFactory.AddModifier(ball, RotateModifierScript);
 
             // set different time offset initially, per ball (for the modifiers)
             ball.GetComponent<ScriptComp>().SimTime = 10 * rnd.NextDouble();
+            */
 
             ball.Refresh();
             return ball;
@@ -186,19 +189,19 @@ namespace Game1
             return t;
         }
 
-        public void MyScaleModifier(Entity entity, double value)
+        public void ScaleModifierScript(ScriptContext ctx, double value)
         {
-            entity.GetComponent<ScaleComp>().ScaleModifier *= 0.5 + entity.GetComponent<PositionComp>().Position.X;
+            ctx.Entity.GetComponent<ScaleComp>().ScaleModifier *= 0.5 + ctx.Entity.GetComponent<PositionComp>().Position.X;
         }
 
-        public void MyScaleModifier2(ScaleComp sc, double value)
+        public void ScaleModifierScript2(ScriptContext ctx, double value)
         {
-            sc.ScaleModifier *= value;
+            ctx.Entity.GetComponent<ScaleComp>().ScaleModifier *= value;
         }
 
-        public void MyRotateModifier(DrawComp drawComp, double value)
+        public void RotateModifierScript(ScriptContext ctx, double value)
         {
-            drawComp.DrawRotation = (float)value;
+            ctx.Entity.GetComponent<DrawComp>().DrawRotation = (float)value;
         }
     }
 
