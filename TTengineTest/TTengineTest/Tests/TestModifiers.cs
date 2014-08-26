@@ -28,11 +28,11 @@ namespace TTengineTest
             var ball = Factory.CreateMovingBall(new Vector2(95f, 250f), velo);
 
             // Modifier: adapting scale with sine rhythm
-            var s = new SineFunction();
-            s.Frequency = 0.5;
-            s.Amplitude = 0.25;
-            s.Offset = 1;
-            TTFactory.AddModifier(ball, MyScaleModifierScript, s);
+            var sineFunc = new SineFunction();
+            sineFunc.Frequency = 0.5;
+            sineFunc.Amplitude = 0.25;
+            sineFunc.Offset = 1;
+            TTFactory.AddModifier(ball, MyScaleModifierScript, sineFunc);
 
             // modifier script to adapt rotation
             TTFactory.AddModifier(ball, MyRotateModifierScript);
