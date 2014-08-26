@@ -99,9 +99,11 @@
     <Compile Include="Core\ChannelManager.cs" />
     <Compile Include="Core\Comp.cs" />
     <Compile Include="Comps\TargetMotionComp.cs" />
+    <Compile Include="Modifiers\IVectorFunction.cs" />
+    <Compile Include="Modifiers\VectorModifierScript.cs" />
     <Compile Include="Modifiers\Function.cs" />
     <Compile Include="Modifiers\IFunction.cs" />
-    <Compile Include="Modifiers\TargetModifier.cs" />
+    <Compile Include="Modifiers\MoveToTargetFunction.cs" />
     <Compile Include="Modifiers\ModifierScript.cs" />
     <Compile Include="Comps\SpriteComp.cs" />
     <Compile Include="Core\TTFactory.cs" />

@@ -31,13 +31,14 @@ namespace TTengineTest
             var s = TTFactory.CreateSpritelet("Quest14-Level1.png");
             s.GetComponent<SpriteComp>().Center = new Vector2(532f, 227f);
             s.AddComponent(new ScaleComp(1.0));
-            var mod = new TargetModifier<ScaleComp>(delegate(ScaleComp sc, Vector3 val) { sc.Scale = val.X; }, s.GetComponent<ScaleComp>());
-            mod.Value.X = 1.0f;
-            mod.Target.X = 15.0f;
-            mod.Speed = 3;
-            mod.AttachTo(s);
+            //var mod = new TargetModifier<ScaleComp>(delegate(ScaleComp sc, Vector3 val) { sc.Scale = val.X; }, s.GetComponent<ScaleComp>());
+            var targFunc = new MoveToTargetFunction();
+            targFunc.CurrentValue.X = 1.0f;
+            targFunc.Target.X = 15.0f;
+            targFunc.Speed = 3;
+            TTFactory.AddModifier(s, delegate(ScriptContext ctx, Vector3 val) { ctx.Entity.GetComponent<ScaleComp>().Scale = val.X; },
+                targFunc);
             s.GetComponent<PositionComp>().Position = ch.Screen.Center;
-            s.Refresh();
 
             // -- main channel: shows the child channel using a sprite
             TTFactory.BuildTo(ch);

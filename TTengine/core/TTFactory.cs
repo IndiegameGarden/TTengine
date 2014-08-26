@@ -286,12 +286,29 @@ namespace TTengine.Core
         /// <param name="scriptCode">Code block (delegate) that is the script</param>
         /// <param name="func">Function whose value will be passed in ScriptContext.FunctionValue to script</param>
         /// <returns></returns>
-        public static ModifierScript AddModifier(Entity e, ModifierDelegate scriptCode, Function func)
+        public static ModifierScript AddModifier(Entity e, ModifierDelegate scriptCode, IFunction func)
         {
             if (!e.HasComponent<ScriptComp>())
                 e.AddComponent(new ScriptComp());
             var sc = e.GetComponent<ScriptComp>();
             var script = new ModifierScript(scriptCode, func);
+            sc.Add(script);
+            return script;
+        }
+
+        /// <summary>
+        /// Add a Modifier script to an Entity, based on a code block (delegate) and a VectorFunction
+        /// </summary>
+        /// <param name="e">Entity to add modifier script to</param>
+        /// <param name="scriptCode">Code block (delegate) that is the script</param>
+        /// <param name="func">Function whose value will be passed in ScriptContext.FunctionValue to script</param>
+        /// <returns></returns>
+        public static VectorModifierScript AddModifier(Entity e, VectorModifierDelegate scriptCode, IVectorFunction func)
+        {
+            if (!e.HasComponent<ScriptComp>())
+                e.AddComponent(new ScriptComp());
+            var sc = e.GetComponent<ScriptComp>();
+            var script = new VectorModifierScript(scriptCode, func);
             sc.Add(script);
             return script;
         }

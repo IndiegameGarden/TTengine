@@ -47,12 +47,15 @@ namespace TTengineTest
                 });
 
             // TargetModifier to set its position towards a target
-            var tm = new TargetModifier<PositionComp>(delegate(PositionComp pc, Vector3 pos) { pc.Position = pos; }, 
-                                ball2.GetComponent<PositionComp>());
-            tm.Target = new Vector3(0f, 0f, 0.2f);
-            tm.Value = ball2.GetComponent<PositionComp>().Position;
-            tm.Speed = 40;
-            tm.AttachTo(ball2);
+            //var tm = new TargetModifier<PositionComp>(delegate(PositionComp pc, Vector3 pos) { pc.Position = pos; }, 
+            //                    ball2.GetComponent<PositionComp>());
+            var targFunc = new MoveToTargetFunction();
+            targFunc.Target = new Vector3(0f, 0f, 0.2f);
+            targFunc.CurrentValue = ball2.GetComponent<PositionComp>().Position;
+            targFunc.Speed = 40;
+            TTFactory.AddModifier(ball2,
+                delegate(ScriptContext ctx, Vector3 pos) { ctx.Entity.GetComponent<PositionComp>().Position = pos; },
+                targFunc);
 
         }
 
