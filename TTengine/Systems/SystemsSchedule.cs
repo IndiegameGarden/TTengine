@@ -30,8 +30,7 @@ namespace TTengine.Systems
             SpriteRenderSystem  = 2,
             AnimatedSpriteSystem = 2,
             TextRenderSystem    = 2,
-            ScreenletSystem     = 3,
-            ScreenletPostSystem = 4;
+            ScreenletSystem     = 3;
 
     }
 }
