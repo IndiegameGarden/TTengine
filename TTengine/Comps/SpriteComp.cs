@@ -119,15 +119,15 @@ namespace TTengine.Comps
         #endregion
 
         /// <summary>
-        /// Get the pixel color at specified position of the bitmap
+        /// Get the pixel color at specified position of the bitmap (Vector2 coordinate)
         /// </summary>
         /// <param name="pos">Position in bitmap pixel coordinates to sample</param>
-        /// <returns>The Color at position pos (or nearest pixel). If pos is out of sprite bounds, 
-        ///          returns Color.Transparent</returns>
+        /// <returns>The Color at position pos (or nearest rounded pixel). If rounded pos is 
+        ///          out of the sprite's bounds, returns Color.Transparent</returns>
         public Color GetPixel(Vector2 pos)
         {
-            if (pos.X < 0f || pos.X > (width - 1) ||
-                pos.Y < 0f || pos.Y > (height - 1))
+            if (pos.X <= -0.5f || pos.X >= ( (float)width - 0.5f) ||
+                pos.Y <= -0.5f || pos.Y >= ( (float)height - 0.5f))
             {
                 return Color.Transparent;
             }
@@ -136,6 +136,13 @@ namespace TTengine.Comps
             return textureData[x + y * width];
         }
 
+        /// <summary>
+        /// Get the pixel color at specified position of the bitmap (int coordinates)
+        /// </summary>
+        /// <param name="x">x coordinate of pixel position to sample</param>
+        /// <param name="y">y coordinate of pixel position to sample</param>
+        /// <returns>The Color at position (x,y). If 
+        ///          out of the sprite's bounds, returns Color.Transparent</returns>
         public Color GetPixel(int x, int y)
         {
             if (x < 0 || x > (width - 1) || y < 0 || y > (height - 1))
@@ -146,15 +153,15 @@ namespace TTengine.Comps
         }
 
         /// <summary>
-        /// Set the pixel at specified position to a new color. If pos given outside bounds of
+        /// Set the pixel at specified position to a new color. If rounded pos is outside bounds of
         /// bitmap, the new color value is ignored.
         /// </summary>
         /// <param name="pos">Position in bitmap pixel coordinates</param>
         /// <param name="color">Color to set</param>
         public void SetPixel(Vector2 pos, Color color)
         {
-            if (pos.X < 0f || pos.X > (width - 1) ||
-                pos.Y < 0f || pos.Y > (height - 1))
+            if (pos.X <= -0.5f || pos.X >= ((float)width - 0.5f) ||
+                pos.Y <= -0.5f || pos.Y >= ((float)height - 0.5f))
             {
                 return;
             }
@@ -166,6 +173,13 @@ namespace TTengine.Comps
             Texture.SetData<Color>(0, new Rectangle(x, y, 1, 1), data, 0, 1);
         }
 
+        /// <summary>
+        /// Set the pixel at specified position to a new color. If pos is outside bounds of
+        /// bitmap, the new color value is ignored.
+        /// </summary>
+        /// <param name="x">x coordinate of pixel position</param>
+        /// <param name="y">y coordinate of pixel position</param>
+        /// <param name="color">Color to set</param>
         public void SetPixel(int x, int y, Color color)
         {
             if (x < 0 || x > (width - 1) || y < 0 || y > (height - 1))
