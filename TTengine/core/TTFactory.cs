@@ -189,6 +189,22 @@ namespace TTengine.Core
         }
 
         /// <summary>
+        /// Creates an FX Screenlet that renders a layer with shader Effect to the current active BuildScreen
+        /// </summary>
+        /// <returns></returns>
+        public static Entity CreateFxScreenlet(String effectFile)
+        {
+            var fx = TTGame.Instance.Content.Load<Effect>(effectFile);
+            var sc = new ScreenComp(BuildScreen.RenderTarget); // renders to the existing screen buffer
+            sc.SpriteBatch.Effect = fx; // set the effect in SprBatch
+            var e = CreateEntity();
+            e.AddComponent(sc);
+            e.AddComponent(new DrawComp(sc));
+            e.Refresh();
+            return e;
+        }
+
+        /// <summary>
         /// Creates a Screenlet that may contain a screenComp (RenderBuffer) to 
         /// which graphics can be rendered. 
         /// </summary>

@@ -42,6 +42,13 @@ namespace TTengine.Core
         {
             // see this() constructor
         }
+        
+        public ScreenComp(RenderTarget2D renderTarget)
+        {
+            SpriteBatch = new TTSpriteBatch(TTGame.Instance.GraphicsDevice);
+            this.renderTarget = renderTarget;
+            InitScreenDimensions();
+        }
 
         public Color BackgroundColor = Color.Black;
 
