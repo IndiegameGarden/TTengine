@@ -112,7 +112,7 @@ namespace TTengine.Core
             }
 
             aspectRatio = (float)screenWidth / (float)screenHeight;
-            Center = new Vector3(((float)screenWidth)/2.0f, ((float)screenHeight)/2.0f, 0f);
+            Center = new Vector3( (float)screenWidth/2.0f, (float)screenHeight/2.0f, 0f);
             Zoom = 1f;
             ZoomCenter = Center;
         }
