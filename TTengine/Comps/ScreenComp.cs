@@ -42,6 +42,13 @@ namespace TTengine.Core
         {
             // see this() constructor
         }
+        
+        public ScreenComp(RenderTarget2D renderTarget)
+        {
+            SpriteBatch = new TTSpriteBatch(TTGame.Instance.GraphicsDevice);
+            this.renderTarget = renderTarget;
+            InitScreenDimensions();
+        }
 
         public Color BackgroundColor = Color.Black;
 
@@ -112,7 +119,7 @@ namespace TTengine.Core
             }
 
             aspectRatio = (float)screenWidth / (float)screenHeight;
-            Center = new Vector3(((float)screenWidth)/2.0f, ((float)screenHeight)/2.0f, 0f);
+            Center = new Vector3( (float)screenWidth/2.0f, (float)screenHeight/2.0f, 0f);
             Zoom = 1f;
             ZoomCenter = Center;
         }

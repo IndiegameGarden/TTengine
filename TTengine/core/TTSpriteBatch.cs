@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-
-using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace TTengine.Core
@@ -16,7 +13,11 @@ namespace TTengine.Core
         public SamplerState     samplerState    = null;
         public DepthStencilState depthStencilState = null;
         public RasterizerState  rasterizerState = null;
+        public Effect           effect = null;
 
+        /// <summary>
+        /// construct a TTSpriteBatch with default rendering parameters for the batch
+        /// </summary>
         public TTSpriteBatch(GraphicsDevice gfx):
             base(gfx)
         {
@@ -24,15 +25,9 @@ namespace TTengine.Core
         }
 
         /// <summary>
-        /// construct a TTSpriteBatch with user-selected rendering parameters for the batch
+        /// construct a TTSpriteBatch with custom rendering parameters for the batch
         /// </summary>
-        /// <param name="gfx"></param>
-        /// <param name="ssm"></param>
-        /// <param name="bs"></param>
-        /// <param name="ss"></param>
-        /// <param name="dss"></param>
-        /// <param name="rs"></param>
-        public TTSpriteBatch(GraphicsDevice gfx, SpriteSortMode ssm, BlendState bs, SamplerState ss, DepthStencilState dss, RasterizerState rs): 
+        public TTSpriteBatch(GraphicsDevice gfx, SpriteSortMode ssm, BlendState bs, SamplerState ss, DepthStencilState dss, RasterizerState rs, Effect fx): 
             base(gfx)
         {
             spriteSortMode = ssm;
@@ -40,6 +35,7 @@ namespace TTengine.Core
             samplerState = ss;
             depthStencilState = dss;
             rasterizerState = rs;
+            effect = fx;
         }
 
         /// <summary>
@@ -47,7 +43,10 @@ namespace TTengine.Core
         /// </summary>
         public void BeginParameterized()
         {
-            Begin(spriteSortMode, blendState, samplerState, depthStencilState, rasterizerState);
+            if (effect == null)
+              Begin(spriteSortMode, blendState, samplerState, depthStencilState, rasterizerState);
+            else
+              Begin(spriteSortMode, blendState, samplerState, depthStencilState, rasterizerState, effect);
         }
         
     }
