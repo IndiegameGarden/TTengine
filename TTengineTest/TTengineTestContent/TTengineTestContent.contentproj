@@ -99,6 +99,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Grayscale.xnb">
+      <Name>Grayscale</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="red-circle_frank-tschakert_runtime-load.png">
       <Name>red-circle_frank-tschakert_runtime-load</Name>
       <Importer>TextureImporter</Importer>
@@ -153,13 +157,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Grayscale.fx">
-      <Name>Grayscale</Name>
-      <Importer>EffectImporter</Importer>
-      <Processor>EffectProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
@@ -181,7 +178,23 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Grayscale.fx">
+      <Name>Grayscale</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MonoGame-Effect-build.bat">
+      <Name>MonoGame-Effect-build</Name>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>..\\..\\..\\MonoGame-Effect-build.bat
+</PostBuildEvent>
+  </PropertyGroup>
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
