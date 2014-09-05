@@ -22,11 +22,15 @@ namespace TTengineTest
 
         public override void Create()
         {
-            var fxScreen = TTFactory.CreateFxScreenlet("Grayscale");
+            var ch = TTFactory.BuildChannel;
+
+            var fxScreen = TTFactory.CreateFxScreenlet("FixedColor");
             TTFactory.BuildTo(fxScreen.GetComponent<ScreenComp>());
 
             var t = new TestRotation();
             t.Create();
+
+            TTFactory.BuildTo(ch); // restore the normal BuildScreen
         }
 
     }

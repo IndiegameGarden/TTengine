@@ -99,6 +99,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="FixedColor.xnb">
+      <Name>FixedColor</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Grayscale.xnb">
       <Name>Grayscale</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -188,6 +192,13 @@
   <ItemGroup>
     <None Include="MonoGame-Effect-build.bat">
       <Name>MonoGame-Effect-build</Name>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FixedColor.fx">
+      <Name>FixedColor</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
