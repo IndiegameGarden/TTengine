@@ -23,7 +23,7 @@ namespace TTengineTest
         public override void Create()
         {
             var fxScreen = TTFactory.CreateFxScreenlet("Grayscale");
-            TTFactory.BuildScreen = fxScreen.GetComponent<ScreenComp>();
+            TTFactory.BuildTo(fxScreen.GetComponent<ScreenComp>());
 
             var t = new TestRotation();
             t.Create();

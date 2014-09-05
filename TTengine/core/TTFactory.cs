@@ -41,7 +41,7 @@ namespace TTengine.Core
         public static void BuildTo(Channel channel)
         {
             BuildWorld = channel.World;
-            BuildScreen = null; // channel.Screen;
+            BuildScreen = channel.Screen;
             BuildChannel = channel;
         }
 
