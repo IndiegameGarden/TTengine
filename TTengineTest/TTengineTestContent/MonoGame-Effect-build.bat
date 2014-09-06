@@ -9,4 +9,5 @@ cd "c:\dev\TT\TTengine-5\TTengineTest\TTengineTestContent\"
  /importer:EffectImporter^
  /processor:EffectProcessor^
  /build:Grayscale.fx^
- /build:FixedColor.fx
+ /build:FixedColor.fx^
+ /build:RandomColor.fx

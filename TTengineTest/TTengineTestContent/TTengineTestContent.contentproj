@@ -107,6 +107,10 @@
       <Name>Grayscale</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="RandomColor.xnb">
+      <Name>RandomColor</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="red-circle_frank-tschakert_runtime-load.png">
       <Name>red-circle_frank-tschakert_runtime-load</Name>
       <Importer>TextureImporter</Importer>
@@ -197,6 +201,13 @@
   <ItemGroup>
     <None Include="FixedColor.fx">
       <Name>FixedColor</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="RandomColor.fx">
+      <Name>RandomColor</Name>
       <Importer>EffectImporter</Importer>
       <Processor>EffectProcessor</Processor>
     </None>

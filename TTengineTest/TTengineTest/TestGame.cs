@@ -40,6 +40,7 @@ namespace TTengineTest
             base.LoadContent();
 
             // Here all the tests are created
+            DoTest(new TestMixedShaders());
             DoTest(new TestTextureSamplingShader());
             DoTest(new TestBasicShader());
             DoTest(new TestModifiers());

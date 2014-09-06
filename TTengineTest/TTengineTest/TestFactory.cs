@@ -72,6 +72,16 @@ namespace TTengineTest
 
         }
 
+        public Entity CreateRotatingBall(Vector2 pos, Vector2 velo, double rotSpeed)
+        {
+            var ball = CreateMovingBall(pos, velo);
+            ball.GetComponent<ScaleComp>().Scale = 0.7;
+            var rc = new RotateComp();
+            rc.RotateSpeed = rotSpeed;
+            ball.AddComponent(rc);
+            return ball;
+        }
+
         public Entity CreateTextlet(Vector2 pos, string text, Color col)
         {
             var txt = TTFactory.CreateTextlet(text);
