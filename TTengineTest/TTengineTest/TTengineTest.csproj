@@ -60,6 +60,12 @@
     <XnaCompressContent>true</XnaCompressContent>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GamepadBridge">
+      <HintPath>..\..\TTengine\GamepadConfig\GamepadBridge.dll</HintPath>
+    </Reference>
+    <Reference Include="GamepadConfigControls">
+      <HintPath>..\..\TTengine\GamepadConfig\GamepadConfigControls.dll</HintPath>
+    </Reference>
     <Reference Include="Lidgren.Network, Version=2011.3.12.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\TTengine\MonoGame\Lidgren.Network.dll</HintPath>
@@ -118,6 +124,10 @@
     </Reference>
     <Reference Include="System.Net">
       <Private>False</Private>
+    </Reference>
+    <Reference Include="Tao.Sdl, Version=1.2.13.0, Culture=neutral, PublicKeyToken=9c7a200e36c0094e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TTengine\GamepadConfig\Tao.Sdl.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
