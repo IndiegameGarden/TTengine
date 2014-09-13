@@ -69,7 +69,11 @@ namespace TTengineTest
             ball.GetComponent<VelocityComp>().Velocity2D = velo;
             ball.Refresh(); // TODO check all .Refresh() calls to see which ones are needed and which not.
             return ball;
+        }
 
+        public Entity CreateMovingBall(Vector3 pos, Vector2 velo)
+        {
+            return CreateMovingBall(new Vector2(pos.X, pos.Y), velo);
         }
 
         public Entity CreateRotatingBall(Vector2 pos, Vector2 velo, double rotSpeed)
