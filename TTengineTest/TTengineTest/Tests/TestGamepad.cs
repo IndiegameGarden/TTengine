@@ -7,7 +7,7 @@ using TTengine.Comps;
 using TTengine.Modifiers;
 using Artemis.Interface;
 
-using Tao.Sdl;
+//using Tao.Sdl;
 
 namespace TTengineTest
 {
