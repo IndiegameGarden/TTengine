@@ -62,53 +62,54 @@
   <ItemGroup>
     <Reference Include="Lidgren.Network, Version=2011.3.12.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\TTengine\MonoGame\Lidgren.Network.dll</HintPath>
+      <HintPath>..\..\MonoGame\Lidgren.Network.dll</HintPath>
     </Reference>
     <Reference Include="MonoGame.Framework, Version=3.1.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\TTengine\MonoGame\MonoGame.Framework.dll</HintPath>
+      <HintPath>..\..\MonoGame\MonoGame.Framework.dll</HintPath>
     </Reference>
-    <Reference Include="MonoGame.Framework.Net">
-      <HintPath>..\..\TTengine\MonoGame\MonoGame.Framework.Net.dll</HintPath>
+    <Reference Include="MonoGame.Framework.Net, Version=3.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\MonoGame\MonoGame.Framework.Net.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <Private>False</Private>
     </Reference>
     <Reference Include="SharpDX, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\TTengine\MonoGame\SharpDX.dll</HintPath>
+      <HintPath>..\..\MonoGame\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct2D1, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\TTengine\MonoGame\SharpDX.Direct2D1.dll</HintPath>
+      <HintPath>..\..\MonoGame\SharpDX.Direct2D1.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D11, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\TTengine\MonoGame\SharpDX.Direct3D11.dll</HintPath>
+      <HintPath>..\..\MonoGame\SharpDX.Direct3D11.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D9, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\TTengine\MonoGame\SharpDX.Direct3D9.dll</HintPath>
+      <HintPath>..\..\MonoGame\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DXGI, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\TTengine\MonoGame\SharpDX.DXGI.dll</HintPath>
+      <HintPath>..\..\MonoGame\SharpDX.DXGI.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.MediaFoundation, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\TTengine\MonoGame\SharpDX.MediaFoundation.dll</HintPath>
+      <HintPath>..\..\MonoGame\SharpDX.MediaFoundation.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.RawInput, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\TTengine\MonoGame\SharpDX.RawInput.dll</HintPath>
+      <HintPath>..\..\MonoGame\SharpDX.RawInput.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.XAudio2, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\TTengine\MonoGame\SharpDX.XAudio2.dll</HintPath>
+      <HintPath>..\..\MonoGame\SharpDX.XAudio2.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.XInput, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\TTengine\MonoGame\SharpDX.XInput.dll</HintPath>
+      <HintPath>..\..\MonoGame\SharpDX.XInput.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Private>False</Private>
