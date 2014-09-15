@@ -24,6 +24,7 @@ namespace TTengineTest
         {
             var b = Factory.CreateMovingBall(TTFactory.BuildScreen.Center, Vector2.Zero);
             TTFactory.AddScript(b, ScriptMoveByGamepad);
+            //b.AddComponent(new UserInputComp());
         }
 
         void ScriptMoveByGamepad(ScriptContext ctx)
