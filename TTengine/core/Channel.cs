@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System.Text;
 using Artemis;
 using TTengine.Comps;
@@ -28,10 +29,13 @@ namespace TTengine.Core
         /// <summary>List of child Channels, which are channels rendered within this Channel e.g. sub-screens.</summary>
         public List<Channel> Children;
 
+        public List<Effect> PostEffects;
+
         /// <summary>Create a Channel with a new empty World and output to default screen</summary>
         internal Channel(bool hasRenderBuffer, int width, int height)
         {
             this.Children = new List<Channel>();
+            this.PostEffects = new List<Effect>();
             this.World = new EntityWorld();
             this.World.InitializeAll(true);
             this.Screen = new ScreenComp(hasRenderBuffer, width, height);
@@ -43,6 +47,7 @@ namespace TTengine.Core
         internal Channel(bool hasRenderBuffer)
         {
             this.Children = new List<Channel>();
+            this.PostEffects = new List<Effect>();
             this.World = new EntityWorld();
             this.World.InitializeAll(true);
             this.Screen = new ScreenComp(hasRenderBuffer);
@@ -126,6 +131,31 @@ namespace TTengine.Core
                 TTGame.Instance.GraphicsDevice.Clear(Screen.BackgroundColor);
                 TTGame.Instance.DrawScreen = Screen;
                 this.World.Draw();
+
+                // apply post-effects
+                if (PostEffects.Count > 0)
+                {
+                    RenderTarget2D currentSourceBuffer = Screen.RenderTarget;
+                    RenderTarget2D currentTargetBuffer = Screen.RenderTargetBackBuffer;
+                    SpriteBatch spriteBatch = Screen.SpriteBatch;
+#if DEBUG
+                    if (currentSourceBuffer == null) throw new Exception("PostEffects can only be used on Screenlets with a RenderTarget2D buffer set");
+#endif
+                    foreach (Effect eff in PostEffects)
+                    {
+                        TTGame.Instance.GraphicsDevice.SetRenderTarget(currentTargetBuffer);
+                        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque, null, null, null, eff);
+                        spriteBatch.Draw(currentSourceBuffer, new Rectangle(0, 0, Screen.Width, Screen.Height), Color.White);
+                        spriteBatch.End();
+
+                        // Swap trick! for a next round.
+                        RenderTarget2D temp = currentSourceBuffer;
+                        currentSourceBuffer = currentTargetBuffer;
+                        currentTargetBuffer = temp;
+                    }
+                    Screen.renderTarget = currentSourceBuffer;
+                    Screen.renderTargetBackBuffer = currentTargetBuffer;
+                }
             }
 
         }

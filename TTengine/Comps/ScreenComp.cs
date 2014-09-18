@@ -73,6 +73,18 @@ namespace TTengine.Core
             }
         }
 
+        public RenderTarget2D RenderTargetBackBuffer
+        {
+            get
+            {
+                if (renderTargetBackBuffer == null)
+                {
+                    renderTargetBackBuffer = new RenderTarget2D(TTGame.Instance.GraphicsDevice, Width, Height);
+                }
+                return renderTargetBackBuffer;
+            }
+        }
+
         /// <summary>Width of screen in pixels</summary>
         public int Width { get { return screenWidth; } }
 
@@ -90,7 +102,7 @@ namespace TTengine.Core
         private int screenWidth = 0;
         private int screenHeight = 0;
         private float aspectRatio;
-        private RenderTarget2D renderTarget;
+        internal RenderTarget2D renderTarget, renderTargetBackBuffer;
         #endregion
 
         /// <summary>
