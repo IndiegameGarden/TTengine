@@ -81,7 +81,7 @@ namespace TTengineTest
             }
             
             if ((kb.IsKeyDown(Keys.Space) && !kbOld.IsKeyDown(Keys.Space)) ||
-                (kb.IsKeyDown(Keys.Right) && !kbOld.IsKeyDown(Keys.Right)) )
+                (kb.IsKeyDown(Keys.PageDown) && !kbOld.IsKeyDown(Keys.PageDown)) )
             {
                 if (channel < testChannels.Count-1)
                 {
@@ -89,17 +89,13 @@ namespace TTengineTest
                     testChannels[channel].ZapTo();
                 }
             }
-            else if (kb.IsKeyDown(Keys.Left) && !kbOld.IsKeyDown(Keys.Left))
+            else if (kb.IsKeyDown(Keys.PageUp) && !kbOld.IsKeyDown(Keys.PageUp))
             {
                 if (channel > 0)
                 {
                     channel--;
                     testChannels[channel].ZapTo();
                 }
-            }
-            else if (kb.IsKeyDown(Keys.Escape) && !kbOld.IsKeyDown(Keys.Escape))
-            {
-                Exit();
             }
             kbOld = kb;
         }

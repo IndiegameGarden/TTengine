@@ -23,8 +23,8 @@ namespace TTengineTest
         public override void Create()
         {
             var b = Factory.CreateMovingBall(TTFactory.BuildScreen.Center, Vector2.Zero);
+            b.AddComponent(new PlayerInputComp());
             TTFactory.AddScript(b, ScriptMoveByGamepad);
-            //b.AddComponent(new UserInputComp());
         }
 
         void ScriptMoveByGamepad(ScriptContext ctx)
@@ -33,24 +33,16 @@ namespace TTengineTest
             var vc = e.GetComponent<VelocityComp>();
             float spd = (float)(195 * ctx.Dt);
 
-            GamePadState gp = GamePad.GetState(PlayerIndex.One);
+            var dir = e.GetComponent<PlayerInputComp>();
 
-            if (gp.IsButtonDown(Buttons.DPadUp))
-            {
+            if (dir.Direction.Y < 0f)
                 vc.Y -= spd;
-            }
-            else if (gp.IsButtonDown(Buttons.DPadDown))
-            {
+            else if (dir.Direction.Y > 0f)
                 vc.Y += spd;
-            }
-            else if (gp.IsButtonDown(Buttons.DPadLeft))
-            {
+            else if (dir.Direction.X < 0f )
                 vc.X -= spd;
-            }
-            else if (gp.IsButtonDown(Buttons.DPadRight))
-            {
+            else if (dir.Direction.X > 0f )
                 vc.X += spd;
-            }
 
         }
     }
