@@ -109,8 +109,7 @@ namespace TTengine.Core
         public static Entity CreateSpritelet(Channel subChannel)
         {
             Entity e = CreateDrawlet();
-            var rs = subChannel.Screen.RenderTarget;
-            var spriteComp = new SpriteComp(rs);
+            var spriteComp = new SpriteComp(subChannel.Screen);
             e.AddComponent(spriteComp);
             e.Refresh();
             return e;

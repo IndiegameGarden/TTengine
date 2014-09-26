@@ -27,7 +27,7 @@ namespace TTengineTest
             // content for 1st screen: call upon another unit test
             var t1 = new TestRelativeMotion();
             var ch1 = TTFactory.CreateChannel(800, 400, Color.White, true);
-            ch1.PostEffects.Add( TTGame.Instance.Content.Load<Effect>("RandomColor") );
+            ch1.PostEffects.Add( TTGame.Instance.Content.Load<Effect>("FixedColor") );
             TTFactory.BuildTo(ch1);
             t1.Create();
             ch.AddChild(ch1);

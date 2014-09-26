@@ -48,6 +48,17 @@ namespace TTengine.Comps
             InitTextures();
         }
 
+        /// <summary>
+        /// create new spritelet that renders the contents of a screenlet
+        /// </summary>
+        /// <param name="screen">the screenlet to render as a sprite</param>
+        public SpriteComp(ScreenComp screen)
+        {
+            this.screen = screen;
+            this.texture = screen.RenderTarget;
+            InitTextures();
+        }
+
         #endregion
 
         
@@ -57,6 +68,7 @@ namespace TTengine.Comps
         protected int width = 0;
         protected int height = 0;
         protected Texture2D texture = null;
+        protected ScreenComp screen = null;
         protected Color[] textureData = null;
         public static BlendState blendAlpha = null, blendColor = null;
 
@@ -112,6 +124,8 @@ namespace TTengine.Comps
             }
             get
             {
+                if (screen != null)
+                    return screen.RenderTarget;
                 return texture;
             }
         }

@@ -144,6 +144,7 @@ namespace TTengine.Core
                     foreach (Effect eff in PostEffects)
                     {
                         TTGame.Instance.GraphicsDevice.SetRenderTarget(currentTargetBuffer);
+                        // TODO could use Screen.spriteBatch.BeginParameterized()
                         spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque, null, null, null, eff);
                         spriteBatch.Draw(currentSourceBuffer, new Rectangle(0, 0, Screen.Width, Screen.Height), Color.White);
                         spriteBatch.End();
@@ -155,6 +156,13 @@ namespace TTengine.Core
                     }
                     Screen.renderTarget = currentSourceBuffer;
                     Screen.renderTargetBackBuffer = currentTargetBuffer;
+
+                    /* ?
+                    TTGame.Instance.GraphicsDevice.SetRenderTarget(null);
+                    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque, null, null, null, eff);
+                    spriteBatch.Draw(currentSourceBuffer, new Rectangle(0, 0, Screen.Width, Screen.Height), Color.White);
+                    spriteBatch.End();
+                     */
                 }
             }
 
