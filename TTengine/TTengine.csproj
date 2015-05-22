@@ -143,6 +143,8 @@
     <Compile Include="Core\ChannelManager.cs" />
     <Compile Include="Core\Comp.cs" />
     <Compile Include="Comps\TargetMotionComp.cs" />
+    <Compile Include="Core\IUpdate.cs" />
+    <Compile Include="Core\TargetVector.cs" />
     <Compile Include="Modifiers\IVectorFunction.cs" />
     <Compile Include="Modifiers\VectorModifierScript.cs" />
     <Compile Include="Modifiers\Function.cs" />

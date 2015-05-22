@@ -61,6 +61,9 @@ namespace Artemis.System
         /// <summary>The actives.</summary>
         private IDictionary<int, Entity> actives;
 
+        /// <summary>The current EntityWorld.Delta time (per simulation timestep) expressed in seconds</summary>
+        protected double Dt;
+
         /// <summary>Initializes static members of the <see cref="EntitySystem"/> class.</summary>
         static EntitySystem()
         {
@@ -234,6 +237,7 @@ namespace Artemis.System
         {
             if (this.CheckProcessing())
             {
+                Dt = TimeSpan.FromTicks(EntityWorld.Delta).TotalSeconds;
                 this.Begin();
                 this.ProcessEntities(this.actives);
                 this.End();
