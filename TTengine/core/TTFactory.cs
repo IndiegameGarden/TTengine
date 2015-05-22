@@ -1,4 +1,6 @@
-﻿using System;
+﻿// (c) 2010-2015 IndiegameGarden.com. Distributed under the FreeBSD license in LICENSE.txt
+
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -158,26 +160,38 @@ namespace TTengine.Core
         }
 
         /// <summary>
-        /// Creates a Textlet, which is a moveable piece of text. (TODO: font)
+        /// Creates a Textlet, which is a moveable piece of text.
+        /// Uses a default font.
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
         public static Entity CreateTextlet(string text)
         {
+            return CreateTextlet(text, "Font1");
+        }
+
+        /// <summary>
+        /// Creates a Textlet, which is a moveable piece of text.
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="fontName"></param>
+        /// <returns></returns>
+        public static Entity CreateTextlet(string text, string fontName)
+        {
             Entity e = CreateDrawlet();
             e.AddComponent(new ScaleComp());
-            TextComp tc = new TextComp(text);
-            tc.Font = _game.Content.Load<SpriteFont>("TTDebugFont"); // FIXME allow other fonts
+            TextComp tc = new TextComp(text, fontName);
             e.AddComponent(tc);
             e.Refresh();
             return e;
         }
 
         /// <summary>
-        /// Creates a Screenlet that renders to default backbuffer
+        /// Creates a Screenlet that renders to its own buffer or default backbuffer
+        /// <param name="hasRenderBuffer">if true renders to own buffer, if false to default backbuffer</param>
         /// </summary>
         /// <returns></returns>
-        public static Entity CreateScreenlet(bool hasRenderBuffer)
+        public static Entity CreateScreenlet(bool hasRenderBuffer=false)
         {
             var sc = new ScreenComp(hasRenderBuffer);
             var e = CreateEntity();
@@ -239,7 +253,7 @@ namespace TTengine.Core
         /// <returns>Created channel.</returns>
         public static Channel CreateChannel(Color backgroundColor, bool hasRenderBuffer)
         {
-            var ch = new Channel(hasRenderBuffer);
+            var ch = new Channel(hasRenderBuffer, true);
             ch.Screen.BackgroundColor = backgroundColor;
             return ch;
         }

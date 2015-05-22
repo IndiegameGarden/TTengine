@@ -108,7 +108,7 @@ namespace TTengine.Systems
             var p2 = entity2.GetComponent<PositionComp>();
             var s1 = entity1.GetComponent<SphereShapeComp>();
             var s2 = entity2.GetComponent<SphereShapeComp>();
-            float dist = Vector3.Distance(p1.Position, p2.Position);
+            float dist = Vector2.Distance(p1.Position, p2.Position);
             return (dist <= (s1.Radius + s2.Radius));
             
         }

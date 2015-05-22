@@ -81,7 +81,7 @@ namespace TTengine.Systems
             // update drawpos
             var p = posComp.PositionAbs;
             drawComp.DrawPosition = screen.ToPixels(p);
-            drawComp.LayerDepth = p.Z; // Z position is translated to a layer depth
+            drawComp.LayerDepth = posComp.Depth; 
 
             spriteComp.frameSkipCounter--;
             if (spriteComp.frameSkipCounter == 0)

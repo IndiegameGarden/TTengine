@@ -63,38 +63,22 @@ namespace TTengine.Comps
         /// <summary>Initializes a new instance of the <see cref="PositionComp" /> class.</summary>
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
-        public PositionComp(float x, float y, float z)
-            : this(new Vector3(x, y, z))
+        public PositionComp(float x, float y, float depth)
+            : this(new Vector3(x, y, depth))
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="PositionComp" /> class.</summary>
-        /// <param name="position">The position.</param>
+        /// <param name="position">The position (x,y,depth).</param>
         public PositionComp(Vector3 position)
         {
-            this.Position = position;
+            this.Position = new Vector2(position.X,position.Y);
+            this.Depth = position.Z;
         }
 
         /// <summary>Gets or sets the position.</summary>
         /// <value>The position.</value>
-        public Vector3 Position
-        {
-            get
-            {
-                return new Vector3(this.X, this.Y, this.Z);
-            }
-
-            set
-            {
-                this.X = value.X;
-                this.Y = value.Y;
-                this.Z = value.Z;
-            }
-        }
-
-        /// <summary>Gets or sets the X and Y of the position.</summary>
-        /// <value>The position.</value>
-        public Vector2 Position2D
+        public Vector2 Position
         {
             get
             {
@@ -108,31 +92,24 @@ namespace TTengine.Comps
             }
         }
 
-        /// <summary>This value is added to Position during a single update cycle only. After that, it's
-        /// reset to Zero.</summary>
-        public Vector3 PositionModifier = Vector3.Zero;
-
         /// <summary>
-        /// The absolute position, obtained by (Position + PositionModifier + Parent.PositionAbs)
+        /// The absolute position, obtained by (Position + Parent.PositionAbs)
         /// </summary>
-        public Vector3 PositionAbs
+        public Vector2 PositionAbs
         {
             get
             {
-                if (IsPositionAbsCalculated)
+                if (_isPositionAbsSet)
                     return _positionAbs;
-                if (Parent == null)
-                    _positionAbs = Position + PositionModifier;
+                else if (Parent != null)
+                    return Position + (Parent as PositionComp).PositionAbs;
                 else
-                    _positionAbs = Position + PositionModifier + (Parent as PositionComp).PositionAbs;
-                IsPositionAbsCalculated = true;
-                return _positionAbs;
+                    return Position;
             }
         }
 
-        // keep track of whether PositionAbs has been calculated for this comp during this update round.
-        internal bool IsPositionAbsCalculated = false;
-        internal Vector3 _positionAbs = Vector3.Zero;
+        internal Vector2 _positionAbs = Vector2.Zero;
+        internal bool    _isPositionAbsSet = false;
 
         /// <summary>Gets or sets the x coordinate.</summary>
         /// <value>The X.</value>
@@ -142,14 +119,12 @@ namespace TTengine.Comps
         /// <value>The Y.</value>
         public float Y { get; set; }
 
-        /// <summary>Gets or sets the z coordinate.</summary>
-        /// <value>The Z.</value>
-        public float Z { get; set; }
+        public float Depth { get; set; }
 
-        /// <summary>The clean up.</summary>
         public void CleanUp()
         {
-            this.Position = Vector3.Zero;
+            this.Position = Vector2.Zero;
+            this.Depth = 0f;
         }
     }
 }

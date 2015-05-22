@@ -38,16 +38,16 @@ namespace TTengine.Systems
                     }
                 }
             }
-
-            // set scale for drawing
-            if (entity.HasComponent<DrawComp>())
-            {
-                entity.GetComponent<DrawComp>().DrawScale = (float) (sc.Scale * sc.ScaleModifier);
-            }
-
-            sc.ScaleModifier = 1; // the ModifierSystem may adapt this one later. Each round reset to 1.
-
         }
 
+    }
+
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = SystemsSchedule.ScaleToDrawscaleSystem)]
+    public class ScaleToDrawscaleSystem : EntityComponentProcessingSystem<ScaleComp, DrawComp>
+    {
+        public override void Process(Entity entity, ScaleComp sc, DrawComp dc)
+        {
+            dc.DrawScale = (float)sc.ScaleAbs;
+        }
     }
 }

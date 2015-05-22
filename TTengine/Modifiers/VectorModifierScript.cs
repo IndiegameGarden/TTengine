@@ -13,7 +13,7 @@ namespace TTengine.Modifiers
     /// </summary>
     /// <param name="ctx">script context supplied during script execution</param>
     /// <param name="functionValue">value of function that is passed to script code</param>
-    public delegate void VectorModifierDelegate(ScriptContext ctx, Vector3 functionValue);
+    public delegate void VectorModifierDelegate(ScriptContext ctx, Vector2 functionValue);
 
     /// <summary>
     /// A script object that first computes a function and then calls a delegate (piece of code) to use
@@ -49,8 +49,7 @@ namespace TTengine.Modifiers
         /// <param name="ctx"></param>
         public void OnUpdate(ScriptContext ctx)
         {
-            Vector3 v;
-            v = Function.Value(ctx);
+            var v = Function.Value(ctx);
             ScriptCode(ctx,v);
         }
 

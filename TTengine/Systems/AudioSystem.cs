@@ -20,15 +20,6 @@ namespace TTengine.Systems
         RenderParams rp = new RenderParams();
         MusicEngine audioEngine = null;
 
-        protected override bool CheckProcessing()
-        {
-            // disable this system if the MusicEngine is not enabled.
-            if (!TTGame.Instance.IsAudio)
-                IsEnabled = false;
-            
-            return base.CheckProcessing();
-        }
-
         protected override void Begin()
         {
             audioEngine = TTGame.Instance.AudioEngine;
@@ -37,8 +28,11 @@ namespace TTengine.Systems
         }
 
         public override void Process(Entity entity, AudioComp ac)
-        {
-            ac.UpdateComp(dt);
+        {            
+            if (!ac.IsPaused)
+            {
+                ac.SimTime += dt;
+            }
             rp.Time = ac.SimTime;
             rp.Ampl = ac.Ampl;
             audioEngine.Render(ac.AudioScript, rp);

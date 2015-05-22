@@ -12,10 +12,10 @@ using Artemis.System;
 
 namespace TTengine.Systems
 {
-    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = SystemsSchedule.ScriptSystemUpdate)]
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = SystemsSchedule.ScriptUpdateSystem)]
     public class ScriptSystemUpdate : EntityComponentProcessingSystem<ScriptComp>
     {
-        ScriptContext ctx = new ScriptContext();
+        ScriptContext ctx = new ScriptContext(); // single object re-used in all OnUpdate(ctx) calls
         double dt = 0;
 
         protected override void Begin()
@@ -26,8 +26,8 @@ namespace TTengine.Systems
 
         public override void Process(Entity entity, ScriptComp sc)
         {
-            sc.UpdateComp(dt);
             ctx.Entity = entity;
+            sc.SimTime += dt;
             ctx.SimTime = sc.SimTime;
             foreach(IScript script in sc.Scripts)
                 script.OnUpdate(ctx);
@@ -35,7 +35,7 @@ namespace TTengine.Systems
 
     }
 
-    [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = SystemsSchedule.ScriptSystemDraw)]
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = SystemsSchedule.ScriptDrawSystem)]
     public class ScriptSystemDraw : EntityComponentProcessingSystem<ScriptComp>
     {
         ScriptContext ctx = new ScriptContext();

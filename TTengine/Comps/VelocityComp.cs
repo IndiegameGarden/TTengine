@@ -48,33 +48,31 @@ namespace TTengine.Comps
 
         /// <summary>Initializes a new instance of the <see cref="VelocityComp" /> class.</summary>
         public VelocityComp()
-            : this(0.0f, 0.0f, 0.0f)
+            : this(0.0f, 0.0f)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="VelocityComp" /> class.</summary>
         /// <param name="velocity">The velocity.</param>
-        public VelocityComp(float x, float y, float z)
+        public VelocityComp(float x, float y)
         {
             X = x;
             Y = y;
-            Z = z;
         }
 
         /// <summary>Gets or sets the velocity.</summary>
         /// <value>The velocity.</value>
-        public Vector3 Velocity
+        public Vector2 Velocity
         {
             get
             {
-                return new Vector3(this.X, this.Y, this.Z);
+                return new Vector2(this.X, this.Y);
             }
 
             set
             {
                 this.X = value.X;
                 this.Y = value.Y;
-                this.Z = value.Z;
             }
         }
 
@@ -107,7 +105,6 @@ namespace TTengine.Comps
 
         public float X { get; set; }
         public float Y { get; set; }
-        public float Z { get; set; }
 
         /*
         /// <summary>Gets or sets the angle.</summary>
@@ -131,7 +128,7 @@ namespace TTengine.Comps
         {
             get
             {
-                return (float)Math.Sqrt(X * X + Y * Y + Z * Z);
+                return (float)Math.Sqrt(X * X + Y * Y);
             }
             set
             {

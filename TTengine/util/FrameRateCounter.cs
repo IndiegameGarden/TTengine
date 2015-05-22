@@ -1,4 +1,4 @@
-// (c) 2010-2014 IndiegameGarden.com. Distributed under the FreeBSD license in LICENSE.txt
+// (c) 2010-2015 IndiegameGarden.com. Distributed under the FreeBSD license in LICENSE.txt
 
 ﻿using System;
 ﻿using Microsoft.Xna.Framework;
@@ -39,7 +39,7 @@ namespace TTengine.Util
         public static Entity Create(Color textColor)
         {
             var e = TTFactory.CreateTextlet("##");
-            e.GetComponent<PositionComp>().Position = new Vector3(2f, 2f, 0f);
+            e.GetComponent<PositionComp>().Position = new Vector2(2f, 2f);
             e.GetComponent<DrawComp>().DrawColor = textColor;
             var m = new ScriptComp(new FrameRateCounter(e.GetComponent<TextComp>()));
             e.AddComponent(m);

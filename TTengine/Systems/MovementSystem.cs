@@ -49,11 +49,10 @@ namespace TTengine.Systems
 
     #endregion
 
-    /// <summary>The movement system.</summary>
-    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = SystemsSchedule.MovementSystem)]
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = SystemsSchedule.MoveSystem)]
     public class MovementSystem : EntityComponentProcessingSystem<PositionComp, VelocityComp>
     {
-        double dt = 0;
+        double dt;
 
         protected override void Begin()
         {
@@ -62,40 +61,27 @@ namespace TTengine.Systems
 
         /// <summary>Processes the specified entity.</summary>
         /// <param name="entity">The entity.</param>
-        public override void Process(Entity entity, PositionComp posComp, VelocityComp veloComp)
+        public override void Process(Entity entity, PositionComp pc, VelocityComp vc)
         {
-            posComp.UpdateComp(dt);
-            posComp.IsPositionAbsCalculated = false;
-            posComp.X += (float)(veloComp.X * dt);
-            posComp.Y += (float)(veloComp.Y * dt);
-            posComp.Z += (float)(veloComp.Z * dt);
-
-            posComp.PositionModifier = Vector3.Zero;
+            pc.X += (float)(vc.X * dt);
+            pc.Y += (float)(vc.Y * dt);
+            pc._isPositionAbsSet = false;
         }
     }
 
-    /// <summary>The movement system to update PositionAbs.</summary>
-    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 2)]
+    /// <summary>The separate system to update PositionAbs.</summary>
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = SystemsSchedule.MoveAbsSystem)]
     public class MovementSystemPosAbs : EntityComponentProcessingSystem<PositionComp>
     {
-        double dt = 0;
-
-        protected override void Begin()
-        {
-            dt = TimeSpan.FromTicks(EntityWorld.Delta).TotalSeconds;
-        }
-
         /// <summary>Processes the specified entity.</summary>
         /// <param name="entity">The entity.</param>
-        public override void Process(Entity entity, PositionComp posComp)
+        public override void Process(Entity entity, PositionComp pc)
         {
-            if (posComp.Parent == null)
-                posComp._positionAbs = posComp.Position + posComp.PositionModifier;
+            if (pc.Parent == null)
+                pc._positionAbs = pc.Position ;
             else
-                posComp._positionAbs = posComp.Position + posComp.PositionModifier 
-                                        + (posComp.Parent as PositionComp).PositionAbs;
-            posComp.IsPositionAbsCalculated = true;
-            posComp.PositionModifier = Vector3.Zero;
+                pc._positionAbs = pc.Position + (pc.Parent as PositionComp).PositionAbs;
+            pc._isPositionAbsSet = true;
         }
     }
 

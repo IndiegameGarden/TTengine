@@ -14,9 +14,10 @@ namespace TTengine.Comps
 
         public string Text = "";
 
-        public TextComp(string text)
+        public TextComp(string text, string fontName = "Font1" )
         {
             this.Text = text;
+            this.Font = TTGame.Instance.Content.Load<SpriteFont>(fontName);
         }
     }
 }
