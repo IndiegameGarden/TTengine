@@ -99,6 +99,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Font1.spritefont">
+      <Name>Font1</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
     <None Include="red-circle_frank-tschakert_runtime-load.png">
       <Name>red-circle_frank-tschakert_runtime-load</Name>
       <Importer>TextureImporter</Importer>

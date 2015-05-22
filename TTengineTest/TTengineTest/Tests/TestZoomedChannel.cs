@@ -36,14 +36,14 @@ namespace TTengineTest
             targFunc.CurrentValue.X = 1.0f;
             targFunc.Target.X = 15.0f;
             targFunc.Speed = 3;
-            TTFactory.AddModifier(s, delegate(ScriptContext ctx, Vector3 val) { ctx.Entity.GetComponent<ScaleComp>().Scale = val.X; },
+            TTFactory.AddModifier(s, delegate(ScriptContext ctx, Vector2 val) { ctx.Entity.GetComponent<ScaleComp>().Scale = val.X; },
                 targFunc);
             s.GetComponent<PositionComp>().Position = ch.Screen.Center;
 
             // -- main channel: shows the child channel using a sprite
             TTFactory.BuildTo(ch);
             var scr1 = TTFactory.CreateSpritelet(ch1);
-            scr1.GetComponent<PositionComp>().Z = 0.9f;
+            scr1.GetComponent<PositionComp>().Depth = 0.9f;
             // some non-blocky graphics in front of level; using default Spritebatch
             var t1 = new TestAnimatedSprite();
             t1.Create();                    

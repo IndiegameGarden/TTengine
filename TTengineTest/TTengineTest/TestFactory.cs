@@ -64,8 +64,8 @@ namespace TTengineTest
             var ball = CreateBall(0.96f + 0.08f * (float)rnd.NextDouble());
 
             // position and velocity set
-            ball.GetComponent<PositionComp>().Position2D = pos;
-            ball.GetComponent<PositionComp>().Z = 0.5f + 0.1f * ((float)rnd.NextDouble()); // random Z position
+            ball.GetComponent<PositionComp>().Position = pos;
+            ball.GetComponent<PositionComp>().Depth = 0.5f + 0.1f * ((float)rnd.NextDouble()); // random Z position
             ball.GetComponent<VelocityComp>().Velocity2D = velo;
             ball.Refresh(); // TODO check all .Refresh() calls to see which ones are needed and which not.
             return ball;
@@ -89,8 +89,8 @@ namespace TTengineTest
         public Entity CreateTextlet(Vector2 pos, string text, Color col)
         {
             var txt = TTFactory.CreateTextlet(text);
-            txt.GetComponent<PositionComp>().Position2D = pos;
-            txt.GetComponent<PositionComp>().Z = 0f + 0.1f * ((float)rnd.NextDouble()); // random Z position
+            txt.GetComponent<PositionComp>().Position = pos;
+            txt.GetComponent<PositionComp>().Depth = 0f + 0.1f * ((float)rnd.NextDouble()); // random Z position
             txt.GetComponent<DrawComp>().DrawColor = col;
             txt.GetComponent<ScaleComp>().Scale = 0.8;
             return txt;

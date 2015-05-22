@@ -35,7 +35,7 @@ namespace TTengineTest
             // main channel: shows the child channels as sprites
             TTFactory.BuildTo(ch);
             var scr1 = TTFactory.CreateSpritelet(ch1);
-            scr1.GetComponent<PositionComp>().Position = new Vector3(50f, 50f, 0.1f);
+            scr1.GetComponent<PositionComp>().Position = new Vector2(50f, 50f);
             //scr1.GetComponent<VelocityComp>().Velocity2D = new Vector2(5f, 0.5f);
 
 

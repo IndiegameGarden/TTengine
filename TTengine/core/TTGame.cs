@@ -75,6 +75,7 @@ namespace TTengine.Core
 
         protected override void LoadContent()
         {
+            // disable AudioSystem in any worlds create so far, if no audio wished
             if (!IsAudio)
                 ChannelMgr.Root.DisableSystem<AudioSystem>();
 

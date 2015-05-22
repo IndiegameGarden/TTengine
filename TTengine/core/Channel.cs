@@ -122,7 +122,7 @@ namespace TTengine.Core
         }
 
         /// <summary>
-        /// Disable an EntitySystem in this Channel and all child channels
+        /// Disable an EntitySystem in this Channel and all child channels recursively
         /// </summary>
         /// <typeparam name="T">System to disable</typeparam>
         public void DisableSystem<T>() where T : EntitySystem

@@ -50,18 +50,18 @@ namespace TTengineTest
             //var tm = new TargetModifier<PositionComp>(delegate(PositionComp pc, Vector3 pos) { pc.Position = pos; }, 
             //                    ball2.GetComponent<PositionComp>());
             var targFunc = new MoveToTargetFunction();
-            targFunc.Target = new Vector3(0f, 0f, 0.2f);
+            targFunc.Target = new Vector2(0f, 0f);
             targFunc.CurrentValue = ball2.GetComponent<PositionComp>().Position;
             targFunc.Speed = 40;
             TTFactory.AddModifier(ball2,
-                delegate(ScriptContext ctx, Vector3 pos) { ctx.Entity.GetComponent<PositionComp>().Position = pos; },
+                delegate(ScriptContext ctx, Vector2 pos) { ctx.Entity.GetComponent<PositionComp>().Position = pos; },
                 targFunc);
 
         }
 
         void MyScaleModifierScript(ScriptContext ctx, double value)
         {
-            ctx.Entity.GetComponent<ScaleComp>().ScaleModifier *= (0.4 + value * 0.3);            
+            ctx.Entity.GetComponent<ScaleComp>().Scale = (0.4 + value * 0.3);            
         }
 
         void MyRotateModifierScript(ScriptContext ctx, double value)

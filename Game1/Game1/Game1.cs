@@ -37,12 +37,12 @@ namespace Game1
         protected override void Initialize()
         {
             Factory = Game1Factory.Instance;
+
             base.Initialize();
         }
 
         protected override void Update(GameTime gameTime)
         {
-            base.Update(gameTime);
             KeyboardState kb = Keyboard.GetState();
             if (kb.IsKeyDown(Keys.Escape))
                 Exit();
@@ -55,12 +55,12 @@ namespace Game1
             {
                 gameChannel.ZapTo();
             }
+
+            base.Update(gameTime);
         }
 
         protected override void LoadContent()
         {
-            base.LoadContent();
-
             // title channel
             titleChannel = TTFactory.CreateChannel(Color.Black,false);
             ChannelMgr.AddChannel(titleChannel);
@@ -94,8 +94,9 @@ namespace Game1
                 }
                 //break;
             }
-        }       
 
+            base.LoadContent();
+        }                  
     }
 
     /// <summary>
@@ -144,8 +145,8 @@ namespace Game1
             var ball = CreateBall(0.08f + 0.07f * (float)rnd.NextDouble());
 
             // position and velocity set
-            ball.GetComponent<PositionComp>().Position2D = pos;
-            ball.GetComponent<VelocityComp>().Velocity = 0.2f * new Vector3((float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f, 0f );
+            ball.GetComponent<PositionComp>().Position = pos;
+            ball.GetComponent<VelocityComp>().Velocity = 0.2f * new Vector2((float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f);
 
             /*
             // duration of entity
@@ -182,21 +183,11 @@ namespace Game1
         public Entity CreateMovingTextlet(Vector2 pos, string text)
         {
             var t = TTFactory.CreateTextlet(text);
-            t.GetComponent<PositionComp>().Position2D = pos;
+            t.GetComponent<PositionComp>().Position = pos;
             t.GetComponent<DrawComp>().DrawColor = Color.Black;
-            t.GetComponent<VelocityComp>().Velocity = 0.2f * new Vector3( (float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f , 0f );
+            t.GetComponent<VelocityComp>().Velocity = 0.2f * new Vector2( (float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f);
             t.GetComponent<ScaleComp>().Scale = 0.5;
             return t;
-        }
-
-        public void ScaleModifierScript(ScriptContext ctx, double value)
-        {
-            ctx.Entity.GetComponent<ScaleComp>().ScaleModifier *= 0.5 + ctx.Entity.GetComponent<PositionComp>().Position.X;
-        }
-
-        public void ScaleModifierScript2(ScriptContext ctx, double value)
-        {
-            ctx.Entity.GetComponent<ScaleComp>().ScaleModifier *= value;
         }
 
         public void RotateModifierScript(ScriptContext ctx, double value)
