@@ -1,4 +1,4 @@
-// (c) 2010-2014 IndiegameGarden.com. Distributed under the FreeBSD license in LICENSE.txt
+// (c) 2010-2015 IndiegameGarden.com. Distributed under the FreeBSD license in LICENSE.txt
 
 using System;
 using System.Collections.Generic;
@@ -80,12 +80,12 @@ namespace TTengine.Comps
         /// <summary>
         /// width of sprite in pixels
         /// </summary>
-        public float Width { get { return width; } private set { width = (int) value; } }
+        public int Width { get { return width; } private set { width = value; } }
 
         /// <summary>
         /// height of sprite in pixels
         /// </summary>
-        public float Height { get { return height; } private set { height = (int) value; } }
+        public int Height { get { return height; } private set { height = value; } }
 
         /// <summary>
         /// Center of sprite expressed in pixels.
@@ -109,7 +109,7 @@ namespace TTengine.Comps
         /// </summary>
         public void CenterToMiddle()
         {
-            center = new Vector2(Width / 2.0f, Height / 2.0f);
+            center = new Vector2((float)Width / 2.0f, (float)Height / 2.0f);
         }
 
         /**
@@ -129,6 +129,27 @@ namespace TTengine.Comps
                 return texture;
             }
         }
+
+        /// <summary>
+        /// Return texture data as a Color array
+        /// </summary>
+        public Color[] TextureData
+        {
+            get
+            {
+                return textureData;
+            }
+        }
+
+        /// <summary>
+        /// Whether current sprite is checking for collisions with all other sprites, or not.
+        /// </summary>
+        public bool IsCheckingCollisions = false;
+
+        /// <summary>
+        /// List of Entities that is currently colliding with this Entity(shape)
+        /// </summary>
+        public List<Entity> Colliders = new List<Entity>();
 
         #endregion
 

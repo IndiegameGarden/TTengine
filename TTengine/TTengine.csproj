@@ -125,6 +125,7 @@
     <Compile Include="Comps\AudioComp.cs" />
     <Compile Include="Comps\BlinkComp.cs" />
     <Compile Include="Comps\BTAIComp.cs" />
+    <Compile Include="Comps\AudioFadingComp.cs" />
     <Compile Include="Comps\PlayerInputComp.cs" />
     <Compile Include="Comps\ExpiresComp.cs" />
     <Compile Include="Comps\PositionComp.cs" />
@@ -157,6 +158,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Systems\BTAISystem.cs" />
     <Compile Include="Systems\BlinkSystem.cs" />
+    <Compile Include="Systems\AudioFadingSystem.cs" />
+    <Compile Include="Systems\SpriteCollisionSystem.cs" />
     <Compile Include="Systems\PlayerInputSystem.cs" />
     <Compile Include="Systems\TargetMotionSystem.cs" />
     <Compile Include="Systems\SphereCollisionSystem.cs" />

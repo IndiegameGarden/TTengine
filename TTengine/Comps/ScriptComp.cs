@@ -44,6 +44,9 @@ namespace TTengine.Comps
     /// </summary>
     public class ScriptComp: Comp
     {
+        /// <summary>Simulation time counter that is used by scripts via ScriptContext</summary>
+        public double SimTime;
+
         /// <summary>
         /// The scripts that are called every update/draw cycle
         /// </summary>
@@ -59,12 +62,16 @@ namespace TTengine.Comps
         /// <summary>
         /// Create new ScriptComp with a single script already added
         /// </summary>
-        /// <param name="script">script to Add</param>
+        /// <param name="script">script to Add initially</param>
         public ScriptComp(IScript script)
         {
             Add(script);
         }
 
+        /// <summary>
+        /// Add a new IScript script to execute to this component.
+        /// </summary>
+        /// <param name="script">The IScript to add and execute in next updates.</param>
         public void Add(IScript script)
         {
             this.Scripts.Add(script);

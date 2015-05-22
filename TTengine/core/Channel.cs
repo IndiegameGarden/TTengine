@@ -1,9 +1,12 @@
-﻿using System;
+﻿// (c) 2010-2015 IndiegameGarden.com. Distributed under the FreeBSD license in LICENSE.txt
+
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Text;
 using Artemis;
+using Artemis.System;
 using TTengine.Comps;
 
 namespace TTengine.Core
@@ -29,6 +32,9 @@ namespace TTengine.Core
         /// <summary>List of child Channels, which are channels rendered within this Channel e.g. sub-screens.</summary>
         public List<Channel> Children;
 
+        /// <summary>
+        /// List of post-processing shader effects, applied to entire channel screen
+        /// </summary>
         public List<Effect> PostEffects;
 
         /// <summary>Create a Channel with a new empty World and output to default screen</summary>
@@ -44,16 +50,20 @@ namespace TTengine.Core
             e.Refresh();
         }
 
-        internal Channel(bool hasRenderBuffer)
+        internal Channel(bool hasRenderBuffer, bool hasScreen)
         {
             this.Children = new List<Channel>();
             this.PostEffects = new List<Effect>();
             this.World = new EntityWorld();
             this.World.InitializeAll(true);
-            this.Screen = new ScreenComp(hasRenderBuffer);
-            var e = this.World.CreateEntity();
-            e.AddComponent(this.Screen);
-            e.Refresh();
+            this.Screen = null;
+            if (hasScreen)
+            {
+                this.Screen = new ScreenComp(hasRenderBuffer);
+                var e = this.World.CreateEntity();
+                e.AddComponent(this.Screen);
+                e.Refresh();
+            }
         }
 
         public void AddChild(Channel ch)
@@ -89,7 +99,7 @@ namespace TTengine.Core
                     c2.IsVisible = false;
                 }
             }
-            this.Screen.IsVisible = false;
+            //this.Screen.IsVisible = false;
         }
 
         /// <summary>
@@ -98,6 +108,28 @@ namespace TTengine.Core
         public void FadeTo()
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Enable an EntitySystem in this Channel and all child channels
+        /// </summary>
+        /// <typeparam name="T">System to enable</typeparam>
+        public void EnableSystem<T>() where T: EntitySystem
+        {
+            World.SystemManager.GetSystem<T>().IsEnabled = true;
+            foreach (Channel c in Children)
+                c.EnableSystem<T>();
+        }
+
+        /// <summary>
+        /// Disable an EntitySystem in this Channel and all child channels
+        /// </summary>
+        /// <typeparam name="T">System to disable</typeparam>
+        public void DisableSystem<T>() where T : EntitySystem
+        {
+            World.SystemManager.GetSystem<T>().IsEnabled = false;
+            foreach (Channel c in Children)
+                c.DisableSystem<T>();
         }
 
         internal void Update(long deltaTicks)
@@ -125,7 +157,12 @@ namespace TTengine.Core
                 c.Draw();
             }
 
-            if (Screen.IsVisible)
+            if (Screen == null)
+            {
+                // a screenless world can still be drawn - to render the audio e.g.
+                this.World.Draw();
+            }
+            else if (Screen.IsVisible)
             {
                 TTGame.Instance.GraphicsDevice.SetRenderTarget(Screen.RenderTarget);
                 TTGame.Instance.GraphicsDevice.Clear(Screen.BackgroundColor);

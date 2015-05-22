@@ -9,7 +9,9 @@ namespace TTengine.Comps
 {
     public class BlinkComp : Comp
     {
-        
+        /// <summary>Simulation time kept to control the blinking process</summary>
+        public double SimTime;
+
         public BlinkComp(double timePeriod, double dutyCycle)
         {
             this.TimePeriod = timePeriod;
@@ -71,7 +73,7 @@ namespace TTengine.Comps
         }
 
         protected double timeOn, dutyCycle, timePeriod;
-        protected bool isVisible = true;
+        internal bool isVisible = true;
 
     }
 

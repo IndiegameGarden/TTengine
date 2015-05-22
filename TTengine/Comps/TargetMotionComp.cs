@@ -1,4 +1,4 @@
-// (c) 2010-2014 IndiegameGarden.com. Distributed under the FreeBSD license in LICENSE.txt
+// (c) 2010-2015 IndiegameGarden.com. Distributed under the FreeBSD license in LICENSE.txt
 
 using Microsoft.Xna.Framework;
 using Artemis.Interface;
@@ -7,9 +7,7 @@ using TTengine.Core;
 namespace TTengine.Comps
 {
     /// <summary>
-    /// Component for simple physics-based motion 
-    /// (velocity, scale, rotation, zoom, etc.)
-    /// FIXME not used yet
+    /// Motion towards a target
     /// </summary>
     public class TargetMotionComp : IComponent
     {
@@ -17,7 +15,7 @@ namespace TTengine.Comps
         {
         }
 
-        public Vector3 Target
+        public Vector2 Target
         {
             get
             {
@@ -39,7 +37,7 @@ namespace TTengine.Comps
             set;
         }
 
-        internal Vector3 targetPos = Vector3.Zero;
+        internal Vector2 targetPos = Vector2.Zero;
         internal bool isTargetSet = false;
 
     }

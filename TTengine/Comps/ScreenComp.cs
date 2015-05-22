@@ -1,4 +1,4 @@
-// (c) 2010-2014 IndiegameGarden.com. Distributed under the FreeBSD license in LICENSE.txt
+// (c) 2010-2015 IndiegameGarden.com. Distributed under the FreeBSD license in LICENSE.txt
 
 using System;
 using System.Collections.Generic;
@@ -55,13 +55,13 @@ namespace TTengine.Core
         public bool IsVisible = true;
 
         /// <summary>The center pixel coordinate of the screen</summary>
-        public Vector3 Center { get; private set; }
+        public Vector2 Center { get; private set; }
 
         /// <summary>The zoom-in factor, used for showing part of a screen and for translation of other coordinate systems to pixel coordinates.</summary>
         public float Zoom;
 
         /// <summary>The center coordinate, in either pixel or custom coordinates, for applying Zoom</summary>
-        public Vector3 ZoomCenter;
+        public Vector2 ZoomCenter;
 
         /// <summary>Get the RenderTarget. If null, the screen renders to the default backbuffer.
         /// </summary>
@@ -110,10 +110,10 @@ namespace TTengine.Core
         /// </summary>
         /// <param name="pos">relative coordinate to translate</param>
         /// <returns>translated to pixels coordinate</returns>
-        public Vector2 ToPixels(Vector3 pos)
+        public Vector2 ToPixels(Vector2 pos)
         {
             var v = (pos - ZoomCenter) * Zoom + Center;
-            return new Vector2(v.X, v.Y);
+            return v;
             //return pos * screen.screenHeight;
         }
 
@@ -131,7 +131,7 @@ namespace TTengine.Core
             }
 
             aspectRatio = (float)screenWidth / (float)screenHeight;
-            Center = new Vector3( (float)screenWidth/2.0f, (float)screenHeight/2.0f, 0f);
+            Center = new Vector2( (float)screenWidth/2.0f, (float)screenHeight/2.0f);
             Zoom = 1f;
             ZoomCenter = Center;
         }

@@ -22,7 +22,7 @@ namespace TTengine.Core
     /// </summary>
     public abstract class TTGame: Game
     {
-        /// <summary>If set true, starts the TTMusicEngine</summary>
+        /// <summary>If set true, starts the TTMusicEngine and AudioSystem</summary>
         public bool IsAudio = false;
 
         /// <summary>The currently running (single) instance of TTGame</summary>
@@ -75,6 +75,9 @@ namespace TTengine.Core
 
         protected override void LoadContent()
         {
+            if (!IsAudio)
+                ChannelMgr.Root.DisableSystem<AudioSystem>();
+
             base.LoadContent();
         }
 
