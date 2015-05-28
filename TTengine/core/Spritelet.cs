@@ -175,6 +175,28 @@ namespace TTengine.Core
                 return false;
         }
 
+        /// <summary>
+        /// Overlay at runtime a new texture of same size upon existing Spritelet texture
+        /// </summary>
+        /// <param name="textureFilename">filename of texture to load and overlay</param>
+        public void OverlayTexture(string textureFilename)
+        {
+            Texture2D otex = LoadTextureStreamAtRuntime(Screen.graphicsDevice,
+                textureFilename, TTengineMaster.ActiveGame.Content.RootDirectory);
+            Color[] data = new Color[texture.Width * texture.Height];
+            Color[] odata = new Color[otex.Width * otex.Height];
+            texture.GetData<Color>(data);
+            otex.GetData<Color>(odata);
+            for (long i = data.LongLength - 1; i != 0; --i)
+            {
+                Color nc = odata[i];
+                if (nc.A > 0) // if non-transparent - overlay graphics
+                    data[i] = Color.Lerp(data[i], odata[i], ((float)nc.A) / 255.0f);
+            }
+            texture.SetData<Color>(data);
+
+        }
+
         /// run collision detection of this against all other relevant Spritelets
         internal void HandleCollisions(UpdateParams p)
         {
