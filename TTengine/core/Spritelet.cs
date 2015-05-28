@@ -179,7 +179,7 @@ namespace TTengine.Core
         /// Overlay at runtime a new texture of same size upon existing Spritelet texture
         /// </summary>
         /// <param name="textureFilename">filename of texture to load and overlay</param>
-        public void OverlayTexture(string textureFilename)
+        public virtual void OverlayTexture(string textureFilename)
         {
             Texture2D otex = LoadTextureStreamAtRuntime(Screen.graphicsDevice,
                 textureFilename, TTengineMaster.ActiveGame.Content.RootDirectory);
