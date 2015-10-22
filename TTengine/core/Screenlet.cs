@@ -26,6 +26,9 @@ namespace TTengine.Core
         /// </summary>
         public Vector2 Center = Vector2.Zero;
 
+        public int PixelOffsetX = 0;
+        public int PixelOffsetY = 0;
+
         /**
          * The Motion class specifically adapted for use by Screenlet
          */
@@ -331,7 +334,9 @@ namespace TTengine.Core
                 if (Visible && renderTarget != null)
                 {
                     mySpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
-                    mySpriteBatch.Draw(renderTarget, ScreenRectangle, Color.White); // TODO may apply a selectable drawing color here?
+                    var rect = ScreenRectangle;
+                    rect.Offset(PixelOffsetX, PixelOffsetY);
+                    mySpriteBatch.Draw(renderTarget, rect, Color.White); // TODO may apply a selectable drawing color here?
                     mySpriteBatch.End();
                 }
             }// end lock(graphicsDevice)
