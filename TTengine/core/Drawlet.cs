@@ -25,7 +25,7 @@ namespace TTengine.Core
             Add(DrawInfo);
         }
 
-        internal override void Update(ref UpdateParams p)
+        public override void Update(ref UpdateParams p)
         {
             base.Update(ref p);
             if (Active && DrawInfo != null)

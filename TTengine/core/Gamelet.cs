@@ -361,7 +361,7 @@ namespace TTengine.Core
             _IDcounter++;
         }
 
-        internal virtual void Update(ref UpdateParams p)
+        public virtual void Update(ref UpdateParams p)
         {
             // check if startTime for this object already reached (if any), if yes activate it
             if (!Active && (startTime > 0f)) {

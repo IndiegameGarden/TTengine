@@ -213,7 +213,7 @@ namespace TTengine.Core
         {
         }
 
-        internal override void Update(ref UpdateParams p)
+        public override void Update(ref UpdateParams p)
         {
             // reset back the Modifiers, each Update round
             // *before* any children are simulated.

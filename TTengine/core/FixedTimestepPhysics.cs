@@ -24,7 +24,7 @@ namespace TTengine.Core
         {
         }
 
-        internal override void Update(ref UpdateParams p)
+        public override void Update(ref UpdateParams p)
         {
             long t1 = DateTime.Now.Ticks;
             while (itemsSimTime < p.SimTime + simulateAheadTime ) 
