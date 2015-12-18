@@ -59,11 +59,6 @@ namespace PXengine.Core
             // add framerate counter
             FrameRateCounter.Create(Color.Black);
 
-            // level
-            //Level = new Level1();
-            //Level.Init();
-            //TTFactory.CreateScriptlet(Level);
-
             base.LoadContent();
         }       
 
