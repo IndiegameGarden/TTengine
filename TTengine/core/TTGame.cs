@@ -34,7 +34,7 @@ namespace TTengine.Core
 
         public ScreenComp DrawScreen;
 
-        public ChannelManager ChannelMgr ;
+        public EntityWorld World;
 
         public TTGame()
         {
@@ -42,7 +42,7 @@ namespace TTengine.Core
 
             // XNA related init that needs to be in constructor (or at least before Initialize())
             GraphicsMgr = new GraphicsDeviceManager(this);
-            IsFixedTimeStep = true;
+            IsFixedTimeStep = false;
             Content.RootDirectory = "Content";
 #if DEBUG
             GraphicsMgr.SynchronizeWithVerticalRetrace = false;
@@ -59,7 +59,7 @@ namespace TTengine.Core
 
         protected override void Initialize()
         {
-            ChannelMgr = new ChannelManager(this);
+            World = new EntityWorld();
 
             // the TTMusicEngine
             if (IsAudio)
@@ -75,24 +75,18 @@ namespace TTengine.Core
 
         protected override void LoadContent()
         {
-            // disable AudioSystem in any worlds create so far, if no audio wished
-            if (!IsAudio)
-                ChannelMgr.Root.DisableSystem<AudioSystem>();
-
             base.LoadContent();
         }
 
         protected override void Update(GameTime gameTime)
         {
-            ChannelMgr.Root.Update(gameTime.ElapsedGameTime.Ticks);
-
+            World.Update(gameTime.ElapsedGameTime.Ticks);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            ChannelMgr.Root.Draw();
-
+            World.Draw();
             base.Draw(gameTime);
         }
 

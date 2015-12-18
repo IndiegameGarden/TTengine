@@ -78,7 +78,7 @@ namespace TTengine.Core
         /// </summary>
         public void ZapTo()
         {
-            TTGame.Instance.ChannelMgr.Root.ZapTo(this);
+            //
         }
 
         /// <summary>
@@ -86,19 +86,6 @@ namespace TTengine.Core
         /// Also rendering for this Channel is disabled to allow child to show.
         /// </summary>
         public void ZapTo(Channel toZapTo) {
-            foreach (Channel c2 in Children)
-            {
-                if (toZapTo == c2)
-                {
-                    c2.IsActive = true;
-                    c2.IsVisible = true;
-                }
-                else
-                {
-                    c2.IsActive = false;
-                    c2.IsVisible = false;
-                }
-            }
             //this.Screen.IsVisible = false;
         }
 

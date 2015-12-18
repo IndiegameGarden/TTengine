@@ -20,7 +20,7 @@ namespace TTengine.Core
     {
         /// <summary>create a ScreenComp of given dimensions with optionally a RenderTarget.
         /// If (0,0) given, uses default backbuffer size </summary>
-        public ScreenComp(bool hasRenderBuffer, int x, int y)
+        public ScreenComp(bool hasRenderBuffer, int x = 0, int y = 0)
         {
             SpriteBatch = new TTSpriteBatch(TTGame.Instance.GraphicsDevice);
             if (hasRenderBuffer)
@@ -35,14 +35,6 @@ namespace TTengine.Core
             InitScreenDimensions();
         }
 
-        /// <summary>Create a ScreenComp of default dimensions (using backbuffer size),
-        /// with optionally a RenderTarget.</summary>
-        public ScreenComp(bool hasRenderBuffer):
-            this(hasRenderBuffer, 0, 0)
-        {
-            // see this() constructor
-        }
-        
         public ScreenComp(RenderTarget2D renderTarget)
         {
             SpriteBatch = new TTSpriteBatch(TTGame.Instance.GraphicsDevice);

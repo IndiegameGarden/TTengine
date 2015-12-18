@@ -139,6 +139,7 @@
     <Compile Include="Comps\SpriteFieldComp.cs" />
     <Compile Include="Comps\TextComp.cs" />
     <Compile Include="Comps\VelocityComp.cs" />
+    <Compile Include="Comps\WorldComp.cs" />
     <Compile Include="Core\Channel.cs" />
     <Compile Include="Core\ChannelManager.cs" />
     <Compile Include="Core\Comp.cs" />
@@ -177,6 +178,7 @@
     <Compile Include="Systems\MovementSystem.cs" />
     <Compile Include="Systems\SpriteRenderSystem.cs" />
     <Compile Include="Systems\ScaleSystem.cs" />
+    <Compile Include="Systems\WorldSystem.cs" />
     <Compile Include="TreeSharp\Action.cs" />
     <Compile Include="TreeSharp\TreeNode.cs" />
     <Compile Include="TreeSharp\Decorator.cs" />
