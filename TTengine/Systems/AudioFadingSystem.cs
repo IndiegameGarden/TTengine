@@ -16,12 +16,6 @@ namespace TTengine.Systems
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = SystemsSchedule.AudioSystem)]
     public class AudioFadingSystem : EntityComponentProcessingSystem<AudioFadingComp,AudioComp>
     {
-        double dt = 0;
-
-        protected override void Begin()
-        {
-            dt = TimeSpan.FromTicks(EntityWorld.Delta).TotalSeconds;
-        }
 
         public override void Process(Entity entity, AudioFadingComp afc, AudioComp ac)
         {
@@ -30,7 +24,7 @@ namespace TTengine.Systems
                 if (ac.Ampl < afc.FadeTarget)
                 {
                     ac.IsPaused = false;    // resume paused play (if any)
-                    ac.Ampl += afc.FadeSpeed * dt;
+                    ac.Ampl += afc.FadeSpeed * Dt;
                     if (ac.Ampl > afc.FadeTarget)
                     {
                         ac.Ampl = afc.FadeTarget;
@@ -39,7 +33,7 @@ namespace TTengine.Systems
                 }
                 else if (ac.Ampl > afc.FadeTarget)
                 {
-                    ac.Ampl -= afc.FadeSpeed * dt;
+                    ac.Ampl -= afc.FadeSpeed * Dt;
                     if (ac.Ampl < afc.FadeTarget)
                     {
                         ac.Ampl = afc.FadeTarget;

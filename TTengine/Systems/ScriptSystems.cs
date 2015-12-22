@@ -16,18 +16,16 @@ namespace TTengine.Systems
     public class ScriptSystemUpdate : EntityComponentProcessingSystem<ScriptComp>
     {
         ScriptContext ctx = new ScriptContext(); // single object re-used in all OnUpdate(ctx) calls
-        double dt = 0;
 
         protected override void Begin()
         {
-            dt = TimeSpan.FromTicks(EntityWorld.Delta).TotalSeconds;
-            ctx.Dt = dt;
+            ctx.Dt = this.Dt;
         }
 
         public override void Process(Entity entity, ScriptComp sc)
         {
             ctx.Entity = entity;
-            sc.SimTime += dt;
+            sc.SimTime += Dt;
             ctx.SimTime = sc.SimTime;
             foreach(IScript script in sc.Scripts)
                 script.OnUpdate(ctx);
@@ -42,7 +40,7 @@ namespace TTengine.Systems
 
         protected override void Begin()
         {
-            ctx.Dt = TimeSpan.FromTicks(EntityWorld.Delta).TotalSeconds;
+            ctx.Dt = this.Dt;
         }
 
         public override void Process(Entity entity, ScriptComp sc)

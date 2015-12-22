@@ -30,11 +30,10 @@ namespace PXengine.Core
         {
             Instance = this;
             GraphicsMgr.IsFullScreen = false;
-            //this.IsMouseVisible = false;
+            IsMouseVisible = false;
             GraphicsMgr.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             GraphicsMgr.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             Window.IsBorderless = true;
-            IsAudio = false;
         }
 
         public static new PXGame Instance;

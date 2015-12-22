@@ -53,12 +53,6 @@ namespace TTengine.Systems
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = SystemsSchedule.TargetMoveSystem)]
     public class TargetMotionSystem : EntityComponentProcessingSystem<PositionComp, TargetMotionComp>
     {
-        double dt = 0;
-
-        protected override void Begin()
-        {
-            dt = TimeSpan.FromTicks(EntityWorld.Delta).TotalSeconds;
-        }
 
         /// <summary>Processes the specified entity.</summary>
         /// <param name="entity">The entity.</param>
@@ -70,7 +64,7 @@ namespace TTengine.Systems
             if (v.LengthSquared() > 0 ){
                 Vector2 vm = v;
                 vm.Normalize();
-                vm *= (float)(targetComp.TargetVelocity * dt);
+                vm *= (float)(targetComp.TargetVelocity * Dt);
                 if (vm.LengthSquared() > v.LengthSquared())
                 {
                     // target reached

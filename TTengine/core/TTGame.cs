@@ -23,7 +23,7 @@ namespace TTengine.Core
     public abstract class TTGame: Game
     {
         /// <summary>If set true, starts the TTMusicEngine and AudioSystem</summary>
-        public bool IsAudio = false;
+        protected bool IsAudio = false;
 
         /// <summary>The currently running (single) instance of TTGame</summary>
         public static TTGame Instance = null;
@@ -35,6 +35,11 @@ namespace TTengine.Core
         public ScreenComp DrawScreen;
 
         public EntityWorld World;
+
+        /// <summary>Time step per EntityWorld update cycle</summary>
+        public double TimeStepMs = 10.0f;
+
+        protected double timeLag = 0.0f;
 
         public TTGame()
         {
@@ -80,7 +85,14 @@ namespace TTengine.Core
 
         protected override void Update(GameTime gameTime)
         {
-            World.Update(gameTime.ElapsedGameTime.Ticks);
+            // see http://gameprogrammingpatterns.com/game-loop.html
+            timeLag += gameTime.ElapsedGameTime.TotalSeconds;
+
+            while (timeLag >= TimeStepMs )
+            {
+                World.Update(TimeSpan.FromSeconds(TimeStepMs).Ticks);
+                timeLag -= TimeStepMs;
+            }
             base.Update(gameTime);
         }
 

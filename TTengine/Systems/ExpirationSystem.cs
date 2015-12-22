@@ -53,21 +53,12 @@ namespace TTengine.Systems
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = SystemsSchedule.ExpirationSystem)]
     public class ExpirationSystem : EntityComponentProcessingSystem<ExpiresComp>
     {
-
-        protected double dt = 0;
-
-        protected override void Begin()
-        {
-            base.Begin();
-            // retrieve the delta time step once, before looping over all entities.
-            dt = TimeSpan.FromTicks(this.EntityWorld.Delta).TotalSeconds;
-        }
-
+        
         /// <summary>Processes the specified entity.</summary>
         /// <param name="entity">The entity.</param>
         public override void Process(Entity entity, ExpiresComp expiresComponent)
         {
-            expiresComponent.ReduceLifeTime(dt);
+            expiresComponent.ReduceLifeTime(Dt);
 
             if (expiresComponent.IsExpired)
             {

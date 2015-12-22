@@ -23,7 +23,7 @@ namespace TTengine.Systems
         protected override void Begin()
         {
             // once per update-cycle, set timing in updParams
-            ctx.Dt = TimeSpan.FromTicks(this.EntityWorld.Delta).TotalSeconds;
+            ctx.Dt = this.Dt;
             ctx.SimTime += ctx.Dt;
         }
 

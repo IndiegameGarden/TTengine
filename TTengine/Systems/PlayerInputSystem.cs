@@ -18,14 +18,12 @@ namespace TTengine.Systems
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = SystemsSchedule.RotateSystem)]
     public class PlayerInputSystem : EntityComponentProcessingSystem<PlayerInputComp>
     {
-        double dt = 0;
         KeyboardState   kb = new KeyboardState(), 
                         kbOld;
         GamePadState pad;
 
         protected override void Begin()
         {
-            dt = TimeSpan.FromTicks(EntityWorld.Delta).TotalSeconds;
             kbOld = kb;
             kb = Keyboard.GetState();
             pad = GamePad.GetState(PlayerIndex.One); // TODO assumes single player always

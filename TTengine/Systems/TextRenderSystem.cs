@@ -60,12 +60,10 @@ namespace TTengine.Systems
     {
 
         protected ScreenComp activeScreen = null;
-        double dt = 0;
 
         protected override void Begin()
         {
             activeScreen = TTGame.Instance.DrawScreen;
-            dt = TimeSpan.FromTicks(EntityWorld.Delta).TotalSeconds;
         }
 
         /// <summary>Processes the specified entity.</summary>

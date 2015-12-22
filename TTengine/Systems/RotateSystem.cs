@@ -17,17 +17,11 @@ namespace TTengine.Systems
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = SystemsSchedule.RotateSystem)]
     public class RotateSystem : EntityComponentProcessingSystem<RotateComp>
     {
-        double dt = 0;
-
-        protected override void Begin()
-        {
-            dt = TimeSpan.FromTicks(EntityWorld.Delta).TotalSeconds;
-        }
 
         public override void Process(Entity entity, RotateComp rotComp)
         {
             if (rotComp.RotateSpeed > 0)
-                rotComp.Rotate += rotComp.RotateSpeed * dt;            
+                rotComp.Rotate += rotComp.RotateSpeed * Dt;            
         }
     }
 

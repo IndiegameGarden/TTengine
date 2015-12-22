@@ -52,19 +52,13 @@ namespace TTengine.Systems
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = SystemsSchedule.MoveSystem)]
     public class MovementSystem : EntityComponentProcessingSystem<PositionComp, VelocityComp>
     {
-        double dt;
-
-        protected override void Begin()
-        {
-            dt = TimeSpan.FromTicks(EntityWorld.Delta).TotalSeconds;
-        }
 
         /// <summary>Processes the specified entity.</summary>
         /// <param name="entity">The entity.</param>
         public override void Process(Entity entity, PositionComp pc, VelocityComp vc)
         {
-            pc.X += (float)(vc.X * dt);
-            pc.Y += (float)(vc.Y * dt);
+            pc.X += (float)(vc.X * Dt);
+            pc.Y += (float)(vc.Y * Dt);
             pc._isPositionAbsSet = false;
         }
     }
