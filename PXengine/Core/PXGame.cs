@@ -31,14 +31,11 @@ namespace PXengine.Core
             Instance = this;
             GraphicsMgr.IsFullScreen = false;
             IsMouseVisible = false;
-            GraphicsMgr.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            GraphicsMgr.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-            Window.IsBorderless = true;
         }
 
         public static new PXGame Instance;
-        public Channel GameChannel;
         public PXLevel Level;
+        public Entity  LevelScreen;
 
         protected override void Initialize()
         {
@@ -47,16 +44,13 @@ namespace PXengine.Core
 
         protected override void LoadContent()
         {
-            // create a default Channel
-            GameChannel = TTFactory.CreateChannel(Color.White, false);
-            TTFactory.BuildTo(GameChannel);
+            LevelScreen = TTFactory.CreateScreenlet(Color.White,true,1024,768);
             // PointClamp to let all grahics be sharp and blocky (non-interpolated pixels)
-            GameChannel.Screen.SpriteBatch.samplerState = SamplerState.PointClamp;
-            ChannelMgr.AddChannel(GameChannel);
-            GameChannel.ZapTo(); 
+            LevelScreen.GetComponent<ScreenComp>().SpriteBatch.samplerState = SamplerState.PointClamp;
 
             // add framerate counter
-            FrameRateCounter.Create(Color.Black);
+            // FIXME rework to TTfactory
+            // FrameRateCounter.Create(Color.Black);
 
             base.LoadContent();
         }       

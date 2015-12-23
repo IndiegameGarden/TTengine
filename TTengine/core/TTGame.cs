@@ -30,16 +30,19 @@ namespace TTengine.Core
 
         public GraphicsDeviceManager GraphicsMgr;
 
+        /// <summary>The audio/music engine</summary>
         public MusicEngine AudioEngine;
 
+        /// <summary>The main (root) screen that all graphics are eventually rendered to</summary>
         public ScreenComp DrawScreen;
 
+        /// <summary>The default (root) World</summary>
         public EntityWorld World;
 
-        /// <summary>Time step per EntityWorld update cycle</summary>
+        /// <summary>Time step per EntityWorld update cycle in ms</summary>
         public double TimeStepMs = 10.0f;
 
-        protected double timeLag = 0.0f;
+        protected double timeLag = 0.0f; 
 
         public TTGame()
         {
@@ -50,7 +53,7 @@ namespace TTengine.Core
             IsFixedTimeStep = false;
             Content.RootDirectory = "Content";
 #if DEBUG
-            GraphicsMgr.SynchronizeWithVerticalRetrace = false;
+            GraphicsMgr.SynchronizeWithVerticalRetrace = false; // FPS: as fast as possible
 #else
             GraphicsMgr.SynchronizeWithVerticalRetrace = true;
 #endif

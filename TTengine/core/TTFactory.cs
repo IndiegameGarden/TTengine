@@ -17,17 +17,12 @@ namespace TTengine.Core
     /// </summary>
     public sealed class TTFactory
     {
-        /// <summary>The Artemis entity world that is currently used for building/creating new Entities in</summary>
+        /// <summary>The Artemis entity world currently used for building new Entities in</summary>
         public static EntityWorld BuildWorld;
 
-        /// <summary>The screen that newly built Entities by default will render to.
+        /// <summary>The screen that newly built Entities will render to.
         /// Value null is used to denote "default".</summary>
         public static ScreenComp BuildScreen;
-
-        /// <summary>
-        /// The Channel to which TTFactory builds new entities
-        /// </summary>
-        public static Channel BuildChannel;
 
         private static TTGame _game = null;
 
@@ -38,13 +33,6 @@ namespace TTengine.Core
         public static void BuildTo(EntityWorld world)
         {
             BuildWorld = world;
-        }
-
-        public static void BuildTo(Channel channel)
-        {
-            BuildWorld = channel.World;
-            BuildScreen = channel.Screen;
-            BuildChannel = channel;
         }
 
         public static void BuildTo(ScreenComp screen)
@@ -71,7 +59,6 @@ namespace TTengine.Core
             Entity e = CreateEntity();
             e.AddComponent(new PositionComp());
             e.AddComponent(new VelocityComp());
-            e.Refresh();
             return e;
         }
 
@@ -83,7 +70,6 @@ namespace TTengine.Core
         {
             Entity e = CreateGamelet();
             e.AddComponent(new DrawComp(BuildScreen));
-            e.Refresh();
             return e;
         }
 
@@ -99,21 +85,18 @@ namespace TTengine.Core
             Entity e = CreateDrawlet();
             var spriteComp = new SpriteComp(graphicsFile);
             e.AddComponent(spriteComp);
-            e.Refresh();
             return e;
         }
 
         /// <summary>
-        /// Create a Spritelet with texture based on the contents of a (child) Channel
+        /// Create a Spritelet with texture based on the contents of a Screenlet
         /// </summary>
-        /// <param name="subChannel"></param>
         /// <returns></returns>
-        public static Entity CreateSpritelet(Channel subChannel)
+        public static Entity CreateSpritelet(ScreenComp screen)
         {
             Entity e = CreateDrawlet();
-            var spriteComp = new SpriteComp(subChannel.Screen);
+            var spriteComp = new SpriteComp(screen);
             e.AddComponent(spriteComp);
-            e.Refresh();
             return e;
         }
 
@@ -143,7 +126,6 @@ namespace TTengine.Core
             var spriteComp = new AnimatedSpriteComp(atlasBitmapFile,NspritesX,NspritesY);
             spriteComp.AnimType = animType;
             e.AddComponent(spriteComp);
-            e.Refresh();
             return e;
         }
 
@@ -155,7 +137,6 @@ namespace TTengine.Core
             spriteFieldComp.FieldSpacing = new Vector2(spriteComp.Width, spriteComp.Height);
             e.AddComponent(spriteComp);
             e.AddComponent(spriteFieldComp);
-            e.Refresh();
             return e;
         }
 
@@ -182,22 +163,38 @@ namespace TTengine.Core
             e.AddComponent(new ScaleComp());
             TextComp tc = new TextComp(text, fontName);
             e.AddComponent(tc);
-            e.Refresh();
             return e;
         }
 
         /// <summary>
-        /// Creates a Screenlet that renders to its own buffer or default backbuffer
-        /// <param name="hasRenderBuffer">if true renders to own buffer, if false to default backbuffer</param>
+        /// Creates a Screenlet that may contain a screenComp (RenderBuffer) to 
+        /// which graphics can be rendered. 
         /// </summary>
+        /// <param name="hasRenderBuffer">if true, Screenlet will have its own render buffer</param>
+        /// <param name="height">Screenlet height, if not given uses default backbuffer height</param>
+        /// <param name="width">Screenlet width, if not given uses default backbuffer width</param>
         /// <returns></returns>
-        public static Entity CreateScreenlet(bool hasRenderBuffer=false)
+        public static Entity CreateScreenlet(bool hasRenderBuffer=false,
+                                        int width = 0, int height = 0)
         {
-            var sc = new ScreenComp(hasRenderBuffer);
+            var sc = new ScreenComp(hasRenderBuffer, width, height);
             var e = CreateEntity();
             e.AddComponent(sc);
             e.AddComponent(new DrawComp(BuildScreen));
-            e.Refresh();
+            return e;
+        }
+
+        /// <summary>
+        /// Creates a Screenlet that may contain a screenComp (RenderBuffer) to 
+        /// which graphics can be rendered. 
+        /// </summary>
+        /// <param name="backgroundColor">Background color of the Screenlet</param>
+        /// <returns></returns>
+        public static Entity CreateScreenlet(Color backgroundColor, bool hasRenderBuffer = false,
+                                        int width = 0, int height = 0)
+        {
+            var e = CreateScreenlet(hasRenderBuffer, width, height);
+            e.GetComponent<ScreenComp>().BackgroundColor = backgroundColor;
             return e;
         }
 
@@ -213,49 +210,7 @@ namespace TTengine.Core
             var e = CreateEntity();
             e.AddComponent(sc);
             e.AddComponent(new DrawComp(sc));
-            e.Refresh();
             return e;
-        }
-
-        /// <summary>
-        /// Creates a Screenlet that may contain a screenComp (RenderBuffer) to 
-        /// which graphics can be rendered. 
-        /// </summary>
-        /// <returns></returns>
-        public static Entity CreateScreenlet(int width, int height, bool hasRenderBuffer)
-        {
-            var sc = new ScreenComp(hasRenderBuffer, width, height);
-            var e = CreateEntity();
-            e.AddComponent(sc);
-            e.AddComponent(new DrawComp(BuildScreen));
-            e.Refresh();
-            return e;
-        }
-
-        /// <summary>
-        /// Creates a Channel that renders to a RenderTarget of specified width/height
-        /// </summary>
-        /// <param name="width">RenderTarget width</param>
-        /// <param name="height">RenderTarget height</param>
-        /// <param name="backgroundColor">The default background Color for the Channel</param>
-        /// <returns>Created channel.</returns>
-        public static Channel CreateChannel(int width, int height, Color backgroundColor, bool hasRenderBuffer)
-        {
-            var ch = new Channel(hasRenderBuffer,width, height);
-            ch.Screen.BackgroundColor = backgroundColor;
-            return ch;
-        }
-
-        /// <summary>
-        /// Creates a root Channel that renders to the default backbuffer
-        /// </summary>
-        /// <param name="backgroundColor">The default background Color for the Channel</param>
-        /// <returns>Created channel.</returns>
-        public static Channel CreateChannel(Color backgroundColor, bool hasRenderBuffer)
-        {
-            var ch = new Channel(hasRenderBuffer, true);
-            ch.Screen.BackgroundColor = backgroundColor;
-            return ch;
         }
 
         /// <summary>

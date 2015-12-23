@@ -11,6 +11,7 @@ using TTengine.Comps;
 
 namespace TTengine.Core
 {
+    /*
     /// <summary>
     /// A convenience wrapper around an EntityWorld and a default ScreenComp to which the world renders.
     /// <seealso cref="ChannelManager"/>
@@ -181,15 +182,16 @@ namespace TTengine.Core
                     Screen.renderTarget = currentSourceBuffer;
                     Screen.renderTargetBackBuffer = currentTargetBuffer;
 
-                    /* ?
+                    ?
                     TTGame.Instance.GraphicsDevice.SetRenderTarget(null);
                     spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque, null, null, null, eff);
                     spriteBatch.Draw(currentSourceBuffer, new Rectangle(0, 0, Screen.Width, Screen.Height), Color.White);
                     spriteBatch.End();
-                     */
+                   
                 }
             }
 
         }
     }
+     */
 }

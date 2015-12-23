@@ -123,7 +123,7 @@ namespace PXengine.Core
             int lines = TTUtil.LineCount(TextItems[0]);
             float yOffset = -((float)(lines - 1)) * VerticalLineSpacing - VerticalLineSpacing;
 
-            Position = new Vector2(TTFactory.BuildChannel.Screen.Center.X, 1f+yOffset); // TODO move up for long texts
+            Position = new Vector2(TTFactory.BuildScreen.Center.X, 1f+yOffset); // TODO move up for long texts
             // Use entire text size for calculating middle offsets 
             totalTextSize = SubtitleFont.MeasureString(TextItems[0]);
         }
