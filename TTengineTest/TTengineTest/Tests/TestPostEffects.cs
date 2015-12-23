@@ -21,16 +21,14 @@ namespace TTengineTest
         public override void Create()
         {
             var ch = TTFactory.BuildChannel;
-            TTFactory.BuildTo(ch);
 
             // create an additional child channel that renders onto the main channel
             // content for 1st screen: call upon another unit test
             var t1 = new TestRelativeMotion();
-            var ch1 = TTFactory.CreateChannel(800, 400, Color.White, true);
-            ch1.PostEffects.Add( TTGame.Instance.Content.Load<Effect>("FixedColor") );
-            TTFactory.BuildTo(ch1);
+            var ch1 = TTFactory.CreateChannel(Color.White, true, 800, 400);
+            throw new NotImplementedException();
+            //ch1.PostEffects.Add( TTGame.Instance.Content.Load<Effect>("FixedColor") );
             t1.Create();
-            ch.AddChild(ch1);
 
             // main channel: shows the child channels as sprites
             TTFactory.BuildTo(ch);

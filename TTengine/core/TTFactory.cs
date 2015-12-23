@@ -24,20 +24,46 @@ namespace TTengine.Core
         /// Value null is used to denote "default".</summary>
         public static ScreenComp BuildScreen;
 
+        public static Channel BuildChannel
+        {
+            get
+            {
+                return new Channel(BuildWorld, BuildScreen);
+            }
+            set
+            {
+                BuildWorld = value.World;
+                BuildScreen = value.Screen;
+            }
+        }
+
         private static TTGame _game = null;
 
         static TTFactory() {
             _game = TTGame.Instance;
         }
 
-        public static void BuildTo(EntityWorld world)
-        {
-            BuildWorld = world;
-        }
-
         public static void BuildTo(ScreenComp screen)
         {
             BuildScreen = screen;
+        }
+
+        /// <summary>
+        /// Switch factory's building output to a new channel, new world or new screen
+        /// </summary>
+        /// <param name="e"></param>
+        public static void BuildTo(Entity e)
+        {
+            if (e.HasComponent<WorldComp>())
+                BuildWorld = e.GetComponent<WorldComp>().World;
+            if (e.HasComponent<ScreenComp>())
+                BuildScreen = e.GetComponent<ScreenComp>();
+        }
+
+        public static void BuildTo(Channel ch)
+        {
+            BuildWorld = ch.World;
+            BuildScreen = ch.Screen;
         }
 
         /// <summary>
@@ -92,10 +118,10 @@ namespace TTengine.Core
         /// Create a Spritelet with texture based on the contents of a Screenlet
         /// </summary>
         /// <returns></returns>
-        public static Entity CreateSpritelet(ScreenComp screen)
+        public static Entity CreateSpritelet(Entity screen)
         {
             Entity e = CreateDrawlet();
-            var spriteComp = new SpriteComp(screen);
+            var spriteComp = new SpriteComp(screen.GetComponent<ScreenComp>());
             e.AddComponent(spriteComp);
             return e;
         }
@@ -195,6 +221,16 @@ namespace TTengine.Core
         {
             var e = CreateScreenlet(hasRenderBuffer, width, height);
             e.GetComponent<ScreenComp>().BackgroundColor = backgroundColor;
+            return e;
+        }
+
+        public static Entity CreateChannel(Color backgroundColor, bool hasRenderBuffer = false,
+                                        int width = 0, int height = 0)
+        {
+            var e = CreateScreenlet(backgroundColor, hasRenderBuffer, width, height);
+            var wc = new WorldComp();
+            e.AddComponent(wc);
+            BuildTo(e);
             return e;
         }
 

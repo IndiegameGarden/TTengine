@@ -68,6 +68,8 @@ namespace TTengine.Core
         protected override void Initialize()
         {
             World = new EntityWorld();
+            TTFactory.BuildWorld = World;
+            DrawScreen = new ScreenComp(false);
 
             // the TTMusicEngine
             if (IsAudio)

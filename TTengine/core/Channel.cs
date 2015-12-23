@@ -11,25 +11,23 @@ using TTengine.Comps;
 
 namespace TTengine.Core
 {
-    /*
     /// <summary>
-    /// A convenience wrapper around an EntityWorld and a default ScreenComp to which the world renders.
-    /// <seealso cref="ChannelManager"/>
+    /// A convenience wrapper around a combi of an EntityWorld and a ScreenComp to which this world renders.
     /// </summary>
     public class Channel
     {
-        /// <summary>If true, the World of this channel is actively simulated (Updated)</summary>
-        public bool IsActive = true;
+        public Channel(EntityWorld world, ScreenComp screen) {
+            this.World = world;
+            this.Screen = screen;
+        }
 
-        /// <summary>If true, the World of this channel is actively rendered (Drawn)</summary>
-        public bool IsVisible = true;
-
-        /// <summary>The screen that this channel renders to by default</summary>
+        /// <summary>The main screen that this channel renders to</summary>
         public ScreenComp Screen;
 
         /// <summary>The EntityWorld that is being rendered in this channel</summary>
         public EntityWorld World;
 
+        /*
         /// <summary>List of child Channels, which are channels rendered within this Channel e.g. sub-screens.</summary>
         public List<Channel> Children;
 
@@ -192,6 +190,6 @@ namespace TTengine.Core
             }
 
         }
-    }
-     */
+         */
+    }     
 }

@@ -21,42 +21,37 @@ namespace TTengineTest
 
         public override void Create()
         {
-            var ch = TTFactory.BuildChannel;
-            TTFactory.BuildTo(ch);
+            var ch = TTFactory.BuildScreen;
 
             // put some content in the main channel
+            TTFactory.BuildScreen.BackgroundColor = Color.White;
             var t0 = new TestScaling();
-            ch.Screen.BackgroundColor = Color.White;
             t0.Create();
 
             // create an additional child channel that renders onto the main channel
             // content for 1st screen: call upon another unit test
-            var t1 = new TestRelativeMotion(); 
-            var ch1 = TTFactory.CreateChannel(200, 400, Color.LightSalmon, true);
+            var ch1 = TTFactory.CreateChannel(Color.LightSalmon, true, 200, 400);
             TTFactory.BuildTo(ch1);
+            var t1 = new TestRelativeMotion();
             t1.Create();
-            ch.AddChild(ch1);
 
             // second child channel
-            var t2 = new TestRelativeMotion(); 
-            var ch2 = TTFactory.CreateChannel(200, 400, Color.LightSeaGreen, true);
-            TTFactory.BuildTo(ch2);            
+            var ch2 = TTFactory.CreateChannel(Color.LightSeaGreen, true, 200, 400);
+            TTFactory.BuildTo(ch2);
+            var t2 = new TestRelativeMotion();
             t2.Create();
-            ch.AddChild(ch2);
 
             // 3rd
-            var t3 = new TestRelativeMotion();
-            var ch3 = TTFactory.CreateChannel(200, 400, Color.LightPink, true);
+            var ch3 = TTFactory.CreateChannel(Color.LightPink, true, 200, 400);
             TTFactory.BuildTo(ch3);
+            var t3 = new TestRelativeMotion();
             t3.Create();
-            ch.AddChild(ch3);
 
             // 4th
-            var t4 = new TestZoomedChannel();
-            var ch4 = TTFactory.CreateChannel(700, 100, Color.LightGreen, true);
+            var ch4 = TTFactory.CreateChannel(Color.LightGreen, true, 700, 100);
             TTFactory.BuildTo(ch4);
+            var t4 = new TestZoomedChannel();
             t4.Create();
-            ch.AddChild(ch4);
 
             // main channel: shows the child channels as sprites
             TTFactory.BuildTo(ch);

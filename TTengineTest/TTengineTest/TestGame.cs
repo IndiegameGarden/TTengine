@@ -40,7 +40,9 @@ namespace TTengineTest
             base.LoadContent();
 
             // Here all the tests are created
-            DoTest(new TestPostEffects());
+            //DoTest(new TestPostEffects()); //FIXME
+            DoTest(new TestLinearMotion());
+            DoTest(new TestRotation());
             DoTest(new TestGamepad());
             DoTest(new TestMixedShaders());
             DoTest(new TestTextureSamplingShader());
@@ -57,11 +59,9 @@ namespace TTengineTest
             DoTest(new TestAudioBasics());
             DoTest(new TestContentLoad());
             DoTest(new TestRelativeMotion());
-            DoTest(new TestLinearMotion());
-            DoTest(new TestRotation());
 
-            // pick the initial one
-            testChannels[channel].ZapTo();
+            // pick the initial one and activate it
+            ZapChannel(0);
 
         }
 
@@ -84,37 +84,43 @@ namespace TTengineTest
             if ((kb.IsKeyDown(Keys.Space) && !kbOld.IsKeyDown(Keys.Space)) ||
                 (kb.IsKeyDown(Keys.PageDown) && !kbOld.IsKeyDown(Keys.PageDown)) )
             {
-                if (channel < testChannels.Count-1)
-                {
-                    channel++;
-                    testChannels[channel].ZapTo();
-                }
+                ZapChannel(+1);
             }
             else if (kb.IsKeyDown(Keys.PageUp) && !kbOld.IsKeyDown(Keys.PageUp))
             {
-                if (channel > 0)
-                {
-                    channel--;
-                    testChannels[channel].ZapTo();
-                }
+                ZapChannel(-1);
             }
             kbOld = kb;
         }
 
+        private void ZapChannel(int delta)
+        {
+            int nch = channel + delta;
+            if (nch < 0)
+                nch += testChannels.Count;
+            if (nch >= testChannels.Count)
+                nch -= testChannels.Count;
+            testChannels[channel].IsEnabled = false;
+            testChannels[nch].IsEnabled = true;
+            channel = nch;
+        }
+
         private void DoTest(Test test)
         {
-            var ch = TTFactory.CreateChannel(test.BackgroundColor,false);
-            TTGame.Instance.ChannelMgr.AddChannel(ch);
+            var ch = TTFactory.CreateChannel(test.BackgroundColor);
             testChannels.Add(ch);
             test.Create();
+            TTFactory.BuildTo(ch); // restore in case test changed the build-screen
 
             // add framerate counter
             var col = TTUtil.InvertColor(test.BackgroundColor);
             FrameRateCounter.Create(col);
 
             // add test info as text
-            TestFactory.Instance.CreateTextlet(new Vector2(2f, GraphicsMgr.PreferredBackBufferHeight-20f), test.GetType().Name, col);
+            Factory.CreateTextlet(new Vector2(2f, GraphicsMgr.PreferredBackBufferHeight-20f), test.GetType().Name, col);
 
+            // disable channel by default
+            ch.IsEnabled = false;
         }
 
     }
