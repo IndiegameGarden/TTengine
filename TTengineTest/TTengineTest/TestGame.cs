@@ -28,7 +28,7 @@ namespace TTengineTest
         public TestFactory Factory;
         KeyboardState kbOld = Keyboard.GetState();
         int channel = 0;
-        List<Channel> testChannels = new List<Channel>();
+        List<Entity> testChannels = new List<Entity>();
 
         public TestGame()
         {

@@ -22,16 +22,15 @@ namespace Game1
 {
     /// <summary>
     /// Main game class acting as template for your own games based on TTengine.
-    /// Modify this to start coding your game.
+    /// Modify this class directly to start coding your game.
     /// </summary>
     public class Game1 : TTGame
     {
         public Game1Factory Factory;
-        Channel titleChannel, gameChannel;
 
         public Game1()
         {
-            IsAudio = false;
+            IsAudio = false;    // set to true if audio is needed
         }
 
         protected override void Initialize()
@@ -47,37 +46,12 @@ namespace Game1
             if (kb.IsKeyDown(Keys.Escape))
                 Exit();
 
-            if (kb.IsKeyDown(Keys.Space))
-            {
-                titleChannel.ZapTo();
-            }
-            else
-            {
-                gameChannel.ZapTo();
-            }
-
             base.Update(gameTime);
         }
 
         protected override void LoadContent()
         {
-            // title channel
-            titleChannel = TTFactory.CreateChannel(Color.Black,false);
-            ChannelMgr.AddChannel(titleChannel);
-            titleChannel.ZapTo(); 
-
-            // add framerate counter
-            FrameRateCounter.Create(Color.White);
-
-            var t = Factory.CreateMovingTextlet(new Vector2(0.5f, 0.5f), "Title Screen");
-            t.GetComponent<DrawComp>().DrawColor = Color.LightGoldenrodYellow;
-            t.GetComponent<ScaleComp>().Scale = 4;
-
-
-            // game channel
-            gameChannel = TTFactory.CreateChannel(Color.White, false);
-            ChannelMgr.AddChannel(gameChannel);
-            gameChannel.ZapTo(); 
+            DrawScreen.BackgroundColor = Color.White;
 
             // add framerate counter
             FrameRateCounter.Create(Color.Black);
@@ -87,7 +61,7 @@ namespace Game1
             {
                 for (float y = 0.1f; y < 1f; y += 0.24f)
                 {
-                    var pos = new Vector2(x * gameChannel.Screen.Width, y * gameChannel.Screen.Height);
+                    var pos = new Vector2(x * DrawScreen.Width, y * DrawScreen.Height);
                     Factory.CreateHyperActiveBall(pos);
                     Factory.CreateMovingTextlet(pos,"This is the\nTTengine test. !@#$1234");
                     //break;
@@ -100,7 +74,8 @@ namespace Game1
     }
 
     /// <summary>
-    /// Factory to create new game-specific entities
+    /// Factory to create new game-specific entities.
+    /// For your own game, move it into a separate file.
     /// </summary>
     public class Game1Factory
     {
