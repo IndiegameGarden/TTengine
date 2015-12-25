@@ -40,7 +40,7 @@ namespace TTengine.Core
         public EntityWorld World;
 
         /// <summary>Time step per EntityWorld update cycle in seconds</summary>
-        public double TimeStep = 0.010f;
+        public float TimeStep = 0.010f;
 
         protected double timeLag = 0.0f; 
 
@@ -50,7 +50,8 @@ namespace TTengine.Core
 
             // XNA related init that needs to be in constructor (or at least before Initialize())
             GraphicsMgr = new GraphicsDeviceManager(this);
-            IsFixedTimeStep = false;
+            IsFixedTimeStep = true;
+            TargetElapsedTime = TimeSpan.FromSeconds(TimeStep); // TODO update when double val changes
             Content.RootDirectory = "Content";
 #if DEBUG
             GraphicsMgr.SynchronizeWithVerticalRetrace = false; // FPS: as fast as possible
@@ -90,14 +91,7 @@ namespace TTengine.Core
 
         protected override void Update(GameTime gameTime)
         {
-            // see http://gameprogrammingpatterns.com/game-loop.html
-            timeLag += gameTime.ElapsedGameTime.TotalSeconds;
-
-            while (timeLag >= TimeStep )
-            {
-                World.Update(TimeSpan.FromSeconds(TimeStep).Ticks);
-                timeLag -= TimeStep;
-            }
+            World.Update(gameTime.ElapsedGameTime.Ticks);
             base.Update(gameTime);
         }
 
