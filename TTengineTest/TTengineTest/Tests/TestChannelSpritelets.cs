@@ -43,6 +43,7 @@ namespace TTengineTest
             var ch4 = TestFactory.CreateChannel(Color.LightGreen, true, 700, 100);
             BuildTo(ch4);
             var t4 = new TestZoomedChannel();
+            t4.Channel = Channel;
             t4.Create();
 
             // main channel: shows the child channels as sprites

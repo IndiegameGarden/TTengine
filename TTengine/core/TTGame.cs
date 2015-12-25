@@ -39,8 +39,8 @@ namespace TTengine.Core
         /// <summary>The default (root) World</summary>
         public EntityWorld World;
 
-        /// <summary>Time step per EntityWorld update cycle in ms</summary>
-        public double TimeStepMs = 10.0f;
+        /// <summary>Time step per EntityWorld update cycle in seconds</summary>
+        public double TimeStep = 0.010f;
 
         protected double timeLag = 0.0f; 
 
@@ -93,10 +93,10 @@ namespace TTengine.Core
             // see http://gameprogrammingpatterns.com/game-loop.html
             timeLag += gameTime.ElapsedGameTime.TotalSeconds;
 
-            while (timeLag >= TimeStepMs )
+            while (timeLag >= TimeStep )
             {
-                World.Update(TimeSpan.FromSeconds(TimeStepMs).Ticks);
-                timeLag -= TimeStepMs;
+                World.Update(TimeSpan.FromSeconds(TimeStep).Ticks);
+                timeLag -= TimeStep;
             }
             base.Update(gameTime);
         }
