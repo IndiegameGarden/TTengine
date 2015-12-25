@@ -107,12 +107,13 @@ namespace TTengineTest
 
         private void DoTest(Test test)
         {
-            var ch = TTFactory.CreateChannel(test.BackgroundColor);
+            var ch = TestFactory.CreateChannel(test.BackgroundColor);
+            test.Channel = ch;
             testChannels.Add(ch);
             test.Create();
-            TTFactory.BuildTo(ch); // restore in case test changed the build-screen
 
             // add framerate counter
+            test.BuildToDefault();
             var col = TTUtil.InvertColor(test.BackgroundColor);
             FrameRateCounter.Create(col);
 

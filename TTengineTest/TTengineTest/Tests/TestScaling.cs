@@ -12,7 +12,6 @@ namespace TTengineTest
         const float MOVE_SPEED_MULTIPLIER = 80f;
 
         public TestScaling()
-            : base()        
         {
             BackgroundColor = Color.White;
         }
@@ -33,7 +32,7 @@ namespace TTengineTest
                     m.Frequency = RandomMath.RandomBetween(0.04f, 0.3f);
                     m.Phase = RandomMath.RandomBetween(0f, MathHelper.TwoPi);
                     m.Offset = RandomMath.RandomBetween(0.45f, 0.8f);
-                    TTFactory.AddModifier(b, delegate(ScriptContext ctx, double value)
+                    TestFactory.AddModifier(b, delegate(ScriptContext ctx, double value)
                         {ctx.Entity.GetComponent<ScaleComp>().Scale = value;} , m);
                 }
             }

@@ -10,12 +10,6 @@ namespace TTengineTest
     {
         const float MOVE_SPEED_MULTIPLIER = 80f;
 
-        public TestLinearMotion()
-            : base()        
-        {
-            BackgroundColor = Color.White;
-        }
-
         public override void Create()
         {
             Factory.BallSprite = "red-circle_frank-tschakert";

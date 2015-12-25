@@ -14,17 +14,11 @@ namespace TTengineTest
     /// <summary>Testing the Gamepad (XInput type only) basics</summary>
     class TestGamepad : Test
     {
-        public TestGamepad()
-            : base()        
-        {
-            BackgroundColor = Color.White;
-        }
-
         public override void Create()
         {
-            var b = Factory.CreateMovingBall(TTFactory.BuildScreen.Center, Vector2.Zero);
+            var b = Factory.CreateMovingBall(TestFactory.BuildScreen.Center, Vector2.Zero);
             b.AddComponent(new PlayerInputComp());
-            TTFactory.AddScript(b, ScriptMoveByGamepad);
+            TestFactory.AddScript(b, ScriptMoveByGamepad);
         }
 
         void ScriptMoveByGamepad(ScriptContext ctx)

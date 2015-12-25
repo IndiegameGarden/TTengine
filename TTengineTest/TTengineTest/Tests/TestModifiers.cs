@@ -13,12 +13,6 @@ namespace TTengineTest
     class TestModifiers : Test
     {
 
-        public TestModifiers()
-            : base()        
-        {
-            BackgroundColor = Color.White;
-        }
-
         public override void Create()
         {
             Factory.BallSprite = "paul-hardman_circle-four";
@@ -32,17 +26,17 @@ namespace TTengineTest
             sineFunc.Frequency = 0.5;
             sineFunc.Amplitude = 0.25;
             sineFunc.Offset = 1;
-            TTFactory.AddModifier(ball, MyScaleModifierScript, sineFunc);
+            TestFactory.AddModifier(ball, MyScaleModifierScript, sineFunc);
 
             // modifier script to adapt rotation
-            TTFactory.AddModifier(ball, MyRotateModifierScript);
+            TestFactory.AddModifier(ball, MyRotateModifierScript);
 
             // ball 2
             var ball2 = Factory.CreateMovingBall(new Vector2(695f, 450f), velo);
             ball2.GetComponent<ScaleComp>().Scale = 0.5;
 
             // script with anonymous delegate code block - for rotation
-            TTFactory.AddScript(ball2, delegate(ScriptContext ctx) { 
+            TestFactory.AddScript(ball2, delegate(ScriptContext ctx) { 
                     ctx.Entity.GetComponent<DrawComp>().DrawRotation = (float)ctx.SimTime; 
                 });
 
@@ -53,7 +47,7 @@ namespace TTengineTest
             targFunc.Target = new Vector2(0f, 0f);
             targFunc.CurrentValue = ball2.GetComponent<PositionComp>().Position;
             targFunc.Speed = 40;
-            TTFactory.AddModifier(ball2,
+            TestFactory.AddModifier(ball2,
                 delegate(ScriptContext ctx, Vector2 pos) { ctx.Entity.GetComponent<PositionComp>().Position = pos; },
                 targFunc);
 

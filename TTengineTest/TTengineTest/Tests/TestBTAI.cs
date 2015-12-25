@@ -17,12 +17,6 @@ namespace TTengineTest
     class TestBTAI : Test
     {
 
-        public TestBTAI()
-            : base()        
-        {
-            BackgroundColor = Color.White;
-        }
-
         public override void Create()
         {
             var ball = Factory.CreateBall(1);

@@ -14,12 +14,6 @@ namespace TTengineTest
     class TestSphereCollision : Test
     {
 
-        public TestSphereCollision()
-            : base()        
-        {
-            BackgroundColor = Color.White;
-        }
-
         public override void Create()
         {
             Factory.BallSprite = "red-circle";
@@ -34,7 +28,7 @@ namespace TTengineTest
                 ball.GetComponent<VelocityComp>().Velocity2D = RandomMath.RandomDirection() * 30f;
                 ball.AddComponent(new SphereShapeComp(radius * 250f));
 
-                TTFactory.AddScript(ball, BallColorSetScript);
+                TestFactory.AddScript(ball, BallColorSetScript);
             }
         }
 

@@ -12,12 +12,6 @@ namespace TTengineTest
     class TestTemplate : Test
     {
 
-        public TestTemplate()
-            : base()        
-        {
-            BackgroundColor = Color.White;
-        }
-
         public override void Create()
         {
         }

@@ -13,11 +13,6 @@ namespace TTengineTest
     /// <summary>Testing the linear motion of objects on screen</summary>
     class TestRelativeMotion : Test
     {
-        public TestRelativeMotion()
-            : base()        
-        {
-            BackgroundColor = Color.White;
-        }
 
         public override void Create()
         {
@@ -32,7 +27,7 @@ namespace TTengineTest
             var cball = Factory.CreateMovingBall(new Vector2(200f, 0f), Vector2.Zero);
             cball.GetComponent<ScaleComp>().Scale = 0.1f;
             cball.GetComponent<PositionComp>().Depth = 0f;
-            TTFactory.AddScript(cball,CirclingPositionScript);
+            TestFactory.AddScript(cball,CirclingPositionScript);
 
             // set parent-child relation for the position
             ball.GetComponent<PositionComp>().AddChild(cball.GetComponent<PositionComp>());
@@ -41,7 +36,7 @@ namespace TTengineTest
             var cball2 = Factory.CreateMovingBall(new Vector2(200f, 0f), Vector2.Zero);
             cball2.GetComponent<ScaleComp>().Scale = 0.07f;
             cball2.GetComponent<PositionComp>().Depth = 0f;
-            TTFactory.AddScript(cball2, CirclingPositionScript2);
+            TestFactory.AddScript(cball2, CirclingPositionScript2);
 
             // set parent-child relation for the position
             cball.GetComponent<PositionComp>().AddChild(cball2.GetComponent<PositionComp>());

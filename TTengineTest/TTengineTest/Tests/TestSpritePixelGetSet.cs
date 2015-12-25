@@ -15,16 +15,10 @@ namespace TTengineTest
     class TestSpritePixelGetSet : Test
     {
 
-        public TestSpritePixelGetSet()
-            : base()        
-        {
-            BackgroundColor = Color.White;
-        }
-
         public override void Create()
         {
             Factory.BallSprite = "amazing1.png";
-            TTFactory.BuildScreen.SpriteBatch.samplerState = SamplerState.PointClamp; // set 'blocky' screen mode
+            TestFactory.BuildScreen.SpriteBatch.samplerState = SamplerState.PointClamp; // set 'blocky' screen mode
 
             // sprite
             var velo = new Vector2(5f, 3f);
@@ -32,7 +26,7 @@ namespace TTengineTest
             spr.GetComponent<ScaleComp>().Scale = 10f;
 
             // add script to sprite
-            TTFactory.AddScript(spr, ChangePixelsRandomlyScript);
+            TestFactory.AddScript(spr, ChangePixelsRandomlyScript);
 
         }
 

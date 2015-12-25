@@ -18,7 +18,7 @@ namespace TTengineTest
     /// <summary>
     /// Factory to create new game-specific entities
     /// </summary>
-    public class TestFactory
+    public class TestFactory: TTFactory
     {
         private static TestFactory _instance = null;
         private TestGame _game;
@@ -49,7 +49,7 @@ namespace TTengineTest
         /// <returns></returns>
         public Entity CreateBall(double radius)
         {
-            Entity e = TTFactory.CreateSpritelet(this.BallSprite);
+            Entity e = CreateSpritelet(this.BallSprite);
             e.GetComponent<SpriteComp>().CenterToMiddle();
             e.AddComponent(new ScaleComp(radius));
             return e;
@@ -88,7 +88,7 @@ namespace TTengineTest
 
         public Entity CreateTextlet(Vector2 pos, string text, Color col)
         {
-            var txt = TTFactory.CreateTextlet(text);
+            var txt = CreateTextlet(text);
             txt.GetComponent<PositionComp>().Position = pos;
             txt.GetComponent<PositionComp>().Depth = 0f + 0.1f * ((float)rnd.NextDouble()); // random Z position
             txt.GetComponent<DrawComp>().DrawColor = col;

@@ -14,26 +14,19 @@ namespace TTengineTest
     class TestMixedShaders : Test
     {
 
-        public TestMixedShaders()
-            : base()        
-        {
-            BackgroundColor = Color.White;
-        }
-
         public override void Create()
         {
-            var ch = TTFactory.BuildChannel;
             Factory.BallSprite = "paul-hardman_circle-four";
 
-            var fxScreen = TTFactory.CreateFxScreenlet("Grayscale");
-            TTFactory.BuildTo(fxScreen);
+            var fxScreen = TestFactory.CreateFxScreenlet("Grayscale");
+            BuildTo(fxScreen);
             Factory.CreateRotatingBall(new Vector2(100f, 100f), new Vector2(5f, 5f), 0.1);
 
-            var fxScreen2 = TTFactory.CreateFxScreenlet("RandomColor");
-            TTFactory.BuildTo(fxScreen2);
+            var fxScreen2 = TestFactory.CreateFxScreenlet("RandomColor");
+            BuildTo(fxScreen2);
             Factory.CreateRotatingBall(new Vector2(500f, 400f), new Vector2(5f, 5f), -0.1);
 
-            TTFactory.BuildTo(ch); // restore the normal BuildScreen
+            BuildToDefault();
             Factory.CreateRotatingBall(new Vector2(900f, 100f), new Vector2(5f, 5f), 0.1);
         }
 

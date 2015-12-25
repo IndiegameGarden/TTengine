@@ -15,15 +15,10 @@ namespace TTengineTest
     /// <summary>Testing the linear motion of objects on screen</summary>
     class TestAudioBasics: Test
     {
-        public TestAudioBasics()
-            : base()        
-        {
-        }
-
         public override void Create()
         {
-            TTFactory.CreateAudiolet(Test_Sample());
-            //TTFactory.CreateAudiolet(Test_Repeat());
+            TestFactory.CreateAudiolet(Test_Sample());
+            //TestFactory.CreateAudiolet(Test_Repeat());
         }
 
         /// <summary>

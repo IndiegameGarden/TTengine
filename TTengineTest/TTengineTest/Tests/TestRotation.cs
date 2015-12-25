@@ -12,12 +12,6 @@ namespace TTengineTest
     {
         const float MOVE_SPEED_MULTIPLIER = 80f;
 
-        public TestRotation()
-            : base()        
-        {
-            BackgroundColor = Color.White;
-        }
-
         public override void Create()
         {
             Factory.BallSprite = "paul-hardman_circle-four";
@@ -33,7 +27,7 @@ namespace TTengineTest
                     ball.AddComponent(new RotateComp());
 
                     // modifier to adapt rotation
-                    TTFactory.AddScript(ball, MyRotateBallScript);
+                    TestFactory.AddScript(ball, MyRotateBallScript);
                 }
             }
         }

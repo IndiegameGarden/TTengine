@@ -10,12 +10,6 @@ namespace TTengineTest
     /// <summary>Testing the linear motion of objects on screen</summary>
     class TestContentLoad : Test
     {
-        public TestContentLoad()
-            : base()        
-        {
-            BackgroundColor = Color.White;
-        }
-
         public override void Create()
         {
             Factory.BallSprite = "red-circle_frank-tschakert";

@@ -10,15 +10,9 @@ namespace TTengineTest
     /// <summary>Testing the linear motion of objects on screen</summary>
     class TestSpriteField : Test
     {
-        public TestSpriteField()
-            : base()        
-        {
-            BackgroundColor = Color.White;
-        }
-
         public override void Create()
         {
-            var e = TTFactory.CreateSpriteField("amazing1.png", "tree");   // TODO white circle
+            var e = TestFactory.CreateSpriteField("amazing1.png", "tree");   // TODO white circle
             e.AddComponent(new VelocityComp());
             e.Refresh();
 

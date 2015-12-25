@@ -12,10 +12,11 @@ using TTMusicEngine.Soundevents;
 namespace TTengine.Core
 {
     /// <summary>
-    /// The Singleton TTengine Factory to create new Entities (may be half-baked, 
-    /// to further customize), and perhaps other things
+    /// The TTengine's Factory to create new basic Entities (may be half-baked, 
+    /// to further customize) with customizable output to which EntityWorld or
+    /// Screen the items are built.
     /// </summary>
-    public sealed class TTFactory
+    public class TTFactory
     {
         /// <summary>The Artemis entity world currently used for building new Entities in</summary>
         public static EntityWorld BuildWorld;
@@ -240,7 +241,7 @@ namespace TTengine.Core
         /// <returns></returns>
         public static Entity CreateFxScreenlet(String effectFile)
         {
-            var fx = TTGame.Instance.Content.Load<Effect>(effectFile);
+            var fx = _game.Content.Load<Effect>(effectFile);
             var sc = new ScreenComp(BuildScreen.RenderTarget); // renders to the existing screen buffer
             sc.SpriteBatch.effect = fx; // set the effect in SprBatch
             var e = CreateEntity();
