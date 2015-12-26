@@ -30,19 +30,20 @@ namespace TTengine.Core
 
         public GraphicsDeviceManager GraphicsMgr;
 
-        /// <summary>The audio/music engine</summary>
+        /// <summary>The audio/music engine, or null if none initialized</summary>
         public MusicEngine AudioEngine;
 
         /// <summary>The main (root) screen that all graphics are eventually rendered to</summary>
         public ScreenComp DrawScreen;
 
-        /// <summary>The default (root) World</summary>
+        /// <summary>The default (root) World into which everything else lives</summary>
         public EntityWorld World;
 
-        /// <summary>Time step per EntityWorld update cycle in seconds</summary>
-        public float TimeStep = 0.010f;
-
-        protected double timeLag = 0.0f; 
+        /// <summary>
+        /// lag is how much time (sec) the fixed timestep (gametime) updates lag to the actual time.
+        /// This is used for controlling the World Updates and for interpolated rendering.
+        /// </summary>
+        public double TimeLag = 0.0f; 
 
         public TTGame()
         {
@@ -50,8 +51,7 @@ namespace TTengine.Core
 
             // XNA related init that needs to be in constructor (or at least before Initialize())
             GraphicsMgr = new GraphicsDeviceManager(this);
-            IsFixedTimeStep = true;
-            TargetElapsedTime = TimeSpan.FromSeconds(TimeStep); // TODO update when double val changes
+            IsFixedTimeStep = false; // handle own fixed timesteps
             Content.RootDirectory = "Content";
 #if DEBUG
             GraphicsMgr.SynchronizeWithVerticalRetrace = false; // FPS: as fast as possible
@@ -91,7 +91,15 @@ namespace TTengine.Core
 
         protected override void Update(GameTime gameTime)
         {
-            World.Update(gameTime.ElapsedGameTime.Ticks);
+            double dt = TargetElapsedTime.TotalSeconds;
+            // see http://gameprogrammingpatterns.com/game-loop.html
+            TimeLag += gameTime.ElapsedGameTime.TotalSeconds;
+
+            while (TimeLag >= dt)
+            {
+                World.Update(TargetElapsedTime.Ticks);
+                TimeLag -= dt;
+            }
             base.Update(gameTime);
         }
 
