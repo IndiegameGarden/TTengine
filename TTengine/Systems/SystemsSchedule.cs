@@ -29,6 +29,7 @@ namespace TTengine.Systems
         // Systems in DRAW loop
         public const int 
             ScreenletPreSystem  = 0,
+            WorldSystemDraw     = 0,
             AudioSystem         = 1,
             ScriptDrawSystem    = 2,
             SpriteRenderSystem  = 2,

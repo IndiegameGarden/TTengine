@@ -42,6 +42,7 @@ namespace TTengineTest
             // Here all the tests are created
             //DoTest(new TestPostEffects()); //FIXME
             DoTest(new TestLinearMotion());
+            /*
             DoTest(new TestRotation());
             DoTest(new TestGamepad());
             DoTest(new TestMixedShaders());
@@ -59,9 +60,10 @@ namespace TTengineTest
             DoTest(new TestAudioBasics());
             DoTest(new TestContentLoad());
             DoTest(new TestRelativeMotion());
+            */
 
             // pick the initial one and activate it
-            ZapChannel(0);
+            //ZapChannel(0);
 
         }
 
@@ -110,6 +112,7 @@ namespace TTengineTest
             var ch = TestFactory.CreateChannel(test.BackgroundColor);
             test.Channel = ch;
             testChannels.Add(ch);
+            test.BuildToDefault();
             test.Create();
 
             // add framerate counter
@@ -121,7 +124,7 @@ namespace TTengineTest
             Factory.CreateTextlet(new Vector2(2f, GraphicsMgr.PreferredBackBufferHeight-20f), test.GetType().Name, col);
 
             // disable channel by default
-            ch.IsEnabled = false;
+            //ch.IsEnabled = false;
         }
 
     }

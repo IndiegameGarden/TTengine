@@ -231,7 +231,6 @@ namespace TTengine.Core
             var e = CreateScreenlet(backgroundColor, hasRenderBuffer, width, height);
             var wc = new WorldComp();
             e.AddComponent(wc);
-            BuildTo(e);
             return e;
         }
 
