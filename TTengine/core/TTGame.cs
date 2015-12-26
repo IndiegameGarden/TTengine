@@ -69,6 +69,7 @@ namespace TTengine.Core
         protected override void Initialize()
         {
             World = new EntityWorld();
+            World.InitializeAll(true);
             TTFactory.BuildWorld = World;
             DrawScreen = new ScreenComp(false);
 

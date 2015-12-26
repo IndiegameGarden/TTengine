@@ -19,11 +19,6 @@
     public class WorldSystem : EntityComponentProcessingSystem<WorldComp>
     {
 
-        protected override void Begin()
-        {
-            base.Begin();
-        }
-
         public override void Process(Entity entity, WorldComp worldComp)
         {
             worldComp.World.Update(EntityWorld.Delta);

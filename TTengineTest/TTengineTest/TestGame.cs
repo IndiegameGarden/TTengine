@@ -63,7 +63,7 @@ namespace TTengineTest
             */
 
             // pick the initial one and activate it
-            //ZapChannel(0);
+            ZapChannel(0);
 
         }
 
@@ -124,7 +124,7 @@ namespace TTengineTest
             Factory.CreateTextlet(new Vector2(2f, GraphicsMgr.PreferredBackBufferHeight-20f), test.GetType().Name, col);
 
             // disable channel by default
-            //ch.IsEnabled = false;
+            ch.IsEnabled = false;
         }
 
     }
