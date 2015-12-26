@@ -86,6 +86,7 @@ namespace TTengine.Core
             Entity e = CreateEntity();
             e.AddComponent(new PositionComp());
             e.AddComponent(new VelocityComp());
+            e.Refresh();
             return e;
         }
 
@@ -97,6 +98,7 @@ namespace TTengine.Core
         {
             Entity e = CreateGamelet();
             e.AddComponent(new DrawComp(BuildScreen));
+            e.Refresh();
             return e;
         }
 
@@ -112,6 +114,7 @@ namespace TTengine.Core
             Entity e = CreateDrawlet();
             var spriteComp = new SpriteComp(graphicsFile);
             e.AddComponent(spriteComp);
+            e.Refresh();
             return e;
         }
 
@@ -124,6 +127,7 @@ namespace TTengine.Core
             Entity e = CreateDrawlet();
             var spriteComp = new SpriteComp(screen.GetComponent<ScreenComp>());
             e.AddComponent(spriteComp);
+            e.Refresh();
             return e;
         }
 
@@ -133,26 +137,16 @@ namespace TTengine.Core
         /// <param name="atlasBitmapFile">Filename of the sprite atlas bitmap</param>
         /// <param name="NspritesX">Number of sprites in horizontal direction (X) in the atlas</param>
         /// <param name="NspritesY">Number of sprites in vertical direction (Y) in the atlas</param>
-        /// <returns></returns>
-        public static Entity CreateAnimatedSpritelet(string atlasBitmapFile, int NspritesX, int NspritesY)
-        {
-            return CreateAnimatedSpritelet(atlasBitmapFile, NspritesX, NspritesY, AnimationType.NORMAL);
-        }
-
-            /// <summary>
-        /// Create an animated sprite entity
-        /// </summary>
-        /// <param name="atlasBitmapFile">Filename of the sprite atlas bitmap</param>
-        /// <param name="NspritesX">Number of sprites in horizontal direction (X) in the atlas</param>
-        /// <param name="NspritesY">Number of sprites in vertical direction (Y) in the atlas</param>
         /// <param name="animType">Animation type chosen from AnimationType class</param>
         /// <returns></returns>
-        public static Entity CreateAnimatedSpritelet(string atlasBitmapFile, int NspritesX, int NspritesY, AnimationType animType)
+        public static Entity CreateAnimatedSpritelet(string atlasBitmapFile, int NspritesX, int NspritesY, 
+                                                     AnimationType animType = AnimationType.NORMAL )
         {
             Entity e = CreateDrawlet();
             var spriteComp = new AnimatedSpriteComp(atlasBitmapFile,NspritesX,NspritesY);
             spriteComp.AnimType = animType;
             e.AddComponent(spriteComp);
+            e.Refresh();
             return e;
         }
 
@@ -164,18 +158,8 @@ namespace TTengine.Core
             spriteFieldComp.FieldSpacing = new Vector2(spriteComp.Width, spriteComp.Height);
             e.AddComponent(spriteComp);
             e.AddComponent(spriteFieldComp);
+            e.Refresh();
             return e;
-        }
-
-        /// <summary>
-        /// Creates a Textlet, which is a moveable piece of text.
-        /// Uses a default font.
-        /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        public static Entity CreateTextlet(string text)
-        {
-            return CreateTextlet(text, "Font1");
         }
 
         /// <summary>
@@ -184,12 +168,13 @@ namespace TTengine.Core
         /// <param name="text"></param>
         /// <param name="fontName"></param>
         /// <returns></returns>
-        public static Entity CreateTextlet(string text, string fontName)
+        public static Entity CreateTextlet(string text, string fontName = "Font1")
         {
             Entity e = CreateDrawlet();
             e.AddComponent(new ScaleComp());
             TextComp tc = new TextComp(text, fontName);
             e.AddComponent(tc);
+            e.Refresh();
             return e;
         }
 
@@ -208,6 +193,7 @@ namespace TTengine.Core
             var e = CreateEntity();
             e.AddComponent(sc);
             e.AddComponent(new DrawComp(BuildScreen));
+            e.Refresh();
             return e;
         }
 
@@ -231,6 +217,7 @@ namespace TTengine.Core
             var e = CreateScreenlet(backgroundColor, hasRenderBuffer, width, height);
             var wc = new WorldComp();
             e.AddComponent(wc);
+            e.Refresh();
             return e;
         }
 
@@ -246,6 +233,7 @@ namespace TTengine.Core
             var e = CreateEntity();
             e.AddComponent(sc);
             e.AddComponent(new DrawComp(sc));
+            e.Refresh();
             return e;
         }
 
@@ -292,7 +280,10 @@ namespace TTengine.Core
         public static BasicScript AddScript(Entity e, ScriptDelegate scriptCode)
         {
             if (!e.HasComponent<ScriptComp>())
+            {
                 e.AddComponent(new ScriptComp());
+                e.Refresh();
+            }
             var sc = e.GetComponent<ScriptComp>();
             var script = new BasicScript(scriptCode);
             sc.Add(script);
@@ -309,7 +300,10 @@ namespace TTengine.Core
         public static ModifierScript AddModifier(Entity e, ModifierDelegate scriptCode, IFunction func)
         {
             if (!e.HasComponent<ScriptComp>())
+            {
                 e.AddComponent(new ScriptComp());
+                e.Refresh();
+            }
             var sc = e.GetComponent<ScriptComp>();
             var script = new ModifierScript(scriptCode, func);
             sc.Add(script);
@@ -326,7 +320,10 @@ namespace TTengine.Core
         public static VectorModifierScript AddModifier(Entity e, VectorModifierDelegate scriptCode, IVectorFunction func)
         {
             if (!e.HasComponent<ScriptComp>())
+            {
                 e.AddComponent(new ScriptComp());
+                e.Refresh();
+            }
             var sc = e.GetComponent<ScriptComp>();
             var script = new VectorModifierScript(scriptCode, func);
             sc.Add(script);
