@@ -74,10 +74,6 @@ namespace TTengine.Comps
         public void ReduceLifeTime(double lifeTimeDelta)
         {
             this.LifeTime -= lifeTimeDelta;
-            if (this.LifeTime < 0)
-            {
-                this.LifeTime = 0;
-            }
         }
     }
 }
