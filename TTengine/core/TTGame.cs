@@ -46,14 +46,11 @@ namespace TTengine.Core
         /// </summary>
         public double TimeLag = 0.0;
 
-        /// <summary>
-        /// Time (sec) of last total update loop
-        /// </summary>
-        public double TimeUpdate = 0.0;
-
-        public double TimeDraw = 0.0;
+        public bool IsProfiling;
 
         public CountingTimer TimerUpdate = new CountingTimer();
+
+        public CountingTimer TimerDraw = new CountingTimer();
 
         public TTGame()
         {
@@ -64,8 +61,10 @@ namespace TTengine.Core
             IsFixedTimeStep = false; // handle own fixed timesteps
             Content.RootDirectory = "Content";
 #if DEBUG
+            IsProfiling = true;
             GraphicsMgr.SynchronizeWithVerticalRetrace = false; // FPS: as fast as possible
 #else
+            IsProfiling = false;
             GraphicsMgr.SynchronizeWithVerticalRetrace = true;
 #endif
             int myWindowWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
@@ -102,7 +101,11 @@ namespace TTengine.Core
 
         protected override void Update(GameTime gameTime)
         {
-            DateTime t0 = FastDateTime.Now;
+            if (IsProfiling)
+            {
+                TimerUpdate.Start();
+                TimerUpdate.CountUp();
+            }
             double dt = TargetElapsedTime.TotalSeconds;
             // see http://gameprogrammingpatterns.com/game-loop.html
             TimeLag += gameTime.ElapsedGameTime.TotalSeconds;
@@ -113,17 +116,29 @@ namespace TTengine.Core
                 TimeLag -= dt;
             }
             base.Update(gameTime);
-            TimeUpdate = (FastDateTime.Now - t0).TotalSeconds;
+            if (IsProfiling)
+            {
+                TimerUpdate.Update();
+                TimerUpdate.Stop();
+            }
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            DateTime t0 = FastDateTime.Now;
+            if (IsProfiling)
+            {
+                TimerDraw.Start();
+                TimerDraw.CountUp();
+            }
             GraphicsDevice.SetRenderTarget(null);
             GraphicsDevice.Clear(DrawScreen.BackgroundColor);            
             World.Draw();
             base.Draw(gameTime);
-            TimeDraw = (FastDateTime.Now - t0).TotalSeconds;
+            if (IsProfiling)
+            {
+                TimerDraw.Update();
+                TimerDraw.Stop();
+            }
         }
 
     }

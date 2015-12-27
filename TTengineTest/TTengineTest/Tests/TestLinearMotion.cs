@@ -13,9 +13,9 @@ namespace TTengineTest
         public override void Create()
         {
             Factory.BallSprite = "red-circle_frank-tschakert";
-            for (float x = 250f; x < 800f; x += 200f)
+            for (float x = 50f; x < 1250f; x += 200f)
             {
-                for (float y = 150f; y < 668f; y += 200f)
+                for (float y = 50f; y < 728f; y += 200f)
                 {
                     var velo = new Vector2(-0.5f + x / 1024f, -0.5f + y / 768f);
                     velo *= MOVE_SPEED_MULTIPLIER;

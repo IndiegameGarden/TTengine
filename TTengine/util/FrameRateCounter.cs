@@ -39,11 +39,11 @@ namespace TTengine.Util
         {
             timer.CountUp();
             int frameRateAvg = 0;
-            if (ctx.SimTime > 0)
+            if (timer.TimeTotal > 0)
                 frameRateAvg = (int)( (double)timer.CountTotal / timer.TimeTotal );
-            string msg = string.Format("{0,4} fps [{1,4}] Tupd={2,3} Tdrw={2,3}", timer.Count, frameRateAvg, 
-                Math.Round(1000.0 * TTGame.Instance.TimeUpdate),
-                Math.Round(1000.0 * TTGame.Instance.TimeDraw) 
+            string msg = string.Format("{0,4} FPS [{1,4}] Tupd={2,5:N1}ms Tdrw={3,5:N1}ms", timer.Count, frameRateAvg,
+                Math.Round(1000.0 * TTGame.Instance.TimerUpdate.TimePerCount),
+                Math.Round(1000.0 * TTGame.Instance.TimerDraw.TimePerCount) 
             );
             textComp.Text = msg;
         }

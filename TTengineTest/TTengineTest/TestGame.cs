@@ -33,6 +33,7 @@ namespace TTengineTest
         public TestGame()
         {
             IsAudio = true;
+            IsProfiling = true;
         }
 
         protected override void LoadContent()
@@ -42,8 +43,8 @@ namespace TTengineTest
             // Here all the tests are created
             //DoTest(new TestPostEffects()); //FIXME
             DoTest(new TestLinearMotion());
-            /*
             DoTest(new TestRotation());
+            /*
             DoTest(new TestGamepad());
             DoTest(new TestMixedShaders());
             DoTest(new TestTextureSamplingShader());
