@@ -12,8 +12,8 @@ namespace TTengine.Systems
     {
         // Systems in UPDATE loop
         public const int
-            ScriptUpdateSystem  = 1,
-            WorldSystem         = 1,
+            WorldSystem         = 0,
+            ScriptUpdateSystem = 1,
             BTAISystem          = 1,
             MoveSystem          = 2,
             TargetMoveSystem    = 2,
@@ -27,10 +27,10 @@ namespace TTengine.Systems
             CollisionSystem     = 4;
 
         // Systems in DRAW loop
-        public const int 
-            ScreenletPreSystem  = 0,
-            WorldSystemDraw     = 0,
-            AudioSystem         = 1,
+        public const int
+            ScreenletPreSystem = 0,
+            WorldSystemDraw = 1,
+            AudioSystem = 1,
             ScriptDrawSystem    = 2,
             SpriteRenderSystem  = 2,
             AnimatedSpriteSystem = 2,
