@@ -17,10 +17,8 @@ namespace TTengine.Util
     public class FrameRateCounter: IScriptDraw
     {
         TextComp textComp;
-        int frameRate = 0;
-        int frameCounter = 0;
-        int frameCounterTotal = 0;
         TimeSpan elapsedTime = TimeSpan.Zero;
+        CountingTimer timer = new CountingTimer();
 
         /// <summary>
         /// Create a new FrameRateCounter script that modifies the text in the
@@ -30,31 +28,24 @@ namespace TTengine.Util
         public FrameRateCounter(TextComp comp)
         {
             this.textComp = comp;
+            timer.Start();
         }
 
         public void OnUpdate(ScriptContext ctx){
-            elapsedTime += TimeSpan.FromSeconds(ctx.Dt);
-
-            if (elapsedTime > TimeSpan.FromSeconds(1))
-            {
-                elapsedTime -= TimeSpan.FromSeconds(1);
-                frameRate = frameCounter;
-                frameCounter = 0;
-            }
+            timer.Update();
         }
         
         public void OnDraw(ScriptContext ctx)
         {
-            frameCounter++;
-            frameCounterTotal++;
+            timer.CountUp();
             int frameRateAvg = 0;
             if (ctx.SimTime > 0)
-                frameRateAvg = (int)(frameCounterTotal / ctx.SimTime);
-            string fps = string.Format("{0,4} fps [{1,4}] Tupd={2,3} Tdrw={2,3}", frameRate, frameRateAvg, 
+                frameRateAvg = (int)( (double)timer.CountTotal / timer.TimeTotal );
+            string msg = string.Format("{0,4} fps [{1,4}] Tupd={2,3} Tdrw={2,3}", timer.Count, frameRateAvg, 
                 Math.Round(1000.0 * TTGame.Instance.TimeUpdate),
                 Math.Round(1000.0 * TTGame.Instance.TimeDraw) 
             );
-            textComp.Text = fps;
+            textComp.Text = msg;
         }
 
     }

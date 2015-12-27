@@ -53,6 +53,8 @@ namespace TTengine.Core
 
         public double TimeDraw = 0.0;
 
+        public CountingTimer TimerUpdate = new CountingTimer();
+
         public TTGame()
         {
             Instance = this;

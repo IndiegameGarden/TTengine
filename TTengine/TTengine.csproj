@@ -191,6 +191,7 @@
     <Compile Include="TreeSharp\Switch.cs" />
     <Compile Include="TreeSharp\TreeExample.cs" />
     <Compile Include="TreeSharp\Wait.cs" />
+    <Compile Include="Util\CountingTimer.cs" />
     <Compile Include="Util\MsgBox.cs" />
     <Compile Include="Util\FrameRateCounter.cs" />
     <Compile Include="Core\RandomMath.cs" />
