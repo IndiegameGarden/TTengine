@@ -50,7 +50,10 @@ namespace TTengine.Util
             int frameRateAvg = 0;
             if (ctx.SimTime > 0)
                 frameRateAvg = (int)(frameCounterTotal / ctx.SimTime);
-            string fps = string.Format("{0,4} fps [{1,4}] Tupd={2,3}", frameRate, frameRateAvg, Math.Round(1000.0 * TTGame.Instance.TimeUpdate) );
+            string fps = string.Format("{0,4} fps [{1,4}] Tupd={2,3} Tdrw={2,3}", frameRate, frameRateAvg, 
+                Math.Round(1000.0 * TTGame.Instance.TimeUpdate),
+                Math.Round(1000.0 * TTGame.Instance.TimeDraw) 
+            );
             textComp.Text = fps;
         }
 

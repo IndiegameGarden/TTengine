@@ -51,6 +51,8 @@ namespace TTengine.Core
         /// </summary>
         public double TimeUpdate = 0.0;
 
+        public double TimeDraw = 0.0;
+
         public TTGame()
         {
             Instance = this;
@@ -108,16 +110,18 @@ namespace TTengine.Core
                 World.Update(TargetElapsedTime.Ticks);
                 TimeLag -= dt;
             }
-            TimeUpdate = (FastDateTime.Now - t0).TotalSeconds;
             base.Update(gameTime);
+            TimeUpdate = (FastDateTime.Now - t0).TotalSeconds;
         }
 
         protected override void Draw(GameTime gameTime)
         {
+            DateTime t0 = FastDateTime.Now;
             GraphicsDevice.SetRenderTarget(null);
             GraphicsDevice.Clear(DrawScreen.BackgroundColor);            
             World.Draw();
             base.Draw(gameTime);
+            TimeDraw = (FastDateTime.Now - t0).TotalSeconds;
         }
 
     }
