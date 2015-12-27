@@ -54,7 +54,7 @@ namespace Game1
             DrawScreen.BackgroundColor = Color.White;
 
             // add framerate counter
-            FrameRateCounter.Create(Color.Black);
+            Game1Factory.CreateFrameRateCounter(Color.Black);
 
             // add several sprites             
             for (float x = 0.1f; x < 1.6f; x += 0.3f)
@@ -77,7 +77,7 @@ namespace Game1
     /// Factory to create new game-specific entities.
     /// For your own game, move it into a separate file.
     /// </summary>
-    public class Game1Factory
+    public class Game1Factory: TTFactory
     {
         private static Game1Factory _instance = null;
         private Game1 _game;
@@ -106,7 +106,7 @@ namespace Game1
         /// <returns></returns>
         public Entity CreateBall(double radius)
         {
-            Entity e = TTFactory.CreateSpritelet("paul-hardman_circle-four");
+            Entity e = CreateSpritelet("paul-hardman_circle-four");
             e.AddComponent(new ScaleComp(radius));
             return e;
         }
@@ -157,7 +157,7 @@ namespace Game1
 
         public Entity CreateMovingTextlet(Vector2 pos, string text)
         {
-            var t = TTFactory.CreateTextlet(text);
+            var t = CreateTextlet(text);
             t.GetComponent<PositionComp>().Position = pos;
             t.GetComponent<DrawComp>().DrawColor = Color.Black;
             t.GetComponent<VelocityComp>().Velocity = 0.2f * new Vector2( (float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f);

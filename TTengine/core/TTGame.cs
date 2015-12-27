@@ -11,6 +11,7 @@ using TTengine.Comps;
 using TTengine.Systems;
 using TTengine.Util;
 using Artemis;
+using Artemis.Utils;
 //using TTengine.Modifiers; // TODO
 using TTMusicEngine;
 using TTMusicEngine.Soundevents;
@@ -43,7 +44,12 @@ namespace TTengine.Core
         /// lag is how much time (sec) the fixed timestep (gametime) updates lag to the actual time.
         /// This is used for controlling the World Updates and for interpolated rendering.
         /// </summary>
-        public double TimeLag = 0.0f; 
+        public double TimeLag = 0.0;
+
+        /// <summary>
+        /// Time (sec) of last total update loop
+        /// </summary>
+        public double TimeUpdate = 0.0;
 
         public TTGame()
         {
@@ -92,6 +98,7 @@ namespace TTengine.Core
 
         protected override void Update(GameTime gameTime)
         {
+            DateTime t0 = FastDateTime.Now;
             double dt = TargetElapsedTime.TotalSeconds;
             // see http://gameprogrammingpatterns.com/game-loop.html
             TimeLag += gameTime.ElapsedGameTime.TotalSeconds;
@@ -101,6 +108,7 @@ namespace TTengine.Core
                 World.Update(TargetElapsedTime.Ticks);
                 TimeLag -= dt;
             }
+            TimeUpdate = (FastDateTime.Now - t0).TotalSeconds;
             base.Update(gameTime);
         }
 

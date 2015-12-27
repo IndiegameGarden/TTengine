@@ -14,7 +14,7 @@ namespace TTengine.Util
     /// shows a framerate counter on screen (shows FPS) calculated
     /// from timing of draw/upd calls.
     /// </summary>
-    public class FrameRateCounter: IScript
+    public class FrameRateCounter: IScriptDraw
     {
         TextComp textComp;
         int frameRate = 0;
@@ -30,21 +30,6 @@ namespace TTengine.Util
         public FrameRateCounter(TextComp comp)
         {
             this.textComp = comp;
-        }
-
-        /// <summary>
-        /// Creates a new FrameRateCounter. TODO: screen position set.
-        /// </summary>
-        /// <returns></returns>
-        public static Entity Create(Color textColor)
-        {
-            var e = TTFactory.CreateTextlet("##");
-            e.GetComponent<PositionComp>().Position = new Vector2(2f, 2f);
-            e.GetComponent<DrawComp>().DrawColor = textColor;
-            var m = new ScriptComp(new FrameRateCounter(e.GetComponent<TextComp>()));
-            e.AddComponent(m);
-            e.Refresh();
-            return e;
         }
 
         public void OnUpdate(ScriptContext ctx){
@@ -65,7 +50,7 @@ namespace TTengine.Util
             int frameRateAvg = 0;
             if (ctx.SimTime > 0)
                 frameRateAvg = (int)(frameCounterTotal / ctx.SimTime);
-            string fps = string.Format("{0} fps [{1}]", frameRate, frameRateAvg );
+            string fps = string.Format("{0,4} fps [{1,4}] Tupd={2,3}", frameRate, frameRateAvg, Math.Round(1000.0 * TTGame.Instance.TimeUpdate) );
             textComp.Text = fps;
         }
 

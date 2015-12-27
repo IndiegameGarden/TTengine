@@ -118,7 +118,7 @@ namespace TTengineTest
             // add framerate counter
             test.BuildToDefault();
             var col = TTUtil.InvertColor(test.BackgroundColor);
-            FrameRateCounter.Create(col);
+            TestFactory.CreateFrameRateCounter(col);
 
             // add test info as text
             Factory.CreateTextlet(new Vector2(2f, GraphicsMgr.PreferredBackBufferHeight-20f), test.GetType().Name, col);

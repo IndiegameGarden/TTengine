@@ -47,10 +47,12 @@ namespace TTengine.Systems
         {
             ctx.Entity = entity;
             ctx.SimTime = sc.SimTime;
-            //foreach (var script in sc.Scripts) // FIXME
-            //    script.OnDraw(ctx);
+            foreach (var script in sc.Scripts)
+            {
+                if (script is IScriptDraw)
+                    (script as IScriptDraw).OnDraw(ctx);
+            }
 
         }
-
     }
 }

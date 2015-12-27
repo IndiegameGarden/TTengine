@@ -263,6 +263,20 @@ namespace TTengine.Core
             return e;
         }
 
+        /// <summary>
+        /// Creates a new FrameRateCounter. TODO: screen position set.
+        /// </summary>
+        /// <returns></returns>
+        public static Entity CreateFrameRateCounter(Color textColor)
+        {
+            var e = TTFactory.CreateTextlet("##");
+            e.GetComponent<PositionComp>().Position = new Vector2(2f, 2f);
+            e.GetComponent<DrawComp>().DrawColor = textColor;
+            AddScript(e, new Util.FrameRateCounter(e.GetComponent<TextComp>()));
+            e.Refresh();
+            return e;
+        }
+
         public static void AddScript(Entity e, IScript script)
         {
             if (!e.HasComponent<ScriptComp>())

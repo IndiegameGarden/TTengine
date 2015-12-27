@@ -40,6 +40,14 @@ namespace TTengine.Comps
     }
 
     /// <summary>
+    /// Interface that a script object must implement
+    /// </summary>
+    public interface IScriptDraw: IScript
+    {
+        void OnDraw(ScriptContext context);
+    }
+
+    /// <summary>
     /// The Comp that enables scripting for your Entity with one or more ordered scripts.
     /// </summary>
     public class ScriptComp: Comp
