@@ -42,8 +42,8 @@ namespace TTengineTest
 
             // Here all the tests are created
             //DoTest(new TestPostEffects()); //FIXME
-            DoTest(new TestLinearMotion());
             DoTest(new TestRotation());
+            DoTest(new TestLinearMotion());
             /*
             DoTest(new TestGamepad());
             DoTest(new TestMixedShaders());
@@ -104,7 +104,9 @@ namespace TTengineTest
             if (nch >= testChannels.Count)
                 nch -= testChannels.Count;
             testChannels[channel].IsEnabled = false;
+            testChannels[channel].Refresh();
             testChannels[nch].IsEnabled = true;
+            testChannels[nch].Refresh();
             channel = nch;
         }
 
