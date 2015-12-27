@@ -25,6 +25,9 @@ namespace TTengine.Systems
 
         public override void Process(Entity screenlet, ScreenComp screenComp)
         {
+            TTGame.Instance.GraphicsDevice.SetRenderTarget(screenComp.RenderTarget);
+            TTGame.Instance.GraphicsDevice.Clear(screenComp.BackgroundColor);
+
             // in this initial round, start the drawing to this screenlet's spritebatch:
             TTSpriteBatch sb = screenComp.SpriteBatch;
             sb.BeginParameterized();
