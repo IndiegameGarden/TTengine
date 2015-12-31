@@ -237,7 +237,7 @@ namespace Artemis.System
         {
             if (this.CheckProcessing())
             {
-                Dt = TimeSpan.FromTicks(EntityWorld.Delta).TotalSeconds;
+                Dt = EntityWorld.DeltaTimeSpan.TotalSeconds;
                 this.Begin();
                 this.ProcessEntities(this.actives);
                 this.End();
