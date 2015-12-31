@@ -16,6 +16,11 @@ namespace TTengine.Comps
         /// <summary>The EntityWorld that is being contained in this component</summary>
         public EntityWorld World;
 
+        /// <summary>
+        /// The time factor for this World; 1.0 is normal, < 1 is slower time and > 1 is faster time.
+        /// </summary>
+        public double TimeWarp = 1.0;
+
         public WorldComp()
         {
             this.World = new EntityWorld();

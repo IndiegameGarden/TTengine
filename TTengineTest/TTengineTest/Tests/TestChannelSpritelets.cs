@@ -23,26 +23,30 @@ namespace TTengineTest
             // create an additional child channel that renders onto the main channel
             // content for 1st screen: call upon another unit test
             var ch1 = TestFactory.CreateChannel(Color.LightSalmon, true, 200, 400);
+            ch1.GetComponent<WorldComp>().TimeWarp = 0.1;
             BuildTo(ch1);
             var t1 = new TestRelativeMotion();
             t1.Create();
 
             // second child channel
             var ch2 = TestFactory.CreateChannel(Color.LightSeaGreen, true, 200, 400);
+            ch1.GetComponent<WorldComp>().TimeWarp = 0.5;
             BuildTo(ch2);
             var t2 = new TestRelativeMotion();
             t2.Create();
 
             // 3rd
             var ch3 = TestFactory.CreateChannel(Color.LightPink, true, 200, 400);
+            ch1.GetComponent<WorldComp>().TimeWarp = 2.0;
             BuildTo(ch3);
             var t3 = new TestRelativeMotion();
             t3.Create();
 
             // 4th
             var ch4 = TestFactory.CreateChannel(Color.LightGreen, true, 700, 100);
+            ch1.GetComponent<WorldComp>().TimeWarp = 0.0; // Paused
             BuildTo(ch4);
-            var t4 = new TestZoomedChannel();
+            var t4 = new TestRelativeMotion();
             t4.Channel = Channel;
             t4.Create();
 

@@ -123,6 +123,10 @@ namespace Artemis
         /// <value>The delta in ticks.</value>
         public long Delta { get; private set; }
 
+        /// <summary>Gets the Delta value as a TimeSpan</summary>
+        /// <value>The delta as TimeSpan.</value>
+        public TimeSpan DeltaTimeSpan { get; private set; }
+
         /// <summary>Gets the entity manager.</summary>
         /// <value>The entity manager.</value>
         public EntityManager EntityManager { get; private set; }
@@ -155,7 +159,7 @@ namespace Artemis
                 activeEntity.Delete();
             }
 
-            this.Update();
+            this.Update(new TimeSpan(0));
         }
 
         /// <summary>Creates the entity.</summary>
@@ -310,18 +314,11 @@ namespace Artemis
         }
 
         /// <summary>Updates the EntityWorld.</summary>
-        public void Update()
+        /// <param name="deltaTicks">The delta time for this simulation step.</param>
+        public void Update(TimeSpan delta)
         {
-            long deltaTicks = (FastDateTime.Now - this.dateTime).Ticks;
-            this.dateTime = FastDateTime.Now;
-            this.Update(deltaTicks);
-        }
-
-        /// <summary>Updates the EntityWorld.</summary>
-        /// <param name="deltaTicks">The delta ticks.</param>
-        public void Update(long deltaTicks)
-        {
-            this.Delta = deltaTicks;
+            this.Delta = delta.Ticks;
+            this.DeltaTimeSpan = delta;
 
             ++this.poolCleanupDelayCounter;
             if (this.poolCleanupDelayCounter > this.PoolCleanupDelay)

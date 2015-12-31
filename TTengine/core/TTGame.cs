@@ -112,7 +112,7 @@ namespace TTengine.Core
 
             while (TimeLag >= dt)
             {
-                World.Update(TargetElapsedTime.Ticks);
+                World.Update(TargetElapsedTime);
                 TimeLag -= dt;
             }
             base.Update(gameTime);

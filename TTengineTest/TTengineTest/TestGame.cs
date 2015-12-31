@@ -44,6 +44,7 @@ namespace TTengineTest
             //DoTest(new TestPostEffects()); //FIXME
             DoTest(new TestRotation());
             DoTest(new TestLinearMotion());
+            DoTest(new TestChannelSpritelets());
             /*
             DoTest(new TestGamepad());
             DoTest(new TestMixedShaders());
@@ -52,8 +53,7 @@ namespace TTengineTest
             DoTest(new TestModifiers());
             DoTest(new TestSphereCollision());
             DoTest(new TestBTAI());
-            DoTest(new TestSpritePixelGetSet());
-            DoTest(new TestChannelSpritelets());
+            DoTest(new TestSpritePixelGetSet());            
             DoTest(new TestZoomedChannel());
             DoTest(new TestAnimatedSprite());
             DoTest(new TestTargetMotion());
