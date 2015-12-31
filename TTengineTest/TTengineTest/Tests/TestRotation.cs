@@ -15,7 +15,7 @@ namespace TTengineTest
         public override void Create()
         {
             Factory.BallSprite = "paul-hardman_circle-four";
-
+            double spd = 0.2;
             for (float x = 250f; x < 800f; x += 200f)
             {
                 for (float y = 150f; y < 668f; y += 200f)
@@ -23,18 +23,13 @@ namespace TTengineTest
                     var velo = Vector2.Zero;
                     velo *= MOVE_SPEED_MULTIPLIER;
                     var ball = Factory.CreateMovingBall(new Vector2(x, y), velo );
-                    ball.GetComponent<ScaleComp>().Scale = 0.15;
-                    ball.AddComponent(new RotateComp());
-
-                    // modifier to adapt rotation
-                    TestFactory.AddScript(ball, MyRotateBallScript);
+                    ball.GetComponent<ScaleComp>().Scale = 0.19;
+                    var rc = new RotateComp();
+                    rc.RotateSpeed = spd;
+                    ball.AddComponent(rc);
+                    spd *= 1.678;
                 }
             }
-        }
-
-        void MyRotateBallScript(ScriptContext ctx)
-        {
-            ctx.Entity.GetComponent<RotateComp>().Rotate = ctx.SimTime;
         }
 
     }
