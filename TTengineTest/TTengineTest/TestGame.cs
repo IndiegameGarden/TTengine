@@ -44,7 +44,7 @@ namespace TTengineTest
             //DoTest(new TestPostEffects()); //FIXME
             DoTest(new TestRotation());
             DoTest(new TestLinearMotion());
-            DoTest(new TestChannelSpritelets());
+            //DoTest(new TestChannelSpritelets());
             /*
             DoTest(new TestGamepad());
             DoTest(new TestMixedShaders());
@@ -127,7 +127,8 @@ namespace TTengineTest
             Factory.CreateTextlet(new Vector2(2f, GraphicsMgr.PreferredBackBufferHeight-20f), test.GetType().Name, col);
 
             // disable channel by default
-            ch.IsEnabled = false;
+            ch.IsEnabled = true;
+            ch.Refresh();
         }
 
     }
