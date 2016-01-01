@@ -48,12 +48,6 @@ namespace TTengine.Core
                 BuildScreen = e.GetComponent<ScreenComp>();
         }
 
-        public static void BuildTo(Channel ch)
-        {
-            BuildWorld = ch.World;
-            BuildScreen = ch.Screen;
-        }
-
         /// <summary>
         /// Create simplest Entity without components within the EntityWorld currently selected
         /// for Entity construction
