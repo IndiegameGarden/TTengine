@@ -25,19 +25,6 @@ namespace TTengine.Core
         /// Value null is used to denote "default".</summary>
         public static ScreenComp BuildScreen;
 
-        public static Channel BuildChannel
-        {
-            get
-            {
-                return new Channel(BuildWorld, BuildScreen);
-            }
-            set
-            {
-                BuildWorld = value.World;
-                BuildScreen = value.Screen;
-            }
-        }
-
         private static TTGame _game = null;
 
         static TTFactory() {
