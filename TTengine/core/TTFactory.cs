@@ -216,10 +216,11 @@ namespace TTengine.Core
         /// Creates an FX Screenlet that renders a layer with shader Effect to the current active BuildScreen
         /// </summary>
         /// <returns></returns>
-        public static Entity CreateFxScreenlet(String effectFile)
+        public static Entity CreateFxScreenlet(Color backgroundColor, String effectFile)
         {
             var fx = _game.Content.Load<Effect>(effectFile);
             var sc = new ScreenComp(BuildScreen.RenderTarget); // renders to the existing screen buffer
+            sc.BackgroundColor = backgroundColor;
             sc.SpriteBatch.effect = fx; // set the effect in SprBatch
             var e = CreateEntity();
             e.AddComponent(sc);

@@ -9,14 +9,14 @@ using Artemis.Interface;
 namespace TTengineTest
 {
     /// <summary>
-    /// Basic shader test that creates an EffectScreenlet and renders sprites to it
+    /// Basic shader test that creates an FxScreenlet and renders sprites to it
     /// </summary>
     class TestBasicShader : Test
     {
 
         public override void Create()
         {
-            var fxScreen = TestFactory.CreateFxScreenlet("FixedColor");
+            var fxScreen = TestFactory.CreateFxScreenlet(BackgroundColor,"FixedColor");
             BuildTo(fxScreen);
 
             var t = new TestRotation();
