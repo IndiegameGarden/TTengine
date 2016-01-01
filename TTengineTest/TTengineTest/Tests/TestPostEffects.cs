@@ -19,6 +19,8 @@ namespace TTengineTest
             var t1 = new TestRelativeMotion();
             var ch1 = TestFactory.CreateChannel(Color.White, true, 800, 400);
             throw new NotImplementedException();
+
+            /*
             //ch1.PostEffects.Add( TTGame.Instance.Content.Load<Effect>("FixedColor") );
             t1.Create();
 
@@ -27,7 +29,7 @@ namespace TTengineTest
             var scr1 = TestFactory.CreateSpritelet(ch1);
             scr1.GetComponent<PositionComp>().Position = new Vector2(50f, 50f);
             //scr1.GetComponent<VelocityComp>().Velocity2D = new Vector2(5f, 0.5f);
-
+            */
 
         }
 
