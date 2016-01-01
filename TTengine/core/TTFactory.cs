@@ -49,6 +49,16 @@ namespace TTengine.Core
         }
 
         /// <summary>
+        /// Switch factory's building output to a new channel
+        /// </summary>
+        /// <param name="ch"></param>
+        public static void BuildTo(Channel ch)
+        {
+            BuildWorld = ch.World;
+            BuildScreen = ch.Screen;
+        }
+
+        /// <summary>
         /// Create simplest Entity without components within the EntityWorld currently selected
         /// for Entity construction
         /// </summary>

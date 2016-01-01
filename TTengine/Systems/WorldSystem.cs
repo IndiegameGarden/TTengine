@@ -17,6 +17,15 @@
             worldComp.World.Update( new TimeSpan((long) ((double)EntityWorld.Delta * worldComp.TimeWarp)));
         }
 
+        public override void OnEnabled(Entity entity)
+        {
+            base.OnEnabled(entity);
+        }
+
+        public override void OnDisabled(Entity entity)
+        {
+            base.OnDisabled(entity);
+        }
     }
 
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = SystemsSchedule.WorldSystemDraw)]
@@ -24,7 +33,20 @@
     {
         public override void Process(Entity entity, WorldComp worldComp)
         {
+            var saveOld = TTGame.Instance.DrawScreen;
+            TTGame.Instance.DrawScreen = entity.GetComponent<ScreenComp>();
             worldComp.World.Draw();
+            TTGame.Instance.DrawScreen = saveOld;
+        }
+
+        public override void OnEnabled(Entity entity)
+        {
+            base.OnEnabled(entity);
+        }
+
+        public override void OnDisabled(Entity entity)
+        {
+            base.OnDisabled(entity);
         }
 
     }

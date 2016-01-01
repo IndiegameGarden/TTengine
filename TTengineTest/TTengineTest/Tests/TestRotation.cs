@@ -27,6 +27,7 @@ namespace TTengineTest
                     var rc = new RotateComp();
                     rc.RotateSpeed = spd;
                     ball.AddComponent(rc);
+                    ball.Refresh();
                     spd *= 1.678;
                 }
             }

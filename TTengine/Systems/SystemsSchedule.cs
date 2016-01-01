@@ -12,7 +12,7 @@ namespace TTengine.Systems
     {
         // Systems in UPDATE loop
         public const int
-            WorldSystem         = 0,
+            WorldSystem         = 5,
             ScriptUpdateSystem = 1,
             BTAISystem          = 1,
             MoveSystem          = 2,

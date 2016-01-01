@@ -23,7 +23,7 @@ namespace TTengine.Core
     /// </summary>
     public abstract class TTGame: Game
     {
-        /// <summary>If set true, starts the TTMusicEngine and AudioSystem</summary>
+        /// <summary>If set true in constructor, starts the TTMusicEngine and AudioSystem</summary>
         protected bool IsAudio = false;
 
         /// <summary>The currently running (single) instance of TTGame</summary>
@@ -34,11 +34,15 @@ namespace TTengine.Core
         /// <summary>The audio/music engine, or null if none initialized</summary>
         public MusicEngine AudioEngine;
 
-        /// <summary>The main (root) screen that all graphics are eventually rendered to</summary>
+        /// <summary>The current draw-to screen, set by TTengine before World.Draw() calls</summary>
         public ScreenComp DrawScreen;
 
+        public ScreenComp RootScreen;
+
         /// <summary>The default (root) World into which everything else lives</summary>
-        public EntityWorld World;
+        public EntityWorld RootWorld;
+
+        public Channel RootChannel;
 
         /// <summary>
         /// lag is how much time (sec) the fixed timestep (gametime) updates lag to the actual time.
@@ -46,6 +50,7 @@ namespace TTengine.Core
         /// </summary>
         public double TimeLag = 0.0;
 
+        /// <summary>When true, loop time profiling using below CountingTimers is enabled.</summary>
         public bool IsProfiling;
 
         public CountingTimer TimerUpdate = new CountingTimer();
@@ -77,10 +82,11 @@ namespace TTengine.Core
 
         protected override void Initialize()
         {
-            World = new EntityWorld();
-            World.InitializeAll(true);
-            TTFactory.BuildWorld = World;
-            DrawScreen = new ScreenComp(false);
+            RootWorld = new EntityWorld();
+            RootWorld.InitializeAll(true);
+            TTFactory.BuildWorld = RootWorld;
+            RootScreen = new ScreenComp(false);
+            RootChannel = new Channel(RootWorld, RootScreen);
 
             // the TTMusicEngine
             if (IsAudio)
@@ -112,7 +118,7 @@ namespace TTengine.Core
 
             while (TimeLag >= dt)
             {
-                World.Update(TargetElapsedTime);
+                RootWorld.Update(TargetElapsedTime);
                 TimeLag -= dt;
             }
             base.Update(gameTime);
@@ -130,9 +136,10 @@ namespace TTengine.Core
                 TimerDraw.Start();
                 TimerDraw.CountUp();
             }
+            DrawScreen = RootScreen; // initial set of the current DrawScreen. Other Systems may tweak this.
             GraphicsDevice.SetRenderTarget(null);
             GraphicsDevice.Clear(DrawScreen.BackgroundColor);            
-            World.Draw();
+            RootWorld.Draw();
             base.Draw(gameTime);
             if (IsProfiling)
             {

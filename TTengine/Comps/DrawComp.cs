@@ -18,21 +18,21 @@ namespace TTengine.Comps
         /// <summary>
         /// Create new DrawComp
         /// </summary>
-        /// <param name="drawScreen">ScreenComp that the Entity will be drawn to, or null to uses the channel's
+        /// <param name="drawScreen">ScreenComp that the Entity will be drawn to, or null to use the channel's
         /// default.</param>
-        public DrawComp(ScreenComp drawScreen)
+        public DrawComp(ScreenComp drawScreen = null)
         {
             if(drawScreen != null)
                 this.DrawScreen = drawScreen;
         }
 
         /// <summary>
-        /// Screen to draw this Entity exclusively to, or null in case drawn to any screen that
-        /// is asked by the TTGame Channels. By default null.
+        /// Screen to draw this Entity exclusively to, or null to draw to the default screen of the channel.
+        /// By default null.
         /// </summary>
         public ScreenComp DrawScreen = null;
 
-        /// <summary>Flag whether the Entity is visible (i.e. is being drawn or not)</summary>
+        /// <summary>Flag whether the Entity is visible currently (i.e. is being drawn or not)</summary>
         public bool IsVisible = true;
 
         /// <summary>drawing depth of graphics 0f (front)....1f (back)</summary>

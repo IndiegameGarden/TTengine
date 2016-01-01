@@ -42,8 +42,8 @@ namespace TTengineTest
 
             // Here all the tests are created
             //DoTest(new TestPostEffects()); //FIXME
-            DoTest(new TestRotation());
             DoTest(new TestLinearMotion());
+            DoTest(new TestRotation());
             //DoTest(new TestChannelSpritelets());
             /*
             DoTest(new TestGamepad());
@@ -103,8 +103,11 @@ namespace TTengineTest
                 nch += testChannels.Count;
             if (nch >= testChannels.Count)
                 nch -= testChannels.Count;
-            testChannels[channel].IsEnabled = false;
-            testChannels[channel].Refresh();
+            if (channel != nch)
+            {
+                testChannels[channel].IsEnabled = false;
+                testChannels[channel].Refresh();
+            }
             testChannels[nch].IsEnabled = true;
             testChannels[nch].Refresh();
             channel = nch;
@@ -127,8 +130,11 @@ namespace TTengineTest
             Factory.CreateTextlet(new Vector2(2f, GraphicsMgr.PreferredBackBufferHeight-20f), test.GetType().Name, col);
 
             // disable channel by default
-            ch.IsEnabled = true;
+            ch.IsEnabled = false;
             ch.Refresh();
+
+            // ensure new channels are built to main world again
+            TestFactory.BuildTo(RootChannel);
         }
 
     }
