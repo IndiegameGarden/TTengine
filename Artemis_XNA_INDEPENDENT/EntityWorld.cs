@@ -314,7 +314,7 @@ namespace Artemis
         }
 
         /// <summary>Updates the EntityWorld.</summary>
-        /// <param name="deltaTicks">The delta time for this simulation step.</param>
+        /// <param name="delta">The delta time for this simulation step.</param>
         public void Update(TimeSpan delta)
         {
             this.Delta = delta.Ticks;

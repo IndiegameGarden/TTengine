@@ -43,6 +43,8 @@ namespace TTengineTest
             // Here all the tests are created
             //DoTest(new TestPostEffects()); //FIXME
             //DoTest(new TestChannelSpritelets()); //FIXME
+            DoTest(new TestSphereCollision());
+            DoTest(new TestAnimatedSprite());
             DoTest(new TestBasicShader());
             DoTest(new TestMixedShaders()); 
             DoTest(new TestLinearMotion());
@@ -53,12 +55,10 @@ namespace TTengineTest
             DoTest(new TestGamepad());
             DoTest(new TestMixedShaders());
             DoTest(new TestTextureSamplingShader());            
-            DoTest(new TestModifiers());
-            DoTest(new TestSphereCollision());
+            DoTest(new TestModifiers());            
             DoTest(new TestBTAI());
             DoTest(new TestSpritePixelGetSet());            
-            DoTest(new TestZoomedChannel());
-            DoTest(new TestAnimatedSprite());
+            DoTest(new TestZoomedChannel());            
             DoTest(new TestTargetMotion());
             DoTest(new TestScaling());
             DoTest(new TestAudioBasics());
