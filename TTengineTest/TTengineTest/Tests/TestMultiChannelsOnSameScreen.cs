@@ -14,16 +14,15 @@ namespace TTengineTest
 
         public override void Create()
         {
-            var c2 = TestFactory.CreateChannel(BackgroundColor);
-            TestFactory.BuildTo(c2);
-            var t2 = new TestRotation();
-            t2.Create();
-
             var c1 = TestFactory.CreateChannel(BackgroundColor);
             TestFactory.BuildTo(c1);
             var t1 = new TestLinearMotion();
             t1.Create();
 
+            var c2 = TestFactory.CreateChannel(BackgroundColor);
+            TestFactory.BuildTo(c2);
+            var t2 = new TestRotation();
+            t2.Create();
         }
 
     }
