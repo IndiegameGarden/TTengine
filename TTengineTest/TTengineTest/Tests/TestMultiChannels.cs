@@ -22,6 +22,7 @@ namespace TTengineTest
             // content for 1st screen: call upon another unit test
             var ch1 = TestFactory.CreateChannel(Color.LightSalmon, true, 200, 400);
             ch1.GetComponent<WorldComp>().TimeWarp = 0.1;
+            return;
             BuildTo(ch1);
             var t1 = new TestRelativeMotion();
             t1.Create();
