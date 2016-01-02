@@ -22,8 +22,7 @@ namespace TTengine.Comps
         /// default.</param>
         public DrawComp(ScreenComp drawScreen = null)
         {
-            if(drawScreen != null)
-                this.DrawScreen = drawScreen;
+            this.DrawScreen = drawScreen;
         }
 
         /// <summary>

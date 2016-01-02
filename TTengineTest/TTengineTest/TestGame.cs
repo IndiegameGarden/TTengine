@@ -42,7 +42,7 @@ namespace TTengineTest
 
             // Here all the tests are created
             //DoTest(new TestPostEffects()); //FIXME
-            //DoTest(new TestChannelSpritelets()); //FIXME
+            DoTest(new TestMultiChannels()); //FIXME
             DoTest(new TestMultiChannelsOnSameScreen());
             DoTest(new TestGamepad());
             DoTest(new TestModifiers());

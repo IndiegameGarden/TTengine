@@ -34,7 +34,8 @@
         public override void Process(Entity entity, WorldComp worldComp)
         {
             var saveOld = TTGame.Instance.DrawScreen;
-            TTGame.Instance.DrawScreen = entity.GetComponent<ScreenComp>();
+            if (entity.HasComponent<ScreenComp>())
+                TTGame.Instance.DrawScreen = entity.GetComponent<ScreenComp>();
             worldComp.World.Draw();
             TTGame.Instance.DrawScreen = saveOld;
         }

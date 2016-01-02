@@ -22,7 +22,8 @@ namespace TTengine.Systems
         protected override void Begin()
         {
             audioEngine = TTGame.Instance.AudioEngine;
-            audioEngine.Update(); // to be called once every frame
+            if (audioEngine != null)
+                audioEngine.Update(); // to be called once every frame
         }
 
         public override void Process(Entity entity, AudioComp ac)
