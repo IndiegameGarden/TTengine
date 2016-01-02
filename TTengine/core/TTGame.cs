@@ -87,6 +87,9 @@ namespace TTengine.Core
             TTFactory.BuildWorld = RootWorld;
             RootScreen = new ScreenComp(false);
             RootChannel = new Channel(RootWorld, RootScreen);
+            var screenlet = TTFactory.CreateEntity();
+            screenlet.AddComponent(RootScreen);
+            screenlet.Refresh();
 
             // the TTMusicEngine
             if (IsAudio)
