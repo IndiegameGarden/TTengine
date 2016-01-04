@@ -27,6 +27,7 @@ namespace TTengine.Systems
             ctx.Entity = entity;
             sc.SimTime += Dt;
             ctx.SimTime = sc.SimTime;
+            //ctx.Dt = set already in the Begin() method above
             foreach(IScript script in sc.Scripts)
                 script.OnUpdate(ctx);
         }

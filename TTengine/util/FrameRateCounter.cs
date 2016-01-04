@@ -39,8 +39,10 @@ namespace TTengine.Util
         {
             timer.CountUp();
             int frameRateAvg = 0;
+            double timeTotal = ctx.Entity.GetComponent<ScriptComp>().SimTime;
+
             if (timer.TimeTotal > 0)
-                frameRateAvg = (int)( (double)timer.CountTotal / timer.TimeTotal );
+                frameRateAvg = (int)( (double)timer.CountTotal / timeTotal );
             string msg = string.Format("{0,4} FPS [{1,4}] Tupd={2,5:N1}ms Tdrw={3,5:N1}ms", timer.Count, frameRateAvg,
                 Math.Round(1000.0 * TTGame.Instance.TimerUpdate.TimePerCount),
                 Math.Round(1000.0 * TTGame.Instance.TimerDraw.TimePerCount) 
