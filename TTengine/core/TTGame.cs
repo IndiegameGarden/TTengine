@@ -6,13 +6,12 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Artemis;
+using Artemis.Utils;
 using TTengine.Core;
 using TTengine.Comps;
 using TTengine.Systems;
 using TTengine.Util;
-using Artemis;
-using Artemis.Utils;
-//using TTengine.Modifiers; // TODO
 using TTMusicEngine;
 using TTMusicEngine.Soundevents;
 
@@ -23,18 +22,19 @@ namespace TTengine.Core
     /// </summary>
     public abstract class TTGame: Game
     {
-        /// <summary>If set true in constructor, starts the TTMusicEngine and AudioSystem</summary>
+        /// <summary>If set to true in Game's constructor, starts both the TTMusicEngine and AudioSystem</summary>
         protected bool IsAudio = false;
 
         /// <summary>The currently running (single) instance of TTGame</summary>
-        public static TTGame Instance = null;
+        public static TTGame Instance;
 
+        /// <summary>The XNA GraphicsDeviceManager for this Game</summary>
         public GraphicsDeviceManager GraphicsMgr;
 
         /// <summary>The audio/music engine, or null if none initialized</summary>
         public MusicEngine AudioEngine;
 
-        /// <summary>The current draw-to screen, set by TTengine before World.Draw() calls</summary>
+        /// <summary>The current default draw-to screen, set by TTengine before any World.Draw() calls</summary>
         public ScreenComp DrawScreen;
 
         public ScreenComp RootScreen;
@@ -46,7 +46,7 @@ namespace TTengine.Core
 
         /// <summary>
         /// lag is how much time (sec) the fixed timestep (gametime) updates lag to the actual time.
-        /// This is used for controlling the World Updates and for interpolated rendering.
+        /// This is used for controlling the World Updates and also for smooth interpolated rendering.
         /// </summary>
         public double TimeLag = 0.0;
 
@@ -57,6 +57,9 @@ namespace TTengine.Core
 
         public CountingTimer TimerDraw = new CountingTimer();
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public TTGame()
         {
             Instance = this;
