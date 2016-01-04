@@ -56,6 +56,9 @@ namespace TTengine.Core
 
         public CountingTimer TimerDraw = new CountingTimer();
 
+        private SpriteBatch rootSpriteBatch;
+        private Rectangle renderRect;
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -76,6 +79,7 @@ namespace TTengine.Core
 #endif
             int myWindowWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             int myWindowHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            renderRect = new Rectangle(0, 0, myWindowWidth, myWindowHeight);
             GraphicsMgr.PreferredBackBufferWidth = myWindowWidth;
             GraphicsMgr.PreferredBackBufferHeight = myWindowHeight;
             GraphicsMgr.IsFullScreen = false;
@@ -87,7 +91,7 @@ namespace TTengine.Core
             RootWorld = new EntityWorld();
             RootWorld.InitializeAll(true);
             TTFactory.BuildTo(RootWorld);
-            RootChannel = TTFactory.CreateChannel(Color.CornflowerBlue);
+            RootChannel = TTFactory.CreateChannel(Color.CornflowerBlue,true);
             TTFactory.BuildTo(RootChannel);
 
             // the TTMusicEngine
@@ -98,6 +102,8 @@ namespace TTengine.Core
                 if (!AudioEngine.Initialize())
                     throw new Exception(AudioEngine.StatusMsg);
             }
+
+            rootSpriteBatch = new SpriteBatch(GraphicsDevice);            
 
             base.Initialize();
         }
@@ -139,9 +145,12 @@ namespace TTengine.Core
                 TimerDraw.CountUp();
             }
             DrawScreen = RootChannel.GetComponent<ScreenComp>(); // initial set of the current DrawScreen. Other Systems may tweak this.
-            GraphicsDevice.SetRenderTarget(null);
-            GraphicsDevice.Clear(DrawScreen.BackgroundColor);            
-            RootWorld.Draw();
+            GraphicsDevice.SetRenderTarget(null);   // note: this clears the render buffer also.
+            RootWorld.Draw();   // draw world(s) into the RootChannel buffer
+            //GraphicsDevice.SetRenderTarget(null);
+            rootSpriteBatch.Begin();    // draw the RootChannel onto the display itself. No clear needed: auto-fill entire display.
+            //rootSpriteBatch.Draw(DrawScreen.RenderTarget,null,renderRect);
+            rootSpriteBatch.End();
             base.Draw(gameTime);
             if (IsProfiling)
             {
