@@ -51,7 +51,8 @@ namespace Game1
 
         protected override void LoadContent()
         {
-            RootScreen.BackgroundColor = Color.White;
+            var scr = RootChannel.GetComponent<ScreenComp>();
+            scr.BackgroundColor = Color.White;
 
             // add framerate counter
             Game1Factory.CreateFrameRateCounter(Color.Black);
@@ -61,7 +62,7 @@ namespace Game1
             {
                 for (float y = 0.1f; y < 1f; y += 0.24f)
                 {
-                    var pos = new Vector2(x * RootScreen.Width, y * RootScreen.Height);
+                    var pos = new Vector2(x * scr.Width, y * scr.Height);
                     Factory.CreateHyperActiveBall(pos);
                     Factory.CreateMovingTextlet(pos,"This is the\nTTengine test. !@#$1234");
                     //break;

@@ -117,7 +117,7 @@ namespace TTengineTest
             var ch = TestFactory.CreateChannel(test.BackgroundColor);
             test.Channel = ch;
             testChannels.Add(ch);
-            test.BuildToDefault();
+            test.BuildToDefault(); // build test to the new channel
             test.Create();
 
             // add framerate counter
@@ -128,11 +128,11 @@ namespace TTengineTest
             // add test info as text
             Factory.CreateTextlet(new Vector2(2f, GraphicsMgr.PreferredBackBufferHeight-20f), test.GetType().Name, col);
 
-            // disable channel by default
+            // disable the new channel by default
             ch.IsEnabled = false;
             ch.Refresh();
 
-            // ensure new channels are built to main world again
+            // ensure new channels are built to main Channel again
             TestFactory.BuildTo(RootChannel);
         }
 

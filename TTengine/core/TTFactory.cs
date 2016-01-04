@@ -31,31 +31,27 @@ namespace TTengine.Core
             _game = TTGame.Instance;
         }
 
+        public static void BuildTo(EntityWorld world)
+        {
+            BuildWorld = world;
+        }
+
         public static void BuildTo(ScreenComp screen)
         {
             BuildScreen = screen;
         }
 
         /// <summary>
-        /// Switch factory's building output to a new channel, new world or new screen
+        /// Switch factory's building output to given Channel, World or Screen
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">an Entity which may contain a WorldComp, a ScreenComp, or both. In case of both,
+        /// the Entity is a Channel.</param>
         public static void BuildTo(Entity e)
         {
             if (e.HasComponent<WorldComp>())
                 BuildWorld = e.GetComponent<WorldComp>().World;
             if (e.HasComponent<ScreenComp>())
                 BuildScreen = e.GetComponent<ScreenComp>();
-        }
-
-        /// <summary>
-        /// Switch factory's building output to a new channel
-        /// </summary>
-        /// <param name="ch"></param>
-        public static void BuildTo(Channel ch)
-        {
-            BuildWorld = ch.World;
-            BuildScreen = ch.Screen;
         }
 
         /// <summary>
@@ -170,17 +166,19 @@ namespace TTengine.Core
         }
 
         /// <summary>
-        /// Creates a Screenlet that may contain a screenComp (RenderBuffer) to 
+        /// Creates a Screenlet, an Entity that has a ScreenComp to 
         /// which graphics can be rendered. 
         /// </summary>
+        /// <param name="backgroundColor">Background color of the Screenlet</param>
         /// <param name="hasRenderBuffer">if true, Screenlet will have its own render buffer</param>
         /// <param name="height">Screenlet height, if not given uses default backbuffer height</param>
         /// <param name="width">Screenlet width, if not given uses default backbuffer width</param>
-        /// <returns></returns>
-        public static Entity CreateScreenlet(bool hasRenderBuffer=false,
+        /// <returns>Newly created Entity with a ScreenComp.</returns>
+        public static Entity CreateScreenlet(Color backgroundColor, bool hasRenderBuffer = false,
                                         int width = 0, int height = 0)
         {
             var sc = new ScreenComp(hasRenderBuffer, width, height);
+            sc.BackgroundColor = backgroundColor;
             var e = CreateEntity();
             e.AddComponent(sc);
             e.AddComponent(new DrawComp(BuildScreen));
@@ -189,19 +187,14 @@ namespace TTengine.Core
         }
 
         /// <summary>
-        /// Creates a Screenlet that may contain a screenComp (RenderBuffer) to 
-        /// which graphics can be rendered. 
+        /// Creates a new Channel, which is a separate EntityWorld with a dedicated ScreenComp to
+        /// which that World renders. Parameters are same as for CreateScreenlet() above.
         /// </summary>
-        /// <param name="backgroundColor">Background color of the Screenlet</param>
+        /// <param name="backgroundColor"></param>
+        /// <param name="hasRenderBuffer"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
         /// <returns></returns>
-        public static Entity CreateScreenlet(Color backgroundColor, bool hasRenderBuffer = false,
-                                        int width = 0, int height = 0)
-        {
-            var e = CreateScreenlet(hasRenderBuffer, width, height);
-            e.GetComponent<ScreenComp>().BackgroundColor = backgroundColor;
-            return e;
-        }
-
         public static Entity CreateChannel(Color backgroundColor, bool hasRenderBuffer = false,
                                         int width = 0, int height = 0)
         {

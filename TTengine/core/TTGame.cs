@@ -37,12 +37,11 @@ namespace TTengine.Core
         /// <summary>The current default draw-to screen, set by TTengine before any World.Draw() calls</summary>
         public ScreenComp DrawScreen;
 
-        public ScreenComp RootScreen;
-
-        /// <summary>The default (root) World into which everything else lives</summary>
+        /// <summary>The one root World into which everything else lives</summary>
         public EntityWorld RootWorld;
 
-        public Channel RootChannel;
+        /// <summary>The one root Channel which renders everything (including other channels) to the display.</summary>
+        public Entity RootChannel;
 
         /// <summary>
         /// lag is how much time (sec) the fixed timestep (gametime) updates lag to the actual time.
@@ -87,12 +86,9 @@ namespace TTengine.Core
         {
             RootWorld = new EntityWorld();
             RootWorld.InitializeAll(true);
-            TTFactory.BuildWorld = RootWorld;
-            RootScreen = new ScreenComp(false);
-            RootChannel = new Channel(RootWorld, RootScreen);
-            var screenlet = TTFactory.CreateEntity();
-            screenlet.AddComponent(RootScreen);
-            screenlet.Refresh();
+            TTFactory.BuildTo(RootWorld);
+            RootChannel = TTFactory.CreateChannel(Color.CornflowerBlue);
+            TTFactory.BuildTo(RootChannel);
 
             // the TTMusicEngine
             if (IsAudio)
@@ -142,7 +138,7 @@ namespace TTengine.Core
                 TimerDraw.Start();
                 TimerDraw.CountUp();
             }
-            DrawScreen = RootScreen; // initial set of the current DrawScreen. Other Systems may tweak this.
+            DrawScreen = RootChannel.GetComponent<ScreenComp>(); // initial set of the current DrawScreen. Other Systems may tweak this.
             GraphicsDevice.SetRenderTarget(null);
             GraphicsDevice.Clear(DrawScreen.BackgroundColor);            
             RootWorld.Draw();
