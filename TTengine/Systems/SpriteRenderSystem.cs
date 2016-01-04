@@ -72,9 +72,9 @@ namespace TTengine.Systems
         {
             if (!drawComp.IsVisible)
                 return;
-            ScreenComp screen = drawComp.DrawScreen;
 
-            // if no specific screen...
+            // use set screen, or default if not given.
+            ScreenComp screen = drawComp.DrawScreen;
             if (screen == null)
                 screen = activeScreen;
             

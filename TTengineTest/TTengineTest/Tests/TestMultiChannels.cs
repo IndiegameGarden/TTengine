@@ -21,16 +21,17 @@ namespace TTengineTest
             // create an additional child channel
             // content for 1st screen: call upon another unit test
             var ch1 = TestFactory.CreateChannel(Color.LightSalmon, true, 200, 400);
-            ch1.GetComponent<WorldComp>().TimeWarp = 0.1;
-            return;
+            ch1.GetComponent<WorldComp>().TimeWarp = 0.333;
+            ch1.Refresh();
+            
             BuildTo(ch1);
             var t1 = new TestRelativeMotion();
             t1.Create();
-
+            
             // second child channel
             BuildToDefault();
             var ch2 = TestFactory.CreateChannel(Color.LightSeaGreen, true, 200, 400);
-            ch1.GetComponent<WorldComp>().TimeWarp = 0.5;
+            ch1.GetComponent<WorldComp>().TimeWarp = 1.0;
             BuildTo(ch2);
             var t2 = new TestRelativeMotion();
             t2.Create();
@@ -45,18 +46,17 @@ namespace TTengineTest
 
             // 4th
             BuildToDefault();
-            var ch4 = TestFactory.CreateChannel(Color.LightGreen, true, 700, 100);
-            ch1.GetComponent<WorldComp>().TimeWarp = 0.0; // Paused
+            var ch4 = TestFactory.CreateChannel(Color.LightGreen, true, 700, 250);
+            ch4.GetComponent<WorldComp>().TimeWarp = 4.0;
             BuildTo(ch4);
             var t4 = new TestRelativeMotion();
-            t4.Channel = Channel;
             t4.Create();
 
             // main channel: shows the child channels as sprites on different positions
             BuildToDefault();
             var scr1 = TestFactory.CreateSpritelet(ch1);
             scr1.GetComponent<PositionComp>().Position = new Vector2(50f, 50f);
-
+            
             var scr2 = TestFactory.CreateSpritelet(ch2);
             scr2.GetComponent<PositionComp>().Position = new Vector2(300f, 50f);
 
@@ -65,6 +65,7 @@ namespace TTengineTest
 
             var scr4 = TestFactory.CreateSpritelet(ch4);
             scr4.GetComponent<PositionComp>().Position = new Vector2(50f, 500f);
+
         }
 
     }
