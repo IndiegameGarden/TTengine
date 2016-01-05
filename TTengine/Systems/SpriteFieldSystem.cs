@@ -55,7 +55,7 @@ namespace TTengine.Systems
     #endregion
 
     /// <summary>The system for rendering sprites</summary>
-    [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = SystemsSchedule.SpriteRenderSystem)]
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = SystemsSchedule.SpriteRenderSystemDraw)]
     public class SpriteFieldSystem : EntityComponentProcessingSystem<SpriteFieldComp, SpriteComp, PositionComp, DrawComp>
     {
 

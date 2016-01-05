@@ -14,17 +14,10 @@
     {
         public override void Process(Entity entity, WorldComp worldComp)
         {
-            worldComp.World.Update( new TimeSpan((long) ((double)EntityWorld.Delta * worldComp.TimeWarp)));
-        }
-
-        public override void OnEnabled(Entity entity)
-        {
-            base.OnEnabled(entity);
-        }
-
-        public override void OnDisabled(Entity entity)
-        {
-            base.OnDisabled(entity);
+            if (worldComp.TimeWarp != 1.0)
+                worldComp.World.Update(new TimeSpan((long)((double)EntityWorld.Delta * worldComp.TimeWarp)));
+            else
+                worldComp.World.Update(EntityWorld.DeltaTimeSpan);
         }
     }
 
@@ -33,11 +26,17 @@
     {
         public override void Process(Entity entity, WorldComp worldComp)
         {
-            var saveOld = TTGame.Instance.DrawScreen;
+            var oldScr = TTGame.Instance.DrawScreen;    // save state
+            ScreenComp sc = null;
+            // if this World is part of a Channel...
             if (entity.HasComponent<ScreenComp>())
-                TTGame.Instance.DrawScreen = entity.GetComponent<ScreenComp>();
+            {
+                // ... make sure it is drawn to the related Screen
+                sc = entity.GetComponent<ScreenComp>();
+                TTGame.Instance.DrawScreen = sc;
+            }
             worldComp.World.Draw();
-            TTGame.Instance.DrawScreen = saveOld;
+            TTGame.Instance.DrawScreen = oldScr; // restore state
         }
 
         public override void OnEnabled(Entity entity)

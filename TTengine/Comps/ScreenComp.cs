@@ -94,7 +94,7 @@ namespace TTengine.Core
         private int screenWidth = 0;
         private int screenHeight = 0;
         private float aspectRatio;
-        internal RenderTarget2D renderTarget, renderTargetBackBuffer;
+        private /*internal*/ RenderTarget2D renderTarget, renderTargetBackBuffer;
         #endregion
 
         /// <summary>

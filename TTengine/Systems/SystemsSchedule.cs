@@ -12,8 +12,8 @@ namespace TTengine.Systems
     {
         // Systems in UPDATE loop
         public const int
-            WorldSystem         = 5,
-            ScriptUpdateSystem = 1,
+            WorldSystem         = 0,
+            ScriptSystem        = 1,
             BTAISystem          = 1,
             MoveSystem          = 2,
             TargetMoveSystem    = 2,
@@ -28,14 +28,14 @@ namespace TTengine.Systems
 
         // Systems in DRAW loop
         public const int
-            ScreenletPreSystem = 0,
-            WorldSystemDraw = 1,
-            AudioSystem = 1,
-            ScriptDrawSystem    = 2,
-            SpriteRenderSystem  = 2,
-            AnimatedSpriteSystem = 2,
-            TextRenderSystem    = 2,
-            ScreenletSystem     = 3;
+            WorldSystemDraw         = 0,        // world drawing goes depth-first.
+            ScreenletPreSystemDraw  = 1,
+            AudioSystemDraw         = 1,
+            ScriptSystemDraw        = 2,
+            SpriteRenderSystemDraw  = 2,
+            AnimatedSpriteSystemDraw = 2,
+            TextRenderSystemDraw    = 2,
+            ScreenletPostSystemDraw = 3;
 
     }
 }

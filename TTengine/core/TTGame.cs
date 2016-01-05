@@ -43,6 +43,9 @@ namespace TTengine.Core
         /// <summary>The one root Channel which renders everything (including other channels) to the display.</summary>
         public Entity RootChannel;
 
+        /// <summary>The Screen of the RootChannel.</summary>
+        public ScreenComp RootChannelScreen;
+
         /// <summary>
         /// lag is how much time (sec) the fixed timestep (gametime) updates lag to the actual time.
         /// This is used for controlling the World Updates and also for smooth interpolated rendering.
@@ -92,6 +95,7 @@ namespace TTengine.Core
             RootWorld.InitializeAll(true);
             TTFactory.BuildTo(RootWorld);
             RootChannel = TTFactory.CreateChannel(Color.CornflowerBlue,true);
+            RootChannelScreen = RootChannel.GetComponent<ScreenComp>();
             TTFactory.BuildTo(RootChannel);
 
             // the TTMusicEngine
@@ -144,12 +148,11 @@ namespace TTengine.Core
                 TimerDraw.Start();
                 TimerDraw.CountUp();
             }
-            DrawScreen = RootChannel.GetComponent<ScreenComp>(); // initial set of the current DrawScreen. Other Systems may tweak this.
             GraphicsDevice.SetRenderTarget(null);   // note: this clears the render buffer also.
-            RootWorld.Draw();   // draw world(s) into the RootChannel buffer
+            RootWorld.Draw();   // draw world(s)
             //GraphicsDevice.SetRenderTarget(null);
             rootSpriteBatch.Begin();    // draw the RootChannel onto the display itself. No clear needed: auto-fill entire display.
-            //rootSpriteBatch.Draw(DrawScreen.RenderTarget,null,renderRect);
+            rootSpriteBatch.Draw(RootChannelScreen.RenderTarget,null,renderRect);
             rootSpriteBatch.End();
             base.Draw(gameTime);
             if (IsProfiling)

@@ -19,13 +19,13 @@ namespace TTengine.Systems
     /// Called first in the Draw() cycle.
     /// <seealso cref="ScreenletSystem"/>
     /// </summary>
-    [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = SystemsSchedule.ScreenletPreSystem)]
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = SystemsSchedule.ScreenletPreSystemDraw)]
     public class ScreenletPreSystem : EntityComponentProcessingSystem<ScreenComp>
     {
 
         public override void Process(Entity screenlet, ScreenComp screenComp)
         {
-            //TTGame.Instance.GraphicsDevice.SetRenderTarget(screenComp.RenderTarget);
+            TTGame.Instance.GraphicsDevice.SetRenderTarget(screenComp.RenderTarget);
             //TTGame.Instance.GraphicsDevice.Clear(screenComp.BackgroundColor);
 
             // in this initial round, start the drawing to this screenlet's spritebatch:
@@ -39,14 +39,14 @@ namespace TTengine.Systems
     /// Called after all Draw() calls, to close any open spritebatches.
     /// <seealso cref="ScreenletPreSystem"/>
     /// </summary>
-    [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = SystemsSchedule.ScreenletSystem)]
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = SystemsSchedule.ScreenletPostSystemDraw)]
     public class ScreenletSystem : EntityComponentProcessingSystem<ScreenComp>
     {
 
         public override void Process(Entity entity, ScreenComp screenComp)
         {
-            TTGame.Instance.GraphicsDevice.SetRenderTarget(screenComp.RenderTarget);
-            TTGame.Instance.GraphicsDevice.Clear(screenComp.BackgroundColor);
+            //TTGame.Instance.GraphicsDevice.SetRenderTarget(screenComp.RenderTarget);
+            //TTGame.Instance.GraphicsDevice.Clear(screenComp.BackgroundColor);
             TTSpriteBatch sb = screenComp.SpriteBatch;
             sb.End(); 
         }

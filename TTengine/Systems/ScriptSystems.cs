@@ -12,7 +12,7 @@ using Artemis.System;
 
 namespace TTengine.Systems
 {
-    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = SystemsSchedule.ScriptUpdateSystem)]
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = SystemsSchedule.ScriptSystem)]
     public class ScriptSystemUpdate : EntityComponentProcessingSystem<ScriptComp>
     {
         ScriptContext ctx = new ScriptContext(); // single object re-used in all OnUpdate(ctx) calls
@@ -34,7 +34,7 @@ namespace TTengine.Systems
 
     }
 
-    [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = SystemsSchedule.ScriptDrawSystem)]
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = SystemsSchedule.ScriptSystemDraw)]
     public class ScriptSystemDraw : EntityComponentProcessingSystem<ScriptComp>
     {
         ScriptContext ctx = new ScriptContext();
