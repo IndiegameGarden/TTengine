@@ -187,25 +187,26 @@ namespace TTengine.Core
         }
 
         /// <summary>
-        /// Creates a new Channel, which is a separate EntityWorld with inside it a dedicated ScreenComp to
+        /// Creates a new Channel, which is an Entity with inside it a separate EntityWorld containing a dedicated ScreenComp to
         /// which that World renders, which can be then shown as a sprite. Parameters are same as for CreateScreenlet() above.
-		/// A World inside a Sprite.
+		/// In summary: A World inside a Sprite.
         /// </summary>
         /// <param name="backgroundColor"></param>
-        /// <param name="hasRenderBuffer"></param>
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <returns></returns>
-        public static Entity CreateChannel(Color backgroundColor, bool hasRenderBuffer = false,
+        public static Entity CreateChannel(Color backgroundColor,
                                         int width = 0, int height = 0)
         {
 			var wc = new WorldComp(); // create world
 
 			// create a screenlet Entity within the Channel's (sub) world
 			Entity screenlet = wc.World.CreateEntity();
-			var sc = new ScreenComp (hasRenderBuffer, width, height);
+			var sc = new ScreenComp (true, width, height);
+			wc.Screen = sc;				// store the Screen as part of the World
 			sc.BackgroundColor = backgroundColor;
 			screenlet.AddComponent (sc);
+			screenlet.Refresh ();
 
 			// create the channel Entity, based on Spritelet
 			var e = CreateSpritelet (sc.RenderTarget);

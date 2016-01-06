@@ -21,6 +21,11 @@ namespace TTengine.Comps
         /// </summary>
         public double TimeWarp = 1.0;
 
+		/// <summary>
+		/// The Screen that this World renders to, or null if not rendering to a specific Screen.
+		/// </summary>
+		public ScreenComp Screen = null;
+
         public WorldComp()
         {
             this.World = new EntityWorld();

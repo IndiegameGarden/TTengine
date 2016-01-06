@@ -27,27 +27,15 @@
         public override void Process(Entity entity, WorldComp worldComp)
         {
             var oldScr = TTGame.Instance.DrawScreen;    // save state
-            ScreenComp sc = null;
-            // if this World is part of a Channel...
-            if (entity.HasComponent<ScreenComp>())
-            {
-                // ... make sure it is drawn to the related Screen
-                sc = entity.GetComponent<ScreenComp>();
-                TTGame.Instance.DrawScreen = sc;
-            }
-            worldComp.World.Draw();
-            TTGame.Instance.DrawScreen = oldScr; // restore state
-        }
 
-        public override void OnEnabled(Entity entity)
-        {
-            base.OnEnabled(entity);
+			// if Screen given: render to specific Screen
+			if (entity.Screen != null)
+			{
+				TTGame.Instance.DrawScreen = entity.Screen;
+			}
+            worldComp.World.Draw();						// render the World
+            
+			TTGame.Instance.DrawScreen = oldScr; 		// restore state
         }
-
-        public override void OnDisabled(Entity entity)
-        {
-            base.OnDisabled(entity);
-        }
-
     }
 }
