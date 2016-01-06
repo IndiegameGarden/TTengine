@@ -9,11 +9,11 @@ using Artemis.Interface;
 
 namespace TTengineTest
 {
-    /// <summary>Zooms in on a part of a rendered Channel. Useful for e.g. scrolling level.</summary>
-    class TestZoomedChannel : Test
+    /// <summary>Zooms in on a part of a rendered Screenlet. Useful for e.g. scrolling level.</summary>
+    class TestZoomedScreenlet : Test
     {
 
-        public TestZoomedChannel()
+        public TestZoomedScreenlet()
         {
             BackgroundColor = Color.DarkGray;
         }
@@ -27,18 +27,17 @@ namespace TTengineTest
             var s = TestFactory.CreateSpritelet("Quest14-Level1.png");
             s.GetComponent<SpriteComp>().Center = new Vector2(532f, 227f);
             s.AddComponent(new ScaleComp(1.0));
-            //var mod = new TargetModifier<ScaleComp>(delegate(ScaleComp sc, Vector3 val) { sc.Scale = val.X; }, s.GetComponent<ScaleComp>());
             var targFunc = new MoveToTargetFunction();
             targFunc.CurrentValue.X = 1.0f;
             targFunc.Target.X = 15.0f;
             targFunc.Speed = 3;
             TestFactory.AddModifier(s, delegate(ScriptContext ctx, Vector2 val) { ctx.Entity.GetComponent<ScaleComp>().Scale = val.X; },
                 targFunc);
-            s.GetComponent<PositionComp>().Position = Channel.GetComponent<ScreenComp>().Center;
+            s.GetComponent<PositionComp>().Position = Channel.GetComponent<WorldComp>().Screen.Center;
 
             // -- main channel: shows the child channel using a sprite
             BuildToDefault();
-            var scr1 = TestFactory.CreateSpritelet(levScr);
+            var scr1 = TestFactory.CreateSpritelet(levScr.GetComponent<ScreenComp>());
             scr1.GetComponent<PositionComp>().Depth = 0.9f;
             // some non-blocky graphics in front of level; using default Spritebatch
             var t1 = new TestAnimatedSprite();

@@ -49,7 +49,12 @@ namespace TTengine.Core
         public static void BuildTo(Entity e)
         {
             if (e.HasComponent<WorldComp>())
-                BuildWorld = e.GetComponent<WorldComp>().World;
+            {
+                var wc = e.GetComponent<WorldComp>();
+                BuildWorld = wc.World;
+                if (wc.Screen != null)
+                    BuildScreen = wc.Screen;
+            }
             if (e.HasComponent<ScreenComp>())
                 BuildScreen = e.GetComponent<ScreenComp>();
         }
@@ -106,13 +111,13 @@ namespace TTengine.Core
         }
 
         /// <summary>
-        /// Create a Spritelet with texture based on the contents of a Screenlet
+        /// Create a Spritelet with texture based on the contents of a Screen
         /// </summary>
         /// <returns></returns>
-        public static Entity CreateSpritelet(Entity screen)
+        public static Entity CreateSpritelet(ScreenComp screen)
         {
             Entity e = CreateDrawlet();
-            var spriteComp = new SpriteComp(screen.GetComponent<ScreenComp>());
+            var spriteComp = new SpriteComp(screen);
             e.AddComponent(spriteComp);
             e.Refresh();
             return e;
@@ -209,7 +214,7 @@ namespace TTengine.Core
 			screenlet.Refresh ();
 
 			// create the channel Entity, based on Spritelet
-			var e = CreateSpritelet (sc.RenderTarget);
+			var e = CreateSpritelet(sc);
 
 			// make this spritelet into a Channel by adding the World
             e.AddComponent(wc);

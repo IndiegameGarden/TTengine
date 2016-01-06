@@ -131,7 +131,7 @@
     <Compile Include="Tests\TestBTAI.cs" />
     <Compile Include="Tests\TestSpritePixelGetSet.cs" />
     <Compile Include="Tests\TestModifiers.cs" />
-    <Compile Include="Tests\TestZoomedChannel.cs" />
+    <Compile Include="Tests\TestZoomedScreenlet.cs" />
     <Compile Include="Tests\TestMultiChannels.cs" />
     <Compile Include="Tests\Template.cs" />
     <Compile Include="Tests\TestTargetMotion.cs" />

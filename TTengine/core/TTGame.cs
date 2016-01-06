@@ -41,10 +41,10 @@ namespace TTengine.Core
         public EntityWorld RootWorld;
 
         /// <summary>The one root Channel which renders everything (including other channels) to the display.</summary>
-        public Entity RootChannel;
+        public Entity MainChannel;
 
         /// <summary>The Screen of the RootChannel.</summary>
-        public ScreenComp RootChannelScreen;
+        public ScreenComp MainChannelScreen;
 
         /// <summary>
         /// lag is how much time (sec) the fixed timestep (gametime) updates lag to the actual time.
@@ -59,8 +59,8 @@ namespace TTengine.Core
 
         public CountingTimer TimerDraw = new CountingTimer();
 
-        private SpriteBatch rootSpriteBatch;
-        private Rectangle renderRect;
+        /// <summary>Root screen where the MainChannel is drawn to.</summary>
+        private ScreenComp rootScreen;
 
         /// <summary>
         /// Constructor
@@ -82,7 +82,6 @@ namespace TTengine.Core
 #endif
             int myWindowWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             int myWindowHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-            renderRect = new Rectangle(0, 0, myWindowWidth, myWindowHeight);
             GraphicsMgr.PreferredBackBufferWidth = myWindowWidth;
             GraphicsMgr.PreferredBackBufferHeight = myWindowHeight;
             GraphicsMgr.IsFullScreen = false;
@@ -94,9 +93,12 @@ namespace TTengine.Core
             RootWorld = new EntityWorld();
             RootWorld.InitializeAll(true);
             TTFactory.BuildTo(RootWorld);
-            RootChannel = TTFactory.CreateChannel(Color.CornflowerBlue);
-			RootChannelScreen = RootChannel.GetComponent<WorldComp>().Screen;
-            TTFactory.BuildTo(RootChannel);
+            MainChannel = TTFactory.CreateChannel(Color.CornflowerBlue);
+			MainChannelScreen = MainChannel.GetComponent<WorldComp>().Screen;
+            rootScreen = new ScreenComp(false, 0, 0);
+            MainChannel.AddComponent(rootScreen);
+            MainChannel.Refresh();
+            TTFactory.BuildTo(MainChannel);
 
             // the TTMusicEngine
             if (IsAudio)
@@ -106,8 +108,6 @@ namespace TTengine.Core
                 if (!AudioEngine.Initialize())
                     throw new Exception(AudioEngine.StatusMsg);
             }
-
-            rootSpriteBatch = new SpriteBatch(GraphicsDevice);            
 
             base.Initialize();
         }
@@ -148,11 +148,8 @@ namespace TTengine.Core
                 TimerDraw.Start();
                 TimerDraw.CountUp();
             }
-            GraphicsDevice.SetRenderTarget(null);   // note: this clears the render backbuffer also in MonoGame.
-			rootSpriteBatch.Begin();    // draw the RootChannel onto the display itself. No clear needed: auto-fill entire display.
+            DrawScreen = rootScreen;
             RootWorld.Draw();   // draw world including all sub-worlds/sub-channels
-            rootSpriteBatch.Draw(RootChannelScreen.RenderTarget,null,renderRect); // TODO: choose between scale or center modes
-            rootSpriteBatch.End();
             base.Draw(gameTime);
             if (IsProfiling)
             {

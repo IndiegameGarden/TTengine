@@ -51,7 +51,7 @@ namespace Game1
 
         protected override void LoadContent()
         {
-            var scr = RootChannel.GetComponent<ScreenComp>();
+            var scr = MainChannel.GetComponent<ScreenComp>();
             scr.BackgroundColor = Color.White;
 
             // add framerate counter
