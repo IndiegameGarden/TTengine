@@ -42,15 +42,16 @@ namespace TTengine.Core
             InitScreenDimensions();
         }
 
-        public Color BackgroundColor = Color.Black;
+        public Color BackgroundColor = Color.TransparentBlack;
 
         public bool IsVisible = true;
 
         /// <summary>The center pixel coordinate of the screen</summary>
         public Vector2 Center { get; private set; }
 
-        /// <summary>The zoom-in factor, used for showing part of a screen and for translation of other coordinate systems to pixel coordinates.</summary>
-        public float Zoom;
+        /// <summary>The zoom-in factor, used for showing only a part of a screen and for translation 
+        /// of other coordinate systems to pixel coordinates.</summary>
+        public float Zoom = 1.0f;
 
         /// <summary>The center coordinate, in either pixel or custom coordinates, for applying Zoom</summary>
         public Vector2 ZoomCenter;
@@ -87,10 +88,9 @@ namespace TTengine.Core
         public float AspectRatio { get { return aspectRatio;  } }
 
         /// <summary>The default spritebatch associated to this screen, for drawing to it</summary>
-        public TTSpriteBatch SpriteBatch = null;
+        public TTSpriteBatch SpriteBatch;
 
         #region Private and internal variables        
-        //
         private int screenWidth = 0;
         private int screenHeight = 0;
         private float aspectRatio;
@@ -98,7 +98,7 @@ namespace TTengine.Core
         #endregion
 
         /// <summary>
-        /// translate a Vector2 relative coordinate to pixel coordinates
+        /// translate a Vector2 relative coordinate to pixel coordinates for this Screen
         /// </summary>
         /// <param name="pos">relative coordinate to translate</param>
         /// <returns>translated to pixels coordinate</returns>
@@ -106,10 +106,14 @@ namespace TTengine.Core
         {
             var v = (pos - ZoomCenter) * Zoom + Center;
             return v;
-            //return pos * screen.screenHeight;
         }
 
-        protected void InitScreenDimensions()
+        /// <summary>
+        /// If RenderTarget or the TTGame screenbuffer (window) changed size, call this method
+        /// to get all the proper dimensions variables set again. This call will reset
+        /// ZoomCenter to the (new) center.
+        /// </summary>
+        public void InitScreenDimensions()
         {
             if (renderTarget != null)
             {
@@ -124,7 +128,6 @@ namespace TTengine.Core
 
             aspectRatio = (float)screenWidth / (float)screenHeight;
             Center = new Vector2( (float)screenWidth/2.0f, (float)screenHeight/2.0f);
-            Zoom = 1f;
             ZoomCenter = Center;
         }
 

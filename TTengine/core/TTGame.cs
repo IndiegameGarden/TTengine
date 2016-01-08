@@ -34,16 +34,18 @@ namespace TTengine.Core
         /// <summary>The audio/music engine, or null if none initialized</summary>
         public MusicEngine AudioEngine;
 
-        /// <summary>The current default draw-to screen, set by TTengine before any World.Draw() calls</summary>
-        public ScreenComp DrawScreen;
-
-        /// <summary>The one root World into which everything else lives</summary>
+        /// <summary>The one root World into which everything else lives, including the MainChannel</summary>
         public EntityWorld RootWorld;
 
-        /// <summary>The one root Channel which renders everything (including other channels) to the display.</summary>
+        /// <summary>Root screen where the MainChannel is drawn to.</summary>
+        public ScreenComp RootScreen;
+
+        /// <summary>The main Channel is a scalable screen ('graphics window') and World in
+        /// which all other entities, channels, levels etc exist. It lives inside the RootWorld and renders
+        /// to the RootScreen.</summary>
         public Entity MainChannel;
 
-        /// <summary>The Screen of the RootChannel.</summary>
+        /// <summary>The Screen of the MainChannel.</summary>
         public ScreenComp MainChannelScreen;
 
         /// <summary>
@@ -59,9 +61,6 @@ namespace TTengine.Core
 
         public CountingTimer TimerDraw = new CountingTimer();
 
-        /// <summary>Root screen where the MainChannel is drawn to.</summary>
-        private ScreenComp rootScreen;
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -71,7 +70,7 @@ namespace TTengine.Core
 
             // XNA related init that needs to be in constructor (or at least before Initialize())
             GraphicsMgr = new GraphicsDeviceManager(this);
-            IsFixedTimeStep = false; // handle own fixed timesteps
+            IsFixedTimeStep = false; // handle own fixed timesteps in Update() code
             Content.RootDirectory = "Content";
 #if DEBUG
             IsProfiling = true;
@@ -90,14 +89,18 @@ namespace TTengine.Core
 
         protected override void Initialize()
         {
+            // make root world and build to it
             RootWorld = new EntityWorld();
             RootWorld.InitializeAll(true);
             TTFactory.BuildTo(RootWorld);
+
+            // make root screen and build to it
+            RootScreen = new ScreenComp(false, 0, 0);
+            TTFactory.BuildTo(RootScreen);
+
+            // make the MainChannel and build to it
             MainChannel = TTFactory.CreateChannel(Color.CornflowerBlue);
 			MainChannelScreen = MainChannel.GetComponent<WorldComp>().Screen;
-            rootScreen = new ScreenComp(false, 0, 0);
-            MainChannel.AddComponent(rootScreen);
-            MainChannel.Refresh();
             TTFactory.BuildTo(MainChannel);
 
             // the TTMusicEngine
@@ -148,8 +151,9 @@ namespace TTengine.Core
                 TimerDraw.Start();
                 TimerDraw.CountUp();
             }
-            DrawScreen = rootScreen;
+            RootScreen.SpriteBatch.BeginParameterized();
             RootWorld.Draw();   // draw world including all sub-worlds/sub-channels
+            RootScreen.SpriteBatch.End();
             base.Draw(gameTime);
             if (IsProfiling)
             {

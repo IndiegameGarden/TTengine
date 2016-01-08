@@ -54,36 +54,24 @@ namespace TTengine.Systems
 
     #endregion
 
-    /// <summary>The system for rendering sprites</summary>
+    /// <summary>The system for rendering a sprite field - a screen full of sprites based on a colored level-layout bitmap.</summary>
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = SystemsSchedule.SpriteRenderSystemDraw)]
     public class SpriteFieldSystem : EntityComponentProcessingSystem<SpriteFieldComp, SpriteComp, PositionComp, DrawComp>
     {
-
-        protected ScreenComp activeScreen = null;
-
-        protected override void Begin()
-        {
-            activeScreen = TTGame.Instance.DrawScreen;
-        }
-
-        /// <summary>Processes the specified entity.</summary>
-        /// <param name="entity">The entity.</param>
         public override void Process(Entity entity, SpriteFieldComp fieldComp, SpriteComp spriteComp, PositionComp posComp, DrawComp drawComp)
         {
             if (!drawComp.IsVisible)
                 return;
 
             // check which screen to render to
-            ScreenComp screen = drawComp.DrawScreen;
-            if (screen == null)
-                screen = activeScreen;
+            ScreenComp scr = drawComp.DrawScreen;
 
             // update drawpos
             var p = posComp.PositionAbs;
-            drawComp.DrawPosition = screen.ToPixels(p); //FIXME remove function.
+            drawComp.DrawPosition = scr.ToPixels(p); //FIXME remove function.
             drawComp.LayerDepth = posComp.Depth;
 
-            TTSpriteBatch sb = screen.SpriteBatch;
+            TTSpriteBatch sb = scr.SpriteBatch;
 
             // topleft corner and grid size
             int x0 = (int)Math.Round(fieldComp.FieldPos.X);

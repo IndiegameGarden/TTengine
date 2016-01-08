@@ -18,11 +18,10 @@ namespace TTengine.Core
     /// </summary>
     public class TTFactory
     {
-        /// <summary>The Artemis entity world currently used for building new Entities in</summary>
+        /// <summary>The Artemis entity world currently used for building new Entities in.</summary>
         public static EntityWorld BuildWorld;
 
-        /// <summary>The screen that newly built Entities will render to.
-        /// Value null is used to denote "default".</summary>
+        /// <summary>The Screen that newly built Entities in factory will by default render to.</summary>
         public static ScreenComp BuildScreen;
 
         private static TTGame _game = null;
@@ -226,15 +225,15 @@ namespace TTengine.Core
         /// Creates an FX Screenlet that renders a layer with shader Effect to the current active BuildScreen
         /// </summary>
         /// <returns></returns>
-        public static Entity CreateFxScreenlet(Color backgroundColor, String effectFile)
+        public static Entity CreateFxScreenlet(String effectFile)
         {
             var fx = _game.Content.Load<Effect>(effectFile);
             var sc = new ScreenComp(BuildScreen.RenderTarget); // renders to the existing screen buffer
-            sc.BackgroundColor = backgroundColor;
             sc.SpriteBatch.effect = fx; // set the effect in SprBatch
+
             var e = CreateEntity();
             e.AddComponent(sc);
-            e.AddComponent(new DrawComp(sc));
+            //e.AddComponent(new DrawComp(sc));
             e.Refresh();
             return e;
         }

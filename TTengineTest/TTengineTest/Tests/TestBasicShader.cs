@@ -16,7 +16,7 @@ namespace TTengineTest
 
         public override void Create()
         {
-            var fxScreen = TestFactory.CreateFxScreenlet(BackgroundColor,"FixedColor");
+            var fxScreen = TestFactory.CreateFxScreenlet("FixedColor");
             BuildTo(fxScreen);
 
             var t = new TestRotation();

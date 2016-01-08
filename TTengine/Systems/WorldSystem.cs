@@ -26,16 +26,7 @@
     {
         public override void Process(Entity entity, WorldComp worldComp)
         {
-            var oldScr = TTGame.Instance.DrawScreen;    // save state
-
-			// if Screen given: render to specific Screen
-			if (worldComp.Screen != null)
-			{
-                TTGame.Instance.DrawScreen = worldComp.Screen;
-			}
             worldComp.World.Draw();						// render the World
-            
-			TTGame.Instance.DrawScreen = oldScr; 		// restore state
         }
     }
 }

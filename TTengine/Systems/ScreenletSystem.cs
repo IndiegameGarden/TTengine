@@ -45,7 +45,7 @@ namespace TTengine.Systems
 
         public override void Process(Entity entity, ScreenComp screenComp)
         {
-            //TTGame.Instance.GraphicsDevice.SetRenderTarget(screenComp.RenderTarget);
+            TTGame.Instance.GraphicsDevice.SetRenderTarget(screenComp.RenderTarget);
             //TTGame.Instance.GraphicsDevice.Clear(screenComp.BackgroundColor);
             TTSpriteBatch sb = screenComp.SpriteBatch;
             sb.End(); 

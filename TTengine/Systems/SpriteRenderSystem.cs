@@ -58,14 +58,6 @@ namespace TTengine.Systems
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = SystemsSchedule.SpriteRenderSystemDraw)]
     public class SpriteRenderSystem : EntityComponentProcessingSystem<SpriteComp, PositionComp, DrawComp>
     {
-
-        protected ScreenComp activeScreen = null;
-
-        protected override void Begin()
-        {
-            activeScreen = TTGame.Instance.DrawScreen;
-        }
-
         /// <summary>Processes the specified entity.</summary>
         /// <param name="entity">The entity.</param>
         public override void Process(Entity entity, SpriteComp spriteComp, PositionComp posComp, DrawComp drawComp)
@@ -73,19 +65,16 @@ namespace TTengine.Systems
             if (!drawComp.IsVisible)
                 return;
 
-            // use set screen, or default if not given.
-            ScreenComp screen = drawComp.DrawScreen;
-            if (screen == null)
-                screen = activeScreen;
+            var scr = drawComp.DrawScreen;
             
             // update drawpos interpolated
             var p = posComp.PositionAbs;
             if (entity.HasComponent<VelocityComp>())
                 p += (float)TTGame.Instance.TimeLag * entity.GetComponent<VelocityComp>().Velocity2D;
-            drawComp.DrawPosition = screen.ToPixels(p);
+            drawComp.DrawPosition = scr.ToPixels(p);
             drawComp.LayerDepth = posComp.Depth; 
 
-            TTSpriteBatch sb = screen.SpriteBatch;
+            TTSpriteBatch sb = scr.SpriteBatch;
 
             // draw sprite
             sb.Draw(spriteComp.Texture, drawComp.DrawPosition, null, drawComp.DrawColor,
