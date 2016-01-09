@@ -16,14 +16,13 @@ namespace TTengineTest
         {
             // put some content in the main channel
             var t0 = new TestScaling();
-            //t0.Create();
+            t0.Create();
 
             // create a first child channel
             var ch1 = TestFactory.CreateChannel(Color.LightSalmon, 200, 400);
             ch1.GetComponent<WorldComp>().TimeWarp = 0.333;
 			ch1.GetComponent<PositionComp>().Position = new Vector2(50f, 50f);
             
-            /*
             // second child channel
             var ch2 = TestFactory.CreateChannel(Color.LightSeaGreen, 200, 400);
             ch2.GetComponent<WorldComp>().TimeWarp = 1.0;
@@ -37,15 +36,13 @@ namespace TTengineTest
 			// 4th
             var ch4 = TestFactory.CreateChannel(Color.LightGreen, 700, 250);
             ch4.GetComponent<WorldComp>().TimeWarp = 4.0;
-			ch4.GetComponent<PositionComp>().Position = new Vector2(50f, 500f);
-            */
+			ch4.GetComponent<PositionComp>().Position = new Vector2(50f, 500f);            
 
 			// for each channel, built the content into it.
 			BuildTo(ch1);
 			var t1 = new TestRelativeMotion();
 			t1.Create();
 
-            /*
 			BuildTo(ch2);
 			var t2 = new TestRelativeMotion();
 			t2.Create();
@@ -57,7 +54,7 @@ namespace TTengineTest
 			BuildTo(ch4);
 			var t4 = new TestRelativeMotion();
 			t4.Create();
-            */
+
         }
 
     }

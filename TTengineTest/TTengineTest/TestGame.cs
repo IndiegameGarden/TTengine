@@ -43,12 +43,11 @@ namespace TTengineTest
             // Here all the tests are created
             //DoTest(new TestPostEffects()); //FIXME
             DoTest(new TestRelativeMotion());
-            //DoTest(new TestMultiChannels()); //FIXME
-            /*
+            DoTest(new TestMultiChannels());
             DoTest(new TestGamepad());
             DoTest(new TestModifiers());
-            DoTest(new TestZoomedScreenlet()); //FIXME
-            DoTest(new TestAudioBasics()); //FIXME
+            DoTest(new TestZoomedScreenlet());
+            DoTest(new TestAudioBasics()); //FIXME?
             DoTest(new TestContentLoad());
             DoTest(new TestTargetMotion());
             DoTest(new TestScaling());            
@@ -61,7 +60,6 @@ namespace TTengineTest
             DoTest(new TestLinearMotion());
             DoTest(new TestRotation());
             DoTest(new TestSpritePixelGetSet());            
-             */
 
             // pick the initial one and activate it
             ZapChannel(0);
