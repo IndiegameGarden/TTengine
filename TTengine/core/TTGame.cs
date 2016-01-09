@@ -153,6 +153,7 @@ namespace TTengine.Core
             }
             RootScreen.SpriteBatch.BeginParameterized();
             RootWorld.Draw();   // draw world including all sub-worlds/sub-channels
+            GraphicsDevice.SetRenderTarget(null);
             RootScreen.SpriteBatch.End();
             base.Draw(gameTime);
             if (IsProfiling)

@@ -42,7 +42,8 @@ namespace TTengineTest
 
             // Here all the tests are created
             //DoTest(new TestPostEffects()); //FIXME
-            DoTest(new TestMultiChannels()); //FIXME
+            DoTest(new TestRelativeMotion());
+            //DoTest(new TestMultiChannels()); //FIXME
             /*
             DoTest(new TestGamepad());
             DoTest(new TestModifiers());
@@ -50,8 +51,7 @@ namespace TTengineTest
             DoTest(new TestAudioBasics()); //FIXME
             DoTest(new TestContentLoad());
             DoTest(new TestTargetMotion());
-            DoTest(new TestScaling());
-            DoTest(new TestRelativeMotion());
+            DoTest(new TestScaling());            
             DoTest(new TestTextureSamplingShader());
             DoTest(new TestBTAI());
             DoTest(new TestSphereCollision());

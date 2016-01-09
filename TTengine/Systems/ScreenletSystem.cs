@@ -25,7 +25,7 @@ namespace TTengine.Systems
 
         public override void Process(Entity screenlet, ScreenComp screenComp)
         {
-            TTGame.Instance.GraphicsDevice.SetRenderTarget(screenComp.RenderTarget);
+            //TTGame.Instance.GraphicsDevice.SetRenderTarget(screenComp.RenderTarget);
             //TTGame.Instance.GraphicsDevice.Clear(screenComp.BackgroundColor);
 
             // in this initial round, start the drawing to this screenlet's spritebatch:
@@ -46,7 +46,8 @@ namespace TTengine.Systems
         public override void Process(Entity entity, ScreenComp screenComp)
         {
             TTGame.Instance.GraphicsDevice.SetRenderTarget(screenComp.RenderTarget);
-            //TTGame.Instance.GraphicsDevice.Clear(screenComp.BackgroundColor);
+            if (screenComp.BackgroundColor.A != 0)
+                TTGame.Instance.GraphicsDevice.Clear(screenComp.BackgroundColor);
             TTSpriteBatch sb = screenComp.SpriteBatch;
             sb.End(); 
         }
