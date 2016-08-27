@@ -169,6 +169,13 @@ namespace TTengine.Core
         }
 
         /// <summary>
+        /// called on post-update round, may be overridden to define custom UpdatePost behaviour
+        /// </summary>
+        protected virtual void OnUpdatePost(ref UpdateParams p)
+        {
+        }
+
+        /// <summary>
         /// Called when this item is drawn (only if Item is Visible and Active)
         /// </summary>
         protected virtual void OnDraw(ref DrawParams p)
@@ -372,7 +379,7 @@ namespace TTengine.Core
             }
             if (!Active) return;
 
-            // check active in state
+            // check "active in state" conditions; if given only update in that state.
             if (activeInState != null)
             {
                 if (!IsInState(activeInState))
@@ -390,7 +397,6 @@ namespace TTengine.Core
                 childrenToAdd.Clear();
             }
 
-            // simulate object and children
             //Remove any items that need deletion etc
             int i = 0;
             while (i < Children.Count)
@@ -425,6 +431,30 @@ namespace TTengine.Core
             OnUpdate(ref p);
             if (myState != null)
                 myState.OnUpdate(this, ref p);
+
+        }
+
+        public virtual void UpdatePost(ref UpdateParams p)
+        {
+            if (!Active) return;
+
+            // check "active in state" conditions; if given only update in that state.
+            if (activeInState != null)
+            {
+                if (!IsInState(activeInState))
+                    return;
+            }
+
+            //Update each child item. Note each child _may_ modify updPars.
+            foreach (Gamelet item in Children)
+            {
+                item.UpdatePost(ref p);
+            }
+
+            // call custom update handler of current object and its state, if any
+            OnUpdatePost(ref p);
+            //if (myState != null)
+            //    myState.OnUpdatePost(this, ref p);  // not used for now
 
         }
 

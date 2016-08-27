@@ -57,6 +57,7 @@ namespace TTengine.Core
         {
             UpdateParams up = new UpdateParams(gameTime);
             rootGamelet.Update(ref up);
+            rootGamelet.UpdatePost(ref up);
         }
 
         /// <summary>
