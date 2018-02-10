@@ -7,8 +7,6 @@ using TTengine.Core;
 using TTengine.Comps;
 using Artemis;
 
-using Game1.Levels;
-
 namespace Game1
 {
     /// <summary>
@@ -52,10 +50,8 @@ namespace Game1
             Ship = Factory.CreateShip(Factory.New());
 
             // create the root level which contains the builder entities (with more level content)
-            Level root = new RootLevel();
-            //Level root = new TestLevel(); 
-            root.Build();
-
+            //Level root = new RootLevel();
+         
             base.LoadContent();
         }
 

@@ -26,6 +26,8 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -36,6 +38,7 @@
     <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -45,6 +48,7 @@
     <DefineConstants>TRACE;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>
@@ -110,17 +114,13 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\Artemis_XNA_INDEPENDENT\Artemis.csproj">
+    <ProjectReference Include="..\Artemis\Artemis.csproj">
       <Project>{22c89af2-e1cf-4976-91b9-7d33773dc6e7}</Project>
       <Name>Artemis</Name>
     </ProjectReference>
     <ProjectReference Include="..\TTengine\TTengine.csproj">
-      <Project>{616035d5-3927-44cd-bd41-2eee846ac3a3}</Project>
+      <Project>{639b4e0f-f18d-482a-b82d-78464b07f60d}</Project>
       <Name>TTengine</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TTMusicEngine\TTMusicEngine.csproj">
-      <Project>{cb99d0c9-fd0e-4b90-91bd-7d5816b38a2c}</Project>
-      <Name>TTMusicEngine</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

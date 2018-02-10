@@ -7,8 +7,8 @@ using Artemis;
 using TTengine.Core;
 using TTengine.Comps;
 
-using Game1.Comps;
-using Game1.Levels;
+//using Game1.Comps;
+//using Game1.Levels;
 
 namespace Game1
 {
@@ -17,24 +17,6 @@ namespace Game1
     /// </summary>
     public class Game1Factory: TTFactory
     {
-
-        /// <summary>
-        /// Create a Level Builder, which builds new content on the background once the triggering Entity gets close to it.
-        /// </summary>
-        /// <param name="e"></param>
-        /// <param name="level">Level to build from</param>
-        /// <param name="script">Script within level to build upon triggering</param>
-        /// <param name="x">X position of the builder</param>
-        /// <param name="y">Y position of the builder</param>
-        /// <returns></returns>
-        public Entity CreateLevelBuilder(Entity e, Level level, ScriptDelegate script, float x, float y)
-        {
-            e.AddC(new PositionComp(x, y));
-            e.AddC(new LevelComp(level, script, e));
-            if (!e.HasC<ScriptComp>())
-                e.AddC(new ScriptComp(e));
-            return e;
-        }
 
         /// <summary>
         /// Create the player's ship Entity
@@ -46,7 +28,7 @@ namespace Game1
             CreateSprite(e, "ball");
             e.AddC(new ScaleComp(2.0));
             e.AddC(new PlayerInputComp());
-            e.AddC(new InputToMotionComp());
+            //e.AddC(new InputToMotionComp());
             return e;
         }
 
