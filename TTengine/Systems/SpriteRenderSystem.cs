@@ -67,20 +67,70 @@ namespace TTengine.Systems
 
             var scr = drawComp.DrawScreen;
             
-            // update drawpos interpolated
+            // update drawpos interpolated - FIXME dont do this repeatedly in systems
             var p = posComp.PositionAbs;
-            if (entity.HasComponent<VelocityComp>())
-                p += (float)TTGame.Instance.TimeLag * entity.GetComponent<VelocityComp>().Velocity2D;
-            drawComp.DrawPosition = scr.ToPixels(p);
-            drawComp.LayerDepth = posComp.Depth; 
+            float tlag = (float)TTGame.Instance.TimeLag;
+            if (tlag > 0f && entity.HasC<VelocityComp>())
+                p += tlag * entity.C<VelocityComp>().Velocity;
+            drawComp.DrawPosition = p; 
 
             TTSpriteBatch sb = scr.SpriteBatch;
 
             // draw sprite
-            sb.Draw(spriteComp.Texture, drawComp.DrawPosition, null, drawComp.DrawColor,
+            sb.Draw(spriteComp.Texture, drawComp.DrawPositionXY, null, drawComp.DrawColor,
                 drawComp.DrawRotation, spriteComp.Center, drawComp.DrawScale, SpriteEffects.None, drawComp.LayerDepth);
 
         }
 
     }
+
+    /// <summary>The system for rendering rect sprites</summary>
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Draw, Layer = SystemsSchedule.SpriteRenderSystemDraw)]
+    public class SpriteRectRenderSystem : EntityComponentProcessingSystem<SpriteRectComp, PositionComp, DrawComp>
+    {
+        protected Texture2D dummyTexture = new Texture2D(TTGame.Instance.GraphicsDevice, 1, 1);
+        protected Rectangle rect = new Rectangle();
+
+        public override void LoadContent()
+        {
+            Color[] data = new Color[] { Color.White };
+            dummyTexture.SetData<Color>(data);
+        }
+
+        /// <summary>Processes the specified entity.</summary>
+        /// <param name="entity">The entity.</param>
+        public override void Process(Entity entity, SpriteRectComp sprComp, PositionComp pc, DrawComp dc)
+        {
+            if (!dc.IsVisible)
+                return;
+
+            var scr = dc.DrawScreen;
+
+            // update drawpos interpolated FIXME do only once instead of in multiple systems.
+            var p = pc.PositionAbs;
+            float tlag = (float)TTGame.Instance.TimeLag;
+            if (tlag > 0f && entity.HasC<VelocityComp>())
+                p += tlag * entity.C<VelocityComp>().Velocity;
+            dc.DrawPosition = p;
+            dc.LayerDepth = pc.Depth;
+
+            TTSpriteBatch sb = scr.SpriteBatch;
+
+            // draw rect sprite
+            rect.X = (int)Math.Round(dc.DrawPosition.X);
+            rect.Y = (int)Math.Round(dc.DrawPosition.Y);
+            if (sprComp.Width == 0 || sprComp.Height == 0)
+            {
+                rect.Width = scr.Width;
+                rect.Height = scr.Height;
+            } else { 
+                rect.Width = (int)Math.Round(sprComp.Width * dc.DrawScale);
+                rect.Height = (int)Math.Round(sprComp.Height * dc.DrawScale);
+            }
+            sb.Draw(dummyTexture, rect, null, dc.DrawColor,
+                dc.DrawRotation, Vector2.Zero, SpriteEffects.None, dc.LayerDepth);
+        }
+
+    }
+
 }

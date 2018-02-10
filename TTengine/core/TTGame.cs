@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// (c) 2010-2017 IndiegameGarden.com. Distributed under the FreeBSD license in LICENSE.txt
+
+using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 using Artemis;
-using Artemis.Utils;
-using TTengine.Core;
 using TTengine.Comps;
-using TTengine.Systems;
 using TTengine.Util;
 using TTMusicEngine;
-using TTMusicEngine.Soundevents;
 
 namespace TTengine.Core
 {
@@ -22,11 +15,11 @@ namespace TTengine.Core
     /// </summary>
     public abstract class TTGame: Game
     {
-        /// <summary>If set to true in Game's constructor, starts both the TTMusicEngine and AudioSystem</summary>
-        protected bool IsAudio = false;
-
         /// <summary>The currently running (single) instance of TTGame</summary>
         public static TTGame Instance;
+
+        /// <summary>If set to true in Game's constructor, starts both the TTMusicEngine and AudioSystem</summary>
+        protected bool IsAudio = false;
 
         /// <summary>The XNA GraphicsDeviceManager for this Game</summary>
         public GraphicsDeviceManager GraphicsMgr;
@@ -40,26 +33,28 @@ namespace TTengine.Core
         /// <summary>Root screen where the MainChannel is drawn to.</summary>
         public ScreenComp RootScreen;
 
-        /// <summary>The main Channel is a scalable screen ('graphics window') and World in
-        /// which all other entities, channels, levels etc exist. It lives inside the RootWorld and renders
-        /// to the RootScreen.</summary>
-        public Entity MainChannel;
-
-        /// <summary>The Screen of the MainChannel.</summary>
-        public ScreenComp MainChannelScreen;
-
         /// <summary>
         /// lag is how much time (sec) the fixed timestep (gametime) updates lag to the actual time.
         /// This is used for controlling the World Updates and also for smooth interpolated rendering.
         /// </summary>
         public double TimeLag = 0.0;
 
+        /// <summary>
+        /// total Game Time in seconds
+        /// </summary>
+        public double GameTime = 0.0;
+
         /// <summary>When true, loop time profiling using below CountingTimers is enabled.</summary>
-        public bool IsProfiling;
+        public bool IsProfiling = false;
 
-        public CountingTimer TimerUpdate = new CountingTimer();
+        /// <summary>Timer used for profiling: recording duration of total Update() cycle</summary>
+        public CountingTimer ProfilingTimerUpdate = new CountingTimer();
 
-        public CountingTimer TimerDraw = new CountingTimer();
+        /// <summary>Timer used for profiling: recording duration of total Draw() cycle</summary>
+        public CountingTimer ProfilingTimerDraw = new CountingTimer();
+
+        /// <summary>The factory for creating the default TTGame Entities with</summary>
+        internal static TTFactory Factory;
 
         /// <summary>
         /// Constructor
@@ -70,6 +65,7 @@ namespace TTengine.Core
 
             // XNA related init that needs to be in constructor (or at least before Initialize())
             GraphicsMgr = new GraphicsDeviceManager(this);
+            GraphicsMgr.GraphicsProfile = GraphicsProfile.HiDef;
             IsFixedTimeStep = false; // handle own fixed timesteps in Update() code
             Content.RootDirectory = "Content";
 #if DEBUG
@@ -89,19 +85,16 @@ namespace TTengine.Core
 
         protected override void Initialize()
         {
+            Factory = new TTFactory();
+
             // make root world and build to it
             RootWorld = new EntityWorld();
             RootWorld.InitializeAll(true);
-            TTFactory.BuildTo(RootWorld);
+            Factory.BuildTo(RootWorld);
 
             // make root screen and build to it
             RootScreen = new ScreenComp(false, 0, 0);
-            TTFactory.BuildTo(RootScreen);
-
-            // make the MainChannel and build to it
-            MainChannel = TTFactory.CreateChannel(Color.CornflowerBlue);
-			MainChannelScreen = MainChannel.GetComponent<WorldComp>().Screen;
-            TTFactory.BuildTo(MainChannel);
+            Factory.BuildTo(RootScreen);
 
             // the TTMusicEngine
             if (IsAudio)
@@ -113,20 +106,17 @@ namespace TTengine.Core
             }
 
             base.Initialize();
-        }
 
-        protected override void LoadContent()
-        {
-            base.LoadContent();
         }
 
         protected override void Update(GameTime gameTime)
         {
             if (IsProfiling)
             {
-                TimerUpdate.Start();
-                TimerUpdate.CountUp();
+                ProfilingTimerUpdate.Start();
+                ProfilingTimerUpdate.CountUp();
             }
+            this.GameTime = gameTime.TotalGameTime.TotalSeconds;
             double dt = TargetElapsedTime.TotalSeconds;
             // see http://gameprogrammingpatterns.com/game-loop.html
             TimeLag += gameTime.ElapsedGameTime.TotalSeconds;
@@ -134,13 +124,14 @@ namespace TTengine.Core
             while (TimeLag >= dt)
             {
                 RootWorld.Update(TargetElapsedTime);
+                this.GameTime += dt;
                 TimeLag -= dt;
             }
             base.Update(gameTime);
             if (IsProfiling)
             {
-                TimerUpdate.Update();
-                TimerUpdate.Stop();
+                ProfilingTimerUpdate.Update();
+                ProfilingTimerUpdate.Stop();
             }
         }
 
@@ -148,9 +139,10 @@ namespace TTengine.Core
         {
             if (IsProfiling)
             {
-                TimerDraw.Start();
-                TimerDraw.CountUp();
+                ProfilingTimerDraw.Start();
+                ProfilingTimerDraw.CountUp();
             }
+            this.GameTime = gameTime.TotalGameTime.TotalSeconds;
             RootScreen.SpriteBatch.BeginParameterized();
             RootWorld.Draw();   // draw world including all sub-worlds/sub-channels
             GraphicsDevice.SetRenderTarget(null);
@@ -158,8 +150,8 @@ namespace TTengine.Core
             base.Draw(gameTime);
             if (IsProfiling)
             {
-                TimerDraw.Update();
-                TimerDraw.Stop();
+                ProfilingTimerDraw.Update();
+                ProfilingTimerDraw.Stop();
             }
         }
 

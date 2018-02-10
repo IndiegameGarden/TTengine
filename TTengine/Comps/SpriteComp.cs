@@ -1,4 +1,4 @@
-// (c) 2010-2015 IndiegameGarden.com. Distributed under the FreeBSD license in LICENSE.txt
+// (c) 2010-2017 IndiegameGarden.com. Distributed under the FreeBSD license in LICENSE.txt
 
 using System;
 using System.Collections.Generic;
@@ -40,7 +40,7 @@ namespace TTengine.Comps
         }
 
         /// <summary>
-        /// create new spritelet with given Texture2D texture, or null if no texture yet
+        /// create new sprite with given Texture2D texture, or null if no texture yet
         /// </summary>
         public SpriteComp(Texture2D texture)
         {
@@ -49,7 +49,7 @@ namespace TTengine.Comps
         }
 
         /// <summary>
-        /// create new spritelet that renders the contents of a screenlet
+        /// create new sprite that renders the contents of a screenlet
         /// </summary>
         /// <param name="screen">the screenlet to render as a sprite</param>
         public SpriteComp(ScreenComp screen)
@@ -70,7 +70,7 @@ namespace TTengine.Comps
         protected Texture2D texture = null;
         protected ScreenComp screen = null;
         protected Color[] textureData = null;
-        public static BlendState blendAlpha = null, blendColor = null;
+        internal static BlendState blendAlpha = null, blendColor = null;
 
         #endregion
 
@@ -329,7 +329,7 @@ namespace TTengine.Comps
                 file = Texture2D.FromStream(graphics, titleStream);                
             }
             
-            //Setup a render target to hold our final texture which will have premulitplied alpha values
+            //Setup a render target to hold our final texture which will have premultiplied alpha values
             result = new RenderTarget2D(graphics, file.Width, file.Height);
 
             lock (graphics)

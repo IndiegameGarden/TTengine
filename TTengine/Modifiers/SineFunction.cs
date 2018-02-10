@@ -20,7 +20,6 @@ namespace TTengine.Modifiers
 
         public override double Value(double inp)
         {
-            inp = base.Value(inp);
             return Amplitude * Math.Sin(MathHelper.TwoPi * Frequency * inp + Phase) + Offset;
         }
     }

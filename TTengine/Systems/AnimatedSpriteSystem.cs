@@ -33,10 +33,8 @@ namespace TTengine.Systems
 
             var scr = drawComp.DrawScreen;
 
-            // update drawpos
-            var p = posComp.PositionAbs;
-            drawComp.DrawPosition = scr.ToPixels(p);
-            drawComp.LayerDepth = posComp.Depth; 
+            // update drawpos - FIXME
+            drawComp.DrawPosition = posComp.PositionAbs;
 
             spriteComp.frameSkipCounter--;
             if (spriteComp.frameSkipCounter == 0)
@@ -78,10 +76,9 @@ namespace TTengine.Systems
             TTSpriteBatch sb = scr.SpriteBatch;
             int row = (int)((float)spriteComp.CurrentFrame / (float)spriteComp.Nx);
             int column = spriteComp.CurrentFrame % spriteComp.Nx;
-            Vector2 dp = drawComp.DrawPosition;
             Rectangle sourceRectangle = new Rectangle(spriteComp.px * column, spriteComp.py * row, spriteComp.px, spriteComp.py);
 
-            sb.Draw(spriteComp.Texture, dp, sourceRectangle, drawComp.DrawColor,
+            sb.Draw(spriteComp.Texture, drawComp.DrawPositionXY, sourceRectangle, drawComp.DrawColor,
                 drawComp.DrawRotation, spriteComp.Center, drawComp.DrawScale, SpriteEffects.None, drawComp.LayerDepth);
 
         }

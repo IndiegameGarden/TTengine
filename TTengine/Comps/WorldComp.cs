@@ -17,7 +17,7 @@ namespace TTengine.Comps
         public EntityWorld World;
 
         /// <summary>
-        /// The time factor for this World; 1.0 is normal, < 1 is slower time and > 1 is faster time.
+        /// The time factor for this World; 1.0 is normal, < 1.0 is slower time and > 1.0 is faster time.
         /// </summary>
         public double TimeWarp = 1.0;
 

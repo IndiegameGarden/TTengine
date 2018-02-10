@@ -27,7 +27,8 @@ namespace TTengine.Core
         /// <summary>
         /// construct a TTSpriteBatch with custom rendering parameters for the batch
         /// </summary>
-        public TTSpriteBatch(GraphicsDevice gfx, SpriteSortMode ssm, BlendState bs, SamplerState ss, DepthStencilState dss, RasterizerState rs, Effect fx): 
+        public TTSpriteBatch(GraphicsDevice gfx, BlendState bs , SpriteSortMode ssm = SpriteSortMode.BackToFront, 
+            SamplerState ss = null, DepthStencilState dss = null, RasterizerState rs = null, Effect fx = null) : 
             base(gfx)
         {
             spriteSortMode = ssm;
@@ -43,10 +44,7 @@ namespace TTengine.Core
         /// </summary>
         public void BeginParameterized()
         {
-            if (effect == null)
-              Begin(spriteSortMode, blendState, samplerState, depthStencilState, rasterizerState);
-            else
-              Begin(spriteSortMode, blendState, samplerState, depthStencilState, rasterizerState, effect);
+            Begin(spriteSortMode, blendState, samplerState, depthStencilState, rasterizerState, effect);
         }
         
     }

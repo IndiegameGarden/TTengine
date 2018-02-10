@@ -51,7 +51,7 @@ namespace TTengine.Behaviors
                 // TODO: define a double functino also
                 dirChangeTime = (double) RandomMath.RandomBetween((float)MinDirectionChangeTime, (float)MaxDirectionChangeTime);
                 // TODO: length-preservation in VelocityComp
-                var v = ctx.Entity.GetComponent<VelocityComp>().Velocity;
+                var v = ctx.Entity.C<VelocityComp>().Velocity;
                 CurrentDirection = RandomMath.RandomDirection() * v.Length();
                 OnExecute(ctx);
             }
@@ -66,7 +66,7 @@ namespace TTengine.Behaviors
         /// <param name="context">BT Entity/processing information</param>
         protected virtual void OnExecute(BTAIContext context)
         {
-            context.Entity.GetComponent<VelocityComp>().Velocity = new Vector2(CurrentDirection.X, CurrentDirection.Y);
+            context.Entity.C<VelocityComp>().VelocityXY = new Vector2(CurrentDirection.X, CurrentDirection.Y);
         }
 
 

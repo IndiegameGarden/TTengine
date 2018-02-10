@@ -1,4 +1,5 @@
-﻿namespace TTengine.Systems
+﻿
+namespace TTengine.Systems
 {
     using System;
     using Artemis;

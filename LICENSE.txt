@@ -1,4 +1,5 @@
 (License for fmodex.dll and all files in FMOD folder:)
+
 FMOD Ex - Copyright (c), Firelight Technologies Pty, Ltd. 2004-2008.      
 Consult http://www.fmod.org/ for license conditions.
 
@@ -6,7 +7,7 @@ Consult http://www.fmod.org/ for license conditions.
 
 (License for other files where License is not indicated in source file header:)
 
-Copyright (c) 2010-2015 IndiegameGarden.com and its domain owner
+Copyright (c) 2010-2016 IndiegameGarden.com and its domain owner
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, 

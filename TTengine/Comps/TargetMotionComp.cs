@@ -1,4 +1,4 @@
-// (c) 2010-2015 IndiegameGarden.com. Distributed under the FreeBSD license in LICENSE.txt
+// (c) 2010-2018 IndiegameGarden.com. Distributed under the FreeBSD license in LICENSE.txt
 
 using Microsoft.Xna.Framework;
 using Artemis.Interface;
@@ -15,7 +15,7 @@ namespace TTengine.Comps
         {
         }
 
-        public Vector2 Target
+        public Vector3 Target
         {
             get
             {
@@ -37,7 +37,7 @@ namespace TTengine.Comps
             set;
         }
 
-        internal Vector2 targetPos = Vector2.Zero;
+        internal Vector3 targetPos = Vector3.Zero;
         internal bool isTargetSet = false;
 
     }

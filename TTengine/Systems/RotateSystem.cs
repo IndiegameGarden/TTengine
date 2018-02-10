@@ -1,4 +1,4 @@
-// (c) 2010-2015 IndiegameGarden.com. Distributed under the FreeBSD license in LICENSE.txt
+// (c) 2010-2017 IndiegameGarden.com. Distributed under the FreeBSD license in LICENSE.txt
 
 namespace TTengine.Systems
 {
@@ -20,8 +20,7 @@ namespace TTengine.Systems
 
         public override void Process(Entity entity, RotateComp rotComp)
         {
-            if (rotComp.RotateSpeed > 0)
-                rotComp.Rotate += rotComp.RotateSpeed * Dt;            
+            rotComp.Rotate += rotComp.RotateSpeed * Dt;            
         }
     }
 

@@ -83,7 +83,7 @@ namespace TTengine.Systems
             int cnt = allObj.Count;
             foreach (Entity e in entities.Values)
             {
-                e.GetComponent<SphereShapeComp>().Colliders.Clear();
+                e.C<SphereShapeComp>().Colliders.Clear();
             }
             for (int i1 = 0; i1 < cnt; i1++ )
             {
@@ -91,8 +91,8 @@ namespace TTengine.Systems
                 {
                     if (this.CollisionExists(allObj[i1], allObj[i2]))
                     {
-                        allObj[i1].GetComponent<SphereShapeComp>().Colliders.Add(allObj[i2]);
-                        allObj[i2].GetComponent<SphereShapeComp>().Colliders.Add(allObj[i1]);
+                        allObj[i1].C<SphereShapeComp>().Colliders.Add(allObj[i2]);
+                        allObj[i2].C<SphereShapeComp>().Colliders.Add(allObj[i1]);
                     }
                 }
             }
@@ -104,11 +104,11 @@ namespace TTengine.Systems
         /// <returns>The <see cref="bool" />.</returns>
         private bool CollisionExists(Entity entity1, Entity entity2)
         {
-            var p1 = entity1.GetComponent<PositionComp>();
-            var p2 = entity2.GetComponent<PositionComp>();
-            var s1 = entity1.GetComponent<SphereShapeComp>();
-            var s2 = entity2.GetComponent<SphereShapeComp>();
-            float dist = Vector2.Distance(p1.Position, p2.Position);
+            var p1 = entity1.C<PositionComp>();
+            var p2 = entity2.C<PositionComp>();
+            var s1 = entity1.C<SphereShapeComp>();
+            var s2 = entity2.C<SphereShapeComp>();
+            float dist = Vector3.Distance(p1.Position, p2.Position);
             return (dist <= (s1.Radius + s2.Radius));
             
         }

@@ -60,9 +60,9 @@ namespace TTengine.Systems
         {
             if (!targetComp.isTargetSet)
                 return;
-            Vector2 v = targetComp.targetPos - posComp.Position;
+            Vector3 v = targetComp.targetPos - posComp.Position;
             if (v.LengthSquared() > 0 ){
-                Vector2 vm = v;
+                Vector3 vm = v;
                 vm.Normalize();
                 vm *= (float)(targetComp.TargetVelocity * Dt);
                 if (vm.LengthSquared() > v.LengthSquared())

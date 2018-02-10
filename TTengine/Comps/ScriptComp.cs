@@ -5,30 +5,37 @@ using System.Text;
 using TTengine.Core;
 using Artemis;
 
+/// <summary>
+/// File contains support for two main types of script:
+/// 1) Delegate methods that are run as scripts OnUpdate
+/// 2) IScript Objects that represent scripts with their OnUpdate/OnDraw methods
+/// </summary>
 namespace TTengine.Comps
 {
     /// <summary>
-    /// Method signature (Delegate) for scripts
+    /// Method signature (Delegate) for scripts defined by methods/functions.
     /// </summary>
-    /// <param name="ctx">script context supplied during script execution</param>
-    public delegate void ScriptDelegate(ScriptContext ctx);
+    /// <param name="sc">ScriptComp passed upon script execution, containing contextual info for script execution.</param>
+    public delegate void ScriptDelegate(ScriptComp sc);
 
     /// <summary>
-    /// The context object passed to scripts when run
+    /// A script job object for queueing or postponing script execution.
     /// </summary>
-    public class ScriptContext
+    public class ScriptJob
     {
-        /// <summary>Amount of time active in simulation of the parent ScriptComp, in seconds.
-        /// Value may be changed by others (e.g. script, modifier).</summary>
-        public double SimTime = 0;
-
-        /// <summary>Delta time of the last Update() simulation step performed</summary>
-        public double Dt = 0;
+        public ScriptDelegate Script;
+        public Entity Entity;
 
         /// <summary>
-        /// The Entity that the script is attached to
+        /// Create a new ScriptJob
         /// </summary>
-        public Entity Entity;
+        /// <param name="script">Script to run</param>
+        /// <param name="ent">Entity that performs the script (for execution context)</param>
+        public ScriptJob(ScriptDelegate script, Entity ent)
+        {
+            this.Script = script;
+            this.Entity = ent;
+        }
     }
 
     /// <summary>
@@ -36,54 +43,39 @@ namespace TTengine.Comps
     /// </summary>
     public interface IScript
     {
-        void OnUpdate(ScriptContext context);
+        void OnUpdate(ScriptComp sc);
+        void OnDraw(ScriptComp sc);
     }
 
     /// <summary>
-    /// Interface that a script object must implement
-    /// </summary>
-    public interface IScriptDraw: IScript
-    {
-        void OnDraw(ScriptContext context);
-    }
-
-    /// <summary>
-    /// The Comp that enables scripting for your Entity with one or more ordered scripts.
+    /// The Comp that enables scripting for an Entity with one or more ordered scripts.
     /// </summary>
     public class ScriptComp: Comp
     {
-        /// <summary>Simulation time counter that is used by scripts via ScriptContext</summary>
-        public double SimTime;
+        /// <summary>Simulation time counter that is used by scripts - counting since ScriptComp creation.</summary>
+        public double SimTime = 0;
+
+        /// <summary>Delta time of the last Update() simulation step performed, or 0 if not performed yet.</summary>
+        public double Dt = 0;
 
         /// <summary>
-        /// The scripts that are called every update/draw cycle
+        /// The Entity that this ScriptComp is attached to, value used by scripts to access any Components.
+        /// </summary>
+        public Entity Entity = null;
+
+        /// <summary>
+        /// The list of scripts that are called every update/draw cycle
         /// </summary>
         public List<IScript> Scripts = new List<IScript>();
 
         /// <summary>
         /// Create new ScriptComp without any scripts yet
         /// </summary>
-        public ScriptComp()
-        {        
-        }
-
-        /// <summary>
-        /// Create new ScriptComp with a single script already added
-        /// </summary>
-        /// <param name="script">script to Add initially</param>
-        public ScriptComp(IScript script)
+        /// <param name="e">Entity that this ScriptComp will be attached to</param>
+        public ScriptComp(Entity e = null)
         {
-            Add(script);
-        }
-
-        /// <summary>
-        /// Add a new IScript script to execute to this component.
-        /// </summary>
-        /// <param name="script">The IScript to add and execute in next updates.</param>
-        public void Add(IScript script)
-        {
-            this.Scripts.Add(script);
-        }
+            this.Entity = e;
+        }     
 
     }
 }

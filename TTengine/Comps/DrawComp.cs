@@ -34,8 +34,13 @@ namespace TTengine.Comps
         /// <summary>Flag whether the Entity is visible currently (i.e. is being drawn or not)</summary>
         public bool IsVisible = true;
 
-        /// <summary>drawing depth of graphics 0f (front)....1f (back)</summary>
-        public float LayerDepth = 0.5f;
+        /// <summary>Z coordinate and drawing depth of graphics 0f (front)....1f (back). WARNING: this value is overwritten
+        /// each update by various Systems. Use PositionComp.Depth to modify item depth.</summary>
+        public float LayerDepth
+        {
+            get { return DrawPosition.Z; }
+            internal set { DrawPosition.Z = value; }
+        }
 
         /// <summary>Color for drawing, setting this will replace Alpha value with DrawColor.A</summary>
         public virtual Color DrawColor
@@ -79,11 +84,16 @@ namespace TTengine.Comps
         public float DrawRotation = 0f;
 
         /// <summary>
-        /// position in pixels for drawing, directly usable in Draw() calls
+        /// position coordinate x,y,z for drawing, WARNING: is being set by systems like SpriteRenderSystem on each draw.
         /// </summary>
-        public Vector2 DrawPosition
+        public Vector3 DrawPosition;
+
+        /// <summary>
+        /// position coordinate x,y for drawing, directly usable in Draw() calls. WARNING: is being set by systems like SpriteRenderSystem on each draw.
+        /// </summary>
+        public Vector2 DrawPositionXY
         {
-            get; set;
+            get { return new Vector2(DrawPosition.X, DrawPosition.Y); }
         }
 
         // internal vars

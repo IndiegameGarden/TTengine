@@ -1,8 +1,6 @@
-﻿
+﻿// (c) 2010-2017 IndiegameGarden.com. Distributed under the FreeBSD license in LICENSE.txt
+
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-using System;
-using TTengine.Core;
 using Artemis.Interface;
 
 namespace TTengine.Comps

@@ -1,46 +1,18 @@
-﻿using System;
+﻿
+using TTengine.Comps;
 
 namespace TTengine.Modifiers
 {
     /// <summary>
-    /// Function to compute an output value from an input. Functions can be
-    /// concatenated by passing an IFunction in the constructor.
+    /// Function to compute an output double value from an input double value. 
     /// </summary>
-    public class Function: IFunction
+    public abstract class Function: IFunction
     {
-        protected IFunction innerFunction = null;
+        public abstract double Value(double inp);
 
-        /// <summary>
-        /// Create new Function
-        /// </summary>
-        public Function()
+        public double Value(ScriptComp sc)
         {
-        }
-
-        /// <summary>
-        /// Create new Function that uses the result of another IFunction as its input value.
-        /// </summary>
-        /// <param name="innerFunction"></param>
-        public Function(IFunction innerFunction)
-        {
-            this.innerFunction = innerFunction;
-        }
-
-        /// <summary>
-        /// The value computation, implements IFunction. Can be overridden as long as the
-        /// child class uses the line 'inp = base.Value(inp);' at the start to have the
-        /// concatenation done properly.
-        /// </summary>
-        /// <param name="inp"></param>
-        /// <returns></returns>
-        public virtual double Value(double inp)
-        {
-            double val;
-            if (innerFunction != null)
-                val = innerFunction.Value(inp);
-            else
-                val = inp;
-            return val;
+            return this.Value(sc.SimTime);
         }
     }
 }

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// (c) 2010-2017 IndiegameGarden.com. Distributed under the FreeBSD license in LICENSE.txt
 
-using System.Text;
 using Artemis.Interface;
 using Microsoft.Xna.Framework.Graphics;
 using TTengine.Core;
@@ -14,7 +12,7 @@ namespace TTengine.Comps
 
         public string Text = "";
 
-        public TextComp(string text, string fontName = "Font1" )
+        public TextComp(string text, string fontName = "TTDefaultFont" )
         {
             this.Text = text;
             this.Font = TTGame.Instance.Content.Load<SpriteFont>(fontName);

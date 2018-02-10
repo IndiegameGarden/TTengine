@@ -83,7 +83,7 @@ namespace TTengine.Systems
             int cnt = allObj.Count;
             foreach (Entity e in entities.Values)
             {
-                var sc = e.GetComponent<SpriteComp>();
+                var sc = e.C<SpriteComp>();
                 if (sc.IsCheckingCollisions) {
                     sc.Colliders.Clear();
                     foreach (Entity e2 in allObj)
@@ -95,7 +95,7 @@ namespace TTengine.Systems
                         if (this.CollisionExists(e, e2))
                         {
                             sc.Colliders.Add(e2);
-                            e2.GetComponent<SpriteComp>().Colliders.Add(e);
+                            e2.C<SpriteComp>().Colliders.Add(e);
                         }
                     }
                 }
@@ -110,10 +110,10 @@ namespace TTengine.Systems
         {
             //var p1 = entity1.GetComponent<PositionComp>();
             //var p2 = entity2.GetComponent<PositionComp>();
-            var d1 = entity1.GetComponent<DrawComp>();
-            var d2 = entity2.GetComponent<DrawComp>();
-            var s1 = entity1.GetComponent<SpriteComp>();
-            var s2 = entity2.GetComponent<SpriteComp>();
+            var d1 = entity1.C<DrawComp>();
+            var d2 = entity2.C<DrawComp>();
+            var s1 = entity1.C<SpriteComp>();
+            var s2 = entity2.C<SpriteComp>();
             Rectangle r1 = new Rectangle((int)Math.Round(d1.DrawPosition.X-s1.Center.X), 
                                          (int)Math.Round(d1.DrawPosition.Y-s1.Center.Y), s1.Width, s1.Height);
             Rectangle r2 = new Rectangle((int)Math.Round(d2.DrawPosition.X-s2.Center.X), 

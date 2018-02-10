@@ -66,10 +66,8 @@ namespace TTengine.Systems
             // check which screen to render to
             ScreenComp scr = drawComp.DrawScreen;
 
-            // update drawpos
-            var p = posComp.PositionAbs;
-            drawComp.DrawPosition = scr.ToPixels(p); //FIXME remove function.
-            drawComp.LayerDepth = posComp.Depth;
+            // update drawpos - FIXME , repeated in systems?
+            drawComp.DrawPosition = posComp.PositionAbs;
 
             TTSpriteBatch sb = scr.SpriteBatch;
 
@@ -81,7 +79,7 @@ namespace TTengine.Systems
             int Ny = fieldComp.NumberSpritesY;
             float dx = fieldComp.FieldSpacing.X;
             float dy = fieldComp.FieldSpacing.Y;
-            var dp = drawComp.DrawPosition;
+            var dp = drawComp.DrawPositionXY;
 
             // draw sprites loops
             var tex = spriteComp.Texture;

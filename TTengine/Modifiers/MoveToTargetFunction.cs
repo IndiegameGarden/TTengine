@@ -17,21 +17,21 @@ namespace TTengine.Modifiers
         {
         }
 
-        public Vector2 CurrentValue;
+        public Vector3 CurrentValue;
         
-        public Vector2 Target;
+        public Vector3 Target;
 
         public double Speed = 0;
 
-        public Vector2 Value(ScriptContext ctx)
+        public Vector3 Value(ScriptComp ctx)
         {
             // scaling logic towards target
             if (Speed > 0)
             {
-                Vector2 v = Target - CurrentValue;
+                Vector3 v = Target - CurrentValue;
                 if (v.LengthSquared() > 0)
                 {
-                    Vector2 vm = v; // copy; vm is movement vector to apply
+                    Vector3 vm = v; // copy; vm is movement vector to apply
                     vm.Normalize();
                     vm *= (float)(Speed * ctx.Dt);
                     if (vm.LengthSquared() > v.LengthSquared())

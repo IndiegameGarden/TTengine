@@ -1,20 +1,18 @@
 // (c) 2010-2015 IndiegameGarden.com. Distributed under the FreeBSD license in LICENSE.txt
 
-using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Content;
 using Artemis.Interface;
+using TTengine.Core;
+using System;
 
-namespace TTengine.Core
+namespace TTengine.Comps
 {
     /// <summary>
     /// Screen to which graphics are rendered together with a TTSpriteBatch, 
     /// optionally containing a separate RenderBuffer.
-    /// Attaching a ScreenComp to an Entity makes it a Screenlet.
-    /// <seealso cref="ScreenletSystem"/>
+    /// Attaching a ScreenComp to an Entity makes it a Screen.
+    /// <seealso cref="ScreenSystem"/>
     /// </summary>
     public class ScreenComp: IComponent
     {
@@ -42,7 +40,7 @@ namespace TTengine.Core
             InitScreenDimensions();
         }
 
-        public Color BackgroundColor = Color.TransparentBlack;
+        public Color BackgroundColor = Color.Transparent;
 
         public bool IsVisible = true;
 
@@ -66,18 +64,6 @@ namespace TTengine.Core
             }
         }
 
-        public RenderTarget2D RenderTargetBackBuffer
-        {
-            get
-            {
-                if (renderTargetBackBuffer == null)
-                {
-                    renderTargetBackBuffer = new RenderTarget2D(TTGame.Instance.GraphicsDevice, Width, Height);
-                }
-                return renderTargetBackBuffer;
-            }
-        }
-
         /// <summary>Width of screen in pixels</summary>
         public int Width { get { return screenWidth; } }
 
@@ -87,26 +73,31 @@ namespace TTengine.Core
         /// <summary>Screen aspectratio</summary> 
         public float AspectRatio { get { return aspectRatio;  } }
 
+        public float FOV
+        {
+            get { return fov;}
+            set {
+                fov = value;
+                // Create a view and projection matrix for our camera, to match 2D coordinate system exactly
+                float z = Center.Y / (float)Math.Tan(fov/2f);
+                ViewM = Matrix.CreateLookAt(new Vector3(Center.X, Center.Y, -z), new Vector3(Center.X, Center.Y, 0f), Vector3.Down);                
+                ProjM = Matrix.CreatePerspectiveFieldOfView(fov, aspectRatio, 0.1f, 9500f); // TODO near and far planes setting logic                
+            }
+        }
         /// <summary>The default spritebatch associated to this screen, for drawing to it</summary>
         public TTSpriteBatch SpriteBatch;
+
+        /// <summary>
+        /// View and Projection matrices used for the 3D objects on this screen
+        /// </summary>
+        public  Matrix ViewM, ProjM;
 
         #region Private and internal variables        
         private int screenWidth = 0;
         private int screenHeight = 0;
-        private float aspectRatio;
-        private /*internal*/ RenderTarget2D renderTarget, renderTargetBackBuffer;
+        private float aspectRatio, fov;
+        private RenderTarget2D renderTarget;
         #endregion
-
-        /// <summary>
-        /// translate a Vector2 relative coordinate to pixel coordinates for this Screen
-        /// </summary>
-        /// <param name="pos">relative coordinate to translate</param>
-        /// <returns>translated to pixels coordinate</returns>
-        public Vector2 ToPixels(Vector2 pos)
-        {
-            var v = (pos - ZoomCenter) * Zoom + Center;
-            return v;
-        }
 
         /// <summary>
         /// If RenderTarget or the TTGame screenbuffer (window) changed size, call this method
@@ -129,6 +120,10 @@ namespace TTengine.Core
             aspectRatio = (float)screenWidth / (float)screenHeight;
             Center = new Vector2( (float)screenWidth/2.0f, (float)screenHeight/2.0f);
             ZoomCenter = Center;
+
+            // 3d geometry
+            this.FOV = MathHelper.Pi/8;
+
         }
 
     }

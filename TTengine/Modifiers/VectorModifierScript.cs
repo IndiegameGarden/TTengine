@@ -13,21 +13,21 @@ namespace TTengine.Modifiers
     /// </summary>
     /// <param name="ctx">script context supplied during script execution</param>
     /// <param name="functionValue">value of function that is passed to script code</param>
-    public delegate void VectorModifierDelegate(ScriptContext ctx, Vector2 functionValue);
+    public delegate void VectorScriptDelegate(ScriptComp ctx, Vector3 functionValue);
 
     /// <summary>
     /// A script object that first computes a function and then calls a delegate (piece of code) to use
     /// that function value. The script usually will modify one or more parameters of Components.
     /// </summary>
-    public class VectorModifierScript: IScript
+    public class VectorScript: IScript
     {
         /// <summary>
         /// The script code
         /// </summary>
-        public VectorModifierDelegate ScriptCode;
+        public VectorScriptDelegate ScriptCode;
 
         /// <summary>
-        /// The Function that is computed and whose value is passed in ScriptContext.FunctionValue to the
+        /// The Function that is computed and whose value is passed in ScriptComp.FunctionValue to the
         /// ScriptCode.
         /// </summary>
         public IVectorFunction Function;
@@ -37,7 +37,7 @@ namespace TTengine.Modifiers
         /// </summary>
         /// <param name="code"></param>
         /// <param name="function">if null is passed, the unity function f(x)=x is applied as Function</param>
-        public VectorModifierScript(VectorModifierDelegate code, IVectorFunction function)
+        public VectorScript(VectorScriptDelegate code, IVectorFunction function)
         {
             this.ScriptCode = code;
             this.Function = function;
@@ -47,11 +47,12 @@ namespace TTengine.Modifiers
         /// Implements IScript
         /// </summary>
         /// <param name="ctx"></param>
-        public void OnUpdate(ScriptContext ctx)
+        public void OnUpdate(ScriptComp ctx)
         {
             var v = Function.Value(ctx);
             ScriptCode(ctx,v);
         }
 
+        public void OnDraw(ScriptComp ctx) {; }
     }
 }

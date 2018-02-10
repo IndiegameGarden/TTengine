@@ -5,7 +5,7 @@ using TTengine.Comps;
 namespace TTengine.Modifiers
 {
     /// <summary>
-    /// IVectorFunction computes a Vector2 output value from an input context
+    /// IVectorFunction computes a Vector3 output value from an input context
     /// </summary>
     public interface IVectorFunction
     {
@@ -14,6 +14,6 @@ namespace TTengine.Modifiers
         /// </summary>
         /// <param name="ctx">Script context object</param>
         /// <returns>Vector function result value</returns>
-        Vector2 Value(ScriptContext ctx);
+        Vector3 Value(ScriptComp ctx);
     }
 }

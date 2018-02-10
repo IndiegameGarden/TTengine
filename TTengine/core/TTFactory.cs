@@ -1,266 +1,287 @@
-﻿// (c) 2010-2015 IndiegameGarden.com. Distributed under the FreeBSD license in LICENSE.txt
+﻿// (c) 2010-2017 IndiegameGarden.com. Distributed under the FreeBSD license in LICENSE.txt
 
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
 using Artemis;
 using TTengine.Comps;
 using TTengine.Modifiers;
 using TTMusicEngine.Soundevents;
+using TTengine.Factories.Shape3DFactoryItems;
 
 namespace TTengine.Core
 {
     /// <summary>
-    /// The TTengine's Factory to create new basic Entities (may be half-baked, 
-    /// to further customize) with customizable output to which EntityWorld or
-    /// Screen the items are built.
+    /// The TTengine's Factory to create, transform or customize Entities 
+    /// with selection methods to which EntityWorld or Screen the items are built.
+    /// 
+    /// Factory's methods are in the following classes:
+    ///     New....()           for new Entity creation from nothing.
+    ///     Create....(e,input) for creating from Entity e a usable stereotyped Entity (e.g., a Sprite)
+    ///     Add....(e, input)   for adding elements such as a Component or Script to an Entity
+    ///     BuildTo(...)        for changing the build destination of the factory
+    ///     Process...(e, par)  for processing an entity, e.g. transforming it, configuring or modifying.
+    ///     Join...(e1, e2 ..)  for joining Entities e1/e2/.. together in some way, composing/arranging.
+    ///     
     /// </summary>
     public class TTFactory
     {
-        /// <summary>The Artemis entity world currently used for building new Entities in.</summary>
-        public static EntityWorld BuildWorld;
+        protected EntityWorld buildWorld;
 
-        /// <summary>The Screen that newly built Entities in factory will by default render to.</summary>
-        public static ScreenComp BuildScreen;
+        protected ScreenComp buildScreen;
 
-        private static TTGame _game = null;
-
-        static TTFactory() {
-            _game = TTGame.Instance;
+        public TTFactory()
+        {
+            this.buildWorld = TTGame.Instance.RootWorld;
+            this.buildScreen = TTGame.Instance.RootScreen;
         }
 
-        public static void BuildTo(EntityWorld world)
+        public TTFactory(TTFactory parent)
         {
-            BuildWorld = world;
+            this.buildWorld = parent.buildWorld;
+            this.buildScreen = parent.buildScreen;
         }
 
-        public static void BuildTo(ScreenComp screen)
+        internal void BuildTo(EntityWorld world)
         {
-            BuildScreen = screen;
+            buildWorld = world;
+        }
+
+        internal void BuildTo(ScreenComp screen)
+        {
+            buildScreen = screen;
+        }
+
+        /// <summary>The Artemis entity world currently used by this Factory for building new Entities in.</summary>
+        public EntityWorld BuildWorld { get { return buildWorld;  } }
+
+        /// <summary>The Screen that newly built Entities in this Factory will render to.</summary>
+        public ScreenComp BuildScreen {  get { return buildScreen;  } }
+
+        /// <summary>
+        /// Switch factory's building output to the root channel of the game.
+        /// </summary>
+        /// <returns></returns>
+        public FactoryState BuildToRoot()
+        {
+            var st = new FactoryState(this, buildWorld, buildScreen);
+            BuildTo(TTGame.Instance.RootWorld);
+            BuildTo(TTGame.Instance.RootScreen);
+            return st;
         }
 
         /// <summary>
-        /// Switch factory's building output to given Channel, World or Screen
+        /// Switch factory's building output to given Channel, World, Layer, or Screen
         /// </summary>
         /// <param name="e">an Entity which may contain a WorldComp, a ScreenComp, or both. In case of both,
         /// the Entity is a Channel.</param>
-        public static void BuildTo(Entity e)
+        public FactoryState BuildTo(Entity e)
         {
-            if (e.HasComponent<WorldComp>())
+            var st = new FactoryState(this, buildWorld, buildScreen);
+            if (e.HasC<WorldComp>())
             {
-                var wc = e.GetComponent<WorldComp>();
-                BuildWorld = wc.World;
+                var wc = e.C<WorldComp>();
+                buildWorld = wc.World;
                 if (wc.Screen != null)
-                    BuildScreen = wc.Screen;
+                    buildScreen = wc.Screen;
             }
-            if (e.HasComponent<ScreenComp>())
-                BuildScreen = e.GetComponent<ScreenComp>();
+            if (e.HasC<ScreenComp>())
+                buildScreen = e.C<ScreenComp>();
+            return st;
+        }
+
+        /// <summary>
+        /// Switch factory's building target to the same as the given other factory f
+        /// </summary>
+        /// <param name="f"></param>
+        public FactoryState BuildLike(TTFactory f)
+        {
+            var st = new FactoryState(this, buildWorld, buildScreen);
+            BuildTo(f.buildWorld);
+            BuildTo(f.buildScreen);
+            return st;
         }
 
         /// <summary>
         /// Create simplest Entity without components within the EntityWorld currently selected
-        /// for Entity construction
+        /// for Entity construction.
         /// </summary>
-        /// <returns></returns>
-        public static Entity CreateEntity()
+        /// <returns>New empty Entity which is enabled</returns>
+        public Entity New()
         {
-            return BuildWorld.CreateEntity();
-        }
-
-        /// <summary>
-        /// Create a Gamelet, which is an Entity with position and velocity, but no shape/drawability (yet).
-        /// </summary>
-        /// <returns></returns>
-        public static Entity CreateGamelet()
-        {
-            Entity e = CreateEntity();
-            e.AddComponent(new PositionComp());
-            e.AddComponent(new VelocityComp());
-            e.Refresh();
+            Entity e = buildWorld.CreateEntity();
             return e;
         }
 
         /// <summary>
-        /// Create a Drawlet, which is a moveable, drawable Entity
+        /// Create simplest Entity without components within the EntityWorld currently selected
+        /// for Entity construction. By default, the Entity is not enabled until it is
+        /// Finalized.
         /// </summary>
-        /// <returns></returns>
-        public static Entity CreateDrawlet()
+        /// <returns>New empty Entity which is disabled</returns>
+        public Entity NewDisabled()
         {
-            Entity e = CreateGamelet();
-            e.AddComponent(new DrawComp(BuildScreen));
-            e.Refresh();
+            Entity e = buildWorld.CreateEntity();
+            e.IsEnabled = false;
             return e;
         }
 
         /// <summary>
-        /// Create a Spritelet, which is a moveable sprite 
+        /// Finalize Entity after having constructed all its components; enabling it and
+        /// triggering a refresh.
+        /// </summary>
+        /// <param name="e">Entity to finalize and in the next ECS round activate.</param>
+        public virtual void Finalize(Entity e)
+        {
+            e.IsEnabled = true;
+            e.Refresh();
+        }
+
+        /// <summary>
+        /// Create a Sprite, which is a moveable graphic
         /// </summary>
         /// <param name="graphicsFile">The content graphics file with or without extension. If
         /// extension given eg "ball.png", the uncompiled file will be loaded at runtime. If no extension
         /// given eg "ball", precompiled XNA content will be loaded (.xnb files).</param>
-        /// <returns></returns>
-        public static Entity CreateSpritelet(string graphicsFile)
+        public Entity CreateSprite(Entity e, string graphicsFile)
         {
-            Entity e = CreateDrawlet();
-            var spriteComp = new SpriteComp(graphicsFile);
-            e.AddComponent(spriteComp);
-            e.Refresh();
+            AddDrawable(e);
+            var sc = new SpriteComp(graphicsFile);
+            e.AddC(sc);
             return e;
         }
 
         /// <summary>
-        /// Create a Spritelet with texture based on the contents of a Screen
+        /// Create a Sprite with texture based on the contents of a Screen
         /// </summary>
         /// <returns></returns>
-        public static Entity CreateSpritelet(ScreenComp screen)
+        public Entity CreateSprite(Entity e, ScreenComp screen)
         {
-            Entity e = CreateDrawlet();
-            var spriteComp = new SpriteComp(screen);
-            e.AddComponent(spriteComp);
-            e.Refresh();
+            AddDrawable(e);
+            var sc = new SpriteComp(screen);
+            e.AddC(sc);
             return e;
         }
 
         /// <summary>
-        /// Create an animated sprite entity
+        /// Create an animated sprite
         /// </summary>
         /// <param name="atlasBitmapFile">Filename of the sprite atlas bitmap</param>
         /// <param name="NspritesX">Number of sprites in horizontal direction (X) in the atlas</param>
         /// <param name="NspritesY">Number of sprites in vertical direction (Y) in the atlas</param>
         /// <param name="animType">Animation type chosen from AnimationType class</param>
-        /// <returns></returns>
-        public static Entity CreateAnimatedSpritelet(string atlasBitmapFile, int NspritesX, int NspritesY, 
-                                                     AnimationType animType = AnimationType.NORMAL )
+        /// <param name="slowDownFactor">Slowdown factor for animation, default = 1</param>
+        public Entity CreateAnimatedSprite(Entity e, string atlasBitmapFile, int NspritesX, int NspritesY, 
+                                                     AnimationType animType = AnimationType.NORMAL,
+                                                     int slowDownFactor = 1)
         {
-            Entity e = CreateDrawlet();
-            var spriteComp = new AnimatedSpriteComp(atlasBitmapFile,NspritesX,NspritesY);
-            spriteComp.AnimType = animType;
-            e.AddComponent(spriteComp);
-            e.Refresh();
-            return e;
-        }
-
-        public static Entity CreateSpriteField(string fieldBitmapFile, string spriteBitmapFile)
-        {
-            Entity e = CreateDrawlet();
-            var spriteFieldComp = new SpriteFieldComp(fieldBitmapFile);
-            var spriteComp = new SpriteComp(spriteBitmapFile);
-            spriteFieldComp.FieldSpacing = new Vector2(spriteComp.Width, spriteComp.Height);
-            e.AddComponent(spriteComp);
-            e.AddComponent(spriteFieldComp);
-            e.Refresh();
+            AddDrawable(e);
+            var sc = new AnimatedSpriteComp(atlasBitmapFile,NspritesX,NspritesY);
+            sc.AnimType = animType;
+            sc.SlowdownFactor = slowDownFactor;
+            e.AddC(sc);
             return e;
         }
 
         /// <summary>
-        /// Creates a Textlet, which is a moveable piece of text.
+        /// experimental TODO
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="fieldBitmapFile"></param>
+        /// <param name="spriteBitmapFile"></param>
+        /// <returns></returns>
+        public Entity CreateSpriteField(Entity e, string fieldBitmapFile, string spriteBitmapFile)
+        {
+            AddDrawable(e);
+            var sfc = new SpriteFieldComp(fieldBitmapFile);
+            var sc = new SpriteComp(spriteBitmapFile);
+            sfc.FieldSpacing = new Vector2(sc.Width, sc.Height);
+            e.AddC(sc);
+            e.AddC(sfc);
+            return e;
+        }
+
+        /// <summary>
+        /// Creates a moveable text.
         /// </summary>
         /// <param name="text"></param>
         /// <param name="fontName"></param>
-        /// <returns></returns>
-        public static Entity CreateTextlet(string text, string fontName = "Font1")
+        public Entity CreateText(Entity e, string text, string fontName = "TTDefaultFont")
         {
-            Entity e = CreateDrawlet();
-            e.AddComponent(new ScaleComp());
-            TextComp tc = new TextComp(text, fontName);
-            e.AddComponent(tc);
-            e.Refresh();
+            AddDrawable(e);
+            if (!e.HasC<ScaleComp>())  e.AddC(new ScaleComp());
+            var tc = new TextComp(text, fontName);
+            e.AddC(tc);
             return e;
         }
 
         /// <summary>
-        /// Creates a Screenlet, an Entity that has a ScreenComp to 
+        /// Creates a Screen, an Entity that has a ScreenComp to 
         /// which graphics can be rendered. 
         /// </summary>
-        /// <param name="backgroundColor">Background color of the Screenlet</param>
-        /// <param name="hasRenderBuffer">if true, Screenlet will have its own render buffer</param>
-        /// <param name="height">Screenlet height, if not given uses default backbuffer height</param>
-        /// <param name="width">Screenlet width, if not given uses default backbuffer width</param>
-        /// <returns>Newly created Entity with a ScreenComp.</returns>
-        public static Entity CreateScreenlet(Color backgroundColor, bool hasRenderBuffer = false,
-                                        int width = 0, int height = 0)
+        /// <param name="backgroundColor">Background color of the Screen</param>
+        /// <param name="hasRenderBuffer">if true, Screen will have its own render buffer</param>
+        /// <param name="height">Screen height, if not given uses default backbuffer height</param>
+        /// <param name="width">Screen width, if not given uses default backbuffer width</param>
+        /// <param name="isSprite">If set to true, will also make this Entity a Sprite, with bitmap being the screen's contents.</param>
+        /// <returns>Newly created Entity with a ScreenComp and DrawComp.</returns>
+        public Entity CreateScreen(Entity e, Color backgroundColor, bool hasRenderBuffer = false,
+                                        int width = 0, int height = 0, bool isSprite = false)
         {
+            AddDrawable(e);
             var sc = new ScreenComp(hasRenderBuffer, width, height);
-            sc.BackgroundColor = backgroundColor;
-            var e = CreateEntity();
-            e.AddComponent(sc);
-            e.AddComponent(new DrawComp(BuildScreen));
-            e.Refresh();
+            sc.BackgroundColor = backgroundColor;            
+            e.AddC(sc);
+            if (isSprite)
+            {
+                e.AddC(new SpriteComp(sc));
+            }
             return e;
         }
 
         /// <summary>
-        /// Creates a new Channel, which is an Entity with inside it a separate EntityWorld containing a dedicated ScreenComp to
-        /// which that World renders, which can be then shown as a sprite. Parameters are same as for CreateScreenlet() above.
-		/// In summary: A World inside a Sprite.
+        /// Creates a Screen Sprite, which has a ScreenComp to which graphics can be rendered and also is plotted as 
+        /// a sprite with the texture being the Screen's contents. Parameters as for CreateScreen().
         /// </summary>
-        /// <param name="backgroundColor"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <returns></returns>
-        public static Entity CreateChannel(Color backgroundColor,
+        public Entity CreateScreenSprite(Entity e, Color backgroundColor, bool hasRenderBuffer = false,
                                         int width = 0, int height = 0)
         {
-			var wc = new WorldComp(); // create world
+            return CreateScreen(e, backgroundColor, hasRenderBuffer, width, height, true);
+        }
 
-			// create a screenlet Entity within the Channel's (sub) world
-			Entity screenlet = wc.World.CreateEntity();
-			var sc = new ScreenComp (true, width, height);
-			wc.Screen = sc;				// store the Screen as part of the World
-			sc.BackgroundColor = backgroundColor;
-			screenlet.AddComponent (sc);
-			screenlet.Refresh ();
-
-			// create the channel Entity, based on Spritelet
-			var e = CreateSpritelet(sc);
-
-			// make this spritelet into a Channel by adding the World
-            e.AddComponent(wc);
-            e.Refresh();
+        /// <summary>
+        /// Create a shader effect layer to which one or more Entities/sprites can render
+        /// </summary>
+        /// <param name="e">Entity that will carry the fx layer</param>
+        /// <param name="fxFile">name of shader effect in Content (name).fx </param>
+        /// <returns></returns>
+        public Entity CreateFx(Entity e, string fxFile)
+        {
+            var fx = TTGame.Instance.Content.Load<Effect>(fxFile);
+            if (!e.HasC<ScreenComp>()) e.AddC(new ScreenComp(buildScreen.RenderTarget));
+            e.C<ScreenComp>().SpriteBatch.effect = fx; // set the effect in SprBatch
             return e;
         }
 
         /// <summary>
-        /// Creates an FX Screenlet that renders a layer with shader Effect to the current active BuildScreen
+        /// Creates an FX Sprite that renders a shader Effect in a rectangle. By default, the rect is
+        /// of screen-filling size (when width=height=0).
         /// </summary>
+        /// <param name="width">width of rectangle</param>
+        /// <param name="height">Height of rectangle</param>
         /// <returns></returns>
-        public static Entity CreateFxScreenlet(String effectFile)
+        public Entity CreateFxSprite(Entity e, string fxFile, int width = 0, int height = 0)
         {
-            var fx = _game.Content.Load<Effect>(effectFile);
-            var sc = new ScreenComp(BuildScreen.RenderTarget); // renders to the existing screen buffer
+            AddDrawable(e);
+            var fx = TTGame.Instance.Content.Load<Effect>(fxFile);
+            var sc = new ScreenComp(buildScreen.RenderTarget); // renders to the existing screen buffer
             sc.SpriteBatch.effect = fx; // set the effect in SprBatch
-
-            var e = CreateEntity();
-            e.AddComponent(sc);
-            //e.AddComponent(new DrawComp(sc));
-            e.Refresh();
-            return e;
-        }
-
-        /// <summary>
-        /// Creates a Scriptlet, which is an Entity that only contains a custom code script
-        /// </summary>
-        /// <param name="script"></param>
-        /// <returns></returns>
-        public static Entity CreateScriptlet(IScript script)
-        {
-            var e = CreateEntity();
-            e.AddComponent(new ScriptComp(script));
-            e.Refresh();
-            return e;
-        }
-
-        /// <summary>
-        /// Create an Audiolet, which is an Entity that only contains an audio script
-        /// </summary>
-        /// <param name="soundScript"></param>
-        /// <returns></returns>
-        public static Entity CreateAudiolet(SoundEvent soundScript)
-        {
-            var e = CreateEntity();
-            e.AddComponent(new AudioComp(soundScript));
-            e.Refresh();
+            e.AddC(sc);
+            var spc = new SpriteRectComp { Width = width, Height = height };
+            e.AddC(spc);
+            e.C<DrawComp>().DrawScreen = sc; // let sprite draw itself to the effect-generating Screen sc
             return e;
         }
 
@@ -268,96 +289,168 @@ namespace TTengine.Core
         /// Creates a new FrameRateCounter. TODO: screen position set.
         /// </summary>
         /// <returns></returns>
-        public static Entity CreateFrameRateCounter(Color textColor)
+        public Entity CreateFrameRateCounter(Entity e, Color textColor, int pixelsOffsetVertical = 0)
         {
-            var e = TTFactory.CreateTextlet("##");
-            e.GetComponent<PositionComp>().Position = new Vector2(2f, 2f);
-            e.GetComponent<DrawComp>().DrawColor = textColor;
-            AddScript(e, new Util.FrameRateCounter(e.GetComponent<TextComp>()));
-            e.Refresh();
+            CreateText(e, "##", "TTFrameRateCounter");
+            e.C<PositionComp>().Position = new Vector3(2f, 2f + pixelsOffsetVertical,0f);
+            e.C<DrawComp>().DrawColor = textColor;
+            AddScript(e, new Util.FrameRateCounter(e.C<TextComp>()));
             return e;
         }
 
-        public static void AddScript(Entity e, IScript script)
+        public Entity CreateSphere(Entity e, Vector3 pos, float diameter = 1.0f, int tesselation = 16)
         {
-            if (!e.HasComponent<ScriptComp>())
-                e.AddComponent(new ScriptComp());
-            var sc = e.GetComponent<ScriptComp>();
-            sc.Add(script);
+            AddDrawable(e);
+            e.C<PositionComp>().Position = pos;
+            var gc = new GeomComp(new SpherePrimitive(BuildScreen.SpriteBatch.GraphicsDevice , diameter, tesselation));
+            e.AddC(gc);
+            return e;
+        }
+
+        /// <summary>
+        /// Creates a new Channel, which is an Entity with inside it a separate EntityWorld containing a dedicated ScreenComp to
+        /// which that World renders, which can be then shown as a sprite. Parameters are same as for CreateScreen() above.
+		/// In summary: A World inside a Sprite.
+        /// </summary>
+        /// <param name="backgroundColor">Background drawing color</param>
+        /// <param name="width">Channel's screen width or if not given or 0 will use RenderBuffer width</param>
+        /// <param name="height">Channel's screen height or if not given or 0 will use RenderBuffer height</param>
+        /// <returns></returns>
+        public Entity CreateChannel(Entity eChan, Color backgroundColor,
+                                        int width = 0, int height = 0)
+        {
+			var wc = new WorldComp(); // create world
+
+            // create a Screen Entity within the Channel's (sub) world
+            Entity eScr = wc.World.CreateEntity();  // Note: creation should happen within wc.World ! See notebook 17-dec-2017
+			var sc = new ScreenComp (true, width, height);
+			wc.Screen = sc;				// store the Screen as part of the World
+			sc.BackgroundColor = backgroundColor;
+			eScr.AddC (sc);
+            // add the new World
+            eChan.AddC(wc);
+
+            // create the Sprite
+            CreateSprite(eChan, sc);
+
+            return eChan;
+        }
+
+        /// <summary>
+        /// Create a new channel with same properties as an existing (template) channel. Color and size will
+        /// be the same.
+        /// </summary>
+        /// <param name="templateChannel">Existing channel to use as template for color and size.</param>
+        public Entity CreateChannelLike(Entity e, Entity templateChannel) 
+        {
+            ScreenComp sc = templateChannel.C<WorldComp>().Screen;
+            return CreateChannel(e,sc.BackgroundColor, sc.Width, sc.Height);
+        }
+
+        /// <summary>
+        /// Create a new channel with CRT shader effect
+        /// </summary>
+        /// <param name="chan"></param>
+        /// <param name="backgroundColor"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <returns></returns>
+        public Entity CreateCrtChannel(Entity chan, Color backgroundColor, int width, int height)
+        {
+            var fx = CreateFx(New(), "crt-lottes");
+
+            using (BuildTo(fx))
+            {
+                CreateChannel(chan, backgroundColor, width, height);
+                ProcessFitSize(chan, BuildScreen);
+            }
+
+            EffectParameterCollection p = fx.C<ScreenComp>().SpriteBatch.effect.Parameters;
+            p["video_size"].SetValue(new Vector2(chan.C<SpriteComp>().Width, chan.C<SpriteComp>().Height));
+            p["output_size"].SetValue(new Vector2(BuildScreen.Width, BuildScreen.Height));
+            p["texture_size"].SetValue(new Vector2(chan.C<SpriteComp>().Width, chan.C<SpriteComp>().Height));
+            //p["modelViewProj"].SetValue(Matrix.Identity);
+
+            return chan;
+        }
+
+        /// <summary>
+        /// Add Entity position and velocity
+        /// </summary>
+        public Entity AddMotion(Entity e)
+        {
+            if (!e.HasC<PositionComp>()) e.AddC(new PositionComp());
+            if (!e.HasC<VelocityComp>()) e.AddC(new VelocityComp());
+            return e;
+        }
+
+        /// <summary>
+        /// Add Entity position and velocity, and make it drawable
+        /// </summary>
+        public Entity AddDrawable(Entity e)
+        {
+            AddMotion(e);
+            if (!e.HasC<DrawComp>()) e.AddC(new DrawComp(buildScreen));
+            return e;
+        }
+
+        /// <summary>
+        /// Add Entity scalability
+        /// </summary>
+        public Entity AddScalable(Entity e, double initialScale = 1.0)
+        {
+            if (!e.HasC<ScaleComp>()) e.AddC(new ScaleComp(initialScale));
+            return e;
+        }
+
+        /// <summary>
+        /// Add audio script to Entity
+        /// </summary>
+        public Entity AddAudio(Entity e, SoundEvent soundScript)
+        {
+            if (e.HasC<AudioComp>())
+                e.C<AudioComp>().AudioScript = soundScript;
+            else
+                e.AddC(new AudioComp(soundScript));
+            return e;
+        }
+
+        /// <summary>
+        /// Add custom code script to Entity
+        /// </summary>
+        public Entity AddScript(Entity e, IScript script)
+        {
+            if (!e.HasC<ScriptComp>())
+                e.AddC(new ScriptComp(e));
+            var sc = e.C<ScriptComp>();
+            sc.Scripts.Add(script);
+            return e;
         }
 
         /// <summary>
         /// Add a script to an Entity, based on a function (delegate)
         /// </summary>
         /// <param name="e">The Entity to add script to</param>
-        /// <param name="scriptCode">Script to run</param>
-        /// <returns>IScript object created from the function</returns>
-        public static BasicScript AddScript(Entity e, ScriptDelegate scriptCode)
+        /// <param name="scriptCode">Script to run, as delegate code</param>
+        public Entity AddScript(Entity e, ScriptDelegate scriptCode)
         {
-            if (!e.HasComponent<ScriptComp>())
-            {
-                e.AddComponent(new ScriptComp());
-                e.Refresh();
-            }
-            var sc = e.GetComponent<ScriptComp>();
-            var script = new BasicScript(scriptCode);
-            sc.Add(script);
-            return script;
+            return AddScript(e,new BasicScript(scriptCode));
         }
 
         /// <summary>
-        /// Add a Modifier script to an Entity, based on a code block (delegate) and a Function
+        /// Add a Function script to an Entity, based on a code block (delegate) and a Function
         /// </summary>
-        /// <param name="e">Entity to add modifier script to</param>
-        /// <param name="scriptCode">Code block (delegate) that is the script</param>
-        /// <param name="func">Function whose value will be passed in ScriptContext.FunctionValue to script</param>
+        /// <param name="e">Entity to add function script to</param>
+        /// <param name="scriptCode">Code block (delegate) that is the script with call parameters (ScriptComp,double)</param>
+        /// <param name="func">Function whose value will be passed to script code each call</param>
         /// <returns></returns>
-        public static ModifierScript AddModifier(Entity e, ModifierDelegate scriptCode, IFunction func)
+        public Entity AddFunctionScript(Entity e, FunctionScriptDelegate scriptCode, IFunction func)
         {
-            if (!e.HasComponent<ScriptComp>())
-            {
-                e.AddComponent(new ScriptComp());
-                e.Refresh();
-            }
-            var sc = e.GetComponent<ScriptComp>();
-            var script = new ModifierScript(scriptCode, func);
-            sc.Add(script);
-            return script;
+            return AddScript(e,new FunctionScript(scriptCode, func));            
         }
 
         /// <summary>
-        /// Add a Modifier script to an Entity, based on a code block (delegate) and a VectorFunction
-        /// </summary>
-        /// <param name="e">Entity to add modifier script to</param>
-        /// <param name="scriptCode">Code block (delegate) that is the script</param>
-        /// <param name="func">Function whose value will be passed in ScriptContext.FunctionValue to script</param>
-        /// <returns></returns>
-        public static VectorModifierScript AddModifier(Entity e, VectorModifierDelegate scriptCode, IVectorFunction func)
-        {
-            if (!e.HasComponent<ScriptComp>())
-            {
-                e.AddComponent(new ScriptComp());
-                e.Refresh();
-            }
-            var sc = e.GetComponent<ScriptComp>();
-            var script = new VectorModifierScript(scriptCode, func);
-            sc.Add(script);
-            return script;
-        }
-
-        /// <summary>
-        /// Add a Modifier script to an Entity, based on a code block (delegate) and an empty (=unity) Function
-        /// </summary>
-        /// <param name="e">Entity to add modifier script to</param>
-        /// <param name="scriptCode">Code block (delegate) that is the script</param>
-        /// <returns></returns>
-        public static ModifierScript AddModifier(Entity e, ModifierDelegate scriptCode)
-        {
-            return AddModifier(e, scriptCode, null);
-        }
-
-        /// <summary>
-        /// Basic script object that can run code from a Delegate
+        /// Basic script object that can run code from a Delegate in the OnUpdate cycle
         /// </summary>
         public class BasicScript : IScript
         {
@@ -368,12 +461,128 @@ namespace TTengine.Core
                 this.scriptCode = scriptCode;
             }
 
-            public void OnUpdate(ScriptContext ctx)
+            public void OnUpdate(ScriptComp sc)
             {
-                scriptCode(ctx);
+                scriptCode(sc);
             }
 
+            public void OnDraw(ScriptComp sc) {; }
         }
+
+        /// <summary>
+        /// Apply a channel/screen/sprite fit (with scale, move) such that the entToFit will be centered in
+        /// and shrunk or stretched to the extent that it optimally fits the screen parentScr.
+        /// </summary>
+        /// <param name="entToFit">Screen/Channel/Sprite to fit to parentScr</param>
+        /// <param name="parentScr">Parent Screen</param>
+        public Entity ProcessFitSize(Entity entToFit, ScreenComp parentScr, bool canStretch = true,
+                                             bool canShrink = true, int maxPixelsCutOffVertical = 0)
+        {
+            int h, w; // height / width of entToFit
+
+            if (entToFit.HasC<WorldComp>())
+            {
+                h = entToFit.C<WorldComp>().Screen.Height;
+                w = entToFit.C<WorldComp>().Screen.Width;
+            }
+            else if (entToFit.HasC<ScreenComp>())
+            {
+                h = entToFit.C<ScreenComp>().Height;
+                w = entToFit.C<ScreenComp>().Width;
+            }
+            else if (entToFit.HasC<SpriteComp>())
+            {
+                h = entToFit.C<SpriteComp>().Height;
+                w = entToFit.C<SpriteComp>().Width;
+            }
+            else
+                throw new NotImplementedException("Unrecognized entToFit in ProcessFitSize()");
+
+            PositionComp pos = entToFit.C<PositionComp>();
+            SpriteComp spr = entToFit.C<SpriteComp>();
+            ScaleComp scl = entToFit.C<ScaleComp>();
+
+            float scale = 1.0f;
+
+            // if no scale comp yet, add one
+            if (scl == null)
+            {
+                scl = new ScaleComp();
+                entToFit.AddC(scl);
+            }
+
+            // position channel to the middle of parent.
+            pos.PositionXY = parentScr.Center;
+            spr.CenterToMiddle();
+
+            // squeeze in to fit width
+            if (canShrink && w > parentScr.Width)
+            {
+                scale = ((float)parentScr.Width) / ((float)w);
+                // squeeze in to fit height
+                if ((((h - maxPixelsCutOffVertical) * scale)) > (parentScr.Height * scale))
+                {
+                    scale *= ((float)parentScr.Height) / ((float)(h - maxPixelsCutOffVertical));
+                }
+            }
+
+            // expand to fit width
+            if (canStretch && w < parentScr.Width)
+            {
+                scale = ((float)parentScr.Width) / ((float)w);
+                // squeeze in to fit height
+                if ((scale * (float)h - (float)maxPixelsCutOffVertical) > parentScr.Height)
+                {
+                    scale *= ((float)parentScr.Height) / ((float)(h - maxPixelsCutOffVertical));
+                }
+            }
+
+            // apply scale
+            scl.Scale = scale;
+
+            return entToFit;
+        }
+
+
+
+        /// <summary>
+        /// Apply a channel/screen/sprite fit (with scale, move) such that the entToFit will be centered in
+        /// and shrunk or stretched to the extent that it optimally fits the parentEnt.
+        /// </summary>
+        /// <param name="entToFit">Screen/Channel/Sprite to fit to parentEnt</param>
+        /// <param name="parentEnt">Parent Screen or Channel</param>
+        public Entity ProcessFitSize(Entity entToFit, Entity parentEnt, bool canStretch = true, 
+                                                bool canShrink = true, int maxPixelsCutOffVertical = 0)
+        {
+            ScreenComp parentScr;
+            if (parentEnt.HasC<WorldComp>())
+                parentScr = parentEnt.C<WorldComp>().Screen;
+            else if (parentEnt.HasC<ScreenComp>())
+                parentScr = parentEnt.C<ScreenComp>();
+            else
+                throw new NotImplementedException("Unrecognized parentEnt in ProcessFitSize()");
+
+            return ProcessFitSize(entToFit, parentScr, canStretch, canShrink, maxPixelsCutOffVertical);
+        }
+
+        /// <summary>
+        /// Get the shader Fx parameters for the Effect that is used to render the Entity e
+        /// </summary>
+        /// <param name="e">An Entity with a DrawComp</param>
+        /// <returns>ScreenComp's spritebatch's effect's parameters collection, an EffectParameterCollection.
+        /// Or null in case the Entity renders without Effect to the screen.</returns>
+        public EffectParameterCollection GetFxParameters(Entity e)
+        {
+            if (!e.HasC<DrawComp>())
+                return null;
+            if (e.C<DrawComp>().DrawScreen == null)
+                return null;
+            if (e.C<DrawComp>().DrawScreen.SpriteBatch.effect == null)
+                return null;
+
+            return e.C<DrawComp>().DrawScreen.SpriteBatch.effect.Parameters;
+        }
+
 
     }
 }

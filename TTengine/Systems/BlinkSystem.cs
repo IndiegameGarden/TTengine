@@ -25,13 +25,13 @@ namespace TTengine.Systems
             {
                 bc.isVisible = true;
                 if (tprev > bc.TimeOn)  // Blinks On
-                    entity.GetComponent<DrawComp>().IsVisible = true;
+                    entity.C<DrawComp>().IsVisible = true;
             }
             else
             {
                 bc.isVisible = false;
                 if (tprev <= bc.TimeOn) // Blinks Off
-                    entity.GetComponent<DrawComp>().IsVisible = false;
+                    entity.C<DrawComp>().IsVisible = false;
             }            
         }
 
